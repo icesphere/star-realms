@@ -305,6 +305,7 @@ public class GameView implements Serializable {
         if (getAction() != null) {
             sendShowActionToPlayer();
         } else {
+            getPlayer().endTurn();
             refreshAfterEndTurn();
         }
     }
@@ -383,5 +384,9 @@ public class GameView implements Serializable {
             chatMessage = "";
             sendGameMessageToOpponent("refresh_chat");
         }
+    }
+
+    public void attackOpponent() {
+        getPlayer().attackOpponentWithRemainingCombat();
     }
 }

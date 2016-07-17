@@ -15,8 +15,12 @@
 
     <h:panelGroup layout="block" styleClass="playerInfo">
 
-        <div class="#{cc.attrs.playerClass} playerInfoName">
-            <h:outputText value="#{cc.attrs.player.playerName}"/>
+        <div>
+            <h:outputText value="#{cc.attrs.player.playerName}" styleClass="playerInfoItem #{cc.attrs.playerClass}"/>
+            <h:outputText value="Authority: #{cc.attrs.player.authority}" styleClass="playerInfoItem" style="padding-left: 15px;"/>
+            <h:commandLink value="Attack" styleClass="playerInfoItem" style="margin-left: 5px;"
+                           actionListener="#{gameView.attackOpponent}"
+                           rendered="#{gameView.player.yourTurn and gameView.player.combat gt 0 and gameView.opponent.playerName eq cc.attrs.player.playerName}"/>
         </div>
 
     </h:panelGroup>

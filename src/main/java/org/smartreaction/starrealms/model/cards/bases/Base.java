@@ -35,6 +35,6 @@ public abstract class Base extends Card {
     }
 
     public boolean isActionable(Player player, String cardLocation) {
-        return player.isYourTurn() && !used;
+        return player.isYourTurn() && (cardLocation.equals(CARD_LOCATION_HAND) || (cardLocation.equals(CARD_LOCATION_PLAYER_BASES) && !used));
     }
 }

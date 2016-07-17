@@ -43,7 +43,7 @@
                 </h:dataTable>
                 <div style="padding-top: 20px;">
                     <h:panelGroup layout="block" rendered="#{!userSession.user.autoMatch}">
-                        <div style="padding-top: 15px;">
+                        <div>
                             <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}" process="@this" update="@form" value="Auto Match"/>
                         </div>
                     </h:panelGroup>

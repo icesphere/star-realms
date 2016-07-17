@@ -27,7 +27,7 @@ public class Game
 
     private boolean gameOver;
 
-    private boolean createGameLog;
+    private boolean createGameLog = true;
 
     private StringBuilder gameLog = new StringBuilder();
 

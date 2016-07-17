@@ -298,45 +298,15 @@
     float: left;
 }
 
-.playerInfoName {
+.playerInfoItem {
     float: left;
     padding: 10px;
-    margin-right: 2px;
-    min-width: 128px;
     min-height: 17px;
-}
-
-.playerInfoValue {
-    float: left;
-    padding: 7px 10px;
-    margin-right: 2px;
-    min-width: 41px;
-    font-size: 20px;
-}
-
-.playerInfoIcon {
-    margin-left: 5px;
-    height: 19px;
-    width: 19px;
 }
 
 .turnPhaseText {
     font-size: 16px;
     font-weight: bold;
-}
-
-.turnValueTextWrapper {
-    padding-top: 5px;
-}
-
-.turnValueText {
-    font-size: 20px;
-}
-
-.turnValueIcon {
-    margin-left: 10px;
-    height: 19px;
-    width: 19px;
 }
 
 .currentPlayerTurnText {

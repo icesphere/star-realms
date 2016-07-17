@@ -307,6 +307,8 @@ public abstract class Player {
 
         drawCards(5);
 
+        yourTurn = false;
+
         game.turnEnded();
     }
 
@@ -630,8 +632,6 @@ public abstract class Player {
             scoutsInSecondHand = scoutsInHand;
         }
     }
-
-    public abstract void takeTurn();
 
     public void buyCard(Card card) {
         if (trade >= card.getCost()) {
@@ -1176,10 +1176,7 @@ public abstract class Player {
     }
 
     public void resolveActions() {
-        if (actionsQueue.isEmpty()) {
-            //todo
-            game.turnEnded();
-        } else {
+        if (!actionsQueue.isEmpty()) {
             Action action = actionsQueue.remove(0);
             processNextAction(action);
         }

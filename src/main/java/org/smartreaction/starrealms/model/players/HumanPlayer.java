@@ -72,11 +72,6 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void takeTurn() {
-
-    }
-
-    @Override
     public Base chooseBaseToReturnToHand() {
         return null;
     }

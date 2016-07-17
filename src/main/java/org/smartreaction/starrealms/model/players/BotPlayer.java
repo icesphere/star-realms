@@ -55,7 +55,6 @@ public abstract class BotPlayer extends Player {
     protected Comparator<Card> returnCardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getReturnCardToTopOfDeckScore(c2), getReturnCardToTopOfDeckScore(c1));
     protected Comparator<Hero> useHeroScoreDescending = (h1, h2) -> Integer.compare(getUseHeroScore(h2), getUseHeroScore(h1));
 
-    @Override
     public void takeTurn() {
 
         List<Gambit> everyTurnGambits = getEveryTurnGambits();

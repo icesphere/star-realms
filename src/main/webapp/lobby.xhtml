@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/templates/commonLayout.xhtml">
+
+    <ui:define name="head">
+        <h:outputStylesheet name="lobby.css" library="css" />
+
+        <script>
+            $( document ).ready(function() {
+                setTimeout(scrollChat, 500);
+            });
+
+            function scrollChat () {
+                var chats = $('#chats');
+                chats.scrollTop(chats.prop('scrollHeight'));
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="lobbyForm">
+
+            <p:remoteCommand name="refreshLobby" process="@form" update="@form"/>
+            <p:remoteCommand name="refreshChat" process="@form" update="@form" oncomplete="scrollChat()"/>
+
+            <h:messages styleClass="errorText"/>
+
+            <div class="lobbyPage">
+                <div class="lobbyHeader">
+                    <h:outputText value="Logged in Users"/>
+                </div>
+                <h:dataTable value="#{lobbyView.users}" var="user">
+                    <h:column>
+                        <h:outputText value="#{user.username}" style="padding-right: 10px;"/>
+                        <p:commandLink process="@this" update="lobbyForm" value="Logout" action="#{userSession.logout}"
+                                       rendered="#{user.username eq userSession.user.username}"/>
+                        <h:outputText value="#{lobbyView.getUserStatus(user)}"
+                                      rendered="#{user.username ne userSession.user.username}"/>
+                    </h:column>
+                </h:dataTable>
+                <div style="padding-top: 20px;">
+                    <h:panelGroup layout="block" rendered="#{!userSession.user.autoMatch}">
+                        <div style="padding-top: 15px;">
+                            <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}" process="@this" update="@form" value="Auto Match"/>
+                        </div>
+                    </h:panelGroup>
+                    <h:outputText value="Waiting for Auto Match..." rendered="#{userSession.user.autoMatch}"/>
+                </div>
+
+                <div style="padding-top: 20px; clear:both;">
+
+                    <div class="lobbyHeader">
+                        <h:outputText value="Lobby Chat"/>
+                    </div>
+
+                    <h:panelGroup id="chatSection" layout="block" styleClass="chatSection">
+
+                        <div id="chats" class="chats">
+                            <ui:repeat value="#{lobbyView.chatMessages}" var="chatMessage">
+                                <div style="padding-top: 10px;">
+                                    <h:outputText value="#{chatMessage.username}:"/>
+                                    <h:outputText value="#{chatMessage.message}" style="padding-left: 10px;"/>
+                                    <h:outputText value="(" style="padding-left: 10px;"/>
+                                    <h:outputText value="#{chatMessage.messageDate}">
+                                        <f:convertDateTime pattern="HH:mm:ss" />
+                                    </h:outputText>
+                                    <h:outputText value=")"/>
+                                </div>
+                            </ui:repeat>
+                        </div>
+                        <div style="padding-top: 10px;">
+                            <p:inputText value="#{lobbyView.chatMessage}" style="margin-right: 10px;"/>
+                            <p:commandButton value="Send" process="chatSection" update="chatSection"
+                                             actionListener="#{lobbyView.sendChatMessage}" oncomplete="scrollChat()"/>
+                        </div>
+
+                    </h:panelGroup>
+
+                </div>
+
+            </div>
+        </h:form>
+
+        <p:socket onMessage="handleLobbyMessage" channel="/game/lobby/#{userSession.user.username}" autoConnect="true" widgetVar='lobbyMessageSubscriber' />
+
+        <script type="text/javascript">
+            function handleLobbyMessage(response) {
+                console.log("received message from server: ");
+                console.log(response);
+                if (response.message == 'game_started') {
+                    window.location.href = 'game.xhtml?faces-redirect=true';
+                } else if (response.message == 'refresh_lobby') {
+                    console.log('received refresh lobby message');
+                    refreshLobby();
+                } else if (response.message == 'refresh_chat') {
+                    refreshChat();
+                }
+            }
+        </script>
+    </ui:define>
+</ui:composition>
+</html>

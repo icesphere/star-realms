@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<composite:interface>
+    <composite:attribute name="card" required="true" type="org.smartreaction.starrealms.model.cards.Card"/>
+    <composite:attribute name="source" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup layout="block" styleClass="tradeRowCard #{gameView.getTradeRowCardClass(cc.attrs.card)}" onmouseover="updateCardView([{name:'cardName', value:'#{cc.attrs.card.name}'}])" onclick="cardClicked([{name:'cardName', value:'#{cc.attrs.card.name}'}, {name:'source', value:'#{cc.attrs.source}'}, {name:'cardId', value:'#{cc.attrs.card.id}'}])">
+
+        <div class="tradeRowCardCost #{gameView.getCardClass(cc.attrs.card)}">
+            <h:outputText value="$#{cc.attrs.card.cost}"/>
+        </div>
+
+        <div class="tradeRowCardInfo #{gameView.getCardClass(cc.attrs.card)}">
+            <h:outputText value="#{cc.attrs.card.name}"/>
+            <h:panelGroup rendered="#{cc.attrs.card.base}">
+                <h:outputText value=" (#{cc.attrs.card.shield} "/>
+                <h:outputText rendered="#{cc.attrs.card.outpost}" value="O"/>
+                <h:outputText rendered="#{!cc.attrs.card.outpost}" value="B"/>
+                <h:outputText value=")"/>
+            </h:panelGroup>
+        </div>
+
+    </h:panelGroup>
+
+</composite:implementation>
+
+</html>

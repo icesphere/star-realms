@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<composite:interface>
+    <composite:attribute name="player" required="true" type="org.smartreaction.starrealms.model.players.Player"/>
+    <composite:attribute name="playerClass" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup layout="block" styleClass="playerInfo">
+
+        <div class="#{cc.attrs.playerClass} playerInfoName">
+            <h:outputText value="#{cc.attrs.player.playerName}"/>
+        </div>
+
+    </h:panelGroup>
+
+</composite:implementation>
+
+</html>

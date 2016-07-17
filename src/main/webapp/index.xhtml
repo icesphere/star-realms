@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/commonLayout.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <div style="padding: 10px;">
+                <div>
+                    Star Realms
+                </div>
+                <div style="padding-top: 20px;">
+                    <h:link rendered="#{!userSession.loggedIn}" outcome="login.xhtml?faces-redirect=true">Login</h:link>
+                    <h:link rendered="#{userSession.loggedIn}" outcome="lobby.xhtml?faces-redirect=true">Game Lobby</h:link>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

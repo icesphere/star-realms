@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/commonLayout.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <div>
+                <h:outputText value="View Expired -- "/>
+                <h:outputText value="#{errorView.invalidateSession()}"/>
+                <a href="#" onclick="window.location.href=window.location.href">Refresh Page</a>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

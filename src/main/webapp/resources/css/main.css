@@ -1,0 +1,150 @@
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 90%;
+    font-family: Times, serif;
+}
+
+#contentDiv {
+}
+
+.captionText {
+    font-size: 10px;
+    color: #999999;
+}
+
+.footerText {
+    clear: both;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.errorText {
+    color: #FF3333;
+}
+
+.successText {
+    color: #66AA66;
+}
+
+.boldText {
+    font-weight: bold;
+}
+
+.underlineText {
+    text-decoration: underline;
+}
+
+a {
+    color: #151EA9;
+}
+
+.centerDiv {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+.mediumLeftMargin {
+    margin-left: 15px;
+}
+
+.menu {
+    float: right;
+    padding-right: 3px;
+    padding-top: 10px;
+    margin: 0 20px;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+.alignCenter {
+    text-align: center;
+}
+
+.alignTop {
+    vertical-align: top;
+}
+
+.alignRight {
+    text-align: right;
+}
+
+.smallRightPadding {
+    padding-right: 10px;
+}
+
+.mediumRightPadding {
+    padding-right: 15px;
+}
+
+.tinyBottomPadding {
+    padding-bottom: 5px;
+}
+
+.smallBottomPadding {
+    padding-bottom: 10px;
+}
+
+.smallTopPadding {
+    padding-top: 10px;
+}
+
+.bigTopMargin {
+    margin-top: 20px;
+}
+
+.quote {
+    color: #999999;
+}
+
+.smallText {
+    font-size: 12px;
+}
+
+.navigationLink {
+    float: left;
+}
+
+.radioSpacing td {
+    padding-right: 10px;
+}
+
+.backToTopLink {
+    display: none;
+}

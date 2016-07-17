@@ -1,0 +1,383 @@
+.gamePagePlusChat {
+    float: left;
+    width: 1450px;
+    overflow: auto;
+    padding: 15px;
+    font-size: 16px;
+    font-family: serif;
+}
+
+.gamePage {
+    float: left;
+}
+
+.leftSection {
+    float: left;
+    margin-right: 20px;
+}
+
+.middleSection {
+    float: left;
+    margin-right: 20px;
+}
+
+.rightSection {
+    float: left;
+    margin-right: 20px;
+}
+
+.tradeRowSection {
+    float: left;
+    padding: 15px;
+    background-color: #EEEEF0;
+    border: 1px solid #DDDDE0;
+}
+
+.tradeRow {
+    clear: both;
+    float: left;
+}
+
+.cardViewSection {
+    clear: both;
+    float: left;
+    padding-top: 10px;
+    width: 288px;
+    text-align: center;
+}
+
+.cardView {
+    float: left;
+    width: 222px;
+    height: 342px;
+    padding: 15px;
+    background-color: #EEEEF0;
+    border: 1px solid #DDDDE0;
+    text-align: center;
+    border-radius: 20px;
+    margin-left: 16px;
+}
+
+.emptyCardView {
+    padding-top: 20px;
+    font-style: italic;
+}
+
+.playerInfoSection {
+    float: left;
+}
+
+.deployedSection {
+    clear: left;
+    float: left;
+    padding-top: 10px;
+}
+
+.deployedSectionLabel {
+    font-style: italic;
+    padding-left: 10px;
+}
+
+.playerDeployedSection {
+    float: left;
+    margin-right: 10px;
+    padding: 12px;
+    min-width: 210px;
+}
+
+.opponentDeployedSection {
+    float: left;
+    padding: 12px;
+    min-width: 210px;
+}
+
+.playAreaSection {
+    clear: left;
+    padding-top: 10px;
+}
+
+.playArea {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.handSection {
+    clear: left;
+    padding-top: 10px;
+}
+
+.hand {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.gameLogSection {
+    width: 265px;
+    padding: 5px;
+    border: 2px solid black;
+    background-color: #EEEEF0;
+}
+
+.gameLog {
+    height: 180px;
+    overflow: auto;
+    padding-right: 5px;
+}
+
+.chatSection {
+    float: left;
+    width: 265px;
+    padding: 5px;
+    border: 2px solid black;
+    background-color: white;
+}
+
+.chats {
+    height: 266px;
+    overflow: auto;
+    padding-right: 5px;
+}
+
+.playerCardInfoSection {
+    padding-top: 15px;
+}
+
+.playerCardInfoBox {
+    border: 1px solid #333;
+    background-color: #EEEEF0;
+    float: left;
+    width: 277px;
+}
+
+.playerCardInfoRow {
+    clear: left;
+    float: left;
+    padding: 5px;
+}
+
+.playerCardInfoNameContainer {
+    float: left;
+    min-width: 100px;
+    margin-right: 5px;
+    position: relative;
+    top: -5px;
+}
+
+.playerCardInfoName {
+    float: left;
+    padding: 7px 14px;
+}
+
+.playerCardInfoValue {
+    float: left;
+    min-width: 45px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.turnInfoSection {
+    clear: both;
+    float: left;
+    padding-top: 5px;
+}
+
+.turnInfoBox {
+    border: 1px solid #333;
+    background-color: #EEEEF0;
+    float: left;
+    width: 320px;
+    padding: 7px;
+}
+
+.turnButtonsSection {
+    clear:both;
+}
+
+.turnButtonWrapper {
+    padding-top: 15px;
+    clear: both;
+    float: left;
+    margin-left: 10px;
+}
+
+.turnButton {
+    float: left;
+    min-width: 130px;
+    text-align: center;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 20;
+    -moz-border-radius: 20;
+    border-radius: 20px;
+    text-shadow: 1px 1px 3px #666666;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 20px 60px 20px 60px;
+    border: solid #1f628d 2px;
+    text-decoration: none;
+}
+
+.turnButton:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+
+.tradeRowCard {
+    clear: both;
+    float: left;
+    margin-bottom: 2px;
+}
+
+.tradeRowCardCost {
+    float: left;
+    padding: 5px 10px;
+    margin-right: 2px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.tradeRowCardInfo {
+    float: left;
+    padding: 5px 10px;
+    min-width: 190px;
+}
+
+.blob {
+    background-color: #66AA66;
+}
+
+.machineCult {
+    background-color: #DD5555;
+}
+
+.starEmpire {
+    background-color: #EECC00;
+}
+
+.tradeFederation {
+    background-color: #77AAEE;
+}
+
+.unaligned {
+    background-color: #CCCCCC;
+}
+
+.player {
+    background-color: #70B9B9;
+}
+
+.opponent {
+    background-color: #CC9977;
+}
+
+.card {
+    clear: both;
+    float: left;
+    margin-bottom: 2px;
+}
+
+.cardInfo {
+    float: left;
+    padding: 5px 10px;
+    min-width: 190px;
+}
+
+.playerInfo {
+    padding-bottom: 5px;
+    clear: both;
+    float: left;
+}
+
+.playerInfoName {
+    float: left;
+    padding: 10px;
+    margin-right: 2px;
+    min-width: 128px;
+    min-height: 17px;
+}
+
+.playerInfoValue {
+    float: left;
+    padding: 7px 10px;
+    margin-right: 2px;
+    min-width: 41px;
+    font-size: 20px;
+}
+
+.playerInfoIcon {
+    margin-left: 5px;
+    height: 19px;
+    width: 19px;
+}
+
+.turnPhaseText {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.turnValueTextWrapper {
+    padding-top: 5px;
+}
+
+.turnValueText {
+    font-size: 20px;
+}
+
+.turnValueIcon {
+    margin-left: 10px;
+    height: 19px;
+    width: 19px;
+}
+
+.currentPlayerTurnText {
+    padding: 5px 15px;
+    font-size: 18px;
+}
+
+.actionableCard {
+    border: 3px solid #0055FF;
+    padding: 2px 7px;
+    cursor: pointer;
+}
+
+.buyableCard {
+    border: 3px solid #0055FF;
+    cursor: pointer;
+}
+
+.buyableCard .tradeRowCardCost {
+    padding-left: 8px;
+    padding-right: 9px;
+}
+
+.buyableCard .tradeRowCardInfo {
+    padding-right: 7px;
+}
+
+.actionDialog {
+    padding: 5px;
+    padding-top: 10px;
+    text-align: center;
+    min-width: 200px;
+}
+
+.gameOverSection {
+    clear: both;
+    padding-top: 15px;
+    text-align: center;
+}
+
+.sectionHeader {
+    font-weight:bold;
+}
+

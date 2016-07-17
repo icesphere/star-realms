@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/commonLayout.xhtml">
+    <ui:define name="content">
+        <h:form>
+            <div style="padding: 10px;">
+                <h:panelGroup layout="block" rendered="#{loginView.showUsernameError}" style="padding-bottom: 15px;" styleClass="errorText">
+                    <h:outputText value="Username is already in use."/>
+                </h:panelGroup>
+                <div>
+                    Choose a username:
+                </div>
+                <div style="padding-top: 20px;">
+                    <p:inputText value="#{loginView.username}"/>
+                </div>
+                <div style="padding-top: 20px;">
+                    <p:commandButton process="@form" update="@form" value="Login" action="#{loginView.loginAsGuest}"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

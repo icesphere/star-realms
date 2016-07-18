@@ -19,7 +19,7 @@ public class DefenseBot extends Ship
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(1);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
         if (player.getBases().size() >= 2) {
             player.addCombat(8);
         }

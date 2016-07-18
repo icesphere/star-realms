@@ -23,7 +23,7 @@ public class FortressOblivion extends Outpost
 
     @Override
     public void baseUsed(Player player) {
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

@@ -28,6 +28,7 @@ public abstract class Card {
     public static String CARD_LOCATION_PLAYER_BASES = "playerBases";
     public static String CARD_LOCATION_OPPONENT_BASES = "opponentBases";
     public static String CARD_LOCATION_TRADE_ROW = "tradeRow";
+    public static String CARD_LOCATION_EXPLORERS = "explorers";
 
     protected Card() {
         id = UUID.randomUUID().toString();

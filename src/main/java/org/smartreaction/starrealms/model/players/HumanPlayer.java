@@ -22,42 +22,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public Base chooseTargetBaseToDestroy() {
-        return null;
-    }
-
-    @Override
-    public List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards) {
-        return null;
-    }
-
-    @Override
-    public List<Card> chooseCardsToScrapInTradeRow(int cards) {
-        return null;
-    }
-
-    @Override
-    public Card chooseFreeShipToPutOnTopOfDeck() {
-        return null;
-    }
-
-    @Override
     public void makeChoice(Card card, Choice... choices) {
-
-    }
-
-    @Override
-    public Card getCardToScrapFromHand(boolean optional) {
-        return null;
-    }
-
-    @Override
-    public Card getCardToScrapFromDiscard(boolean optional) {
-        return null;
-    }
-
-    @Override
-    public void discardAndDrawCards(int cards) {
 
     }
 
@@ -72,22 +37,12 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public Base chooseBaseToReturnToHand() {
-        return null;
-    }
-
-    @Override
     public Faction chooseFactionForCard(Card card) {
         return null;
     }
 
     @Override
     public Card chooseCardFromDiscardToAddToTopOfDeck() {
-        return null;
-    }
-
-    @Override
-    public Card chooseFreeCardToAcquire(int maxCost) {
         return null;
     }
 

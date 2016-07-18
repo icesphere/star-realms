@@ -1,27 +1,22 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.DiscardCardsForBenefitAction;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscardCardsFromHand extends Action {
+public class DiscardCardsFromHandForBenefit extends Action {
+    private DiscardCardsForBenefitAction card;
     private int numCardsToDiscard;
 
-    private List<Card> selectedCards = new ArrayList<>(3);
+    private List<Card> selectedCards = new ArrayList<>();
 
-    public DiscardCardsFromHand(int numCardsToDiscard, String text) {
+    public DiscardCardsFromHandForBenefit(DiscardCardsForBenefitAction card, int numCardsToDiscard, String text) {
+        this.card = card;
         this.numCardsToDiscard = numCardsToDiscard;
         this.text = text;
-    }
-
-    public int getNumCardsToDiscard() {
-        return numCardsToDiscard;
-    }
-
-    public List<Card> getSelectedCards() {
-        return selectedCards;
     }
 
     @Override
@@ -35,24 +30,28 @@ public class DiscardCardsFromHand extends Action {
             return false;
         } else {
             if (numCardsToDiscard > player.getHand().size()) {
-                player.getHand().stream().forEach(player::addCardToDiscard);
-                player.getHand().clear();
-                player.addGameLog(player.getPlayerName() + " discarded " + player.getHand().size() + " numCardsToScrap");
-                return false;
-            } else {
-                player.addGameLog(player.getPlayerName() + " is discarding " + numCardsToDiscard + " numCardsToScrap");
-                return true;
+                numCardsToDiscard = player.getHand().size();
             }
+            return true;
         }
     }
 
     @Override
     public void processActionResult(Player player, ActionResult result) {
-        selectedCards.stream().forEach(player::discardCardFromHand);
+        selectedCards.forEach(player::scrapCardFromHand);
+        card.cardsDiscarded(player, selectedCards);
+    }
+
+    public int getNumCardsToDiscard() {
+        return numCardsToDiscard;
+    }
+
+    public List<Card> getSelectedCards() {
+        return selectedCards;
     }
 
     @Override
     public boolean showActionDialog() {
-        return selectedCards.size() == 0;
+        return selectedCards.isEmpty();
     }
 }

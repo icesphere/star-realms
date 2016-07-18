@@ -1,12 +1,16 @@
 package org.smartreaction.starrealms.model.cards.ships.machinecult;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
 import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class TheArk extends Ship implements ScrappableCard
+import java.util.List;
+
+public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefitAction
 {
     public TheArk()
     {
@@ -20,7 +24,7 @@ public class TheArk extends Ship implements ScrappableCard
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(5);
-        player.scrapToDrawCards(2);
+        player.optionallyScrapCardsFromHandOrDiscardForBenefit(this, 2);
     }
 
     @Override
@@ -31,5 +35,10 @@ public class TheArk extends Ship implements ScrappableCard
     @Override
     public boolean canDestroyBasedWhenScrapped() {
         return true;
+    }
+
+    @Override
+    public void cardsScrapped(Player player, List<Card> scrappedCards) {
+        player.drawCards(scrappedCards.size());
     }
 }

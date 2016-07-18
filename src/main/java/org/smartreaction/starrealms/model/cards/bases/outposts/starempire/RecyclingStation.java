@@ -2,11 +2,16 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.starempire;
 
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
+import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.DiscardCardsForBenefitAction;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class RecyclingStation extends Outpost
+import java.util.List;
+
+public class RecyclingStation extends Outpost implements DiscardCardsForBenefitAction
 {
     public RecyclingStation()
     {
@@ -32,7 +37,12 @@ public class RecyclingStation extends Outpost
             player.addTrade(1);
         } else {
             player.getGame().gameLog("Chose Discard up to two cards, then draw that many cards");
-            player.discardAndDrawCards(2);
+            player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards to then draw that many cards"));
         }
+    }
+
+    @Override
+    public void cardsDiscarded(Player player, List<Card> discardedCards) {
+        player.drawCards(discardedCards.size());
     }
 }

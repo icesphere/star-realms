@@ -20,7 +20,7 @@ public class RepairBot extends Ship implements ScrappableCard
     @Override
     public void cardPlayed(Player player) {
         player.addTrade(2);
-        player.scrapCardFromDiscard(true);
+        player.optionallyScrapCardsFromDiscard(1);
     }
 
     @Override

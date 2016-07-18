@@ -12,7 +12,7 @@ public class Comet extends Event {
 
     @Override
     public void handleEvent(Player player) {
-        player.scrapCardsFromHandOrDiscard(2);
-        player.getOpponent().scrapCardsFromHandOrDiscard(2);
+        player.optionallyScrapCardsFromHandOrDiscard(2);
+        player.getOpponent().optionallyScrapCardsFromHandOrDiscard(2);
     }
 }

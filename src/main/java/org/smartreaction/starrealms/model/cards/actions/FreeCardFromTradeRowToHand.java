@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class FreeCardFromTradeRowToHand extends Action {
@@ -13,7 +14,8 @@ public class FreeCardFromTradeRowToHand extends Action {
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW) && (maxCost == null || (card.getCost() <= maxCost));
+        return (cardLocation.equals(Card.CARD_LOCATION_EXPLORERS) || cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW))
+                && (maxCost == null || (card.getCost() <= maxCost));
     }
 
     @Override
@@ -24,8 +26,10 @@ public class FreeCardFromTradeRowToHand extends Action {
     @Override
     public void processActionResult(Player player, ActionResult result) {
         Card card = result.getSelectedCard();
-        player.getGame().getTradeRow().remove(card);
-        player.getGame().addCardToTradeRow();
+        if (!(card instanceof Explorer)) {
+            player.getGame().getTradeRow().remove(card);
+            player.getGame().addCardToTradeRow();
+        }
         player.addGameLog(player.getPlayerName() + " gained free card from trade row and put it in their hand: " + card.getName());
         player.addCardToHand(card);
     }

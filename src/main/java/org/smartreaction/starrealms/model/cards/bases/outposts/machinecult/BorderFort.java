@@ -39,6 +39,6 @@ public class BorderFort extends Outpost implements AlliableCard
     }
 
     public void cardAllied(Player player) {
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 }

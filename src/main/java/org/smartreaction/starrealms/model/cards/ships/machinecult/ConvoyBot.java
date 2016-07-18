@@ -20,7 +20,7 @@ public class ConvoyBot extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(4);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

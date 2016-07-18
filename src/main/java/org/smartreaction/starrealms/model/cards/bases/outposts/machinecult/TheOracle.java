@@ -20,7 +20,7 @@ public class TheOracle extends Outpost implements AlliableCard
 
     @Override
     public void baseUsed(Player player) {
-        player.scrapCardFromHand(true);
+        player.scrapCardFromHand(false);
     }
 
     @Override

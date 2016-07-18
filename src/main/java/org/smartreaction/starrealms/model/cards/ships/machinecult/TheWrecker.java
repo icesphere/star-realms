@@ -20,7 +20,7 @@ public class TheWrecker extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(6);
-        player.scrapCardsFromHandOrDiscard(2);
+        player.optionallyScrapCardsFromHandOrDiscard(2);
     }
 
     @Override

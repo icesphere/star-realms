@@ -21,7 +21,7 @@ public class MechCruiser extends Ship implements AlliableCard
     public void cardPlayed(Player player)
     {
         player.addCombat(6);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

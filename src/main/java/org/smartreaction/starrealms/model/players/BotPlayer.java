@@ -706,7 +706,6 @@ public abstract class BotPlayer extends Player {
         return cardsToDiscard;
     }
 
-    @Override
     public void discardAndDrawCards(int cards) {
         int cardsDiscarded = discardCards(cards, true);
         drawCards(cardsDiscarded);
@@ -745,7 +744,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public Card getCardToScrapFromHand(boolean optional) {
         if (!getHand().isEmpty()) {
             List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
@@ -758,7 +756,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public Card getCardToScrapFromDiscard(boolean optional) {
         if (!getDiscard().isEmpty()) {
             List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
@@ -776,7 +773,6 @@ public abstract class BotPlayer extends Player {
         card.choiceMade(getChoice(card), this);
     }
 
-    @Override
     public Card chooseFreeShipToPutOnTopOfDeck() {
         List<Card> sortedCards = getGame().getTradeRow().stream().filter(Card::isShip).sorted(cardToTopOfDeckScoreDescending).collect(toList());
 
@@ -791,7 +787,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public List<Card> chooseCardsToScrapInTradeRow(int cards) {
         List<Card> sortedCards = getGame().getTradeRow().stream().sorted(scrapCardFromTradeRowScoreDescending).collect(toList());
 
@@ -807,7 +802,6 @@ public abstract class BotPlayer extends Player {
         return cardsToScrap;
     }
 
-    @Override
     public List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards) {
         List<List<Card>> cardsToScrap = new ArrayList<>();
 
@@ -860,7 +854,6 @@ public abstract class BotPlayer extends Player {
         return cardsToScrap;
     }
 
-    @Override
     public Base chooseTargetBaseToDestroy() {
         if (!getOpponent().getOutposts().isEmpty()) {
             List<Base> sortedOutposts = getOpponent().getOutposts().stream().sorted(destroyBaseScoreDescending).collect(toList());
@@ -907,7 +900,6 @@ public abstract class BotPlayer extends Player {
         return 0;
     }
 
-    @Override
     public Base chooseBaseToReturnToHand() {
         //todo include opponent's bases
 
@@ -962,7 +954,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public Card chooseFreeCardToAcquire(int maxCost) {
         if (!getGame().getTradeRow().isEmpty()) {
             List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> c.getCost() <= maxCost).sorted(cardToBuyScoreDescending).collect(toList());

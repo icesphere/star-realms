@@ -20,7 +20,7 @@ public class MiningMech extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addTrade(3);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

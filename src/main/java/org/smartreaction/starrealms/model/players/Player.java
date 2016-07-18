@@ -2,13 +2,8 @@ package org.smartreaction.starrealms.model.players;
 
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
-import org.smartreaction.starrealms.model.cards.AlliableCard;
-import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrappableCard;
-import org.smartreaction.starrealms.model.cards.actions.Action;
-import org.smartreaction.starrealms.model.cards.actions.ActionResult;
-import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHand;
+import org.smartreaction.starrealms.model.cards.*;
+import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.PlasmaVent;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
@@ -192,6 +187,10 @@ public abstract class Player {
     }
 
     public List<Card> drawCards(int cards) {
+        if (cards == 0) {
+            return new ArrayList<>();
+        }
+
         List<Card> cardsDrawn = new ArrayList<>();
         getGame().gameLog(playerName + " drawing " + cards + " cards");
         for (int i = 0; i < cards; i++) {
@@ -321,12 +320,7 @@ public abstract class Player {
     }
 
     public void destroyTargetBase() {
-        if (!opponent.getBases().isEmpty()) {
-            Base base = chooseTargetBaseToDestroy();
-            if (base != null) {
-                opponent.baseDestroyed(base);
-            }
-        }
+        addAction(new DestroyOpponentBase("Destroy target base"));
     }
 
     public void baseDestroyed(Base base) {
@@ -380,37 +374,19 @@ public abstract class Player {
         return 0;
     }
 
-    public abstract Base chooseTargetBaseToDestroy();
-
-    public void scrapCardFromHandOrDiscard() {
-        scrapCardsFromHandOrDiscard(1);
+    public void optionallyScrapCardFromHandOrDiscard() {
+        optionallyScrapCardsFromHandOrDiscard(1);
     }
 
-    public int scrapCardsFromHandOrDiscard(int cards) {
-        List<List<Card>> cardsToScrap = getCardsToOptionallyScrapFromDiscardOrHand(cards);
-
-        List<Card> cardsToScrapFromDiscard = cardsToScrap.get(0);
-        List<Card> cardsToScrapFromHand = cardsToScrap.get(1);
-
-        for (Card card : cardsToScrapFromDiscard) {
-            scrapCardFromDiscard(card);
-        }
-
-        for (Card card : cardsToScrapFromHand) {
-            scrapCardFromHand(card);
-        }
-
-        return cardsToScrap.size();
+    public void optionallyScrapCardsFromHandOrDiscard(int cards) {
+        addAction(new ScrapCardsFromHandOrDiscardPile(cards, "Scrap up to " + cards + " from your hand or discard pile"));
     }
 
-    public void scrapToDrawCards(int cards) {
-        int numCardsScrapped = scrapCardsFromHandOrDiscard(cards);
-        if (numCardsScrapped > 0) {
-            drawCards(numCardsScrapped);
-        }
+    public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitAction card, int numCardsToScrap) {
+        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile"));
     }
 
-    protected void scrapCardFromDiscard(Card card) {
+    public void scrapCardFromDiscard(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from discard");
         discard.remove(card);
         playerCardScrapped(card);
@@ -441,31 +417,16 @@ public abstract class Player {
         }
     }
 
-    public abstract List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards);
-
     public void scrapCardInTradeRow() {
         scrapCardsInTradeRow(1);
     }
 
     public void scrapCardsInTradeRow(int cards) {
-        List<Card> cardsToScrap = chooseCardsToScrapInTradeRow(cards);
-        for (Card card : cardsToScrap) {
-            game.scrapCardFromTradeRow(card);
-        }
+        addAction(new ScrapCardsFromTradeRow(cards));
     }
 
-    public abstract List<Card> chooseCardsToScrapInTradeRow(int cards);
-
     public void acquireFreeShipAndPutOnTopOfDeck() {
-        if (!getGame().getTradeRow().isEmpty()) {
-            Card card = chooseFreeShipToPutOnTopOfDeck();
-            if (card != null) {
-                game.getTradeRow().remove(card);
-                game.addCardToTradeRow();
-                getGame().gameLog("Acquired free ship on top of deck: " + card.getName());
-                addCardToTopOfDeck(card);
-            }
-        }
+        addAction(new FreeCardFromTradeRowToTopOfDeck(null, "Choose a free ship from the trade row to put on top of your deck"));
     }
 
     public void addCardToTopOfDeck(Card card) {
@@ -521,8 +482,6 @@ public abstract class Player {
         }
     }
 
-    public abstract Card chooseFreeShipToPutOnTopOfDeck();
-
     public abstract void makeChoice(Card card, Choice... choices);
 
     public void nextShipToTopOfDeck() {
@@ -546,32 +505,20 @@ public abstract class Player {
     }
 
     public void scrapCardFromHand(boolean optional) {
-        if (!hand.isEmpty()) {
-            Card card = getCardToScrapFromHand(optional);
-            if (card != null) {
-                scrapCardFromHand(card);
-            }
+        if (optional) {
+            addAction(new ScrapCardsFromHand(1, "You may scrap a card from your hand"));
+        } else {
+            addAction(new ScrapCardFromHand("Scrap a card from your hand"));
         }
     }
 
-    public void scrapCardFromDiscard(boolean optional) {
-        if (!hand.isEmpty()) {
-            Card card = getCardToScrapFromDiscard(optional);
-            if (card != null) {
-                scrapCardFromDiscard(card);
-            }
-        }
+    public void optionallyScrapCardsFromDiscard(int cards) {
+        addAction(new ScrapCardsFromDiscardPile(cards, "You may scrap a card from your discard pile"));
     }
-
-    public abstract Card getCardToScrapFromHand(boolean optional);
-
-    public abstract Card getCardToScrapFromDiscard(boolean optional);
 
     public void allFactionsAllied() {
         allFactionsAllied = true;
     }
-
-    public abstract void discardAndDrawCards(int cards);
 
     public void copyShip(StealthNeedle stealthNeedle) {
         if (!inPlay.isEmpty()) {
@@ -798,16 +745,8 @@ public abstract class Player {
     }
 
     public void returnTargetBaseToHand() {
-        Base base = chooseBaseToReturnToHand();
-        if (base != null) {
-            getGame().gameLog("Returned base to hand: " + base.getName());
-            bases.remove(base);
-            addCardToHand(base);
-            cardRemovedFromPlay(base);
-        }
+        addAction(new ReturnBaseToHand("Return a base to owner's hand"));
     }
-
-    public abstract Base chooseBaseToReturnToHand();
 
     public abstract Faction chooseFactionForCard(Card card);
 
@@ -834,32 +773,16 @@ public abstract class Player {
     }
 
     public void acquireFreeCard(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost);
-        if (card != null) {
-            getGame().gameLog("Acquired free card: " + card.getName());
-            cardAcquired(card);
-        }
+        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row costing up to " + maxCost));
     }
 
     public void acquireFreeCardToTopOfDeck(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost);
-        if (card != null) {
-            game.getTradeRow().remove(card);
-            game.addCardToTradeRow();
-            getGame().gameLog("Acquired free card: " + card.getName());
-            addCardToTopOfDeck(card);
-        }
+        addAction(new FreeCardFromTradeRowToTopOfDeck(maxCost, "Acquire a free card from the trade row to the top of your deck costing up to " + maxCost));
     }
 
     public void acquireFreeCardToHand(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost);
-        if (card != null) {
-            getGame().gameLog("Acquired free card into hand: " + card.getName());
-            addCardToHand(card);
-        }
+        addAction(new FreeCardFromTradeRowToHand(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost));
     }
-
-    public abstract Card chooseFreeCardToAcquire(int maxCost);
 
     public List<Gambit> getGambits() {
         return gambits;

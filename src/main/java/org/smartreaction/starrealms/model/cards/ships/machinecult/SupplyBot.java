@@ -20,7 +20,7 @@ public class SupplyBot extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addTrade(2);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

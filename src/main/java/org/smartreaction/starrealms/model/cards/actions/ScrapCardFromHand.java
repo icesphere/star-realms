@@ -15,12 +15,7 @@ public class ScrapCardFromHand extends Action {
 
     @Override
     public boolean processAction(Player player) {
-        if (player.getHand().isEmpty()) {
-            return false;
-        } else {
-            player.addGameLog(player.getPlayerName() + " is scrapping a card from their hand");
-            return true;
-        }
+        return !player.getHand().isEmpty();
     }
 
     @Override

@@ -20,7 +20,7 @@ public class TradeBot extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addTrade(1);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

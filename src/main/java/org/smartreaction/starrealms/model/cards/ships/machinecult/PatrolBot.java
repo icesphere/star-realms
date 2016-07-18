@@ -39,6 +39,6 @@ public class PatrolBot extends Ship implements AlliableCard
 
     @Override
     public void cardAllied(Player player) {
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 }

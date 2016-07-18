@@ -4,6 +4,6 @@ import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public interface ScrapCardsForBenefit {
-    void cardsScrapped(Player player, List<Card> scrappedCards);
+public interface DiscardCardsForBenefitAction {
+    void cardsDiscarded(Player player, List<Card> discardedCards);
 }

@@ -2,12 +2,18 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class TheIncinerator extends Outpost implements AlliableCard
+import java.util.List;
+
+public class TheIncinerator extends Outpost implements AlliableCard, ScrapCardsForBenefitAction
 {
+    private int cardsScrapped;
+
     public TheIncinerator()
     {
         name = "The Incinerator";
@@ -21,11 +27,17 @@ public class TheIncinerator extends Outpost implements AlliableCard
     @Override
     public void baseUsed(Player player)
     {
-        player.scrapCardsFromHandOrDiscard(2);
+        player.optionallyScrapCardsFromHandOrDiscard(2);
     }
 
     @Override
     public void cardAllied(Player player) {
-        //todo
+        //todo track all cards scrapped
+        player.addCombat(2 * cardsScrapped);
+    }
+
+    @Override
+    public void cardsScrapped(Player player, List<Card> scrappedCards) {
+        cardsScrapped = scrappedCards.size();
     }
 }

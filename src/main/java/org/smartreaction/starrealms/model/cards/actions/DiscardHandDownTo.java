@@ -37,10 +37,10 @@ public class DiscardHandDownTo extends Action {
             if (cardsToDiscardDownTo == player.getHand().size()) {
                 player.getHand().stream().forEach(player::addCardToDiscard);
                 player.getHand().clear();
-                player.addGameLog(player.getPlayerName() + " discarded " + player.getHand().size() + " cards");
+                player.addGameLog(player.getPlayerName() + " discarded " + player.getHand().size() + " numCardsToScrap");
                 return false;
             } else {
-                player.addGameLog(player.getPlayerName() + " is discarding down to " + cardsToDiscardDownTo + " cards");
+                player.addGameLog(player.getPlayerName() + " is discarding down to " + cardsToDiscardDownTo + " numCardsToScrap");
                 return true;
             }
         }

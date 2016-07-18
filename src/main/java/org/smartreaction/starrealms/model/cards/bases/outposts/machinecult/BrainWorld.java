@@ -1,11 +1,15 @@
 package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class BrainWorld extends Outpost
+import java.util.List;
+
+public class BrainWorld extends Outpost implements ScrapCardsForBenefitAction
 {
     public BrainWorld()
     {
@@ -20,6 +24,11 @@ public class BrainWorld extends Outpost
     @Override
     public void baseUsed(Player player)
     {
-        player.scrapToDrawCards(2);
+        player.optionallyScrapCardsFromHandOrDiscardForBenefit(this, 2);
+    }
+
+    @Override
+    public void cardsScrapped(Player player, List<Card> scrappedCards) {
+        player.drawCards(scrappedCards.size());
     }
 }

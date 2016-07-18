@@ -1,27 +1,24 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrapCardsFromHandForBenefit extends Action {
-    private ScrapCardsForBenefitAction card;
-    private int numCardsToScrap;
+public class ScrapCardsFromHand extends Action {
+    int numCardsToScrap;
 
-    private List<Card> selectedCards = new ArrayList<>();
+    private List<Card> selectedCards = new ArrayList<>(3);
 
-    public ScrapCardsFromHandForBenefit(ScrapCardsForBenefitAction card, int numCardsToScrap, String text) {
-        this.card = card;
+    public ScrapCardsFromHand(int numCardsToScrap, String text) {
         this.numCardsToScrap = numCardsToScrap;
         this.text = text;
     }
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_HAND) && !selectedCards.contains(card);
+        return cardLocation.equals(Card.CARD_LOCATION_HAND);
     }
 
     @Override
@@ -29,21 +26,16 @@ public class ScrapCardsFromHandForBenefit extends Action {
         if (player.getHand().isEmpty()) {
             return false;
         } else {
-            List<Card> cardsAvailableToScrap = new ArrayList<>(player.getHand());
-            if (numCardsToScrap > cardsAvailableToScrap.size()) {
-                cardsAvailableToScrap.stream().forEach(player::scrapCardFromHand);
-                card.cardsScrapped(player, cardsAvailableToScrap);
-                return false;
-            } else {
-                return true;
+            if (numCardsToScrap > player.getHand().size()) {
+                numCardsToScrap = player.getHand().size();
             }
+            return true;
         }
     }
 
     @Override
     public void processActionResult(Player player, ActionResult result) {
         selectedCards.forEach(player::scrapCardFromHand);
-        card.cardsScrapped(player, selectedCards);
     }
 
     public int getNumCardsToScrap() {

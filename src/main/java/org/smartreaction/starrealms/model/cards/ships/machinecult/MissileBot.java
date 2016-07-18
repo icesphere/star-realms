@@ -20,7 +20,7 @@ public class MissileBot extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addCombat(2);
-        player.scrapCardFromHandOrDiscard();
+        player.optionallyScrapCardFromHandOrDiscard();
     }
 
     @Override

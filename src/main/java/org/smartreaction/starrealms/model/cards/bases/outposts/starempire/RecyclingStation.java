@@ -3,15 +3,16 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.starempire;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.DiscardCardsForBenefitAction;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public class RecyclingStation extends Outpost implements DiscardCardsForBenefitAction
+public class RecyclingStation extends Outpost implements DiscardCardsForBenefitActionCard, ChoiceActionCard
 {
     public RecyclingStation()
     {
@@ -31,7 +32,12 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
+    public void cardsDiscarded(Player player, List<Card> discardedCards) {
+        player.drawCards(discardedCards.size());
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 1 Trade");
             player.addTrade(1);
@@ -39,10 +45,5 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
             player.getGame().gameLog("Chose Discard up to two cards, then draw that many cards");
             player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards to then draw that many cards"));
         }
-    }
-
-    @Override
-    public void cardsDiscarded(Player player, List<Card> discardedCards) {
-        player.drawCards(discardedCards.size());
     }
 }

@@ -3,10 +3,11 @@ package org.smartreaction.starrealms.model.cards.bases.blob;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class BlobWorld extends Base
+public class BlobWorld extends Base implements ChoiceActionCard
 {
     public BlobWorld()
     {
@@ -27,8 +28,7 @@ public class BlobWorld extends Base
     }
 
     @Override
-    public void choiceMade(int choice, Player player)
-    {
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 5 Combat");
             player.addCombat(5);

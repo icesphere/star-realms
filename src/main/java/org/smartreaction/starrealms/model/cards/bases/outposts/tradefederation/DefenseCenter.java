@@ -5,10 +5,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class DefenseCenter extends Outpost implements AlliableCard
+public class DefenseCenter extends Outpost implements AlliableCard, ChoiceActionCard
 {
     public DefenseCenter()
     {
@@ -30,8 +31,13 @@ public class DefenseCenter extends Outpost implements AlliableCard
     }
 
     @Override
-    public void choiceMade(int choice, Player player)
+    public void cardAllied(Player player)
     {
+        player.addCombat(2);
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 3 Authority");
             player.addAuthority(3);
@@ -39,11 +45,5 @@ public class DefenseCenter extends Outpost implements AlliableCard
             player.getGame().gameLog("Chose Add 2 Combat");
             player.addCombat(2);
         }
-    }
-
-    @Override
-    public void cardAllied(Player player)
-    {
-        player.addCombat(2);
     }
 }

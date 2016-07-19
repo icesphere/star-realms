@@ -4,10 +4,11 @@ package org.smartreaction.starrealms.model.cards.bases.tradefederation;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class Starmarket extends Base
+public class Starmarket extends Base implements ChoiceActionCard
 {
     public Starmarket()
     {
@@ -28,7 +29,12 @@ public class Starmarket extends Base
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
+    public boolean baseCanBeUsed(Player player) {
+        return player.basePlayedThisTurn();
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 5 Authority");
             player.addAuthority(5);
@@ -36,10 +42,5 @@ public class Starmarket extends Base
             player.getGame().gameLog("Chose Add 3 Trade");
             player.addTrade(3);
         }
-    }
-
-    @Override
-    public boolean baseCanBeUsed(Player player) {
-        return player.basePlayedThisTurn();
     }
 }

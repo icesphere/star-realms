@@ -4,13 +4,13 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public class TheIncinerator extends Outpost implements AlliableCard, ScrapCardsForBenefitAction
+public class TheIncinerator extends Outpost implements AlliableCard, ScrapCardsForBenefitActionCard
 {
     private int cardsScrapped;
 

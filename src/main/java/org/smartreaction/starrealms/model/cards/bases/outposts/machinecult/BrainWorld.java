@@ -3,13 +3,13 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public class BrainWorld extends Outpost implements ScrapCardsForBenefitAction
+public class BrainWorld extends Outpost implements ScrapCardsForBenefitActionCard
 {
     public BrainWorld()
     {

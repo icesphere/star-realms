@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YesNoAbilityAction extends Action {
-    private ActionChoice card;
+    private ChoiceActionCard card;
 
-    public YesNoAbilityAction(ActionChoice card, String text) {
+    public YesNoAbilityAction(ChoiceActionCard card, String text) {
         this.card = card;
         this.text = text;
     }

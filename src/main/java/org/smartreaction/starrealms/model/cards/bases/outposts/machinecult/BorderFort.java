@@ -4,10 +4,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class BorderFort extends Outpost implements AlliableCard
+public class BorderFort extends Outpost implements AlliableCard, ChoiceActionCard
 {
     public BorderFort()
     {
@@ -27,8 +28,12 @@ public class BorderFort extends Outpost implements AlliableCard
         player.makeChoice(this, choice1, choice2);
     }
 
+    public void cardAllied(Player player) {
+        player.optionallyScrapCardFromHandOrDiscard();
+    }
+
     @Override
-    public void choiceMade(int choice, Player player) {
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 1 Trade");
             player.addTrade(1);
@@ -36,9 +41,5 @@ public class BorderFort extends Outpost implements AlliableCard
             player.getGame().gameLog("Chose Add 2 Combat");
             player.addCombat(2);
         }
-    }
-
-    public void cardAllied(Player player) {
-        player.optionallyScrapCardFromHandOrDiscard();
     }
 }

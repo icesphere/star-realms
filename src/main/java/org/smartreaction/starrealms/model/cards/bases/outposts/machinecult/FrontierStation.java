@@ -3,10 +3,11 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class FrontierStation extends Outpost
+public class FrontierStation extends Outpost implements ChoiceActionCard
 {
     public FrontierStation()
     {
@@ -28,8 +29,7 @@ public class FrontierStation extends Outpost
     }
 
     @Override
-    public void choiceMade(int choice, Player player)
-    {
+    public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 2 Trade");
             player.addTrade(2);

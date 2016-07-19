@@ -8,11 +8,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ChoiceAction extends Action {
-    private ActionChoice card;
+    private ChoiceActionCard card;
 
     private List<Choice> choices;
 
-    public ChoiceAction(ActionChoice card, String text, Choice... choices) {
+    public ChoiceAction(ChoiceActionCard card, Choice... choices) {
+        this.card = card;
+        this.choices = Arrays.asList(choices);
+        this.text = "";
+    }
+
+    public ChoiceAction(ChoiceActionCard card, String text, Choice... choices) {
         this.card = card;
         this.choices = Arrays.asList(choices);
         this.text = text;

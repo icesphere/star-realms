@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.model.players;
 
-import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
@@ -766,11 +765,6 @@ public abstract class BotPlayer extends Player {
             return card;
         }
         return null;
-    }
-
-    @Override
-    public void makeChoice(Card card, Choice... choices) {
-        card.choiceMade(getChoice(card), this);
     }
 
     public Card chooseFreeShipToPutOnTopOfDeck() {

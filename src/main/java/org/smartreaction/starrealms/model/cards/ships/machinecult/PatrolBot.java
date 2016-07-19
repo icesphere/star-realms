@@ -4,10 +4,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class PatrolBot extends Ship implements AlliableCard
+public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
 {
     public PatrolBot()
     {
@@ -27,7 +28,12 @@ public class PatrolBot extends Ship implements AlliableCard
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
+    public void cardAllied(Player player) {
+        player.optionallyScrapCardFromHandOrDiscard();
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
         player.getGame().gameLog("Chose Add 2 Trade");
         if (choice == 1) {
             player.addTrade(2);
@@ -35,10 +41,5 @@ public class PatrolBot extends Ship implements AlliableCard
             player.getGame().gameLog("Chose Add 4 Combat");
             player.addCombat(4);
         }
-    }
-
-    @Override
-    public void cardAllied(Player player) {
-        player.optionallyScrapCardFromHandOrDiscard();
     }
 }

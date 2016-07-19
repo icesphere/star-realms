@@ -1,19 +1,18 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.DiscardCardsForBenefitAction;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiscardCardsFromHandForBenefit extends Action {
-    private DiscardCardsForBenefitAction card;
+    private DiscardCardsForBenefitActionCard card;
     private int numCardsToDiscard;
 
     private List<Card> selectedCards = new ArrayList<>();
 
-    public DiscardCardsFromHandForBenefit(DiscardCardsForBenefitAction card, int numCardsToDiscard, String text) {
+    public DiscardCardsFromHandForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
         this.card = card;
         this.numCardsToDiscard = numCardsToDiscard;
         this.text = text;

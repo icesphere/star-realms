@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.model.players;
 
-import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
@@ -19,11 +18,6 @@ public class HumanPlayer extends Player {
 
     public User getUser() {
         return user;
-    }
-
-    @Override
-    public void makeChoice(Card card, Choice... choices) {
-
     }
 
     @Override

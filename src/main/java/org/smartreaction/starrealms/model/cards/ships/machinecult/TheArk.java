@@ -3,14 +3,14 @@ package org.smartreaction.starrealms.model.cards.ships.machinecult;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefitAction
+public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefitActionCard
 {
     public TheArk()
     {

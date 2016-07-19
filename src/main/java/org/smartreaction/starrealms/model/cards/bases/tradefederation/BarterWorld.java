@@ -5,10 +5,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.ScrappableCard;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class BarterWorld extends Base implements ScrappableCard
+public class BarterWorld extends Base implements ScrappableCard, ChoiceActionCard
 {
     public BarterWorld()
     {
@@ -29,17 +30,6 @@ public class BarterWorld extends Base implements ScrappableCard
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
-        if (choice == 1) {
-            player.getGame().gameLog("Chose Add 2 Authority");
-            player.addAuthority(2);
-        } else if (choice == 2) {
-            player.getGame().gameLog("Chose Add 2 Trade");
-            player.addTrade(2);
-        }
-    }
-
-    @Override
     public void cardScrapped(Player player)
     {
         player.addCombat(5);
@@ -48,5 +38,16 @@ public class BarterWorld extends Base implements ScrappableCard
     @Override
     public int getCombatWhenScrapped() {
         return 5;
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
+        if (choice == 1) {
+            player.getGame().gameLog("Chose Add 2 Authority");
+            player.addAuthority(2);
+        } else if (choice == 2) {
+            player.getGame().gameLog("Chose Add 2 Trade");
+            player.addTrade(2);
+        }
     }
 }

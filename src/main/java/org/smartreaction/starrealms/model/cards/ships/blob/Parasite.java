@@ -4,10 +4,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class Parasite extends Ship implements AlliableCard
+public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
 {
     public Parasite()
     {
@@ -28,7 +29,13 @@ public class Parasite extends Ship implements AlliableCard
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
+    public void cardAllied(Player player)
+    {
+        player.drawCard();
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
         player.getGame().gameLog("Chose Add 6 Combat");
         if (choice == 1) {
             player.addCombat(6);
@@ -36,11 +43,5 @@ public class Parasite extends Ship implements AlliableCard
             player.getGame().gameLog("Chose Acquire a card of six or less for free");
             player.acquireFreeCard(6);
         }
-    }
-
-    @Override
-    public void cardAllied(Player player)
-    {
-        player.drawCard();
     }
 }

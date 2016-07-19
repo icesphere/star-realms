@@ -2,7 +2,10 @@ package org.smartreaction.starrealms.model.players;
 
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
-import org.smartreaction.starrealms.model.cards.*;
+import org.smartreaction.starrealms.model.cards.AlliableCard;
+import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.PlasmaVent;
@@ -382,7 +385,7 @@ public abstract class Player {
         addAction(new ScrapCardsFromHandOrDiscardPile(cards, "Scrap up to " + cards + " from your hand or discard pile"));
     }
 
-    public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitAction card, int numCardsToScrap) {
+    public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap) {
         addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile"));
     }
 
@@ -482,7 +485,9 @@ public abstract class Player {
         }
     }
 
-    public abstract void makeChoice(Card card, Choice... choices);
+    public void makeChoice(ChoiceActionCard card, Choice... choices) {
+        addAction(new ChoiceAction(card, choices));
+    }
 
     public void nextShipToTopOfDeck() {
         nextShipToTopOfDeck = true;

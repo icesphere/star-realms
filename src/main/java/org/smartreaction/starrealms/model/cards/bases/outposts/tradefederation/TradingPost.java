@@ -5,10 +5,11 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.ScrappableCard;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class TradingPost extends Outpost implements ScrappableCard
+public class TradingPost extends Outpost implements ScrappableCard, ChoiceActionCard
 {
     public TradingPost()
     {
@@ -29,17 +30,6 @@ public class TradingPost extends Outpost implements ScrappableCard
     }
 
     @Override
-    public void choiceMade(int choice, Player player) {
-        if (choice == 1) {
-            player.getGame().gameLog("Chose Add 1 Authority");
-            player.addAuthority(1);
-        } else if (choice == 2) {
-            player.getGame().gameLog("Chose Add 1 Trade");
-            player.addTrade(1);
-        }
-    }
-
-    @Override
     public void cardScrapped(Player player)
     {
         player.addCombat(3);
@@ -48,5 +38,16 @@ public class TradingPost extends Outpost implements ScrappableCard
     @Override
     public int getCombatWhenScrapped() {
         return 3;
+    }
+
+    @Override
+    public void actionChoiceMade(Player player, int choice) {
+        if (choice == 1) {
+            player.getGame().gameLog("Chose Add 1 Authority");
+            player.addAuthority(1);
+        } else if (choice == 2) {
+            player.getGame().gameLog("Chose Add 1 Trade");
+            player.addTrade(1);
+        }
     }
 }

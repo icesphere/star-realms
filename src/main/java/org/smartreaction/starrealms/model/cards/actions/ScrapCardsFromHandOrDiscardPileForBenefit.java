@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.ScrapCardsForBenefitAction;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.ArrayList;
@@ -9,12 +8,12 @@ import java.util.List;
 
 public class ScrapCardsFromHandOrDiscardPileForBenefit extends Action {
     int numCardsToScrap;
-    private ScrapCardsForBenefitAction card;
+    private ScrapCardsForBenefitActionCard card;
 
     private List<Card> selectedCardsFromHand = new ArrayList<>(3);
     private List<Card> selectedCardsFromDiscard = new ArrayList<>(3);
 
-    public ScrapCardsFromHandOrDiscardPileForBenefit(ScrapCardsForBenefitAction card, int numCardsToScrap, String text) {
+    public ScrapCardsFromHandOrDiscardPileForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text) {
         this.card = card;
         this.numCardsToScrap = numCardsToScrap;
         this.text = text;

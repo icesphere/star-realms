@@ -128,6 +128,8 @@ public abstract class Card {
         this.alliedAbilityUsed = alliedAbilityUsed;
     }
 
+    public void removedFromPlay(Player player) {}
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null)

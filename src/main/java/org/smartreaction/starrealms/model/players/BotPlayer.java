@@ -246,14 +246,6 @@ public abstract class BotPlayer extends Player {
 
         List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
 
-        if (cardToBuyThisTurn != null && getTrade() >= cardToBuyThisTurn.getCost()) {
-            if (cardToBuyThisTurn instanceof DoNotBuyCard) {
-                return cardsToBuy;
-            }
-            cardsToBuy.add(cardToBuyThisTurn);
-            return cardsToBuy;
-        }
-
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
             Card cardWithHighestBuyScore = sortedCards.get(0);
 
@@ -682,7 +674,6 @@ public abstract class BotPlayer extends Player {
         return 1;
     }
 
-    @Override
     public List<Card> getCardsToDiscard(int cards, boolean optional) {
         List<Card> cardsToDiscard = new ArrayList<>();
 
@@ -705,12 +696,6 @@ public abstract class BotPlayer extends Player {
         return cardsToDiscard;
     }
 
-    public void discardAndDrawCards(int cards) {
-        int cardsDiscarded = discardCards(cards, true);
-        drawCards(cardsDiscarded);
-    }
-
-    @Override
     public Ship getShipToCopy() {
         if (!getInPlay().isEmpty()) {
             List<Card> sortedCards = getInPlay().stream().filter(Card::isShip).sorted(copyShipScoreDescending).collect(toList());
@@ -725,7 +710,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public Base getBaseToCopy() {
         List<Base> bases = getBases();
         bases.addAll(getOpponent().getBases());
@@ -910,7 +894,6 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    @Override
     public Faction chooseFactionForCard(Card card) {
         //todo create rules
 
@@ -1023,14 +1006,15 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void handleBlackHole() {
-        boolean optionalDiscard = getAuthority() >= 10;
+        //todo
+        /*boolean optionalDiscard = getAuthority() >= 10;
         int cardsDiscarded = discardCards(2, optionalDiscard);
         getGame().gameLog(playerName + " chose to discard " + cardsDiscarded + " cards for Black Hole");
         if (cardsDiscarded < 2) {
             int authorityLost = (2 - cardsDiscarded) * 4;
             reduceAuthority(authorityLost);
             getGame().gameLog(playerName + " lost " + authorityLost + " from Black Hole");
-        }
+        }*/
     }
 
     @Override
@@ -1088,9 +1072,9 @@ public abstract class BotPlayer extends Player {
         }
     }
 
-    @Override
     public List<Card> getCardsToDiscardForSupplyDepot() {
+        //todo
         //todo - consider when discarding things besides Scout, Viper, and Explorer would be good
-        return getCardsToDiscard(2, true);
+        return new ArrayList<>();//getCardsToDiscard(2, true);
     }
 }

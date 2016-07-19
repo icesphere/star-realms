@@ -19,11 +19,16 @@ public class FleetHQ extends Base
 
     @Override
     public void cardPlayed(Player player) {
-        player.allShipsGet1Combat();
+        player.setAllShipsAddOneCombat(true);
     }
 
     @Override
     public void baseUsed(Player player) {
 
+    }
+
+    @Override
+    public void removedFromPlay(Player player) {
+        player.setAllShipsAddOneCombat(false);
     }
 }

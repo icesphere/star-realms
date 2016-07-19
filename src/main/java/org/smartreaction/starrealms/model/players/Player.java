@@ -10,19 +10,13 @@ import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.PlasmaVent;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
-import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.MechWorld;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.WarningBeacon;
-import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.CommandCenter;
-import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.gambits.ScrappableGambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
-import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
-import org.smartreaction.starrealms.model.cards.ships.Scout;
-import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.cards.ships.starempire.EmperorsDreadnaught;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.ColonySeedShip;
@@ -93,14 +87,6 @@ public abstract class Player {
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
-
-    //these are for simulating which card is the best to buy
-    protected Card cardToBuyThisTurn;
-    protected boolean firstTurn = true;
-    protected boolean boughtSpecifiedCardOnFirstTurn = false;
-
-    private long scoutsInFirstHand;
-    private long scoutsInSecondHand;
 
     protected Player() {
     }
@@ -225,29 +211,17 @@ public abstract class Player {
 
     public void opponentDiscardsCard() {
         getGame().gameLog("Opponent discarding card");
-        opponent.discardCards(1, false);
+        opponent.discardCardFromHand();
     }
 
     private void cardRemovedFromPlay(Card card) {
         card.setAlliedAbilityUsed(false);
-        if (card instanceof FleetHQ) {
-            allShipsAddOneCombat = false;
-        }
-        if (card instanceof MechWorld) {
-            allFactionsAllied = false;
-        }
-        if (card instanceof CommandCenter) {
-            gainTwoCombatWhenStarEmpireShipPlayed = false;
-        }
-        if (card instanceof StealthNeedle) {
-            ((StealthNeedle) card).setCardBeingCopied(null);
-        }
-        if (card instanceof StealthTower) {
-            ((StealthTower) card).setBaseBeingCopied(null);
-        }
-        if (card.isBase()) {
+
+        if (card instanceof Base) {
             ((Base) card).setUsed(false);
         }
+
+        card.removedFromPlay(this);
     }
 
     public void addTrade(int trade) {
@@ -266,14 +240,6 @@ public abstract class Player {
         getGame().gameLog("Ending turn");
 
         turns++;
-
-        firstTurn = false;
-
-        if (cardToBuyThisTurn != null && cardToBuyThisTurn instanceof DoNotBuyCard) {
-            boughtSpecifiedCardOnFirstTurn = true;
-        }
-
-        cardToBuyThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -316,10 +282,6 @@ public abstract class Player {
 
     public void addBase(Base base) {
         this.getBases().add(base);
-    }
-
-    public void addOutpost(Outpost outpost) {
-        this.getOutposts().add(outpost);
     }
 
     public void destroyTargetBase() {
@@ -412,7 +374,7 @@ public abstract class Player {
         if (card.isScrappable()) {
             getGame().gameLog("Scrapped " + card.getName() + " from in play for benefit");
             inPlay.remove(card);
-            if (card.isBase()) {
+            if (card instanceof Base) {
                 bases.remove(card);
             }
             playerCardScrapped(card);
@@ -476,13 +438,6 @@ public abstract class Player {
         } else {
             discard.add(card);
         }
-
-        if (cardToBuyThisTurn != null && cardToBuyThisTurn.equals(card)) {
-            cardToBuyThisTurn = null;
-            if (firstTurn) {
-                boughtSpecifiedCardOnFirstTurn = true;
-            }
-        }
     }
 
     public void makeChoice(ChoiceActionCard card, Choice... choices) {
@@ -505,8 +460,8 @@ public abstract class Player {
         nextBaseToHand = true;
     }
 
-    public void allShipsGet1Combat() {
-        allShipsAddOneCombat = true;
+    public void setAllShipsAddOneCombat(boolean allShipsAddOneCombat) {
+        this.allShipsAddOneCombat = allShipsAddOneCombat;
     }
 
     public void scrapCardFromHand(boolean optional) {
@@ -521,68 +476,8 @@ public abstract class Player {
         addAction(new ScrapCardsFromDiscardPile(cards, "You may scrap a card from your discard pile"));
     }
 
-    public void allFactionsAllied() {
-        allFactionsAllied = true;
-    }
-
-    public void copyShip(StealthNeedle stealthNeedle) {
-        if (!inPlay.isEmpty()) {
-            Ship shipToCopy = getShipToCopy();
-            if (shipToCopy != null) {
-                getGame().gameLog("Copying ship: " + shipToCopy.getName());
-                try {
-                    Card shipToCopyCopy = shipToCopy.getClass().newInstance();
-                    stealthNeedle.setCardBeingCopied(shipToCopyCopy);
-                    this.playCard(shipToCopyCopy);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void copyBase(StealthTower stealthTower) {
-        if (!getBases().isEmpty() || !getOpponent().getBases().isEmpty()) {
-            Base baseToCopy = getBaseToCopy();
-            if (baseToCopy != null) {
-                getGame().gameLog("Copying base: " + baseToCopy.getName());
-                try {
-                    Base baseToCopyCopy = baseToCopy.getClass().newInstance();
-                    stealthTower.setBaseBeingCopied(baseToCopyCopy);
-                    this.playCard(baseToCopyCopy);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public abstract Ship getShipToCopy();
-
-    public abstract Base getBaseToCopy();
-
-    public void setupTurn() {
-        Game game = getGame();
-        game.gameLog("-------------------------");
-        game.gameLog(playerName + "'s turn: ");
-        game.gameLog("deck #: " + (getCurrentDeckNumber()));
-        game.gameLog("");
-        game.gameLog("Trade Row: " + game.getCardsAsString(game.getTradeRow()));
-        game.gameLog("");
-        game.gameLog("Hand: " + game.getCardsAsString(hand));
-        game.gameLog("Discard: " + game.getCardsAsString(discard));
-        game.gameLog("Deck: " + game.getCardsAsString(deck));
-        game.gameLog("Bases in play: " + game.getCardsAsString(bases));
-        game.gameLog("");
-
-        inPlay.addAll(bases);
-
-        long scoutsInHand = hand.stream().filter(c -> c instanceof Scout).count();
-        if (turns == 0) {
-            scoutsInFirstHand = scoutsInHand;
-        } else if (turns == 1) {
-            scoutsInSecondHand = scoutsInHand;
-        }
+    public void setAllFactionsAllied(boolean allFactionsAllied) {
+        this.allFactionsAllied = allFactionsAllied;
     }
 
     public void buyCard(Card card) {
@@ -634,32 +529,8 @@ public abstract class Player {
         return cards;
     }
 
-    public int getNumShips() {
-        int ships = 0;
-
-        for (Card card : getAllCards()) {
-            if (card instanceof Ship) {
-                ships++;
-            }
-        }
-
-        return ships;
-    }
-
     public int getNumBases() {
         return countCardsByType(getAllCards(), Card::isBase);
-    }
-
-    public int getNumOutposts() {
-        int outposts = 0;
-
-        for (Card card : getAllCards()) {
-            if (card instanceof Outpost) {
-                outposts++;
-            }
-        }
-
-        return outposts;
     }
 
     public boolean useAlliedAbility(AlliableCard card) {
@@ -753,8 +624,6 @@ public abstract class Player {
         addAction(new ReturnBaseToHand("Return a base to owner's hand"));
     }
 
-    public abstract Faction chooseFactionForCard(Card card);
-
     public int getCurrentDeckNumber() {
         return getShuffles() + 1;
     }
@@ -810,10 +679,6 @@ public abstract class Player {
         this.getGambits().remove(gambit);
     }
 
-    public void setShuffles(int shuffles) {
-        this.shuffles = shuffles;
-    }
-
     public String getPlayerName() {
         return playerName;
     }
@@ -828,10 +693,6 @@ public abstract class Player {
 
     public int getTurns() {
         return turns;
-    }
-
-    public void setTurns(int turns) {
-        this.turns = turns;
     }
 
     public Faction getFactionWithMostCards() {
@@ -895,11 +756,9 @@ public abstract class Player {
         return factionsPlayedThisTurn.contains(faction);
     }
 
-    public void gainTwoCombatWhenStarEmpireShipPlayed() {
-        gainTwoCombatWhenStarEmpireShipPlayed = true;
+    public void setGainTwoCombatWhenStarEmpireShipPlayed(boolean gainTwoCombatWhenStarEmpireShipPlayed) {
+        this.gainTwoCombatWhenStarEmpireShipPlayed = gainTwoCombatWhenStarEmpireShipPlayed;
     }
-
-    public abstract List<Card> getCardsToDiscardForSupplyDepot();
 
     public void discardCards(List<Card> cards) {
         for (Card card : cards) {
@@ -942,132 +801,14 @@ public abstract class Player {
         return false;
     }
 
-    public int discardCards(int cards, boolean optional) {
-        return getCardsToDiscard(cards, optional).size();
-    }
-
-    public abstract List<Card> getCardsToDiscard(int cards, boolean optional);
-
     public int getNumBlobCardsPlayedThisTurn() {
         return countCardsByType(played, Card::isBlob);
-    }
-
-    public Card getCardToBuyThisTurn() {
-        return cardToBuyThisTurn;
-    }
-
-    public void setCardToBuyThisTurn(Card cardToBuyThisTurn) {
-        this.cardToBuyThisTurn = cardToBuyThisTurn;
-    }
-
-    public boolean isBoughtSpecifiedCardOnFirstTurn() {
-        return boughtSpecifiedCardOnFirstTurn;
     }
 
     public List getHandAndDeck() {
         List<Card> cards = new ArrayList<>(hand);
         cards.addAll(deck);
         return cards;
-    }
-
-    public boolean isNextShipToTopOfDeck() {
-        return nextShipToTopOfDeck;
-    }
-
-    public void setNextShipToTopOfDeck(boolean nextShipToTopOfDeck) {
-        this.nextShipToTopOfDeck = nextShipToTopOfDeck;
-    }
-
-    public boolean isNextShipOrBaseToTopOfDeck() {
-        return nextShipOrBaseToTopOfDeck;
-    }
-
-    public void setNextShipOrBaseToTopOfDeck(boolean nextShipOrBaseToTopOfDeck) {
-        this.nextShipOrBaseToTopOfDeck = nextShipOrBaseToTopOfDeck;
-    }
-
-    public boolean isNextShipOrBaseToHand() {
-        return nextShipOrBaseToHand;
-    }
-
-    public void setNextShipOrBaseToHand(boolean nextShipOrBaseToHand) {
-        this.nextShipOrBaseToHand = nextShipOrBaseToHand;
-    }
-
-    public boolean isNextBaseToHand() {
-        return nextBaseToHand;
-    }
-
-    public void setNextBaseToHand(boolean nextBaseToHand) {
-        this.nextBaseToHand = nextBaseToHand;
-    }
-
-    public boolean isAllShipsAddOneCombat() {
-        return allShipsAddOneCombat;
-    }
-
-    public void setAllShipsAddOneCombat(boolean allShipsAddOneCombat) {
-        this.allShipsAddOneCombat = allShipsAddOneCombat;
-    }
-
-    public boolean isAllFactionsAllied() {
-        return allFactionsAllied;
-    }
-
-    public void setAllFactionsAllied(boolean allFactionsAllied) {
-        this.allFactionsAllied = allFactionsAllied;
-    }
-
-    public boolean isBlobAlliedUntilEndOfTurn() {
-        return blobAlliedUntilEndOfTurn;
-    }
-
-    public void setBlobAlliedUntilEndOfTurn(boolean blobAlliedUntilEndOfTurn) {
-        this.blobAlliedUntilEndOfTurn = blobAlliedUntilEndOfTurn;
-    }
-
-    public boolean isStarEmpireAlliedUntilEndOfTurn() {
-        return starEmpireAlliedUntilEndOfTurn;
-    }
-
-    public void setStarEmpireAlliedUntilEndOfTurn(boolean starEmpireAlliedUntilEndOfTurn) {
-        this.starEmpireAlliedUntilEndOfTurn = starEmpireAlliedUntilEndOfTurn;
-    }
-
-    public boolean isTradeFederationAlliedUntilEndOfTurn() {
-        return tradeFederationAlliedUntilEndOfTurn;
-    }
-
-    public void setTradeFederationAlliedUntilEndOfTurn(boolean tradeFederationAlliedUntilEndOfTurn) {
-        this.tradeFederationAlliedUntilEndOfTurn = tradeFederationAlliedUntilEndOfTurn;
-    }
-
-    public boolean isMachineCultAlliedUntilEndOfTurn() {
-        return machineCultAlliedUntilEndOfTurn;
-    }
-
-    public void setMachineCultAlliedUntilEndOfTurn(boolean machineCultAlliedUntilEndOfTurn) {
-        this.machineCultAlliedUntilEndOfTurn = machineCultAlliedUntilEndOfTurn;
-    }
-
-    public boolean isGainTwoCombatWhenStarEmpireShipPlayed() {
-        return gainTwoCombatWhenStarEmpireShipPlayed;
-    }
-
-    public void setGainTwoCombatWhenStarEmpireShipPlayed(boolean gainTwoCombatWhenStarEmpireShipPlayed) {
-        this.gainTwoCombatWhenStarEmpireShipPlayed = gainTwoCombatWhenStarEmpireShipPlayed;
-    }
-
-    public Map<Integer, Set<Card>> getCardsAcquiredByDeck() {
-        return cardsAcquiredByDeck;
-    }
-
-    public long getScoutsInFirstHand() {
-        return scoutsInFirstHand;
-    }
-
-    public long getScoutsInSecondHand() {
-        return scoutsInSecondHand;
     }
 
     public void addGameLog(String log) {
@@ -1156,13 +897,15 @@ public abstract class Player {
 
     public void playAll() {
         List<Card> copyOfHand = new ArrayList<>(hand);
-        copyOfHand.stream().forEach(this::playCard);
+        copyOfHand.forEach(this::playCard);
     }
 
     public void startTurn() {
         yourTurn = true;
         turn++;
         addGameLog("** " + playerName + "'s Turn " + turn + " **");
+
+        inPlay.addAll(bases);
 
         resolveActions();
     }

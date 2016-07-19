@@ -1,18 +1,19 @@
 package org.smartreaction.starrealms.model.cards.bases.outposts.starempire;
 
-
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
 
-public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCard
+public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCard, DiscardCardsForBenefitActionCard
 {
     public SupplyDepot()
     {
@@ -26,12 +27,14 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
 
     @Override
     public void baseUsed(Player player) {
-        List<Card> cards = player.getCardsToDiscardForSupplyDepot();
-        player.discardCards(cards);
+        player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "", true));
+    }
 
-        for (Card ignored : cards) {
-            Choice choice1 = new Choice(1, "Add 2 Trade");
-            Choice choice2 = new Choice(2, "Add 2 Combat");
+    @Override
+    public void cardsDiscarded(Player player, List<Card> discardedCards) {
+        for (Card ignored : discardedCards) {
+            Choice choice1 = new Choice(1, "Gain 2 Trade");
+            Choice choice2 = new Choice(2, "Gain 2 Combat");
 
             player.makeChoice(this, choice1, choice2);
         }
@@ -45,10 +48,10 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
     @Override
     public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
-            player.getGame().gameLog("Chose Add 2 Trade");
+            player.getGame().gameLog("Chose Gain 2 Trade");
             player.addTrade(2);
         } else if (choice == 2) {
-            player.getGame().gameLog("Chose Add 2 Combat");
+            player.getGame().gameLog("Chose Gain 2 Combat");
             player.addCombat(2);
         }
     }

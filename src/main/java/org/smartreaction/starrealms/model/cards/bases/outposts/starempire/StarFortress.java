@@ -22,12 +22,12 @@ public class StarFortress extends Outpost implements AlliableCard
     public void baseUsed(Player player) {
         player.addCombat(3);
         player.drawCard();
-        player.discardCards(1, false);
+        player.discardCardFromHand();
     }
 
     @Override
     public void cardAllied(Player player) {
         player.drawCard();
-        player.discardCards(1, false);
+        player.discardCardFromHand();
     }
 }

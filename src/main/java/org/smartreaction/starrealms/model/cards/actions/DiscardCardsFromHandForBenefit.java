@@ -12,10 +12,19 @@ public class DiscardCardsFromHandForBenefit extends Action {
 
     private List<Card> selectedCards = new ArrayList<>();
 
+    private boolean optional;
+
     public DiscardCardsFromHandForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
         this.card = card;
         this.numCardsToDiscard = numCardsToDiscard;
         this.text = text;
+    }
+
+    public DiscardCardsFromHandForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text, boolean optional) {
+        this.card = card;
+        this.numCardsToDiscard = numCardsToDiscard;
+        this.text = text;
+        this.optional = optional;
     }
 
     @Override

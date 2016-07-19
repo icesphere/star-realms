@@ -19,7 +19,7 @@ public class MechWorld extends Outpost
 
     @Override
     public void cardPlayed(Player player) {
-        player.allFactionsAllied();
+        player.setAllFactionsAllied(true);
     }
 
     @Override
@@ -28,22 +28,7 @@ public class MechWorld extends Outpost
     }
 
     @Override
-    public boolean isBlob() {
-        return true;
-    }
-
-    @Override
-    public boolean isTradeFederation() {
-        return true;
-    }
-
-    @Override
-    public boolean isMachineCult() {
-        return true;
-    }
-
-    @Override
-    public boolean isStarEmpire() {
-        return true;
+    public void removedFromPlay(Player player) {
+        player.setAllFactionsAllied(false);
     }
 }

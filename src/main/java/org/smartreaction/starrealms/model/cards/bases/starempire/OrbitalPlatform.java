@@ -1,11 +1,16 @@
 package org.smartreaction.starrealms.model.cards.bases.starempire;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
+import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class OrbitalPlatform extends Base
+import java.util.List;
+
+public class OrbitalPlatform extends Base implements DiscardCardsForBenefitActionCard
 {
     public OrbitalPlatform()
     {
@@ -19,8 +24,12 @@ public class OrbitalPlatform extends Base
 
     @Override
     public void baseUsed(Player player) {
-        int cardsDiscarded = player.discardCards(1, false);
-        if (cardsDiscarded > 0) {
+        player.addAction(new DiscardCardsFromHandForBenefit(this, 1, "Discard a card. If you do, draw a card."));
+    }
+
+    @Override
+    public void cardsDiscarded(Player player, List<Card> discardedCards) {
+        if (!discardedCards.isEmpty()) {
             player.drawCard();
         }
     }

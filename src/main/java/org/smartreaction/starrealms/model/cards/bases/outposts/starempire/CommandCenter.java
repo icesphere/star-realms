@@ -25,6 +25,11 @@ public class CommandCenter extends Outpost
     @Override
     public void baseUsed(Player player) {
         player.addTrade(2);
-        player.gainTwoCombatWhenStarEmpireShipPlayed();
+        player.setGainTwoCombatWhenStarEmpireShipPlayed(true);
+    }
+
+    @Override
+    public void removedFromPlay(Player player) {
+        player.setGainTwoCombatWhenStarEmpireShipPlayed(false);
     }
 }

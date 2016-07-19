@@ -11,9 +11,25 @@ public class DiscardCardsFromHand extends Action {
 
     private List<Card> selectedCards = new ArrayList<>(3);
 
+    private boolean optional;
+
+    public DiscardCardsFromHand(int numCardsToDiscard) {
+        this.numCardsToDiscard = numCardsToDiscard;
+        text = "Discard " + numCardsToDiscard + " card";
+        if (numCardsToDiscard != 1) {
+            text += "s";
+        }
+    }
+
     public DiscardCardsFromHand(int numCardsToDiscard, String text) {
         this.numCardsToDiscard = numCardsToDiscard;
         this.text = text;
+    }
+
+    public DiscardCardsFromHand(int numCardsToDiscard, String text, boolean optional) {
+        this.numCardsToDiscard = numCardsToDiscard;
+        this.text = text;
+        this.optional = optional;
     }
 
     public int getNumCardsToDiscard() {
@@ -54,5 +70,9 @@ public class DiscardCardsFromHand extends Action {
     @Override
     public boolean showActionDialog() {
         return selectedCards.size() == 0;
+    }
+
+    public boolean isOptional() {
+        return optional;
     }
 }

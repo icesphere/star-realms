@@ -7,17 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardAction extends Action {
-    private Card cardActionCard;
+    private CardActionCard cardActionCard;
 
     private List<Card> selectedCards = new ArrayList<>(2);
 
-    public CardAction(Card cardActionCard, String text) {
+    public CardAction(CardActionCard cardActionCard, String text) {
         this.cardActionCard = cardActionCard;
         this.text = text;
-    }
-
-    public Card getCardActionCard() {
-        return cardActionCard;
     }
 
     public List<Card> getSelectedCards() {
@@ -26,16 +22,17 @@ public class CardAction extends Action {
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return false;
+        return cardActionCard.isCardActionable(card, this, cardLocation, player);
     }
 
     @Override
     public boolean processAction(Player player) {
-        return true;
+        return cardActionCard.processCardAction(player);
     }
 
     @Override
     public void processActionResult(Player player, ActionResult result) {
+        cardActionCard.processCardActionResult(this, player, result);
     }
 
     @Override

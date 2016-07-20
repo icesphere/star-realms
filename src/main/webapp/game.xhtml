@@ -2,7 +2,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:btd="http://java.sun.com/jsf/composite/components">
+      xmlns:sr="http://java.sun.com/jsf/composite/components">
 
 <ui:composition template="/templates/commonLayout.xhtml">
 
@@ -42,7 +42,6 @@
             <p:remoteCommand name="refreshPlayerInfo" process="@this" update="playerInfoSection"/>
             <p:remoteCommand name="refreshTurnInfo" process="@this" update="turnInfoSection"/>
             <p:remoteCommand name="refreshTurnButtons" process="@this" update="turnButtonsSection"/>
-            <p:remoteCommand name="refreshPlayerCardInfo" process="@this" update="playerCardInfoSection"/>
             <p:remoteCommand name="refreshTradeRow" process="@this" update="tradeRowSection"/>
             <p:remoteCommand name="refreshDeployedSection" process="@this" update="deployedSection"/>
             <p:remoteCommand name="refreshChat" process="@this" update="chatSection" oncomplete="scrollChat()"/>
@@ -58,9 +57,9 @@
                         <h:panelGroup layout="block" id="tradeRowSection" styleClass="tradeRowSection">
 
                             <div class="tradeRow">
-                                <btd:tradeRowCard card="#{gameView.game.explorer}" source="explorers"/>
+                                <sr:tradeRowCard card="#{gameView.game.explorer}" source="explorers"/>
                                 <ui:repeat value="#{gameView.game.tradeRow}" var="card">
-                                    <btd:tradeRowCard card="#{card}" source="tradeRow"/>
+                                    <sr:tradeRowCard card="#{card}" source="tradeRow"/>
                                 </ui:repeat>
                             </div>
 
@@ -101,20 +100,20 @@
 
                         <h:panelGroup layout="block" id="playerInfoSection" styleClass="playerInfoSection">
 
-                            <btd:playerInfo player="#{gameView.player}" playerClass="player"/>
+                            <sr:playerInfo player="#{gameView.player}" playerClass="player" isOpponent="false"/>
 
-                            <btd:playerInfo player="#{gameView.opponent}" playerClass="opponent"/>
+                            <sr:playerInfo player="#{gameView.opponent}" playerClass="opponent" isOpponent="true"/>
 
-                            <h:panelGroup layout="block" id="turnInfoSection" styleClass="turnInfoSection" rendered="#{!gameView.game.gameOver}">
-                                <div style="float: left;">
-                                    <div style="padding-top: 5px;">
-                                        <h:outputText styleClass="currentPlayerTurnText #{gameView.player.yourTurn ? 'player' : 'opponent'}" value="#{gameView.game.currentPlayer.playerName}'s Turn"/>
-                                        <h:outputText value="Trade: #{gameView.game.currentPlayer.trade}" style="padding-left: 15px;"/>
-                                        <h:outputText value="Combat: #{gameView.game.currentPlayer.combat}" style="padding-left: 15px;"/>
-                                    </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" id="turnInfoSection" styleClass="turnInfoSection" rendered="#{!gameView.game.gameOver}">
+                            <div style="float: left;">
+                                <div style="padding-top: 5px;">
+                                    <h:outputText styleClass="currentPlayerTurnText #{gameView.player.yourTurn ? 'player' : 'opponent'}" value="#{gameView.game.currentPlayer.playerName}'s Turn"/>
+                                    <h:outputText value="Trade: #{gameView.game.currentPlayer.trade}" style="padding-left: 15px;"/>
+                                    <h:outputText value="Combat: #{gameView.game.currentPlayer.combat}" style="padding-left: 15px;"/>
                                 </div>
-                            </h:panelGroup>
-
+                            </div>
                         </h:panelGroup>
 
                         <h:panelGroup layout="block" id="deployedSection" styleClass="deployedSection">
@@ -123,7 +122,7 @@
                                 <h:outputText value="#{gameView.player.playerName}'s Bases:" styleClass="deployedSectionLabel"/>
                                 <div style="padding: 10px 0;">
                                     <ui:repeat value="#{gameView.playerDeploymentZoneCards}" var="card">
-                                        <btd:card card="#{card}" source="playerBases"/>
+                                        <sr:card card="#{card}" source="playerBases"/>
                                     </ui:repeat>
                                 </div>
                             </h:panelGroup>
@@ -132,30 +131,34 @@
                                 <h:outputText value="#{gameView.opponent.playerName}'s Bases:" styleClass="deployedSectionLabel"/>
                                 <div style="padding: 10px 0;">
                                     <ui:repeat value="#{gameView.opponentDeploymentZoneCards}" var="card">
-                                        <btd:card card="#{card}" source="opponentBases"/>
+                                        <sr:card card="#{card}" source="opponentBases"/>
                                     </ui:repeat>
                                 </div>
                             </h:panelGroup>
 
                         </h:panelGroup>
 
-                        <h:panelGroup layout="block" id="playAreaSection" styleClass="playAreaSection">
-                            <span style="font-style: italic;">Play Area:</span>
-                            <div class="playArea">
-                                <ui:repeat value="#{gameView.cardsForPlayArea}" var="card">
-                                    <btd:card card="#{card}" source="playArea"/>
-                                </ui:repeat>
-                            </div>
-                        </h:panelGroup>
+                        <div style="clear: left; float: left; padding-top: 20px;">
 
-                        <h:panelGroup layout="block" id="handSection" styleClass="handSection">
-                            <span style="font-style: italic;">Your Hand:</span>
-                            <div class="hand">
-                                <ui:repeat value="#{gameView.player.hand}" var="card">
-                                    <btd:card card="#{card}" source="hand"/>
-                                </ui:repeat>
-                            </div>
-                        </h:panelGroup>
+                            <h:panelGroup layout="block" id="handSection" styleClass="handSection">
+                                <span style="font-style: italic;">Your Hand:</span>
+                                <div class="hand">
+                                    <ui:repeat value="#{gameView.player.hand}" var="card">
+                                        <sr:card card="#{card}" source="hand"/>
+                                    </ui:repeat>
+                                </div>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" id="playAreaSection" styleClass="playAreaSection">
+                                <span style="font-style: italic;">Play Area:</span>
+                                <div class="playArea">
+                                    <ui:repeat value="#{gameView.cardsForPlayArea}" var="card">
+                                        <sr:card card="#{card}" source="playArea"/>
+                                    </ui:repeat>
+                                </div>
+                            </h:panelGroup>
+
+                        </div>
 
                     </h:panelGroup>
 
@@ -167,37 +170,6 @@
                             </div>
                             <div class="gameLog">
                                 <h:outputText value="#{gameView.game.gameLog.toString()}" escape="false"/>
-                            </div>
-                        </h:panelGroup>
-
-                        <h:panelGroup layout="block" id="playerCardInfoSection" styleClass="playerCardInfoSection">
-                            <div class="playerCardInfoBox">
-                                <div class="playerCardInfoRow">
-                                    <div class="playerCardInfoNameContainer">&#160;</div>
-                                    <div class="playerCardInfoValue">Hand</div>
-                                    <div class="playerCardInfoValue">Deck</div>
-                                    <div class="playerCardInfoValue">Discard</div>
-                                </div>
-                                <div class="playerCardInfoRow">
-                                    <div class="playerCardInfoNameContainer player">
-                                        <div class="playerCardInfoName">
-                                            <h:outputText value="#{gameView.player.playerName}"/>
-                                        </div>
-                                    </div>
-                                    <div class="playerCardInfoValue">#{gameView.player.hand.size()}</div>
-                                    <div class="playerCardInfoValue">#{gameView.player.deck.size()}</div>
-                                    <div class="playerCardInfoValue">#{gameView.player.discard.size()}</div>
-                                </div>
-                                <div class="playerCardInfoRow">
-                                    <div class="playerCardInfoNameContainer opponent">
-                                        <div class="playerCardInfoName">
-                                            <h:outputText value="#{gameView.opponent.playerName}"/>
-                                        </div>
-                                    </div>
-                                    <div class="playerCardInfoValue">#{gameView.opponent.hand.size()}</div>
-                                    <div class="playerCardInfoValue">#{gameView.opponent.deck.size()}</div>
-                                    <div class="playerCardInfoValue">#{gameView.opponent.discard.size()}</div>
-                                </div>
                             </div>
                         </h:panelGroup>
 
@@ -323,8 +295,6 @@
                     refreshTurnInfo();
                 } else if (message == 'refresh_turn_buttons') {
                     refreshTurnButtons();
-                } else if (message == 'refresh_player_card_info') {
-                    refreshPlayerCardInfo();
                 } else if (message == 'refresh_trade_row') {
                     refreshTradeRow();
                 } else if (message == 'refresh_deployed_section') {

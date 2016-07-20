@@ -4,23 +4,78 @@
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:sr="http://java.sun.com/jsf/composite/components"
         >
 
 <composite:interface>
     <composite:attribute name="player" required="true" type="org.smartreaction.starrealms.model.players.Player"/>
     <composite:attribute name="playerClass" required="true"/>
+    <composite:attribute name="isOpponent" required="true"/>
 </composite:interface>
 
 <composite:implementation>
 
     <h:panelGroup layout="block" styleClass="playerInfo">
 
-        <div>
-            <h:outputText value="#{cc.attrs.player.playerName}" styleClass="playerInfoItem #{cc.attrs.playerClass}"/>
-            <h:outputText value="Authority: #{cc.attrs.player.authority}" styleClass="playerInfoItem" style="padding-left: 15px;"/>
-            <h:commandLink value="Attack" styleClass="playerInfoItem" style="margin-left: 5px;"
+        <div style="float: left;" class="playerInfoName #{cc.attrs.playerClass}">
+            <h:outputText value="#{cc.attrs.player.playerName}"/>
+        </div>
+
+        <div style="clear: both; float: left; padding-top: 10px; padding-bottom: 10px;">
+            <h:outputText value="Authority: #{cc.attrs.player.authority}"/>
+            <p:commandLink value="Attack" style="margin-left: 5px;"
                            actionListener="#{gameView.attackOpponent}"
-                           rendered="#{gameView.player.yourTurn and gameView.player.combat gt 0 and gameView.opponent.playerName eq cc.attrs.player.playerName}"/>
+                           rendered="#{gameView.player.yourTurn and gameView.player.combat gt 0 and cc.attrs.isOpponent}"/>
+        </div>
+
+        <div style="clear: both; float: left;">
+            <h:outputText value="Hand (#{cc.attrs.player.hand.size()})"/>
+        </div>
+
+        <div style="float: left; padding-left: 20px;">
+            <h:outputText value="Deck (#{cc.attrs.player.deck.size()})"/>
+        </div>
+
+        <h:panelGroup rendered="#{!cc.attrs.isOpponent}">
+
+            <div style="clear: both; float: left; padding-top: 10px;">
+
+                <h:panelGroup rendered="#{!empty cc.attrs.player.hand}">
+                    <div style="float: left;">
+                        <p:commandLink value="Show Hand"/>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{!empty cc.attrs.player.deck}">
+                    <div style="float: left; padding-left: 20px;">
+                        <p:commandLink value="Show Deck"/>
+                    </div>
+                </h:panelGroup>
+
+            </div>
+
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" rendered="#{cc.attrs.isOpponent}">
+
+            <h:panelGroup rendered="#{!empty cc.attrs.player.hand or !empty cc.attrs.player.deck}">
+                <div style="clear: both; float: left; padding-top: 10px;">
+                    <p:commandLink value="Show Hand and Deck"/>
+                </div>
+            </h:panelGroup>
+
+        </h:panelGroup>
+
+        <div style="clear: both; float: left; padding-top: 10px;">
+
+            <h:outputText value="Discard (#{cc.attrs.player.discard.size()})"/>
+
+            <h:panelGroup rendered="#{!empty cc.attrs.player.discard}">
+                <div style="float: left; padding-left: 20px;">
+                    <p:commandLink value="Show Discard"/>
+                </div>
+            </h:panelGroup>
+
         </div>
 
     </h:panelGroup>

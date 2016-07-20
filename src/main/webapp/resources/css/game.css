@@ -49,7 +49,7 @@
 .cardView {
     float: left;
     width: 222px;
-    height: 342px;
+    height: 300px;
     padding: 15px;
     background-color: #EEEEF0;
     border: 1px solid #DDDDE0;
@@ -92,22 +92,22 @@
 }
 
 .playAreaSection {
-    clear: left;
-    padding-top: 10px;
+    float: left;
+    min-width: 245px;
 }
 
 .playArea {
-    padding-left: 20px;
+    padding-left: 10px;
     padding-top: 10px;
 }
 
 .handSection {
-    clear: left;
-    padding-top: 10px;
+    float: left;
+    min-width: 245px;
 }
 
 .hand {
-    padding-left: 20px;
+    padding-left: 10px;
     padding-top: 10px;
 }
 
@@ -138,47 +138,10 @@
     padding-right: 5px;
 }
 
-.playerCardInfoSection {
-    padding-top: 15px;
-}
-
-.playerCardInfoBox {
-    border: 1px solid #333;
-    background-color: #EEEEF0;
-    float: left;
-    width: 277px;
-}
-
-.playerCardInfoRow {
-    clear: left;
-    float: left;
-    padding: 5px;
-}
-
-.playerCardInfoNameContainer {
-    float: left;
-    min-width: 100px;
-    margin-right: 5px;
-    position: relative;
-    top: -5px;
-}
-
-.playerCardInfoName {
-    float: left;
-    padding: 7px 14px;
-}
-
-.playerCardInfoValue {
-    float: left;
-    min-width: 45px;
-    margin-right: 5px;
-    text-align: center;
-}
-
 .turnInfoSection {
     clear: both;
     float: left;
-    padding-top: 5px;
+    padding-top: 15px;
 }
 
 .turnInfoBox {
@@ -294,14 +257,14 @@
 
 .playerInfo {
     padding-bottom: 5px;
-    clear: both;
     float: left;
+    min-width: 245px;
 }
 
-.playerInfoItem {
-    float: left;
+.playerInfoName {
     padding: 10px;
     min-height: 17px;
+    min-width: 215px;
 }
 
 .turnPhaseText {

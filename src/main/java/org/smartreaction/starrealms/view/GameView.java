@@ -17,7 +17,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +33,14 @@ public class GameView implements Serializable {
     Card cardToView;
 
     String chatMessage = "";
+
+    boolean showingCards;
+
+    String showingCardsTitle;
+
+    List<Card> cardsToShow;
+
+    String cardsToShowSource;
 
     public void sendGameMessageToAll(String message) {
         sendGameMessage("*", message);
@@ -147,22 +154,6 @@ public class GameView implements Serializable {
 
     public List<Card> getCardsForPlayArea() {
         return getGame().getCurrentPlayer().getInPlay().stream().filter(c -> !c.isBase()).collect(Collectors.toList());
-    }
-
-    public List<Card> getPlayerDeploymentZoneCards() {
-        return getDeploymentZoneCards(getPlayer());
-    }
-
-    public List<Card> getOpponentDeploymentZoneCards() {
-        return getDeploymentZoneCards(getOpponent());
-    }
-
-    public List<Card> getDeploymentZoneCards(Player player) {
-        List<Card> cards = new ArrayList<>(player.getBases());
-
-        cards.addAll(player.getHeroes());
-
-        return cards;
     }
 
     public void updateCardView() {
@@ -388,5 +379,38 @@ public class GameView implements Serializable {
 
     public void attackOpponent() {
         getPlayer().attackOpponentWithRemainingCombat();
+        sendGameMessageToAll("refresh_middle_section");
+    }
+
+    public void showCards(List<Card> cards, String title, String source) {
+        if (!cards.isEmpty()) {
+            showingCards = true;
+            showingCardsTitle = title;
+            cardsToShow = cards;
+            cardsToShowSource = source;
+
+            sendGameMessageToPlayer("refresh_middle_section");
+        }
+    }
+
+    public void hideCardsToShow() {
+        showingCards = false;
+        cardsToShow = null;
+    }
+
+    public boolean isShowingCards() {
+        return showingCards;
+    }
+
+    public List<Card> getCardsToShow() {
+        return cardsToShow;
+    }
+
+    public String getShowingCardsTitle() {
+        return showingCardsTitle;
+    }
+
+    public String getCardsToShowSource() {
+        return cardsToShowSource;
     }
 }

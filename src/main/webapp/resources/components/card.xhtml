@@ -17,12 +17,6 @@
 
         <div class="cardInfo #{gameView.getActionableCardClass(cc.attrs.card, cc.attrs.source)}">
             <h:outputText value="#{cc.attrs.card.name}"/>
-            <h:panelGroup rendered="#{cc.attrs.card.base}">
-                <h:outputText value=" (#{cc.attrs.card.shield} "/>
-                <h:outputText rendered="#{cc.attrs.card.outpost}" value="O"/>
-                <h:outputText rendered="#{!cc.attrs.card.outpost}" value="B"/>
-                <h:outputText value=")"/>
-            </h:panelGroup>
         </div>
 
     </h:panelGroup>

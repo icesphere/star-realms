@@ -8,7 +8,6 @@ public abstract class Ship extends Card {
     @Override
     public boolean isActionable(Player player, String cardLocation) {
         return player.isYourTurn() && (cardLocation.equals(Card.CARD_LOCATION_HAND)
-                || (cardLocation.equals(Card.CARD_LOCATION_IN_PLAY) && !alliedAbilityUsed)
-                || this instanceof ScrappableCard);
+                || (cardLocation.equals(Card.CARD_LOCATION_IN_PLAY) && (!alliedAbilityUsed || this instanceof ScrappableCard)));
     }
 }

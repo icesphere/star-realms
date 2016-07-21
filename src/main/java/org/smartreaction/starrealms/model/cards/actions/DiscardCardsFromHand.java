@@ -51,7 +51,7 @@ public class DiscardCardsFromHand extends Action {
             return false;
         } else {
             if (numCardsToDiscard > player.getHand().size()) {
-                player.getHand().stream().forEach(player::addCardToDiscard);
+                player.getHand().forEach(player::addCardToDiscard);
                 player.getHand().clear();
                 player.addGameLog(player.getPlayerName() + " discarded " + player.getHand().size() + " numCardsToScrap");
                 return false;
@@ -64,12 +64,7 @@ public class DiscardCardsFromHand extends Action {
 
     @Override
     public void processActionResult(Player player, ActionResult result) {
-        selectedCards.stream().forEach(player::discardCardFromHand);
-    }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCards.size() == 0;
+        selectedCards.forEach(player::discardCardFromHand);
     }
 
     public boolean isOptional() {

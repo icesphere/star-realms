@@ -57,9 +57,4 @@ public class DiscardCardsFromHandForBenefit extends Action {
     public List<Card> getSelectedCards() {
         return selectedCards;
     }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCards.isEmpty();
-    }
 }

@@ -339,11 +339,7 @@ public class GameView implements Serializable {
     }
 
     public void sendShowActionToPlayer() {
-        if (getAction().showActionDialog()) {
-            sendGameMessageToPlayer("show_action");
-        } else {
-            sendGameMessageToPlayer("refresh_game_page");
-        }
+        sendGameMessageToPlayer("refresh_game_page");
     }
 
     public String quitGame() {

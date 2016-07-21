@@ -30,7 +30,7 @@ public class ScrapCardsFromHandForBenefit extends Action {
         } else {
             List<Card> cardsAvailableToScrap = new ArrayList<>(player.getHand());
             if (numCardsToScrap > cardsAvailableToScrap.size()) {
-                cardsAvailableToScrap.stream().forEach(player::scrapCardFromHand);
+                cardsAvailableToScrap.forEach(player::scrapCardFromHand);
                 card.cardsScrapped(player, cardsAvailableToScrap);
                 return false;
             } else {
@@ -51,10 +51,5 @@ public class ScrapCardsFromHandForBenefit extends Action {
 
     public List<Card> getSelectedCards() {
         return selectedCards;
-    }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCards.isEmpty();
     }
 }

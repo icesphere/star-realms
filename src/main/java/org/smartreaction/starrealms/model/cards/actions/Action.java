@@ -22,8 +22,4 @@ public abstract class Action {
     public abstract boolean processAction(Player player);
 
     public abstract void processActionResult(Player player, ActionResult result);
-
-    public boolean showActionDialog() {
-        return true;
-    }
 }

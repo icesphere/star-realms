@@ -51,9 +51,4 @@ public class ScrapCardsFromHandOrDiscardPile extends Action {
     public List<Card> getSelectedCardsFromDiscard() {
         return selectedCardsFromDiscard;
     }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCardsFromHand.isEmpty() && selectedCardsFromDiscard.isEmpty();
-    }
 }

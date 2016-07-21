@@ -45,9 +45,4 @@ public class ScrapCardsFromTradeRow extends Action {
     public void processActionResult(Player player, ActionResult result) {
         selectedCards.forEach(player.getGame()::scrapCardFromTradeRow);
     }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCards.size() == 0;
-    }
 }

@@ -34,9 +34,4 @@ public class CardAction extends Action {
     public void processActionResult(Player player, ActionResult result) {
         cardActionCard.processCardActionResult(this, player, result);
     }
-
-    @Override
-    public boolean showActionDialog() {
-        return selectedCards.size() == 0;
-    }
 }

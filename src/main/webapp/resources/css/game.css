@@ -267,7 +267,7 @@
 }
 
 .opponent {
-    background-color: #CC9977;
+    background-color: #CCAA77;
 }
 
 .card {
@@ -324,13 +324,6 @@
     padding-right: 7px;
 }
 
-.actionDialog {
-    padding: 5px;
-    padding-top: 10px;
-    text-align: center;
-    min-width: 200px;
-}
-
 .gameOverSection {
     clear: both;
     padding-top: 15px;
@@ -345,5 +338,15 @@
     clear: both;
     float: left;
     padding-top: 10px;
+}
+
+.actionSection {
+    clear: both;
+    float: left;
+    padding-top: 20px;
+}
+
+.red {
+    color: #ff0000;
 }
 

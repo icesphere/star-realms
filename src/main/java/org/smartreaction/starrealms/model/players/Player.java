@@ -195,7 +195,6 @@ public abstract class Player {
                 Card cardToDraw = deck.remove(0);
                 cardsDrawn.add(cardToDraw);
                 addCardToHand(cardToDraw);
-                getGame().gameLog("Added " + cardToDraw.getName() + " to hand");
             }
         }
 

@@ -17,6 +17,13 @@
 
         <div class="cardInfo #{gameView.getActionableCardClass(cc.attrs.card, cc.attrs.source)}">
             <h:outputText value="#{cc.attrs.card.name}"/>
+            <p:commandLink value="Scrap" style="margin-left: 10px;"
+                           rendered="#{gameView.player.yourTurn and cc.attrs.card.scrappable}"
+                           actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
+            <p:commandLink value="Attack" styleClass="red" style="margin-left: 10px;"
+                           rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
+                           actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"
+            />
         </div>
 
     </h:panelGroup>

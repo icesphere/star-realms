@@ -11,7 +11,8 @@ public class DestroyOpponentBase extends Action {
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_OPPONENT_BASES) && card.isBase();
+        return cardLocation.equals(Card.CARD_LOCATION_OPPONENT_BASES)
+                && (player.getOpponent().getOutposts().isEmpty() || !card.isOutpost());
     }
 
     @Override
@@ -25,7 +26,13 @@ public class DestroyOpponentBase extends Action {
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
+    public boolean processActionResult(Player player, ActionResult result) {
         player.getOpponent().baseDestroyed((Base) result.getSelectedCard());
+        return true;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return true;
     }
 }

@@ -188,13 +188,13 @@
     text-decoration: none;
 }
 
-.cardsButtonWrapper {
+.smallButtonWrapper {
     clear: both;
     float: left;
-    padding-top: 10px;
+    padding-top: 7px;
 }
 
-.cardsButton {
+.smallButton {
     float: left;
     min-width: 130px;
     text-align: center;
@@ -207,12 +207,13 @@
     border-radius: 10px;
     font-family: Arial, sans-serif;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     padding: 8px 16px 8px 16px;
     text-decoration: none;
+    border: solid #1f628d 2px;
 }
 
-.cardsButton:hover {
+.smallButton:hover {
     background: #3cb0fd;
     background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
@@ -313,6 +314,10 @@
 .buyableCard {
     border: 3px solid #0055FF;
     cursor: pointer;
+}
+
+.selectedCard {
+    border: 3px solid #cc00ff !important;
 }
 
 .buyableCard .tradeRowCardCost {

@@ -5,6 +5,7 @@ import org.smartreaction.starrealms.model.ChatMessage;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
@@ -102,6 +103,12 @@ public class GameView implements Serializable {
 
         if (highlightCard(card, source)) {
             cardClass += " actionableCard";
+        }
+
+        Action action = getAction();
+
+        if (action != null && action.isCardSelected(card)) {
+            cardClass += " selectedCard";
         }
 
         return cardClass;
@@ -237,41 +244,7 @@ public class GameView implements Serializable {
         ActionResult result = new ActionResult();
         result.setCardLocation(cardLocation);
 
-        if (action instanceof DiscardCardsFromHand) {
-            DiscardCardsFromHand discardCardsFromHand = (DiscardCardsFromHand) action;
-            discardCardsFromHand.getSelectedCards().add(card);
-            if (discardCardsFromHand.getNumCardsToDiscard() == discardCardsFromHand.getSelectedCards().size()) {
-                result.getSelectedCards().addAll(discardCardsFromHand.getSelectedCards());
-            } else {
-                return;
-            }
-        } else if (action instanceof DiscardHandDownTo) {
-            DiscardHandDownTo discardHandDownTo = (DiscardHandDownTo) action;
-            discardHandDownTo.getSelectedCards().add(card);
-            if (discardHandDownTo.getCardsToDiscardDownTo() == (getPlayer().getHand().size() - discardHandDownTo.getSelectedCards().size())) {
-                result.getSelectedCards().addAll(discardHandDownTo.getSelectedCards());
-            } else {
-                return;
-            }
-        } else if (action instanceof ScrapCardsFromHandForBenefit) {
-            ScrapCardsFromHandForBenefit scrapCardsFromHandForBenefit = (ScrapCardsFromHandForBenefit) action;
-            scrapCardsFromHandForBenefit.getSelectedCards().add(card);
-            if (scrapCardsFromHandForBenefit.getNumCardsToScrap() == scrapCardsFromHandForBenefit.getSelectedCards().size()) {
-                result.getSelectedCards().addAll(scrapCardsFromHandForBenefit.getSelectedCards());
-            } else {
-                return;
-            }
-        } /*else if (action instanceof CardAction && (((CardAction) action).getCardActionCard() instanceof Masakari || ((CardAction) action).getCardActionCard() instanceof RaidedSupplies)) {
-            CardAction cardAction = (CardAction) action;
-            cardAction.getSelectedCards().add(card);
-            if (cardAction.getSelectedCards().size() == 2) {
-                result.getSelectedCards().addAll(cardAction.getSelectedCards());
-            } else {
-                return;
-            }
-        } */else {
-            result.getSelectedCards().add(card);
-        }
+        result.getSelectedCards().add(card);
 
         getPlayer().actionResult(action, result);
 
@@ -408,5 +381,28 @@ public class GameView implements Serializable {
 
     public String getCardsToShowSource() {
         return cardsToShowSource;
+    }
+
+    public void doNotUseAction() {
+        getPlayer().actionResult(getAction(), ActionResult.doNotUseActionResult());
+    }
+
+    public void doneWithAction() {
+        getPlayer().actionResult(getAction(), ActionResult.doneWithActionResult());
+    }
+
+    public void scrapCard(ScrappableCard card) {
+        card.cardScrapped(getPlayer());
+        sendGameMessageToAll("refresh_game_page");
+    }
+
+    public void attackOpponentBase(Base base) {
+        getPlayer().destroyOpponentBase(base);
+        sendGameMessageToAll("refresh_game_page");
+    }
+
+    public boolean isBaseAttackable(Base base) {
+        return getPlayer().isYourTurn() && getPlayer().getCombat() >= base.getShield()
+                && (getOpponent().getOutposts().isEmpty() || !base.isOutpost());
     }
 }

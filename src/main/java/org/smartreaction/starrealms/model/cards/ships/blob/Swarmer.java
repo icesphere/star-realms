@@ -21,7 +21,7 @@ public class Swarmer extends Ship implements AlliableCard
     public void cardPlayed(Player player)
     {
         player.addCombat(3);
-        player.scrapCardInTradeRow();
+        player.optionalScrapCardInTradeRow();
     }
 
     @Override

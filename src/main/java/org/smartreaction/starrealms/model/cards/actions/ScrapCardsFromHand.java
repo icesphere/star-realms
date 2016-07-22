@@ -7,13 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScrapCardsFromHand extends Action {
-    int numCardsToScrap;
+    protected int numCardsToScrap;
 
-    private List<Card> selectedCards = new ArrayList<>(3);
+    protected List<Card> selectedCards = new ArrayList<>(3);
+
+    protected boolean optional;
+
+    public ScrapCardsFromHand(int numCardsToScrap) {
+        this.numCardsToScrap = numCardsToScrap;
+        text = "Scrap " + numCardsToScrap + " card";
+        if (numCardsToScrap != 1) {
+            text += "s";
+        }
+    }
 
     public ScrapCardsFromHand(int numCardsToScrap, String text) {
         this.numCardsToScrap = numCardsToScrap;
         this.text = text;
+    }
+
+    public ScrapCardsFromHand(int numCardsToScrap, String text, boolean optional) {
+        this.numCardsToScrap = numCardsToScrap;
+        this.text = text;
+        this.optional = optional;
     }
 
     @Override
@@ -23,26 +39,47 @@ public class ScrapCardsFromHand extends Action {
 
     @Override
     public boolean processAction(Player player) {
-        if (player.getHand().isEmpty()) {
-            return false;
-        } else {
-            if (numCardsToScrap > player.getHand().size()) {
-                numCardsToScrap = player.getHand().size();
-            }
+        return !player.getHand().isEmpty();
+    }
+
+    @Override
+    public boolean processActionResult(Player player, ActionResult result) {
+        if (result.isDoneWithAction()) {
+            selectedCards.forEach(player::scrapCardFromHand);
             return true;
+        } else {
+            Card selectedCard = result.getSelectedCard();
+            if (selectedCards.contains(selectedCard)) {
+                selectedCards.remove(selectedCard);
+            } else {
+                selectedCards.add(selectedCard);
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return optional;
+    }
+
+    @Override
+    public boolean isShowDone() {
+        return selectedCards.size() > 0 && (optional || selectedCards.size() == numCardsToScrap);
+    }
+
+    @Override
+    public String getDoneText() {
+        if (selectedCards.size() == 1) {
+            return "Scrap " + selectedCards.get(0).getName();
+        } else {
+            return "Scrap " + selectedCards.size() + " cards";
         }
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
-        selectedCards.forEach(player::scrapCardFromHand);
-    }
-
-    public int getNumCardsToScrap() {
-        return numCardsToScrap;
-    }
-
-    public List<Card> getSelectedCards() {
-        return selectedCards;
+    public boolean isCardSelected(Card card) {
+        return selectedCards.contains(card);
     }
 }

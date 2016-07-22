@@ -23,7 +23,7 @@ public class BlobWorld extends Base implements ChoiceActionCard
     public void baseUsed(Player player)
     {
         Choice choice1 = new Choice(1, "Add 5 Combat");
-        Choice choice2 = new Choice(1, "Draw a card for each Blob card that you've played this turn");
+        Choice choice2 = new Choice(1, "Draw cards");
         player.makeChoice(this, choice1, choice2);
     }
 

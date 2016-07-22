@@ -39,7 +39,8 @@ public class YesNoAbilityAction extends Action {
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
+    public boolean processActionResult(Player player, ActionResult result) {
         card.actionChoiceMade(player, result.getChoiceSelected());
+        return true;
     }
 }

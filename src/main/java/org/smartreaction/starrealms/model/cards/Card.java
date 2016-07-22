@@ -22,7 +22,7 @@ public abstract class Card {
     protected boolean alliedAbilityUsed;
 
     public static String CARD_LOCATION_HAND = "hand";
-    public static String CARD_LOCATION_IN_PLAY = "inPlay";
+    public static String CARD_LOCATION_PLAY_AREA = "playArea";
     public static String CARD_LOCATION_DECK = "deck";
     public static String CARD_LOCATION_DISCARD = "discard";
     public static String CARD_LOCATION_PLAYER_BASES = "playerBases";

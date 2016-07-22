@@ -23,7 +23,7 @@ public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
     public void cardPlayed(Player player)
     {
         Choice choice1 = new Choice(1, "Add 6 Combat");
-        Choice choice2 = new Choice(2, "Acquire a card of six or less for free");
+        Choice choice2 = new Choice(2, "Acquire card");
 
         player.makeChoice(this, choice1, choice2);
     }

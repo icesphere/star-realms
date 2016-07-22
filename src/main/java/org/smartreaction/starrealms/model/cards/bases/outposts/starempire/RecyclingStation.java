@@ -27,7 +27,7 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
     @Override
     public void baseUsed(Player player) {
         Choice choice1 = new Choice(1, "Add 1 Trade");
-        Choice choice2 = new Choice(2, "Discard up to two cards, then draw that many cards");
+        Choice choice2 = new Choice(2, "Discard cards");
         player.makeChoice(this, choice1, choice2);
     }
 

@@ -8,6 +8,8 @@ public class FreeCardFromTradeRow extends Action {
 
     private Integer maxCost;
 
+    private String destination;
+
     public FreeCardFromTradeRow(String text) {
         this.text = text;
     }
@@ -15,6 +17,12 @@ public class FreeCardFromTradeRow extends Action {
     public FreeCardFromTradeRow(Integer maxCost, String text) {
         this.maxCost = maxCost;
         this.text = text;
+    }
+
+    public FreeCardFromTradeRow(Integer maxCost, String text, String destination) {
+        this.maxCost = maxCost;
+        this.text = text;
+        this.destination = destination;
     }
 
     @Override
@@ -34,13 +42,27 @@ public class FreeCardFromTradeRow extends Action {
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
+    public boolean processActionResult(Player player, ActionResult result) {
         Card card = result.getSelectedCard();
         if (!(card instanceof Explorer)) {
             player.getGame().getTradeRow().remove(card);
             player.getGame().addCardToTradeRow();
         }
-        player.addGameLog(player.getPlayerName() + " acquired a free card from the trade row: " + card.getName());
-        player.cardAcquired(card);
+        if (destination.equals(Card.CARD_LOCATION_HAND)) {
+            player.addGameLog(player.getPlayerName() + " gained free card from trade row and put it in their hand: " + card.getName());
+            player.addCardToHand(card);
+        } else if (destination.equals(Card.CARD_LOCATION_DECK)) {
+            player.addGameLog(player.getPlayerName() + " gained free card from trade row and put it on top of deck: " + card.getName());
+            player.addCardToTopOfDeck(card);
+        } else {
+            player.addGameLog(player.getPlayerName() + " acquired a free card from the trade row: " + card.getName());
+            player.cardAcquired(card);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return true;
     }
 }

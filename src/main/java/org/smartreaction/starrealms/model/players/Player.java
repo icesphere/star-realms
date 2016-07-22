@@ -343,7 +343,7 @@ public abstract class Player {
     }
 
     public void optionallyScrapCardsFromHandOrDiscard(int cards) {
-        addAction(new ScrapCardsFromHandOrDiscardPile(cards, "Scrap up to " + cards + " from your hand or discard pile"));
+        addAction(new ScrapCardsFromHandOrDiscardPile(cards, "Scrap up to " + cards + " from your hand or discard pile", true));
     }
 
     public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap) {
@@ -381,16 +381,16 @@ public abstract class Player {
         }
     }
 
-    public void scrapCardInTradeRow() {
-        scrapCardsInTradeRow(1);
+    public void optionalScrapCardInTradeRow() {
+        optionallyScrapCardsInTradeRow(1);
     }
 
-    public void scrapCardsInTradeRow(int cards) {
-        addAction(new ScrapCardsFromTradeRow(cards));
+    public void optionallyScrapCardsInTradeRow(int cards) {
+        addAction(new ScrapCardsFromTradeRow(cards, true));
     }
 
     public void acquireFreeShipAndPutOnTopOfDeck() {
-        addAction(new FreeCardFromTradeRowToTopOfDeck(null, "Choose a free ship from the trade row to put on top of your deck"));
+        addAction(new FreeCardFromTradeRow(null, "Choose a free ship from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK));
     }
 
     public void addCardToTopOfDeck(Card card) {
@@ -465,14 +465,14 @@ public abstract class Player {
 
     public void scrapCardFromHand(boolean optional) {
         if (optional) {
-            addAction(new ScrapCardsFromHand(1, "You may scrap a card from your hand"));
+            addAction(new ScrapCardsFromHand(1, "You may scrap a card from your hand", true));
         } else {
-            addAction(new ScrapCardFromHand("Scrap a card from your hand"));
+            addAction(new ScrapCardsFromHand(1, "Scrap a card from your hand", false));
         }
     }
 
     public void optionallyScrapCardsFromDiscard(int cards) {
-        addAction(new ScrapCardsFromDiscardPile(cards, "You may scrap a card from your discard pile"));
+        addAction(new ScrapCardsFromDiscardPile(cards, "You may scrap a card from your discard pile", true));
     }
 
     public void setAllFactionsAllied(boolean allFactionsAllied) {
@@ -650,11 +650,11 @@ public abstract class Player {
     }
 
     public void acquireFreeCardToTopOfDeck(int maxCost) {
-        addAction(new FreeCardFromTradeRowToTopOfDeck(maxCost, "Acquire a free card from the trade row to the top of your deck costing up to " + maxCost));
+        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to the top of your deck costing up to " + maxCost, Card.CARD_LOCATION_DECK));
     }
 
     public void acquireFreeCardToHand(int maxCost) {
-        addAction(new FreeCardFromTradeRowToHand(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost));
+        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost, Card.CARD_LOCATION_HAND));
     }
 
     public List<Gambit> getGambits() {
@@ -829,11 +829,7 @@ public abstract class Player {
     }
 
     public void discardCardsFromHand(int cards) {
-        String text = "Discard " + cards + " card";
-        if (cards != 1) {
-            text += "s";
-        }
-        addAction(new DiscardCardsFromHand(cards, text));
+        addAction(new DiscardCardsFromHand(cards));
     }
 
     public void addAction(Action action) {
@@ -885,13 +881,13 @@ public abstract class Player {
     }
 
     public void actionResult(Action action, ActionResult result) {
-        if (!result.getSelectedCards().isEmpty() || result.getChoiceSelected() != null) {
-            action.processActionResult(this, result);
+        if (!result.getSelectedCards().isEmpty() || result.getChoiceSelected() != null
+                || result.isDoNotUse() || result.isDoneWithAction()) {
+            if (result.isDoNotUse() || action.processActionResult(this, result)) {
+                currentAction = null;
+                resolveActions();
+            }
         }
-
-        currentAction = null;
-
-        resolveActions();
     }
 
     public void playAll() {

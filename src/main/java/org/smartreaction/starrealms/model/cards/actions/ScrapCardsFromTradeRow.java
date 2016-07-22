@@ -7,42 +7,78 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScrapCardsFromTradeRow extends Action {
-    private int numCardsToScrap;
+    protected int numCardsToScrap;
 
-    private List<Card> selectedCards = new ArrayList<>(3);
+    protected List<Card> selectedCards = new ArrayList<>(3);
+
+    protected boolean optional;
 
     public ScrapCardsFromTradeRow(int numCardsToScrap) {
         this.numCardsToScrap = numCardsToScrap;
-        this.text = "Scrap up to " + numCardsToScrap + " from the trade row";
+        text = "Scrap ";
+        if (optional) {
+            text += "up to";
+        }
+        text += numCardsToScrap + " card";
+        if (numCardsToScrap != 1) {
+            text += "s";
+        }
+        text += " from the trade row";
     }
 
-    public int getNumCardsToScrap() {
-        return numCardsToScrap;
-    }
-
-    public List<Card> getSelectedCards() {
-        return selectedCards;
+    public ScrapCardsFromTradeRow(int numCardsToScrap, boolean optional) {
+        this(numCardsToScrap);
+        this.optional = optional;
     }
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW) && !selectedCards.contains(card);
+        return cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW);
     }
 
     @Override
     public boolean processAction(Player player) {
-        if (player.getGame().getTradeRow().isEmpty()) {
-            return false;
-        } else {
-            if (numCardsToScrap > player.getGame().getTradeRow().size()) {
-                numCardsToScrap = player.getGame().getTradeRow().size();
-            }
+        return !player.getGame().getTradeRow().isEmpty();
+    }
+
+    @Override
+    public boolean processActionResult(Player player, ActionResult result) {
+        if (result.isDoneWithAction()) {
+            selectedCards.forEach(c -> player.getGame().scrapCardFromTradeRow(c));
             return true;
+        } else {
+            Card selectedCard = result.getSelectedCard();
+            if (selectedCards.contains(selectedCard)) {
+                selectedCards.remove(selectedCard);
+            } else {
+                selectedCards.add(selectedCard);
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return optional;
+    }
+
+    @Override
+    public boolean isShowDone() {
+        return selectedCards.size() > 0 && (optional || selectedCards.size() == numCardsToScrap);
+    }
+
+    @Override
+    public String getDoneText() {
+        if (selectedCards.size() == 1) {
+            return "Scrap " + selectedCards.get(0).getName();
+        } else {
+            return "Scrap " + selectedCards.size() + " cards";
         }
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
-        selectedCards.forEach(player.getGame()::scrapCardFromTradeRow);
+    public boolean isCardSelected(Card card) {
+        return selectedCards.contains(card);
     }
 }

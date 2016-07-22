@@ -24,9 +24,15 @@ public class CardFromHandToTopOfDeck extends Action {
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
+    public boolean processActionResult(Player player, ActionResult result) {
         Card card = result.getSelectedCard();
         player.getHand().remove(card);
         player.addCardToTopOfDeck(card);
+        return true;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return true;
     }
 }

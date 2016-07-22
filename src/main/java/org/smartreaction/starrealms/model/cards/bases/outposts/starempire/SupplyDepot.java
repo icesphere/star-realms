@@ -33,8 +33,8 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
     @Override
     public void cardsDiscarded(Player player, List<Card> discardedCards) {
         for (Card ignored : discardedCards) {
-            Choice choice1 = new Choice(1, "Gain 2 Trade");
-            Choice choice2 = new Choice(2, "Gain 2 Combat");
+            Choice choice1 = new Choice(1, "Add 2 Trade");
+            Choice choice2 = new Choice(2, "Add 2 Combat");
 
             player.makeChoice(this, choice1, choice2);
         }

@@ -27,6 +27,6 @@ public class BlobDestroyer extends Ship implements AlliableCard
     public void cardAllied(Player player)
     {
         player.destroyTargetBase();
-        player.scrapCardInTradeRow();
+        player.optionalScrapCardInTradeRow();
     }
 }

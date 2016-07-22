@@ -21,7 +21,7 @@ public class BattleScreecher extends Ship implements AlliableCard
     public void cardPlayed(Player player)
     {
         player.addCombat(5);
-        player.scrapCardsInTradeRow(5);
+        player.optionallyScrapCardsInTradeRow(5);
     }
 
     @Override

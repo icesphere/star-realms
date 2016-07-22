@@ -62,7 +62,7 @@ public class StealthNeedle extends Ship implements CardActionCard
 
     @Override
     public boolean isCardActionable(Card card, CardAction cardAction, String cardLocation, Player player) {
-        return card.isShip() && cardLocation.equals(Card.CARD_LOCATION_IN_PLAY) && !(card instanceof StealthNeedle);
+        return card.isShip() && cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA) && !(card instanceof StealthNeedle);
     }
 
     @Override

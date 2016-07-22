@@ -21,7 +21,7 @@ public class SpikePod extends Ship implements ScrappableCard
     public void cardPlayed(Player player)
     {
         player.addCombat(3);
-        player.scrapCardsInTradeRow(2);
+        player.optionallyScrapCardsInTradeRow(2);
     }
 
     @Override

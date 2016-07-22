@@ -20,6 +20,6 @@ public class Ravager extends Ship
     public void cardPlayed(Player player)
     {
         player.addCombat(6);
-        player.scrapCardsInTradeRow(2);
+        player.optionallyScrapCardsInTradeRow(2);
     }
 }

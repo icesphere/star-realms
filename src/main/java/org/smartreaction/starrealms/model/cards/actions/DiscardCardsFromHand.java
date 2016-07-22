@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiscardCardsFromHand extends Action {
-    private int numCardsToDiscard;
+    protected int numCardsToDiscard;
 
-    private List<Card> selectedCards = new ArrayList<>(3);
+    protected List<Card> selectedCards = new ArrayList<>(3);
 
-    private boolean optional;
+    protected boolean optional;
 
     public DiscardCardsFromHand(int numCardsToDiscard) {
         this.numCardsToDiscard = numCardsToDiscard;
@@ -32,42 +32,54 @@ public class DiscardCardsFromHand extends Action {
         this.optional = optional;
     }
 
-    public int getNumCardsToDiscard() {
-        return numCardsToDiscard;
-    }
-
-    public List<Card> getSelectedCards() {
-        return selectedCards;
-    }
-
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_HAND) && !selectedCards.contains(card);
+        return cardLocation.equals(Card.CARD_LOCATION_HAND);
     }
 
     @Override
     public boolean processAction(Player player) {
-        if (player.getHand().isEmpty()) {
-            return false;
+        return !player.getHand().isEmpty();
+    }
+
+    @Override
+    public boolean processActionResult(Player player, ActionResult result) {
+        if (result.isDoneWithAction()) {
+            selectedCards.forEach(player::discardCardFromHand);
+            return true;
         } else {
-            if (numCardsToDiscard > player.getHand().size()) {
-                player.getHand().forEach(player::addCardToDiscard);
-                player.getHand().clear();
-                player.addGameLog(player.getPlayerName() + " discarded " + player.getHand().size() + " numCardsToScrap");
-                return false;
+            Card selectedCard = result.getSelectedCard();
+            if (selectedCards.contains(selectedCard)) {
+                selectedCards.remove(selectedCard);
             } else {
-                player.addGameLog(player.getPlayerName() + " is discarding " + numCardsToDiscard + " numCardsToScrap");
-                return true;
+                selectedCards.add(selectedCard);
             }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return optional;
+    }
+
+    @Override
+    public boolean isShowDone() {
+        return selectedCards.size() > 0 && (optional || selectedCards.size() == numCardsToDiscard);
+    }
+
+    @Override
+    public String getDoneText() {
+        if (selectedCards.size() == 1) {
+            return "Discard " + selectedCards.get(0).getName();
+        } else {
+            return "Discard " + selectedCards.size() + " cards";
         }
     }
 
     @Override
-    public void processActionResult(Player player, ActionResult result) {
-        selectedCards.forEach(player::discardCardFromHand);
-    }
-
-    public boolean isOptional() {
-        return optional;
+    public boolean isCardSelected(Card card) {
+        return selectedCards.contains(card);
     }
 }

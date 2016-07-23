@@ -2,7 +2,9 @@ package org.smartreaction.starrealms.service;
 
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Game;
+import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.bases.Base;
@@ -30,9 +32,7 @@ import org.smartreaction.starrealms.model.players.Player;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class GameService {
@@ -45,7 +45,7 @@ public class GameService {
     @EJB
     LoggedInUsers loggedInUsers;
 
-    public Game createGame(User user1, User user2) {
+    public Game createGame(User user1, User user2, GameOptions gameOptions) {
         Game game = new Game();
 
         HumanPlayer player1 = new HumanPlayer(user1);
@@ -64,7 +64,7 @@ public class GameService {
         player1.setOpponent(player2);
         player2.setOpponent(player1);
 
-        players.stream().forEach(p -> p.setGame(game));
+        players.forEach(p -> p.setGame(game));
 
         Collections.shuffle(players);
 
@@ -75,14 +75,14 @@ public class GameService {
         game.gameLog("** Starting Game **");
         game.gameLog("Player 1: " + players.get(0).getPlayerName() + " - Player 2: " + players.get(1).getPlayerName());
 
-        setupCards(game);
+        setupCards(game, gameOptions);
 
         game.startGame();
 
         return game;
     }
 
-    public void setupCards(Game game) {
+    public void setupCards(Game game, GameOptions gameOptions) {
         for (Player player : game.getPlayers()) {
             for (int i = 0; i < 8; i++) {
                 player.addCardToDeck(new Scout());
@@ -94,7 +94,41 @@ public class GameService {
             player.setup();
         }
 
-        List<Card> deck = getBaseSetDeck();
+        List<Card> deck = new ArrayList<>();
+
+        if (gameOptions.determineIncludeBaseSet()) {
+            deck.addAll(getBaseSetDeck());
+            game.getCardSets().add(CardSet.CORE);
+        }
+        if (gameOptions.determineIncludeColonyWars()) {
+            deck.addAll(getColonyWarsDeck());
+            game.getCardSets().add(CardSet.COLONY_WARS);
+        }
+        if (gameOptions.determineIncludeYearOnePromos()) {
+            deck.addAll(getYear1PromoCards());
+            game.getCardSets().add(CardSet.PROMO_YEAR_1);
+        }
+        if (gameOptions.determineIncludeCrisisBasesAndBattleships()) {
+            deck.addAll(getCrisisBasesAndBattleships());
+            game.getCardSets().add(CardSet.CRISIS_BASES_AND_BATTLESHIPS);
+        }
+        if (gameOptions.determineIncludeCrisisEvents()) {
+            deck.addAll(getCrisisEvents());
+            game.getCardSets().add(CardSet.CRISIS_EVENTS);
+        }
+        if (gameOptions.determineIncludeCrisisFleetsAndFortresses()) {
+            deck.addAll(getCrisisFleetsAndFortresses());
+            game.getCardSets().add(CardSet.CRISIS_FLEETS_AND_FORTRESSES);
+        }
+        if (gameOptions.determineIncludeCrisisHeroes()) {
+            deck.addAll(getCrisisHeroes());
+            game.getCardSets().add(CardSet.CRISIS_HEROES);
+        }
+
+        if (gameOptions.determineIncludeGambits()) {
+            addGambits(game);
+            game.getCardSets().add(CardSet.GAMBITS);
+        }
 
         Collections.shuffle(deck);
 
@@ -1344,7 +1378,7 @@ public class GameService {
         return card;
     }
 
-    public void autoMatchUser(User user) {
+    public void autoMatchUser(User user, GameOptions gameOptions) {
         synchronized (matchUserLock) {
             if (user.getCurrentGame() != null) {
                 return;
@@ -1354,7 +1388,7 @@ public class GameService {
                 User opponent = users.get(0);
                 opponent.setAutoMatch(false);
                 user.setAutoMatch(false);
-                createGame(user, opponent);
+                createGame(user, opponent, gameOptions);
                 sendLobbyMessage(user.getUsername(), opponent.getUsername(), "game_started");
             } else {
                 user.setAutoMatch(true);

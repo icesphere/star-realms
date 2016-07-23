@@ -1,8 +1,9 @@
 package org.smartreaction.starrealms.model.cards.gambits;
 
+import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class EnergyShield extends Gambit implements ScrappableGambit, EveryTurnGambit {
+public class EnergyShield extends Gambit implements EveryTurnGambit, ScrappableCard {
     public EnergyShield() {
         name = "Energy Shield";
     }
@@ -13,7 +14,7 @@ public class EnergyShield extends Gambit implements ScrappableGambit, EveryTurnG
     }
 
     @Override
-    public void scrapGambit(Player player) {
+    public void cardScrapped(Player player) {
         player.setPreventFirstDamage(false);
         player.drawCard();
     }

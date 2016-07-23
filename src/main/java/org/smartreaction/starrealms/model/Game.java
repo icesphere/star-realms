@@ -257,10 +257,6 @@ public class Game
         return cardSets;
     }
 
-    public void setCardSets(Set<CardSet> cardSets) {
-        this.cardSets = cardSets;
-    }
-
     public String getGameId() {
         return gameId;
     }

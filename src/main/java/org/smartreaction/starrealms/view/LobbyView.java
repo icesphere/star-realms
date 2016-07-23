@@ -34,7 +34,7 @@ public class LobbyView implements Serializable {
     }
 
     public String startAutoMatch() {
-        gameService.autoMatchUser(userSession.getUser());
+        gameService.autoMatchUser(userSession.getUser(), userSession.getGameOptions());
         gameService.refreshLobby(userSession.getUser().getUsername());
         if (userSession.getUser().getCurrentGame() != null) {
             return "game.xhtml?faces-redirect=true";

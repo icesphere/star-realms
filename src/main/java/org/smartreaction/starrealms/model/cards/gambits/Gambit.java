@@ -1,27 +1,18 @@
 package org.smartreaction.starrealms.model.cards.gambits;
 
+import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.players.Player;
+
 import java.util.Objects;
 
-public class Gambit {
-    protected String name;
-
-    public String getName() {
-        return name;
+public abstract class Gambit extends Card {
+    @Override
+    public void cardPlayed(Player player) {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-
-        final Gambit other = (Gambit) obj;
-        return Objects.equals(this.name, other.name);
+    public boolean isActionable(Player player, String cardLocation) {
+        return false;
     }
 
     @Override

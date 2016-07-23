@@ -386,3 +386,7 @@
     text-decoration: none;
 }
 
+.radioSpacing td {
+    padding-right: 10px;
+}
+

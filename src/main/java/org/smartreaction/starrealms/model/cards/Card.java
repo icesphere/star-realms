@@ -31,6 +31,8 @@ public abstract class Card {
     public static String CARD_LOCATION_OPPONENT_BASES = "opponentBases";
     public static String CARD_LOCATION_PLAYER_HEROES = "playerHeroes";
     public static String CARD_LOCATION_OPPONENT_HEROES = "opponentHeroes";
+    public static String CARD_LOCATION_PLAYER_GAMBITS = "playerGambits";
+    public static String CARD_LOCATION_OPPONENT_GAMBITS = "opponentGambits";
     public static String CARD_LOCATION_TRADE_ROW = "tradeRow";
     public static String CARD_LOCATION_EXPLORERS = "explorers";
 

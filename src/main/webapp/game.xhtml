@@ -202,32 +202,90 @@
                                 <div style="float: left">
                                     <h:outputText value="#{gameView.player.playerName}"/>
                                 </div>
-                                <div style="clear: both; float: left; padding-top: 10px;">
-                                    <div>
-                                        <h:outputText value="Bases"/>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.bases}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Bases"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.bases}" var="card">
+                                                <sr:card card="#{card}" source="playerBases"/>
+                                            </ui:repeat>
+                                        </div>
                                     </div>
-                                    <div style="clear: both; float:left; padding-top: 5px;">
-                                        <ui:repeat value="#{gameView.player.bases}" var="card">
-                                            <sr:card card="#{card}" source="playerBases"/>
-                                        </ui:repeat>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.heroes}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Heroes"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.heroes}" var="card">
+                                                <sr:card card="#{card}" source="playerHeroes"/>
+                                            </ui:repeat>
+                                        </div>
                                     </div>
-                                </div>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.gambits}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Gambits"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.gambits}" var="card">
+                                                <sr:card card="#{card}" source="playerGambits"/>
+                                            </ui:repeat>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
                             </h:panelGroup>
 
                             <h:panelGroup layout="block" id="opponentDeployedSection" styleClass="opponentDeployedSection opponent">
                                 <div style="float: left">
                                     <h:outputText value="#{gameView.player.opponent.playerName}"/>
                                 </div>
-                                <div style="clear: both; float: left; padding-top: 10px;">
-                                    <div>
-                                        <h:outputText value="Bases"/>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.opponent.bases}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Bases"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.opponent.bases}" var="card">
+                                                <sr:card card="#{card}" source="opponentBases"/>
+                                            </ui:repeat>
+                                        </div>
                                     </div>
-                                    <div style="clear: both; float:left; padding-top: 5px;">
-                                        <ui:repeat value="#{gameView.player.opponent.bases}" var="card">
-                                            <sr:card card="#{card}" source="opponentBases"/>
-                                        </ui:repeat>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.heroes}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Heroes"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.heroes}" var="card">
+                                                <sr:card card="#{card}" source="playerHeroes"/>
+                                            </ui:repeat>
+                                        </div>
                                     </div>
-                                </div>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.opponent.gambits}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Gambits"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.opponent.gambits}" var="card">
+                                                <sr:card card="#{card}" source="opponentGambits"/>
+                                            </ui:repeat>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
                             </h:panelGroup>
 
                         </h:panelGroup>

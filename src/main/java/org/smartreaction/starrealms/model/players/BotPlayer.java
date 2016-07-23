@@ -17,7 +17,10 @@ import org.smartreaction.starrealms.model.cards.bases.tradefederation.BarterWorl
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.Starmarket;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
-import org.smartreaction.starrealms.model.cards.ships.*;
+import org.smartreaction.starrealms.model.cards.ships.Explorer;
+import org.smartreaction.starrealms.model.cards.ships.Scout;
+import org.smartreaction.starrealms.model.cards.ships.Ship;
+import org.smartreaction.starrealms.model.cards.ships.Viper;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.AgingBattleship;
@@ -101,8 +104,7 @@ public abstract class BotPlayer extends Player {
                 List<Gambit> sortedGambits = scrappableGambits.stream().sorted(useGambitScoreDescending).collect(toList());
                 for (Gambit gambit : sortedGambits) {
                     if (getUseGambitScore(gambit) > 0) {
-                        ((ScrappableGambit) gambit).scrapGambit(this);
-                        gambitScrapped(gambit);
+                        scrapCardInPlayForBenefit(gambit);
                     }
                 }
             }

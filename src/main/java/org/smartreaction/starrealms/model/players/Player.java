@@ -14,7 +14,6 @@ import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.Steal
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.WarningBeacon;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
-import org.smartreaction.starrealms.model.cards.gambits.ScrappableGambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
@@ -377,6 +376,8 @@ public abstract class Player {
                 bases.remove(card);
             } else if (card instanceof Hero) {
                 heroes.remove(card);
+            } else if (card instanceof Gambit) {
+                gambits.remove(card);
             }
             playerCardScrapped(card);
             ((ScrappableCard) card).cardScrapped(this);
@@ -665,7 +666,7 @@ public abstract class Player {
     }
 
     public List<Gambit> getScrappableGambits() {
-        return gambits.stream().filter(g -> g instanceof ScrappableGambit).collect(toList());
+        return gambits.stream().filter(g -> g instanceof ScrappableCard).collect(toList());
     }
 
     public List<Gambit> getEveryTurnGambits() {
@@ -674,11 +675,6 @@ public abstract class Player {
 
     public void setGambits(List<Gambit> gambits) {
         this.gambits = gambits;
-    }
-
-    public void gambitScrapped(Gambit gambit) {
-        getGame().gameLog("Scrapped gambit " + gambit.getName());
-        this.getGambits().remove(gambit);
     }
 
     public String getPlayerName() {

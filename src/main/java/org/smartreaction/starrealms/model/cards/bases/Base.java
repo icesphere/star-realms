@@ -24,9 +24,13 @@ public abstract class Base extends Card {
 
     public boolean useBase(Player player) {
         if (baseCanBeUsed(player)) {
-            this.used = true;
-            this.baseUsed(player);
-            return true;
+            if (!used) {
+                used = true;
+                baseUsed(player);
+                return true;
+            } else if (this instanceof AlliableCard) {
+                return player.useAlliedAbility((AlliableCard) this);
+            }
         }
         return false;
     }

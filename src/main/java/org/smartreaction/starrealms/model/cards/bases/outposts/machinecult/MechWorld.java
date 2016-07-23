@@ -19,12 +19,12 @@ public class MechWorld extends Outpost
 
     @Override
     public void cardPlayed(Player player) {
-        player.setAllFactionsAllied(true);
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        player.setAllFactionsAllied(true);
     }
 
     @Override

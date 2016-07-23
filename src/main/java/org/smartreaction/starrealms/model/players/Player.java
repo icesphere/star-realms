@@ -347,7 +347,7 @@ public abstract class Player {
     }
 
     public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap) {
-        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile"));
+        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile", true));
     }
 
     public void scrapCardFromDiscard(Card card) {
@@ -526,10 +526,6 @@ public abstract class Player {
         return cards;
     }
 
-    public int getNumBases() {
-        return countCardsByType(getAllCards(), Card::isBase);
-    }
-
     public boolean useAlliedAbility(AlliableCard card) {
         Card cardToUse = (Card) card;
 
@@ -600,6 +596,15 @@ public abstract class Player {
         }
 
         factionsPlayedThisTurn.add(card.getFaction());
+
+        for (Card c : inPlay) {
+            if (c instanceof AlliableCard) {
+                if (!c.isAlliedAbilityUsed() && c.isAutoAlly() && cardHasAlly(c)) {
+                    AlliableCard alliableCard = (AlliableCard) c;
+                    useAlliedAbility(alliableCard);
+                }
+            }
+        }
 
         card.cardPlayed(this);
     }
@@ -899,6 +904,12 @@ public abstract class Player {
         addGameLog("** " + playerName + "'s Turn " + turn + " **");
 
         inPlay.addAll(bases);
+
+        for (Base base : bases) {
+            if (base.isAutoUse()) {
+                base.useBase(this);
+            }
+        }
 
         resolveActions();
     }

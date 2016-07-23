@@ -15,6 +15,7 @@ public class SolarSkiff extends Ship implements AlliableCard
         cost = 1;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Trade; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

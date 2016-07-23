@@ -16,6 +16,7 @@ public class PortOfCall extends Outpost implements ScrappableCard
         set = CardSet.CORE;
         shield = 6;
         text = "Add 3 Trade; Scrap: Draw a card. You may destroy target base";
+        autoUse = true;
     }
 
     @Override

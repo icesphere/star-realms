@@ -15,6 +15,7 @@ public class TradeEscort extends Ship implements AlliableCard
         cost = 5;
         set = CardSet.CORE;
         text = "Add 4 Authority; Add 4 Combat; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

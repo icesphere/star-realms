@@ -16,6 +16,7 @@ public class StellarReef extends Base implements ScrappableCard
         set = CardSet.COLONY_WARS;
         shield = 3;
         text = "Add 1 Trade. Scrap: Add 3 Combat";
+        autoUse = true;
     }
 
     @Override

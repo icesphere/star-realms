@@ -15,6 +15,7 @@ public class FactoryWorld extends Outpost
         set = CardSet.COLONY_WARS;
         shield = 6;
         text = "Add 3 Trade. Put the next base or ship you acquire this turn into your hand.";
+        autoUse = true;
     }
 
     @Override

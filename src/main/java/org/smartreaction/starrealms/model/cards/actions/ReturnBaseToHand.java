@@ -16,7 +16,7 @@ public class ReturnBaseToHand extends Action {
 
     @Override
     public boolean processAction(Player player) {
-        if (player.getNumBases() == 0 && player.getOpponent().getNumBases() == 0) {
+        if (player.getBases().size() == 0 && player.getOpponent().getBases().size() == 0) {
             return false;
         } else {
             player.addGameLog(player.getPlayerName() + " is returning a base to hand");

@@ -17,6 +17,7 @@ public class PatrolMech extends Ship implements AlliableCard, ChoiceActionCard
         cost = 4;
         set = CardSet.CORE;
         text = "Add 3 Trade OR Add 5 Combat; Ally: You may scrap a card in your hand or discard pile";
+        autoAlly = false;
     }
 
     @Override

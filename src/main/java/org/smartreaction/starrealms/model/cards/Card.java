@@ -21,6 +21,7 @@ public abstract class Card {
     protected String text;
     protected int shield;
     protected boolean alliedAbilityUsed;
+    protected boolean autoAlly = true;
 
     public static String CARD_LOCATION_HAND = "hand";
     public static String CARD_LOCATION_PLAY_AREA = "playArea";
@@ -185,5 +186,13 @@ public abstract class Card {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isAutoAlly() {
+        return autoAlly;
+    }
+
+    public void setAutoAlly(boolean autoAlly) {
+        this.autoAlly = autoAlly;
     }
 }

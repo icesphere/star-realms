@@ -23,6 +23,7 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
         set = CardSet.COLONY_WARS;
         shield = 5;
         text = "Discard up to two cards. Gain 2 Trade or 2 Combat for each card discarded this way. Ally: Draw a card.";
+        autoAlly = false;
     }
 
     @Override

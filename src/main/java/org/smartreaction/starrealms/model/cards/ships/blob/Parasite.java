@@ -17,6 +17,7 @@ public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat OR Acquire a card of six or less for free; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

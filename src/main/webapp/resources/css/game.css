@@ -362,12 +362,12 @@
 }
 
 .attackButton {
-    background: #f52e2e;
-    background-image: -webkit-linear-gradient(top, #f52e2e, #b82b2b);
-    background-image: -moz-linear-gradient(top, #f52e2e, #b82b2b);
-    background-image: -ms-linear-gradient(top, #f52e2e, #b82b2b);
-    background-image: -o-linear-gradient(top, #f52e2e, #b82b2b);
-    background-image: linear-gradient(to bottom, #f52e2e, #b82b2b);
+    background: #df0e0e;
+    background-image: -webkit-linear-gradient(top, #df0e0e, #a80b0b);
+    background-image: -moz-linear-gradient(top, #df0e0e, #a80b0b);
+    background-image: -ms-linear-gradient(top, #df0e0e, #a80b0b);
+    background-image: -o-linear-gradient(top, #df0e0e, #a80b0b);
+    background-image: linear-gradient(to bottom, #df0e0e, #a80b0b);
     border-radius: 10px;
     font-family: Arial;
     color: #ffffff;

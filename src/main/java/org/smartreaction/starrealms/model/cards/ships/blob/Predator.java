@@ -15,6 +15,7 @@ public class Predator extends Ship implements AlliableCard
         cost = 2;
         set = CardSet.COLONY_WARS;
         text = "Add 4 Combat; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

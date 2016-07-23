@@ -15,6 +15,7 @@ public class MissileMech extends Ship implements AlliableCard
         cost = 6;
         set = CardSet.CORE;
         text = "Add 6 Combat; You may destroy target base; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

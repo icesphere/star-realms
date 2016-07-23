@@ -15,6 +15,7 @@ public class Mothership extends Ship implements AlliableCard
         cost = 7;
         set = CardSet.CORE;
         text = "Add 6 Combat; Draw a card; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

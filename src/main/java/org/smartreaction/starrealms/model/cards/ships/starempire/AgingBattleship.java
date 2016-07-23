@@ -16,6 +16,7 @@ public class AgingBattleship extends Ship implements ScrappableCard, AlliableCar
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 5 Combat; Ally: Draw a card; Scrap: Add 2 Combat; Draw two cards";
+        autoAlly = false;
     }
 
     @Override

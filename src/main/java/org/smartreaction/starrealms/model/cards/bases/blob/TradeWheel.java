@@ -16,6 +16,7 @@ public class TradeWheel extends Base implements AlliableCard
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         shield = 5;
         text = "Add 1 Trade; Ally: Add 2 Combat";
+        autoUse = true;
     }
 
     @Override

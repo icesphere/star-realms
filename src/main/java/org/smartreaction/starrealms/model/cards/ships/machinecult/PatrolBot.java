@@ -17,6 +17,7 @@ public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
         cost = 2;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         text = "Add 2 Trade OR Add 4 Combat; Ally: You may scrap a card in your hand or discard pile";
+        autoAlly = false;
     }
 
     @Override

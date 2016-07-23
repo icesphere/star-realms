@@ -16,6 +16,7 @@ public class StorageSilo extends Base implements AlliableCard
         set = CardSet.COLONY_WARS;
         shield = 3;
         text = "Add 2 Authority; Ally: Add 2 Trade";
+        autoUse = true;
     }
 
     @Override

@@ -17,6 +17,7 @@ public class SpaceStation extends Outpost implements ScrappableCard, AlliableCar
         set = CardSet.CORE;
         shield = 4;
         text = "Add 2 Combat; Ally: Add 2 Combat; Scrap: Add 4 Trade";
+        autoUse = true;
     }
 
     @Override

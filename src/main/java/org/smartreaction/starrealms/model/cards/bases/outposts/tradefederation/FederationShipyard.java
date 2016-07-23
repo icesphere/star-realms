@@ -16,6 +16,7 @@ public class FederationShipyard extends Outpost implements AlliableCard
         set = CardSet.COLONY_WARS;
         shield = 6;
         text = "Add 2 Trade. Ally: Put the next ship or base you acquire this turn on top of your deck.";
+        autoUse = true;
     }
 
     @Override

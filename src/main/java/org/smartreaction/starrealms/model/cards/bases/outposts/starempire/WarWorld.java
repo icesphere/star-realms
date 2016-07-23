@@ -16,6 +16,7 @@ public class WarWorld extends Outpost implements AlliableCard
         set = CardSet.CORE;
         shield = 4;
         text = "Add 3 Combat; Ally: Add 4 Combat";
+        autoUse = true;
     }
 
     @Override

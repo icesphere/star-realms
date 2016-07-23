@@ -15,6 +15,7 @@ public class CommandCenter extends Outpost
         set = CardSet.COLONY_WARS;
         shield = 4;
         text = "Add 2 Trade; Whenever you play a Star Empire ship, gain 2 Combat";
+        autoUse = true;
     }
 
     @Override

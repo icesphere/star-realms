@@ -15,6 +15,7 @@ public class LoyalColony extends Base
         set = CardSet.COLONY_WARS;
         shield = 6;
         text = "Add 3 Trade. Add 3 Combat. Add 3 Authority.";
+        autoUse = true;
     }
 
     @Override

@@ -17,6 +17,7 @@ public class BlobWheel extends Base implements ScrappableCard
         set = CardSet.CORE;
         shield = 5;
         text = "Add 1 Combat; Scrap: Add 3 Trade";
+        autoUse = true;
     }
 
     @Override

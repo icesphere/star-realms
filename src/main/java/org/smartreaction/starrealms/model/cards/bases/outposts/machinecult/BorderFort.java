@@ -18,6 +18,7 @@ public class BorderFort extends Outpost implements AlliableCard, ChoiceActionCar
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 5;
         text = "Add 1 Trade OR Add 2 Combat; Ally: Scrap a card in your hand or discard pile";
+        autoAlly = false;
     }
 
     @Override

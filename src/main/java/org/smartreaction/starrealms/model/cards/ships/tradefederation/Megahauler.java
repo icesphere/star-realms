@@ -15,6 +15,7 @@ public class Megahauler extends Ship implements AlliableCard
         cost = 7;
         set = CardSet.PROMO_YEAR_1;
         text = "Add 5 Authority; Acquire any ship without paying its cost and put it on top of your deck; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

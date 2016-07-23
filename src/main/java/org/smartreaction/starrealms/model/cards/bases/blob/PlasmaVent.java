@@ -15,6 +15,7 @@ public class PlasmaVent extends Base
         set = CardSet.COLONY_WARS;
         shield = 5;
         text = "Add 4 Combat. When you acquire this card, if you've played a Blob card this turn, you may put this card directly into your hand.";
+        autoUse = true;
     }
 
     @Override

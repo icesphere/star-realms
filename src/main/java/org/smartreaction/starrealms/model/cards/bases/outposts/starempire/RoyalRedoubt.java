@@ -16,6 +16,7 @@ public class RoyalRedoubt extends Outpost implements AlliableCard
         set = CardSet.CORE;
         shield = 6;
         text = "Add 3 Combat; Ally: Target opponent discards a card";
+        autoUse = true;
     }
 
     @Override

@@ -15,6 +15,7 @@ public class BattleMech extends Ship implements AlliableCard
         cost = 5;
         set = CardSet.CORE;
         text = "Add 4 Combat; You may scrap a card in your hand or discard pile; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

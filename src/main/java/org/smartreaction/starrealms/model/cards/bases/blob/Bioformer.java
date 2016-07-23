@@ -16,6 +16,7 @@ public class Bioformer extends Base implements ScrappableCard
         set = CardSet.COLONY_WARS;
         shield = 4;
         text = "Add 3 Combat; Scrap: Add 3 Trade";
+        autoUse = true;
     }
 
     @Override

@@ -15,6 +15,7 @@ public class BlobFighter extends Ship implements AlliableCard
         cost = 1;
         set = CardSet.CORE;
         text = "Add 3 Combat; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

@@ -7,6 +7,8 @@ import org.smartreaction.starrealms.model.players.Player;
 public abstract class Base extends Card {
     protected boolean used;
 
+    protected boolean autoUse;
+
     public boolean isUsed() {
         return used;
     }
@@ -51,5 +53,13 @@ public abstract class Base extends Card {
         }
 
         return false;
+    }
+
+    public boolean isAutoUse() {
+        return autoUse;
+    }
+
+    public void setAutoUse(boolean autoUse) {
+        this.autoUse = autoUse;
     }
 }

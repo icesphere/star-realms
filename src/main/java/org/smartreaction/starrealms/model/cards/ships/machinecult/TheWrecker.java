@@ -15,6 +15,7 @@ public class TheWrecker extends Ship implements AlliableCard
         cost = 7;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; You may scrap up to two cards in your hand and/or discard pile; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

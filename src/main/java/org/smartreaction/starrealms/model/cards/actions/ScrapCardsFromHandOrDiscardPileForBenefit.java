@@ -10,6 +10,12 @@ public class ScrapCardsFromHandOrDiscardPileForBenefit extends ScrapCardsFromHan
         this.scrapCardsForBenefitActionCard = card;
     }
 
+    public ScrapCardsFromHandOrDiscardPileForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text, boolean optional) {
+        super(numCardsToScrap, text);
+        this.scrapCardsForBenefitActionCard = card;
+        this.optional = optional;
+    }
+
     @Override
     public boolean processActionResult(Player player, ActionResult result) {
         boolean doneWithAction = super.processActionResult(player, result);

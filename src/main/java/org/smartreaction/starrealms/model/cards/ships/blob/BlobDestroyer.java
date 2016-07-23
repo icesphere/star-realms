@@ -15,6 +15,7 @@ public class BlobDestroyer extends Ship implements AlliableCard
         cost = 4;
         set = CardSet.CORE;
         text = "Add 6 Combat; Ally: You may destroy target base and/or scrap a card in the trade row";
+        autoAlly = false;
     }
 
     @Override

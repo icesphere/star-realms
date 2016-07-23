@@ -15,6 +15,7 @@ public class BlobCarrier extends Ship implements AlliableCard
         cost = 6;
         set = CardSet.CORE;
         text = "Add 7 Combat; Ally: Acquire any ship without paying its cost and put it on top of your deck";
+        autoAlly = false;
     }
 
     @Override

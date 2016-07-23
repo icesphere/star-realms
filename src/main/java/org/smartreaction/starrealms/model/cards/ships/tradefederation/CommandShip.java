@@ -15,6 +15,7 @@ public class CommandShip extends Ship implements AlliableCard
         cost = 8;
         set = CardSet.CORE;
         text = "Add 4 Authority; Add 5 Combat; Draw 2 Cards; Ally: You may destroy target base";
+        autoAlly = false;
     }
 
     @Override

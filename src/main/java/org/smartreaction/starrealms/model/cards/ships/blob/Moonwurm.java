@@ -15,6 +15,7 @@ public class Moonwurm extends Ship implements AlliableCard
         cost = 7;
         set = CardSet.COLONY_WARS;
         text = "Add 8 Combat; Draw a card; Ally: Acquire a card of two or less for free and put it into your hand";
+        autoAlly = false;
     }
 
     @Override

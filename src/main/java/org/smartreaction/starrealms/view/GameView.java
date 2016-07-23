@@ -411,6 +411,7 @@ public class GameView implements Serializable {
 
     public void doNotUseAction() {
         getPlayer().actionResult(getAction(), ActionResult.doNotUseActionResult());
+        sendGameMessageToPlayer("refresh_game_page");
     }
 
     public void doneWithAction() {
@@ -421,6 +422,10 @@ public class GameView implements Serializable {
     public void scrapCard(Card card) {
         getPlayer().scrapCardInPlayForBenefit(card);
         sendGameMessageToAll("refresh_game_page");
+    }
+
+    public boolean isOpponentAttackable() {
+        return getPlayer().isYourTurn() && getPlayer().getCombat() > 0 && getOpponent().getOutposts().isEmpty();
     }
 
     public void attackOpponentBase(Base base) {

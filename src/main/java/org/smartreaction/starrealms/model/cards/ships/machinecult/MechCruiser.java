@@ -15,6 +15,7 @@ public class MechCruiser extends Ship implements AlliableCard
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; You may scrap a card in your hand or discard pile; Ally: Destroy target base";
+        autoAlly = false;
     }
 
     @Override

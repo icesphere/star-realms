@@ -15,6 +15,7 @@ public class Obliterator extends Ship implements AlliableCard
         cost = 6;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 7 Combat; If your opponent has two or more bases in play, gain 6 Combat; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

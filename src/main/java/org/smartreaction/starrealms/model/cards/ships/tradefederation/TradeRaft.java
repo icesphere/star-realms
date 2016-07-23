@@ -16,6 +16,7 @@ public class TradeRaft extends Ship implements AlliableCard, ScrappableCard
         cost = 1;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 1 Trade; Ally: Draw a card; Scrap: Add 1 Trade";
+        autoAlly = false;
     }
 
     @Override

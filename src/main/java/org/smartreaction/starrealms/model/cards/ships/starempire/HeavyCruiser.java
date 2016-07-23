@@ -15,6 +15,7 @@ public class HeavyCruiser extends Ship implements AlliableCard
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 4 Combat; Draw a card; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

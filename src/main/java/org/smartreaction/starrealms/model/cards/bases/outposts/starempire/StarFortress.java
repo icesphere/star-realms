@@ -16,6 +16,7 @@ public class StarFortress extends Outpost implements AlliableCard
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 6;
         text = "Add 3 Combat; Draw a card, then discard a card; Ally: Draw a card, then discard a card";
+        autoAlly = false;
     }
 
     @Override

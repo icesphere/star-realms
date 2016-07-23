@@ -16,6 +16,8 @@ public class CentralOffice extends Base implements AlliableCard
         set = CardSet.CORE;
         shield = 6;
         text = "Add 2 Trade; You may put the next ship you acquire this turn on top of your deck; Ally: Draw a card";
+        autoAlly = false;
+        autoUse = true;
     }
 
     @Override

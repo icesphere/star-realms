@@ -15,6 +15,7 @@ public class Peacekeeper extends Ship implements AlliableCard
         cost = 6;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; Add 6 Authority; Ally: Draw a card";
+        autoAlly = false;
     }
 
     @Override

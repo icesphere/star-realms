@@ -15,6 +15,7 @@ public class WarningBeacon extends Outpost
         set = CardSet.COLONY_WARS;
         shield = 2;
         text = "Add 2 Combat. When you acquire this card, if you've played a Machine Cult card this turn, you may put this card directly into your hand.";
+        autoUse = true;
     }
 
     @Override

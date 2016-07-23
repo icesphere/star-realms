@@ -361,3 +361,28 @@
     padding: 5px 20px;
 }
 
+.attackButton {
+    background: #f52e2e;
+    background-image: -webkit-linear-gradient(top, #f52e2e, #b82b2b);
+    background-image: -moz-linear-gradient(top, #f52e2e, #b82b2b);
+    background-image: -ms-linear-gradient(top, #f52e2e, #b82b2b);
+    background-image: -o-linear-gradient(top, #f52e2e, #b82b2b);
+    background-image: linear-gradient(to bottom, #f52e2e, #b82b2b);
+    border-radius: 10px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 2px 10px 2px 10px;
+    text-decoration: none;
+}
+
+.attackButton:hover {
+    background: #fa5252;
+    background-image: -webkit-linear-gradient(top, #fa5252, #d13a3a);
+    background-image: -moz-linear-gradient(top, #fa5252, #d13a3a);
+    background-image: -ms-linear-gradient(top, #fa5252, #d13a3a);
+    background-image: -o-linear-gradient(top, #fa5252, #d13a3a);
+    background-image: linear-gradient(to bottom, #fa5252, #d13a3a);
+    text-decoration: none;
+}
+

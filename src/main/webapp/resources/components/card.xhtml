@@ -20,7 +20,7 @@
             <p:commandLink value="Scrap" style="margin-left: 10px;"
                            rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}"
                            actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
-            <p:commandLink value="Attack" styleClass="red" style="margin-left: 10px;"
+            <p:commandLink value="Attack" styleClass="attackButton" style="margin-left: 10px; position: relative; top: -1px;"
                            rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
                            actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"
             />

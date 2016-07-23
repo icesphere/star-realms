@@ -23,7 +23,7 @@
 
         <div style="clear: both; float: left; padding-top: 10px;">
             <h:outputText value="Authority: #{cc.attrs.player.authority}"/>
-            <p:commandLink value="Attack" style="margin-left: 10px;" styleClass="red"
+            <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton"
                            actionListener="#{gameView.attackOpponent}" process="@this"
                            rendered="#{gameView.player.yourTurn and gameView.player.combat gt 0 and cc.attrs.isOpponent}"/>
         </div>

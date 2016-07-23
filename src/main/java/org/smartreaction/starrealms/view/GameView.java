@@ -230,6 +230,7 @@ public class GameView implements Serializable {
                         handleCardClickedForAction(card, source);
                     } else if (card instanceof AlliableCard) {
                         getPlayer().useAlliedAbility((AlliableCard) card);
+                        sendGameMessageToAll("refresh_game_page");
                     }
                 }
             } else if (source.equals(Card.CARD_LOCATION_PLAYER_BASES) || source.equals(Card.CARD_LOCATION_OPPONENT_BASES)) {

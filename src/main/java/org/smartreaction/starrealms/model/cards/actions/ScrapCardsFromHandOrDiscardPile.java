@@ -47,7 +47,7 @@ public class ScrapCardsFromHandOrDiscardPile extends Action {
     public boolean processActionResult(Player player, ActionResult result) {
         if (result.isDoneWithAction()) {
             selectedCardsFromHand.forEach(player::scrapCardFromHand);
-            selectedCardsFromDiscard.forEach(player::discardCardFromHand);
+            selectedCardsFromDiscard.forEach(player::scrapCardFromDiscard);
             return true;
         } else {
             Card selectedCard = result.getSelectedCard();
@@ -77,7 +77,8 @@ public class ScrapCardsFromHandOrDiscardPile extends Action {
 
     @Override
     public boolean isShowDone() {
-        return getTotalSelectedCards() > 0 && (optional || getTotalSelectedCards() == numCardsToScrap);
+        int totalSelectedCards = getTotalSelectedCards();
+        return totalSelectedCards > 0 && totalSelectedCards <= numCardsToScrap && (optional || totalSelectedCards == numCardsToScrap);
     }
 
     protected int getTotalSelectedCards() {

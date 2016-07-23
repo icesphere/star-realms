@@ -12,7 +12,7 @@ public class DestroyOpponentBase extends Action {
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
         return cardLocation.equals(Card.CARD_LOCATION_OPPONENT_BASES)
-                && (player.getOpponent().getOutposts().isEmpty() || !card.isOutpost());
+                && (player.getOpponent().getOutposts().isEmpty() || card.isOutpost());
     }
 
     @Override

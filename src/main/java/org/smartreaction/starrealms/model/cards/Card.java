@@ -1,12 +1,13 @@
 package org.smartreaction.starrealms.model.cards;
 
 import org.smartreaction.starrealms.model.CardSet;
-import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
+import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.cards.ships.Viper;
+import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -27,6 +28,8 @@ public abstract class Card {
     public static String CARD_LOCATION_DISCARD = "discard";
     public static String CARD_LOCATION_PLAYER_BASES = "playerBases";
     public static String CARD_LOCATION_OPPONENT_BASES = "opponentBases";
+    public static String CARD_LOCATION_PLAYER_HEROES = "playerHeroes";
+    public static String CARD_LOCATION_OPPONENT_HEROES = "opponentHeroes";
     public static String CARD_LOCATION_TRADE_ROW = "tradeRow";
     public static String CARD_LOCATION_EXPLORERS = "explorers";
 
@@ -90,6 +93,10 @@ public abstract class Card {
         return this instanceof Base;
     }
 
+    public boolean isHero() {
+        return this instanceof Hero;
+    }
+
     public boolean isOutpost() {
         return this instanceof Outpost;
     }
@@ -142,12 +149,12 @@ public abstract class Card {
         }
 
         final Card other = (Card) obj;
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.id, other.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name);
+        return Objects.hash(this.id);
     }
 
     public boolean isAlly(Card card) {

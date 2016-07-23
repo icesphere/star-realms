@@ -363,7 +363,7 @@ public abstract class Player {
     }
 
     private void playerCardScrapped(Card card) {
-        if (!card.isStarterCard() && card instanceof Explorer) {
+        if (!card.isStarterCard() && !(card instanceof Explorer)) {
             game.getTradeRowCardsScrapped().add(card);
         }
         cardRemovedFromPlay(card);
@@ -375,6 +375,8 @@ public abstract class Player {
             inPlay.remove(card);
             if (card instanceof Base) {
                 bases.remove(card);
+            } else if (card instanceof Hero) {
+                heroes.remove(card);
             }
             playerCardScrapped(card);
             ((ScrappableCard) card).cardScrapped(this);
@@ -394,12 +396,8 @@ public abstract class Player {
     }
 
     public void addCardToTopOfDeck(Card card) {
-        if (card instanceof Hero) {
-            heroes.add((Hero) card);
-        } else {
-            deck.add(0, card);
-            getGame().gameLog(card.getName() + " added to top of deck");
-        }
+        nextShipOrBaseToTopOfDeck = true;
+        cardAcquired(card);
     }
 
     public void addCardToHand(Card card) {

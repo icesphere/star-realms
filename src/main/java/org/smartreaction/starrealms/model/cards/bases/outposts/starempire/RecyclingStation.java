@@ -43,7 +43,7 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
             player.addTrade(1);
         } else {
             player.getGame().gameLog("Chose Discard up to two cards, then draw that many cards");
-            player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards to then draw that many cards"));
+            player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards to then draw that many cards", true));
         }
     }
 }

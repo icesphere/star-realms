@@ -66,7 +66,7 @@ public class DiscardCardsFromHand extends Action {
 
     @Override
     public boolean isShowDone() {
-        return selectedCards.size() > 0 && (optional || selectedCards.size() == numCardsToDiscard);
+        return selectedCards.size() > 0 && selectedCards.size() <= numCardsToDiscard && (optional || selectedCards.size() == numCardsToDiscard);
     }
 
     @Override

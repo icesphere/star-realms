@@ -3,10 +3,13 @@ package org.smartreaction.starrealms.view;
 import org.apache.commons.lang3.StringUtils;
 import org.smartreaction.starrealms.model.ChatMessage;
 import org.smartreaction.starrealms.model.Game;
+import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrappableCard;
-import org.smartreaction.starrealms.model.cards.actions.*;
+import org.smartreaction.starrealms.model.cards.actions.Action;
+import org.smartreaction.starrealms.model.cards.actions.ActionResult;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromDiscardPile;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromHandOrDiscardPile;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.players.Player;
@@ -81,11 +84,18 @@ public class GameView implements Serializable {
     }
 
     public String getTradeRowCardClass(Card card) {
+        String cardClass = "";
+
         if (highlightTradeRowCard(card)) {
-            return "buyableCard";
+            cardClass = "buyableCard";
         }
 
-        return "";
+        Action action = getAction();
+        if (action != null && action.isCardSelected(card)) {
+            cardClass += " selected";
+        }
+
+        return cardClass;
     }
 
     public boolean highlightTradeRowCard(Card card) {
@@ -106,9 +116,8 @@ public class GameView implements Serializable {
         }
 
         Action action = getAction();
-
         if (action != null && action.isCardSelected(card)) {
-            cardClass += " selectedCard";
+            cardClass += " selected";
         }
 
         return cardClass;
@@ -160,7 +169,7 @@ public class GameView implements Serializable {
     }
 
     public List<Card> getCardsForPlayArea() {
-        return getGame().getCurrentPlayer().getInPlay().stream().filter(c -> !c.isBase()).collect(Collectors.toList());
+        return getGame().getCurrentPlayer().getInPlay().stream().filter(c -> !c.isBase() && !c.isHero()).collect(Collectors.toList());
     }
 
     public void updateCardView() {
@@ -197,7 +206,7 @@ public class GameView implements Serializable {
         } else  {
             String cardId = paramValues.get("cardId");
 
-            if (source.equals("hand")) {
+            if (source.equals(Card.CARD_LOCATION_HAND)) {
                 Card card = findCardById(getPlayer().getHand(), cardId);
                 if (highlightCard(card, source)) {
                     if (getAction() != null) {
@@ -207,7 +216,23 @@ public class GameView implements Serializable {
                         refreshGamePageWithCheckForAction();
                     }
                 }
-            } else if (source.equals("playerBases") || source.equals("opponentBases")) {
+            } else if (source.equals(Card.CARD_LOCATION_DISCARD)) {
+                Card card = findCardById(getPlayer().getDiscard(), cardId);
+                if (highlightCard(card, source)) {
+                    if (getAction() != null) {
+                        handleCardClickedForAction(card, source);
+                    }
+                }
+            } else if (source.equals(Card.CARD_LOCATION_PLAY_AREA)) {
+                Card card = findCardById(getCardsForPlayArea(), cardId);
+                if (highlightCard(card, source)) {
+                    if (getAction() != null) {
+                        handleCardClickedForAction(card, source);
+                    } else if (card instanceof AlliableCard) {
+                        getPlayer().useAlliedAbility((AlliableCard) card);
+                    }
+                }
+            } else if (source.equals(Card.CARD_LOCATION_PLAYER_BASES) || source.equals(Card.CARD_LOCATION_OPPONENT_BASES)) {
                 Player player;
                 if (source.equals("opponentBases")) {
                     player = getOpponent();
@@ -279,7 +304,7 @@ public class GameView implements Serializable {
             getPlayer().getOpponent().startTurn();
         }
         if (getPlayer().getOpponent().getCurrentAction() != null) {
-            sendGameMessageToOpponent("show_action");
+            sendGameMessageToOpponent("refresh_game_page");
         } else {
             sendGameMessageToOpponent("refresh_game_page");
         }
@@ -389,10 +414,11 @@ public class GameView implements Serializable {
 
     public void doneWithAction() {
         getPlayer().actionResult(getAction(), ActionResult.doneWithActionResult());
+        sendGameMessageToAll("refresh_game_page");
     }
 
-    public void scrapCard(ScrappableCard card) {
-        card.cardScrapped(getPlayer());
+    public void scrapCard(Card card) {
+        getPlayer().scrapCardInPlayForBenefit(card);
         sendGameMessageToAll("refresh_game_page");
     }
 
@@ -403,6 +429,19 @@ public class GameView implements Serializable {
 
     public boolean isBaseAttackable(Base base) {
         return getPlayer().isYourTurn() && getPlayer().getCombat() >= base.getShield()
-                && (getOpponent().getOutposts().isEmpty() || !base.isOutpost());
+                && (getOpponent().getOutposts().isEmpty() || base.isOutpost());
+    }
+
+    public boolean isShowScrapLink(Card card, String cardLocation) {
+        return getPlayer().isYourTurn() && card.isScrappable() &&
+                (cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA) ||
+                        cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES) ||
+                        cardLocation.equals(Card.CARD_LOCATION_PLAYER_HEROES));
+    }
+
+    public boolean isHighlightDiscardButton() {
+        Action action = getAction();
+        return action != null && getPlayer().isYourTurn() && !getPlayer().getDiscard().isEmpty()
+                && (action instanceof ScrapCardsFromHandOrDiscardPile || action instanceof ScrapCardsFromDiscardPile);
     }
 }

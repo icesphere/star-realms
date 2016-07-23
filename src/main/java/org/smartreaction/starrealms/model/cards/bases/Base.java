@@ -1,7 +1,7 @@
 package org.smartreaction.starrealms.model.cards.bases;
 
+import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.players.Player;
 
 public abstract class Base extends Card {
@@ -36,7 +36,20 @@ public abstract class Base extends Card {
     }
 
     public boolean isActionable(Player player, String cardLocation) {
-        return player.isYourTurn() && (cardLocation.equals(CARD_LOCATION_HAND)
-                || (cardLocation.equals(CARD_LOCATION_PLAYER_BASES) && (!used || this instanceof ScrappableCard)));
+        if (!player.isYourTurn()) {
+            return false;
+        }
+
+        if (cardLocation.equals(Card.CARD_LOCATION_HAND)) {
+            return true;
+        }
+
+        if (cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES)) {
+            if (!isUsed() || (this instanceof AlliableCard && !alliedAbilityUsed && player.cardHasAlly(this))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

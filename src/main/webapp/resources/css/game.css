@@ -264,7 +264,7 @@
 }
 
 .player {
-    background-color: #70B9B9;
+    background-color: #9FCBBB;
 }
 
 .opponent {
@@ -316,7 +316,7 @@
     cursor: pointer;
 }
 
-.selectedCard {
+.selected {
     border: 3px solid #cc00ff !important;
 }
 
@@ -353,5 +353,11 @@
 
 .red {
     color: #ff0000;
+}
+
+.currentActionLabel {
+    color: white;
+    background-color: #ff0000;
+    padding: 5px 20px;
 }
 

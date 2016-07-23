@@ -36,7 +36,7 @@
             </div>
 
             <div class="smallButtonWrapper">
-                <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton"
+                <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton #{gameView.highlightDiscardButton ? 'selected' : ''}"
                                actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard')}"/>
             </div>
 

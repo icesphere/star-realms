@@ -921,7 +921,6 @@ public abstract class BotPlayer extends Player {
         return factionWithLeastCards;
     }
 
-    @Override
     public Card chooseCardFromDiscardToAddToTopOfDeck() {
         List<Card> sortedCards = getDiscard().stream().sorted(cardToBuyScoreDescending).collect(toList());
 

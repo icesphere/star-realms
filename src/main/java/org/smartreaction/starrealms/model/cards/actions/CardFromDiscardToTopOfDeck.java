@@ -3,25 +3,25 @@ package org.smartreaction.starrealms.model.cards.actions;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class CardFromHandToTopOfDeck extends Action {
-    public CardFromHandToTopOfDeck(String text) {
+public class CardFromDiscardToTopOfDeck extends Action {
+    public CardFromDiscardToTopOfDeck(String text) {
         this.text = text;
     }
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_HAND);
+        return cardLocation.equals(Card.CARD_LOCATION_DISCARD);
     }
 
     @Override
     public boolean processAction(Player player) {
-        return !player.getHand().isEmpty();
+        return !player.getDiscard().isEmpty();
     }
 
     @Override
     public boolean processActionResult(Player player, ActionResult result) {
         Card card = result.getSelectedCard();
-        player.getHand().remove(card);
+        player.getDiscard().remove(card);
         player.addCardToTopOfDeck(card);
         return true;
     }

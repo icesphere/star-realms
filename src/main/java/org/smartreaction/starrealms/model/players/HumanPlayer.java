@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.players;
 
 import org.smartreaction.starrealms.model.User;
-import org.smartreaction.starrealms.model.cards.Card;
 
 public class HumanPlayer extends Player {
     private User user;
@@ -13,12 +12,6 @@ public class HumanPlayer extends Player {
 
     public User getUser() {
         return user;
-    }
-
-    @Override
-    public Card chooseCardFromDiscardToAddToTopOfDeck() {
-        //todo
-        return null;
     }
 
     @Override

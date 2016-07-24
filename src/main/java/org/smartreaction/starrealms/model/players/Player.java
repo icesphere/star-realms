@@ -636,16 +636,6 @@ public abstract class Player {
         return getShuffles() + 1;
     }
 
-    public void addCardFromDiscardToTopOfDeck() {
-        Card card = chooseCardFromDiscardToAddToTopOfDeck();
-        if (card != null) {
-            discard.remove(card);
-            addCardToTopOfDeck(card);
-        }
-    }
-
-    public abstract Card chooseCardFromDiscardToAddToTopOfDeck();
-
     public boolean isPreventFirstDamage() {
         return preventFirstDamage;
     }

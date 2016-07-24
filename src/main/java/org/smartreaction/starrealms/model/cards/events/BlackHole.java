@@ -24,20 +24,12 @@ public class BlackHole extends Event implements DiscardCardsForBenefitActionCard
     @Override
     public void cardsDiscarded(Player player, List<Card> discardedCards) {
         if (discardedCards.size() == 1) {
-            if (player.getAuthority() <= 4) {
-                player.setAuthority(1);
-            } else {
-                player.reduceAuthority(4);
-            }
+            player.loseAuthorityFromEvent(4);
         }
     }
 
     @Override
     public void onChoseDoNotUse(Player player) {
-        if (player.getAuthority() <= 8) {
-            player.setAuthority(1);
-        } else {
-            player.reduceAuthority(8);
-        }
+        player.loseAuthorityFromEvent(8);
     }
 }

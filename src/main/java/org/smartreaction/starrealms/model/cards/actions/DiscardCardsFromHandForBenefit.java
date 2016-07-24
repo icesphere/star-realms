@@ -27,7 +27,7 @@ public class DiscardCardsFromHandForBenefit extends DiscardCardsFromHand {
     }
 
     @Override
-    public void onChoseDoNotUse(Player player) {
+    public void onNotUsed(Player player) {
         discardCardsForBenefitActionCard.onChoseDoNotUse(player);
     }
 }

@@ -1006,7 +1006,6 @@ public abstract class BotPlayer extends Player {
         return 0;
     }
 
-    @Override
     public void handleBlackHole() {
         //todo
         /*boolean optionalDiscard = getAuthority() >= 10;
@@ -1019,7 +1018,6 @@ public abstract class BotPlayer extends Player {
         }*/
     }
 
-    @Override
     public void handleBombardment() {
         if (!getBases().isEmpty()) {
             List<Base> sortedBases = getBases().stream().sorted(destroyBaseScoreAscending).collect(toList());

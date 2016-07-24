@@ -720,8 +720,6 @@ public abstract class Player {
         return factionWithMostCards;
     }
 
-    public abstract void handleBombardment();
-
     public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
 
     public abstract void handleDeathWorld();
@@ -852,6 +850,7 @@ public abstract class Player {
         if (action.processAction(this)) {
             currentAction = action;
         } else {
+            action.onNotUsed(this);
             resolveActions();
         }
     }
@@ -887,7 +886,7 @@ public abstract class Player {
                 || result.isDoNotUse() || result.isDoneWithAction()) {
             if (result.isDoNotUse() || action.processActionResult(this, result)) {
                 if (result.isDoNotUse()) {
-                    currentAction.onChoseDoNotUse(this);
+                    currentAction.onNotUsed(this);
                 }
                 currentAction = null;
                 resolveActions();
@@ -918,5 +917,13 @@ public abstract class Player {
 
     public int getNumCardsScrappedThisTurn() {
         return numCardsScrappedThisTurn;
+    }
+
+    public void loseAuthorityFromEvent(int authorityLost) {
+        if (authority <= authorityLost) {
+            authority = 1;
+        } else {
+            reduceAuthority(authorityLost);
+        }
     }
 }

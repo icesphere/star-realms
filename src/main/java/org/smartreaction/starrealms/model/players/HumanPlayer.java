@@ -21,11 +21,6 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void handleBombardment() {
-
-    }
-
-    @Override
     public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
 
     }

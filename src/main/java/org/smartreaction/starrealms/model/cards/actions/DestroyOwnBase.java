@@ -4,20 +4,22 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class DestroyOpponentBase extends Action {
-    public DestroyOpponentBase(String text) {
+public class DestroyOwnBase extends Action {
+    private DestroyOwnBaseActionCard destroyOwnBaseActionCard;
+
+    public DestroyOwnBase(DestroyOwnBaseActionCard destroyOwnBaseActionCard, String text) {
+        this.destroyOwnBaseActionCard = destroyOwnBaseActionCard;
         this.text = text;
     }
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_OPPONENT_BASES)
-                && (player.getOpponent().getOutposts().isEmpty() || card.isOutpost());
+        return cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES);
     }
 
     @Override
     public boolean processAction(Player player) {
-        return player.getOpponent().getBases().size() != 0;
+        return player.getBases().size() != 0;
     }
 
     @Override
@@ -29,5 +31,10 @@ public class DestroyOpponentBase extends Action {
     @Override
     public boolean isShowDoNotUse() {
         return true;
+    }
+
+    @Override
+    public void onNotUsed(Player player) {
+        destroyOwnBaseActionCard.onNotUsed(player);
     }
 }

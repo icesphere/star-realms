@@ -39,5 +39,5 @@ public abstract class Action {
         return false;
     }
 
-    public void onChoseDoNotUse(Player player) {}
+    public void onNotUsed(Player player) {}
 }

@@ -710,7 +710,9 @@ public abstract class Player {
         return factionWithMostCards;
     }
 
-    public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
+    public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
+        addAction(new DrawCardsAndPutSomeBackOnTopOfDeck(cardsToDraw, cardsToPutBack));
+    }
 
     public void blobAlliedUntilEndOfTurn() {
         blobAlliedUntilEndOfTurn = true;

@@ -72,10 +72,12 @@
                                             <div style="padding-top: 15px; font-size: 18px;">
                                                 <h:outputText value="#{gameView.getFactionDisplayName(gameView.cardToView.faction)}"/>
                                             </div>
-                                            <div style="padding-top: 15px;">
-                                                <h:outputText value="Cost:" style="padding-right: 10px;"/>
-                                                <h:outputText value="$#{gameView.cardToView.cost}"/>
-                                            </div>
+                                            <h:panelGroup rendered="#{!gameView.cardToView.gambit}">
+                                                <div style="padding-top: 15px;">
+                                                    <h:outputText value="Cost:" style="padding-right: 10px;"/>
+                                                    <h:outputText value="$#{gameView.cardToView.cost}"/>
+                                                </div>
+                                            </h:panelGroup>
                                             <h:panelGroup layout="block" rendered="#{gameView.cardToView.base}" style="padding-top: 15px;">
                                                 <h:outputText value="#{gameView.cardToView.shield} Defense"/>
                                                 <h:outputText value="(Outpost)" style="padding-left: 10px;" rendered="#{gameView.cardToView.outpost}"/>

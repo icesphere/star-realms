@@ -42,6 +42,11 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
     }
 
     @Override
+    public void onChoseDoNotUse(Player player) {
+
+    }
+
+    @Override
     public void cardAllied(Player player) {
         player.drawCard();
     }

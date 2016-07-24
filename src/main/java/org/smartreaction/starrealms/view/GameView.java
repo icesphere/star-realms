@@ -154,6 +154,10 @@ public class GameView implements Serializable {
     }
 
     public String getFactionDisplayName(Faction faction) {
+        if (faction == null) {
+            return "";
+        }
+
         switch (faction) {
             case BLOB:
                 return "Blob";

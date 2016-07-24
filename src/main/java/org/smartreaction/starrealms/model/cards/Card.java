@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model.cards;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
+import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
@@ -196,5 +197,9 @@ public abstract class Card {
 
     public void setAutoAlly(boolean autoAlly) {
         this.autoAlly = autoAlly;
+    }
+
+    public boolean isGambit() {
+        return this instanceof Gambit;
     }
 }

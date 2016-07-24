@@ -1375,6 +1375,10 @@ public class GameService {
             card = getHeroFromName(cardName);
         }
 
+        if (card == null) {
+            card = getGambitFromName(cardName);
+        }
+
         return card;
     }
 

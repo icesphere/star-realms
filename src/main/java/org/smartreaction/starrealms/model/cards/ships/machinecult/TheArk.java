@@ -41,4 +41,9 @@ public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefit
     public void cardsScrapped(Player player, List<Card> scrappedCards) {
         player.drawCards(scrappedCards.size());
     }
+
+    @Override
+    public boolean isCardApplicable(Card card) {
+        return true;
+    }
 }

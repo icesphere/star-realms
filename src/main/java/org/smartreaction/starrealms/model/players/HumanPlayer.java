@@ -17,16 +17,13 @@ public class HumanPlayer extends Player {
 
     @Override
     public Card chooseCardFromDiscardToAddToTopOfDeck() {
+        //todo
         return null;
     }
 
     @Override
     public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
-
-    }
-
-    @Override
-    public void handleDeathWorld() {
+        //todo
 
     }
 }

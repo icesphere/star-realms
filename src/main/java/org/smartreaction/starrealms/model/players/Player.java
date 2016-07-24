@@ -722,8 +722,6 @@ public abstract class Player {
 
     public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
 
-    public abstract void handleDeathWorld();
-
     public void blobAlliedUntilEndOfTurn() {
         blobAlliedUntilEndOfTurn = true;
     }

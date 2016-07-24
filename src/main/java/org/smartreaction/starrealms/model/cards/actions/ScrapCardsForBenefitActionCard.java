@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ScrapCardsForBenefitActionCard {
     void cardsScrapped(Player player, List<Card> scrappedCards);
+    boolean isCardApplicable(Card card);
 }

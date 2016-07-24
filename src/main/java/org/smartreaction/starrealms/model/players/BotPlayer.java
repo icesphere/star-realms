@@ -1046,7 +1046,6 @@ public abstract class BotPlayer extends Player {
         }
     }
 
-    @Override
     public void handleDeathWorld() {
         if (!getDiscard().isEmpty()) {
             List<Card> sortedDiscard = getDiscard().stream().filter(c -> c.isTradeFederation() || c.isStarEmpire() || c.isMachineCult()).sorted(cardToBuyScoreAscending).collect(toList());

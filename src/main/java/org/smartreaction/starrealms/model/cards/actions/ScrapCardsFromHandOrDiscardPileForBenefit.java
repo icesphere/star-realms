@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.model.cards.actions;
 
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class ScrapCardsFromHandOrDiscardPileForBenefit extends ScrapCardsFromHandOrDiscardPile {
@@ -14,6 +15,11 @@ public class ScrapCardsFromHandOrDiscardPileForBenefit extends ScrapCardsFromHan
         super(numCardsToScrap, text);
         this.scrapCardsForBenefitActionCard = card;
         this.optional = optional;
+    }
+
+    @Override
+    public boolean isCardActionable(Card card, String cardLocation, Player player) {
+        return super.isCardActionable(card, cardLocation, player) && scrapCardsForBenefitActionCard.isCardApplicable(card);
     }
 
     @Override

@@ -38,4 +38,6 @@ public abstract class Action {
     public boolean isCardSelected(Card card) {
         return false;
     }
+
+    public void onChoseDoNotUse(Player player) {}
 }

@@ -37,6 +37,11 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
     }
 
     @Override
+    public void onChoseDoNotUse(Player player) {
+
+    }
+
+    @Override
     public void actionChoiceMade(Player player, int choice) {
         if (choice == 1) {
             player.getGame().gameLog("Chose Add 1 Trade");

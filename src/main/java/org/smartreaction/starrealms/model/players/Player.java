@@ -82,6 +82,8 @@ public abstract class Player {
 
     private boolean gainTwoCombatWhenStarEmpireShipPlayed;
 
+    private int numCardsScrappedThisTurn;
+
     private Set<Faction> factionsPlayedThisTurn = new HashSet<>();
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
@@ -252,6 +254,8 @@ public abstract class Player {
         tradeFederationAlliedUntilEndOfTurn = false;
         machineCultAlliedUntilEndOfTurn = false;
 
+        numCardsScrappedThisTurn = 0;
+
         factionsPlayedThisTurn.clear();
 
         played.clear();
@@ -366,6 +370,7 @@ public abstract class Player {
             game.getTradeRowCardsScrapped().add(card);
         }
         cardRemovedFromPlay(card);
+        numCardsScrappedThisTurn++;
     }
 
     public void scrapCardInPlayForBenefit(Card card) {
@@ -715,8 +720,6 @@ public abstract class Player {
         return factionWithMostCards;
     }
 
-    public abstract void handleBlackHole();
-
     public abstract void handleBombardment();
 
     public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
@@ -883,6 +886,9 @@ public abstract class Player {
         if (!result.getSelectedCards().isEmpty() || result.getChoiceSelected() != null
                 || result.isDoNotUse() || result.isDoneWithAction()) {
             if (result.isDoNotUse() || action.processActionResult(this, result)) {
+                if (result.isDoNotUse()) {
+                    currentAction.onChoseDoNotUse(this);
+                }
                 currentAction = null;
                 resolveActions();
             }
@@ -908,5 +914,9 @@ public abstract class Player {
         }
 
         resolveActions();
+    }
+
+    public int getNumCardsScrappedThisTurn() {
+        return numCardsScrappedThisTurn;
     }
 }

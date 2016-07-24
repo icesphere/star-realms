@@ -21,11 +21,6 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void handleBlackHole() {
-
-    }
-
-    @Override
     public void handleBombardment() {
 
     }

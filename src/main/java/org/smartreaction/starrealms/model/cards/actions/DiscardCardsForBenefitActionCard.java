@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DiscardCardsForBenefitActionCard {
     void cardsDiscarded(Player player, List<Card> discardedCards);
+    void onChoseDoNotUse(Player player);
 }

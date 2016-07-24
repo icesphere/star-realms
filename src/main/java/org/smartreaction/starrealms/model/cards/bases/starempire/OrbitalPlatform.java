@@ -33,4 +33,9 @@ public class OrbitalPlatform extends Base implements DiscardCardsForBenefitActio
             player.drawCard();
         }
     }
+
+    @Override
+    public void onChoseDoNotUse(Player player) {
+
+    }
 }

@@ -6,6 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 public class UnlikelyAlliance extends Gambit implements ScrappableCard {
     public UnlikelyAlliance() {
         name = "Unlikely Alliance";
+        text = "Draw 2 cards";
     }
 
     @Override

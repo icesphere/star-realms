@@ -6,6 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 public class BoldRaid extends Gambit implements ScrappableCard {
     public BoldRaid() {
         name = "Bold Raid";
+        text = "Scrap: Destroy target Base. Draw a card";
     }
 
     @Override

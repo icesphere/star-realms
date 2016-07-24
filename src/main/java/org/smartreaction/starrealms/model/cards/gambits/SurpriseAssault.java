@@ -6,6 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 public class SurpriseAssault extends Gambit implements ScrappableCard {
     public SurpriseAssault() {
         name = "Surprise Assault";
+        text = "Scrap: Add 8 Combat";
     }
 
     @Override

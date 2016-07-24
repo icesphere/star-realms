@@ -6,6 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 public class RiseToPower extends Gambit implements ScrappableCard {
     public RiseToPower() {
         name = "Rise to Power";
+        text = "Add 8 Authority. Draw a card.";
     }
 
     @Override

@@ -10,13 +10,10 @@ public class FreeCardFromTradeRow extends Action {
 
     private String destination;
 
-    public FreeCardFromTradeRow(String text) {
-        this.text = text;
-    }
-
     public FreeCardFromTradeRow(Integer maxCost, String text) {
         this.maxCost = maxCost;
         this.text = text;
+        this.destination = Card.CARD_LOCATION_DISCARD;
     }
 
     public FreeCardFromTradeRow(Integer maxCost, String text, String destination) {

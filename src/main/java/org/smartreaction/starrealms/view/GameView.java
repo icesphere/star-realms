@@ -6,10 +6,7 @@ import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.actions.Action;
-import org.smartreaction.starrealms.model.cards.actions.ActionResult;
-import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromDiscardPile;
-import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromHandOrDiscardPile;
+import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
@@ -456,6 +453,6 @@ public class GameView implements Serializable {
     public boolean isHighlightDiscardButton() {
         Action action = getAction();
         return action != null && getPlayer().isYourTurn() && !getPlayer().getDiscard().isEmpty()
-                && (action instanceof ScrapCardsFromHandOrDiscardPile || action instanceof ScrapCardsFromDiscardPile);
+                && (action instanceof SelectFromDiscardAction);
     }
 }

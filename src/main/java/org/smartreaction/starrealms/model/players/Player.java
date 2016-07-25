@@ -577,7 +577,7 @@ public abstract class Player {
         }
 
         for (Card c : inPlay) {
-            if (c != card && c.isAlly(card)) {
+            if (!c.equals(card) && c.isAlly(card)) {
                 return true;
             }
         }
@@ -902,6 +902,13 @@ public abstract class Player {
         for (Base base : bases) {
             if (base.isAutoUse()) {
                 base.useBase(this);
+            }
+        }
+
+        if (!gambits.isEmpty()) {
+            List<Gambit> everyTurnGambits = getEveryTurnGambits();
+            for (Gambit gambit : everyTurnGambits) {
+                ((EveryTurnGambit) gambit).everyTurnAbility(this);
             }
         }
 

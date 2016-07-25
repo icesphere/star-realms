@@ -6,7 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrapCardsFromDiscardPile extends Action {
+public class ScrapCardsFromDiscardPile extends Action implements SelectFromDiscardAction {
     protected int numCardsToScrap;
 
     protected List<Card> selectedCards = new ArrayList<>(3);

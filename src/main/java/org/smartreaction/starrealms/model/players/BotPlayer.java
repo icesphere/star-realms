@@ -58,13 +58,6 @@ public abstract class BotPlayer extends Player {
     protected Comparator<Hero> useHeroScoreDescending = (h1, h2) -> Integer.compare(getUseHeroScore(h2), getUseHeroScore(h1));
 
     public void takeTurn() {
-
-        List<Gambit> everyTurnGambits = getEveryTurnGambits();
-        for (Gambit gambit : everyTurnGambits) {
-            getGame().gameLog("Active gambit " + gambit.getName());
-            ((EveryTurnGambit) gambit).everyTurnAbility(this);
-        }
-
         boolean endTurn = false;
 
         while (!endTurn) {

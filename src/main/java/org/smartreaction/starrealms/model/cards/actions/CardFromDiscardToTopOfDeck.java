@@ -3,7 +3,7 @@ package org.smartreaction.starrealms.model.cards.actions;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class CardFromDiscardToTopOfDeck extends Action {
+public class CardFromDiscardToTopOfDeck extends Action implements SelectFromDiscardAction {
     public CardFromDiscardToTopOfDeck(String text) {
         this.text = text;
     }

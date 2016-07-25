@@ -402,8 +402,11 @@ public abstract class Player {
     }
 
     public void addCardToTopOfDeck(Card card) {
-        nextShipOrBaseToTopOfDeck = true;
-        cardAcquired(card);
+        if (card instanceof Hero) {
+            heroes.add((Hero) card);
+        } else {
+            deck.add(0, card);
+        }
     }
 
     public void addCardToHand(Card card) {

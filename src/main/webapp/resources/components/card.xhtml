@@ -16,14 +16,17 @@
     <h:panelGroup layout="block" styleClass="card" onmouseover="updateCardView([{name:'cardName', value:'#{cc.attrs.card.name}'}])" onclick="cardClicked([{name:'cardName', value:'#{cc.attrs.card.name}'}, {name:'source', value:'#{cc.attrs.source}'}, {name:'cardId', value:'#{cc.attrs.card.id}'}])">
 
         <div class="cardInfo #{gameView.getActionableCardClass(cc.attrs.card, cc.attrs.source)}">
-            <h:outputText value="#{cc.attrs.card.name}"/>
-            <p:commandLink value="Scrap" style="margin-left: 10px;"
-                           rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}"
-                           actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
-            <p:commandLink value="Attack" styleClass="attackButton" style="margin-left: 10px; position: relative; top: -1px;"
-                           rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
-                           actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"
-            />
+            <div style="float: left;">
+                <h:outputText value="#{cc.attrs.card.name}"/>
+            </div>
+            <div style="float: right;">
+                <p:commandLink value="Scrap" style="position: relative; top: 3px;" styleClass="tinyButton"
+                               rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}"
+                               actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
+                <p:commandLink value="Attack" styleClass="attackButton" style="position: relative; top: 2px;"
+                               rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
+                               actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"/>
+            </div>
         </div>
 
     </h:panelGroup>

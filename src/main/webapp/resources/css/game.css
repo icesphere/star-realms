@@ -223,6 +223,32 @@
     text-decoration: none;
 }
 
+.tinyButton {
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 9px;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    font-size: 11px;
+    padding: 1px 10px 1px 10px;
+    text-decoration: none;
+    border: solid #1f628d 2px;
+}
+
+.tinyButton:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+
 .tradeRowCard {
     clear: both;
     float: left;
@@ -257,6 +283,14 @@
 
 .tradeFederation {
     background-color: #77AAEE;
+}
+
+.event {
+    background-color: #EECC00;
+}
+
+.gambit {
+    background-color: #aa33dd;
 }
 
 .unaligned {
@@ -349,6 +383,7 @@
     clear: both;
     float: left;
     padding-top: 20px;
+    max-width: 478px;
 }
 
 .red {

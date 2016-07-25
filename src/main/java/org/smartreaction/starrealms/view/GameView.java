@@ -12,6 +12,7 @@ import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromDiscardPil
 import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromHandOrDiscardPile;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
+import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
 
@@ -148,6 +149,8 @@ public class GameView implements Serializable {
             cardClass = "unaligned";
         } else if (card instanceof Event) {
             cardClass = "event";
+        } else if (card instanceof Gambit) {
+            cardClass = "gambit";
         }
 
         return cardClass;
@@ -446,7 +449,8 @@ public class GameView implements Serializable {
         return getPlayer().isYourTurn() && card.isScrappable() &&
                 (cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA) ||
                         cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES) ||
-                        cardLocation.equals(Card.CARD_LOCATION_PLAYER_HEROES));
+                        cardLocation.equals(Card.CARD_LOCATION_PLAYER_HEROES) ||
+                        cardLocation.equals(Card.CARD_LOCATION_PLAYER_GAMBITS));
     }
 
     public boolean isHighlightDiscardButton() {

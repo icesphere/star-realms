@@ -58,4 +58,9 @@ public class DrawCardsAndPutSomeBackOnTopOfDeck extends Action {
     public boolean isShowDone() {
         return selectedCards.size() > 0 && selectedCards.size() <= numCardsToPutBack && selectedCards.size() == numCardsToPutBack;
     }
+
+    @Override
+    public boolean isCardSelected(Card card) {
+        return selectedCards.contains(card);
+    }
 }

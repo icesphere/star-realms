@@ -19,6 +19,6 @@ public abstract class Hero extends Card implements ScrappableCard {
 
     @Override
     public boolean isActionable(Player player, String cardLocation) {
-        return player.isYourTurn();
+        return false;
     }
 }

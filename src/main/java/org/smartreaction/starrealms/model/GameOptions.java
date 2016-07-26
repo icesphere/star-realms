@@ -20,12 +20,16 @@ public class GameOptions {
 
     public String includeGambits = "N";
 
+    public String startingTradeRowCards = "";
+
     public String getIncludeBaseSet() {
         return includeBaseSet;
     }
 
     public void setIncludeBaseSet(String includeBaseSet) {
-        this.includeBaseSet = includeBaseSet;
+        if (includeBaseSet != null) {
+            this.includeBaseSet = includeBaseSet;
+        }
     }
 
     public String getIncludeColonyWars() {
@@ -33,7 +37,9 @@ public class GameOptions {
     }
 
     public void setIncludeColonyWars(String includeColonyWars) {
-        this.includeColonyWars = includeColonyWars;
+        if (includeColonyWars != null) {
+            this.includeColonyWars = includeColonyWars;
+        }
     }
 
     public String getIncludeYearOnePromos() {
@@ -41,7 +47,9 @@ public class GameOptions {
     }
 
     public void setIncludeYearOnePromos(String includeYearOnePromos) {
-        this.includeYearOnePromos = includeYearOnePromos;
+        if (includeYearOnePromos != null) {
+            this.includeYearOnePromos = includeYearOnePromos;
+        }
     }
 
     public String getIncludeCrisisBasesAndBattleships() {
@@ -49,7 +57,9 @@ public class GameOptions {
     }
 
     public void setIncludeCrisisBasesAndBattleships(String includeCrisisBasesAndBattleships) {
-        this.includeCrisisBasesAndBattleships = includeCrisisBasesAndBattleships;
+        if (includeCrisisBasesAndBattleships != null) {
+            this.includeCrisisBasesAndBattleships = includeCrisisBasesAndBattleships;
+        }
     }
 
     public String getIncludeCrisisEvents() {
@@ -57,7 +67,9 @@ public class GameOptions {
     }
 
     public void setIncludeCrisisEvents(String includeCrisisEvents) {
-        this.includeCrisisEvents = includeCrisisEvents;
+        if (includeCrisisEvents != null) {
+            this.includeCrisisEvents = includeCrisisEvents;
+        }
     }
 
     public String getIncludeCrisisFleetsAndFortresses() {
@@ -65,7 +77,9 @@ public class GameOptions {
     }
 
     public void setIncludeCrisisFleetsAndFortresses(String includeCrisisFleetsAndFortresses) {
-        this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
+        if (includeCrisisFleetsAndFortresses != null) {
+            this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
+        }
     }
 
     public String getIncludeCrisisHeroes() {
@@ -73,7 +87,9 @@ public class GameOptions {
     }
 
     public void setIncludeCrisisHeroes(String includeCrisisHeroes) {
-        this.includeCrisisHeroes = includeCrisisHeroes;
+        if (includeCrisisHeroes != null) {
+            this.includeCrisisHeroes = includeCrisisHeroes;
+        }
     }
 
     public String getIncludeGambits() {
@@ -81,7 +97,9 @@ public class GameOptions {
     }
 
     public void setIncludeGambits(String includeGambits) {
-        this.includeGambits = includeGambits;
+        if (includeGambits != null) {
+            this.includeGambits = includeGambits;
+        }
     }
 
     public boolean determineIncludeBaseSet() {
@@ -123,5 +141,13 @@ public class GameOptions {
     public boolean getRandomBoolean() {
         Random random = new Random();
         return random.nextBoolean();
+    }
+
+    public String getStartingTradeRowCards() {
+        return startingTradeRowCards;
+    }
+
+    public void setStartingTradeRowCards(String startingTradeRowCards) {
+        this.startingTradeRowCards = startingTradeRowCards;
     }
 }

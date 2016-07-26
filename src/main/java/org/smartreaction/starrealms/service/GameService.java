@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import org.smartreaction.starrealms.model.CardSet;
@@ -32,7 +33,10 @@ import org.smartreaction.starrealms.model.players.Player;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Stateless
 public class GameService {
@@ -134,7 +138,23 @@ public class GameService {
 
         game.setDeck(deck);
 
-        game.addCardsToTradeRow(5);
+        if (!StringUtils.isEmpty(gameOptions.getStartingTradeRowCards())) {
+            List<Card> tradeRow = new ArrayList<>();
+            String[] cardsNames = gameOptions.getStartingTradeRowCards().split(",");
+            Arrays.stream(cardsNames).forEach(cardName -> {
+                Card card = getCardByName(cardName);
+                if (card != null) {
+                    tradeRow.add(card);
+                }
+            });
+            game.setTradeRow(tradeRow);
+            if (tradeRow.size() < 5) {
+                game.addCardsToTradeRow(5 - tradeRow.size());
+            }
+        } else {
+            game.addCardsToTradeRow(5);
+        }
+
     }
 
 

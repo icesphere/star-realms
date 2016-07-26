@@ -9,7 +9,7 @@ public class EmperorsDreadnaught extends Ship
 {
     public EmperorsDreadnaught()
     {
-        name = "Emperor's Dreadnaught";
+        name = "Emperors Dreadnaught";
         faction = Faction.STAR_EMPIRE;
         cost = 8;
         set = CardSet.COLONY_WARS;

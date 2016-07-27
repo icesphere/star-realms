@@ -16,6 +16,8 @@ public class User {
 
     private Instant lastActivity = Instant.now();
 
+    private GameOptions gameOptions = new GameOptions();
+
     public String getUsername() {
         return username;
     }
@@ -54,6 +56,14 @@ public class User {
 
     public void updateLastActivity() {
         lastActivity = Instant.now();
+    }
+
+    public GameOptions getGameOptions() {
+        return gameOptions;
+    }
+
+    public void setGameOptions(GameOptions gameOptions) {
+        this.gameOptions = gameOptions;
     }
 
     @Override

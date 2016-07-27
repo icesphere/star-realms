@@ -34,7 +34,8 @@ public class LobbyView implements Serializable {
     }
 
     public String startAutoMatch() {
-        gameService.autoMatchUser(userSession.getUser(), userSession.getGameOptions());
+        //todo figure out why game options are getting cleared out
+        gameService.autoMatchUser(userSession.getUser());
         gameService.refreshLobby(userSession.getUser().getUsername());
         if (userSession.getUser().getCurrentGame() != null) {
             return "game.xhtml?faces-redirect=true";

@@ -100,36 +100,36 @@ public class GameService {
 
         List<Card> deck = new ArrayList<>();
 
-        if (gameOptions.determineIncludeBaseSet()) {
+        if (gameOptions.isIncludeBaseSet()) {
             deck.addAll(getBaseSetDeck());
             game.getCardSets().add(CardSet.CORE);
         }
-        if (gameOptions.determineIncludeColonyWars()) {
+        if (gameOptions.isIncludeColonyWars()) {
             deck.addAll(getColonyWarsDeck());
             game.getCardSets().add(CardSet.COLONY_WARS);
         }
-        if (gameOptions.determineIncludeYearOnePromos()) {
+        if (gameOptions.isIncludeYearOnePromos()) {
             deck.addAll(getYear1PromoCards());
             game.getCardSets().add(CardSet.PROMO_YEAR_1);
         }
-        if (gameOptions.determineIncludeCrisisBasesAndBattleships()) {
+        if (gameOptions.isIncludeCrisisBasesAndBattleships()) {
             deck.addAll(getCrisisBasesAndBattleships());
             game.getCardSets().add(CardSet.CRISIS_BASES_AND_BATTLESHIPS);
         }
-        if (gameOptions.determineIncludeCrisisEvents()) {
+        if (gameOptions.isIncludeCrisisEvents()) {
             deck.addAll(getCrisisEvents());
             game.getCardSets().add(CardSet.CRISIS_EVENTS);
         }
-        if (gameOptions.determineIncludeCrisisFleetsAndFortresses()) {
+        if (gameOptions.isIncludeCrisisFleetsAndFortresses()) {
             deck.addAll(getCrisisFleetsAndFortresses());
             game.getCardSets().add(CardSet.CRISIS_FLEETS_AND_FORTRESSES);
         }
-        if (gameOptions.determineIncludeCrisisHeroes()) {
+        if (gameOptions.isIncludeCrisisHeroes()) {
             deck.addAll(getCrisisHeroes());
             game.getCardSets().add(CardSet.CRISIS_HEROES);
         }
 
-        if (gameOptions.determineIncludeGambits()) {
+        if (gameOptions.isIncludeGambits()) {
             addGambits(game);
             game.getCardSets().add(CardSet.GAMBITS);
         }
@@ -1402,22 +1402,39 @@ public class GameService {
         return card;
     }
 
-    public void autoMatchUser(User user, GameOptions gameOptions) {
+    public void autoMatchUser(User user) {
         synchronized (matchUserLock) {
             if (user.getCurrentGame() != null) {
                 return;
             }
-            List<User> users = loggedInUsers.getUsersWaitingForAutoMatch();
-            if (!users.isEmpty()) {
-                User opponent = users.get(0);
+            User opponent = getMatchingUser(user);
+            if (opponent != null) {
                 opponent.setAutoMatch(false);
                 user.setAutoMatch(false);
+                GameOptions gameOptions;
+                if (!user.getGameOptions().isCustomGameOptions()) {
+                    gameOptions = opponent.getGameOptions();
+                } else {
+                    gameOptions = user.getGameOptions();
+                }
                 createGame(user, opponent, gameOptions);
                 sendLobbyMessage(user.getUsername(), opponent.getUsername(), "game_started");
             } else {
                 user.setAutoMatch(true);
             }
         }
+    }
+
+    private User getMatchingUser(User user) {
+        List<User> users = loggedInUsers.getUsersWaitingForAutoMatch();
+        if (!users.isEmpty()) {
+            for (User opponent : users) {
+                if (!user.getGameOptions().isCustomGameOptions() || !opponent.getGameOptions().isCustomGameOptions() || opponent.getGameOptions().equals(user.getGameOptions())) {
+                    return opponent;
+                }
+            }
+        }
+        return null;
     }
 
     public void sendLobbyMessage(String sender, String recipient, String message) {

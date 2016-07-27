@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.view;
 
-import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.service.GameService;
 import org.smartreaction.starrealms.service.LoggedInUsers;
@@ -23,22 +22,12 @@ public class UserSession implements Serializable {
 
     private User user;
 
-    private GameOptions gameOptions = new GameOptions();
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public GameOptions getGameOptions() {
-        return gameOptions;
-    }
-
-    public void setGameOptions(GameOptions gameOptions) {
-        this.gameOptions = gameOptions;
     }
 
     public boolean loginAsGuest(String username) {

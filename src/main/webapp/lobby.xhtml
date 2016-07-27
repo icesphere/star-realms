@@ -41,80 +41,63 @@
                                       rendered="#{user.username ne userSession.user.username}"/>
                     </h:column>
                 </h:dataTable>
-                <div style="padding-top: 20px;">
-                    <h:panelGroup id="gameOptions" layout="block" rendered="#{!userSession.user.autoMatch}">
-                        <div>
-                            <h:outputText style="font-size: 14px;" value="(Auto match has not yet been setup to match chosen sets, so currently the sets selected by the last person to click Auto Match will be used)"/>
-                        </div>
-                        <div style="padding-top: 10px;">
-                            <h:panelGrid columns="2" columnClasses="boldText smallRightPadding tinyBottomPadding alignTop, tinyBottomPadding alignTop">
+
+                <h:panelGroup rendered="#{!userSession.user.autoMatch}">
+
+                    <div style="padding-top: 20px;">
+                        <p:outputLabel value="Use Custom Game Options:" style="padding-right: 10px;"/>
+                        <p:selectBooleanButton value="#{userSession.user.gameOptions.customGameOptions}" onLabel="Yes" offLabel="No">
+                            <p:ajax process="@form" update="@form"/>
+                        </p:selectBooleanButton>
+                    </div>
+
+                    <h:panelGroup rendered="#{userSession.user.gameOptions.customGameOptions}" layout="block" style="padding-top: 5px;">
+                        <h:panelGroup id="gameOptions" layout="block">
+                            <h:panelGrid columns="1" columnClasses="boldText smallRightPadding tinyBottomPadding alignTop, tinyBottomPadding alignTop">
                                 <p:outputLabel value="Base Set: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeBaseSet}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeBaseSet}"/>
 
                                 <p:outputLabel value="Colony Wars: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeColonyWars}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeColonyWars}"/>
 
                                 <p:outputLabel value="Year One Promos: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeYearOnePromos}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeYearOnePromos}"/>
 
                                 <p:outputLabel value="Crisis - Bases &amp; Battleships: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeCrisisBasesAndBattleships}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisBasesAndBattleships}"/>
 
                                 <p:outputLabel value="Crisis - Events: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeCrisisEvents}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisEvents}"/>
 
                                 <p:outputLabel value="Crisis - Heroes: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeCrisisHeroes}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisHeroes}"/>
 
                                 <p:outputLabel value="Crisis - Fleets &amp; Fortresses: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeCrisisFleetsAndFortresses}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisFleetsAndFortresses}"/>
 
                                 <p:outputLabel value="Gambits: "/>
-                                <p:selectOneRadio value="#{userSession.gameOptions.includeGambits}" styleClass="radioSpacing">
-                                    <f:selectItem itemLabel="Yes" itemValue="Y"/>
-                                    <f:selectItem itemLabel="No" itemValue="N"/>
-                                    <f:selectItem itemLabel="Random" itemValue="R"/>
-                                </p:selectOneRadio>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeGambits}"/>
                             </h:panelGrid>
-                        </div>
-                        <div style="padding-top: 15px;">
-                            <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):" style="padding-right: 10px;"/>
-                            <h:inputText value="#{userSession.gameOptions.startingTradeRowCards}"/>
-                        </div>
-                        <div style="padding-top: 15px;">
-                            <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}" process="gameOptions" update="@form" value="Auto Match"/>
-                        </div>
+                            <div style="padding-top: 15px;">
+                                <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):" style="padding-right: 10px;"/>
+                                <h:inputText value="#{userSession.user.gameOptions.startingTradeRowCards}"/>
+                            </div>
+                        </h:panelGroup>
                     </h:panelGroup>
-                    <h:outputText value="Waiting for Auto Match..." rendered="#{userSession.user.autoMatch}"/>
-                </div>
+
+                    <div style="padding-top: 15px;">
+                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}" rendered="#{!userSession.user.autoMatch}"
+                                       process="@form" update="@form" value="Auto Match"/>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{userSession.user.autoMatch}">
+                    <div style="padding-top: 20px;">
+                        <h:outputText value="Waiting for Auto Match..." rendered="#{userSession.user.autoMatch}"/>
+                        <p:commandLink value="Cancel" process="@form" update="@form" style="margin-left: 15px;"
+                                       actionListener="#{userSession.user.setAutoMatch(false)}"/>
+                    </div>
+                </h:panelGroup>
 
                 <div style="padding-top: 20px; clear:both;">
 

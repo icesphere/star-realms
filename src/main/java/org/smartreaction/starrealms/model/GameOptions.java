@@ -1,146 +1,99 @@
 package org.smartreaction.starrealms.model;
 
-import java.util.Random;
+import java.util.Objects;
 
 public class GameOptions {
 
-    public String includeBaseSet = "Y";
+    public boolean customGameOptions;
+    
+    public boolean includeBaseSet = true;
 
-    public String includeColonyWars = "N";
+    public boolean includeColonyWars = false;
 
-    public String includeYearOnePromos = "N";
+    public boolean includeYearOnePromos = false;
 
-    public String includeCrisisBasesAndBattleships = "N";
+    public boolean includeCrisisBasesAndBattleships = false;
 
-    public String includeCrisisEvents = "N";
+    public boolean includeCrisisEvents = false;
 
-    public String includeCrisisFleetsAndFortresses = "N";
+    public boolean includeCrisisFleetsAndFortresses = false;
 
-    public String includeCrisisHeroes = "N";
+    public boolean includeCrisisHeroes = false;
 
-    public String includeGambits = "N";
+    public boolean includeGambits = false;
 
     public String startingTradeRowCards = "";
 
-    public String getIncludeBaseSet() {
+    public boolean isCustomGameOptions() {
+        return customGameOptions;
+    }
+
+    public void setCustomGameOptions(boolean customGameOptions) {
+        this.customGameOptions = customGameOptions;
+    }
+
+    public boolean isIncludeBaseSet() {
         return includeBaseSet;
     }
 
-    public void setIncludeBaseSet(String includeBaseSet) {
-        if (includeBaseSet != null) {
-            this.includeBaseSet = includeBaseSet;
-        }
+    public void setIncludeBaseSet(boolean includeBaseSet) {
+        this.includeBaseSet = includeBaseSet;
     }
 
-    public String getIncludeColonyWars() {
+    public boolean isIncludeColonyWars() {
         return includeColonyWars;
     }
 
-    public void setIncludeColonyWars(String includeColonyWars) {
-        if (includeColonyWars != null) {
-            this.includeColonyWars = includeColonyWars;
-        }
+    public void setIncludeColonyWars(boolean includeColonyWars) {
+        this.includeColonyWars = includeColonyWars;
     }
 
-    public String getIncludeYearOnePromos() {
+    public boolean isIncludeYearOnePromos() {
         return includeYearOnePromos;
     }
 
-    public void setIncludeYearOnePromos(String includeYearOnePromos) {
-        if (includeYearOnePromos != null) {
-            this.includeYearOnePromos = includeYearOnePromos;
-        }
+    public void setIncludeYearOnePromos(boolean includeYearOnePromos) {
+        this.includeYearOnePromos = includeYearOnePromos;
     }
 
-    public String getIncludeCrisisBasesAndBattleships() {
+    public boolean isIncludeCrisisBasesAndBattleships() {
         return includeCrisisBasesAndBattleships;
     }
 
-    public void setIncludeCrisisBasesAndBattleships(String includeCrisisBasesAndBattleships) {
-        if (includeCrisisBasesAndBattleships != null) {
-            this.includeCrisisBasesAndBattleships = includeCrisisBasesAndBattleships;
-        }
+    public void setIncludeCrisisBasesAndBattleships(boolean includeCrisisBasesAndBattleships) {
+        this.includeCrisisBasesAndBattleships = includeCrisisBasesAndBattleships;
     }
 
-    public String getIncludeCrisisEvents() {
+    public boolean isIncludeCrisisEvents() {
         return includeCrisisEvents;
     }
 
-    public void setIncludeCrisisEvents(String includeCrisisEvents) {
-        if (includeCrisisEvents != null) {
-            this.includeCrisisEvents = includeCrisisEvents;
-        }
+    public void setIncludeCrisisEvents(boolean includeCrisisEvents) {
+        this.includeCrisisEvents = includeCrisisEvents;
     }
 
-    public String getIncludeCrisisFleetsAndFortresses() {
+    public boolean isIncludeCrisisFleetsAndFortresses() {
         return includeCrisisFleetsAndFortresses;
     }
 
-    public void setIncludeCrisisFleetsAndFortresses(String includeCrisisFleetsAndFortresses) {
-        if (includeCrisisFleetsAndFortresses != null) {
-            this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
-        }
+    public void setIncludeCrisisFleetsAndFortresses(boolean includeCrisisFleetsAndFortresses) {
+        this.includeCrisisFleetsAndFortresses = includeCrisisFleetsAndFortresses;
     }
 
-    public String getIncludeCrisisHeroes() {
+    public boolean isIncludeCrisisHeroes() {
         return includeCrisisHeroes;
     }
 
-    public void setIncludeCrisisHeroes(String includeCrisisHeroes) {
-        if (includeCrisisHeroes != null) {
-            this.includeCrisisHeroes = includeCrisisHeroes;
-        }
+    public void setIncludeCrisisHeroes(boolean includeCrisisHeroes) {
+        this.includeCrisisHeroes = includeCrisisHeroes;
     }
 
-    public String getIncludeGambits() {
+    public boolean isIncludeGambits() {
         return includeGambits;
     }
 
-    public void setIncludeGambits(String includeGambits) {
-        if (includeGambits != null) {
-            this.includeGambits = includeGambits;
-        }
-    }
-
-    public boolean determineIncludeBaseSet() {
-        return determineBoolean(includeBaseSet);
-    }
-
-    public boolean determineIncludeColonyWars() {
-        return determineBoolean(includeColonyWars);
-    }
-
-    public boolean determineIncludeYearOnePromos() {
-        return determineBoolean(includeYearOnePromos);
-    }
-
-    public boolean determineIncludeCrisisBasesAndBattleships() {
-        return determineBoolean(includeCrisisBasesAndBattleships);
-    }
-
-    public boolean determineIncludeCrisisEvents() {
-        return determineBoolean(includeCrisisEvents);
-    }
-
-    public boolean determineIncludeCrisisFleetsAndFortresses() {
-        return determineBoolean(includeCrisisFleetsAndFortresses);
-    }
-
-    public boolean determineIncludeCrisisHeroes() {
-        return determineBoolean(includeCrisisHeroes);
-    }
-
-    public boolean determineIncludeGambits() {
-        return determineBoolean(includeGambits);
-    }
-
-    private boolean determineBoolean(String stringValue) {
-        return "Y".equalsIgnoreCase(stringValue) || stringValue.equals("R") && getRandomBoolean();
-    }
-
-    public boolean getRandomBoolean() {
-        Random random = new Random();
-        return random.nextBoolean();
+    public void setIncludeGambits(boolean includeGambits) {
+        this.includeGambits = includeGambits;
     }
 
     public String getStartingTradeRowCards() {
@@ -149,5 +102,30 @@ public class GameOptions {
 
     public void setStartingTradeRowCards(String startingTradeRowCards) {
         this.startingTradeRowCards = startingTradeRowCards;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships, includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeGambits, startingTradeRowCards);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final GameOptions other = (GameOptions) obj;
+        return Objects.equals(this.includeBaseSet, other.includeBaseSet)
+                && Objects.equals(this.includeColonyWars, other.includeColonyWars)
+                && Objects.equals(this.includeYearOnePromos, other.includeYearOnePromos)
+                && Objects.equals(this.includeCrisisBasesAndBattleships, other.includeCrisisBasesAndBattleships)
+                && Objects.equals(this.includeCrisisEvents, other.includeCrisisEvents)
+                && Objects.equals(this.includeCrisisFleetsAndFortresses, other.includeCrisisFleetsAndFortresses)
+                && Objects.equals(this.includeCrisisHeroes, other.includeCrisisHeroes)
+                && Objects.equals(this.includeGambits, other.includeGambits)
+                && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);
     }
 }

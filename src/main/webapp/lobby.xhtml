@@ -17,6 +17,8 @@
                 var chats = $('#chats');
                 chats.scrollTop(chats.prop('scrollHeight'));
             }
+
+            var ignoreFutureMessages = false;
         </script>
     </ui:define>
 
@@ -139,13 +141,17 @@
             function handleLobbyMessage(response) {
                 console.log("received message from server: ");
                 console.log(response);
-                if (response.message == 'game_started') {
-                    window.location.href = 'game.xhtml?faces-redirect=true';
-                } else if (response.message == 'refresh_lobby') {
-                    console.log('received refresh lobby message');
-                    refreshLobby();
-                } else if (response.message == 'refresh_chat') {
-                    refreshChat();
+                if (!ignoreFutureMessages) {
+                    if (response.message == 'game_started') {
+                        PF('lobbyMessageSubscriber').disconnect();
+                        ignoreFutureMessages = true;
+                        window.location.href = 'game.xhtml?faces-redirect=true';
+                    } else if (response.message == 'refresh_lobby') {
+                        console.log('received refresh lobby message');
+                        refreshLobby();
+                    } else if (response.message == 'refresh_chat') {
+                        refreshChat();
+                    }
                 }
             }
         </script>

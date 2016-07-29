@@ -1418,6 +1418,7 @@ public class GameService {
                     gameOptions = user.getGameOptions();
                 }
                 createGame(user, opponent, gameOptions);
+
                 sendLobbyMessage(user.getUsername(), opponent.getUsername(), "game_started");
             } else {
                 user.setAutoMatch(true);

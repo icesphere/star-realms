@@ -4,25 +4,27 @@ import java.util.Objects;
 
 public class GameOptions {
 
-    public boolean customGameOptions;
-    
-    public boolean includeBaseSet = true;
+    private boolean customGameOptions;
 
-    public boolean includeColonyWars = false;
+    private boolean includeBaseSet = true;
 
-    public boolean includeYearOnePromos = false;
+    private boolean includeColonyWars = false;
 
-    public boolean includeCrisisBasesAndBattleships = false;
+    private boolean includeYearOnePromos = false;
 
-    public boolean includeCrisisEvents = false;
+    private boolean includeCrisisBasesAndBattleships = false;
 
-    public boolean includeCrisisFleetsAndFortresses = false;
+    private boolean includeCrisisEvents = false;
 
-    public boolean includeCrisisHeroes = false;
+    private boolean includeCrisisFleetsAndFortresses = false;
 
-    public boolean includeGambits = false;
+    private boolean includeCrisisHeroes = false;
 
-    public String startingTradeRowCards = "";
+    private boolean includeGambits = false;
+
+    private String startingTradeRowCards = "";
+
+    private boolean playAgainstComputer;
 
     public boolean isCustomGameOptions() {
         return customGameOptions;
@@ -102,6 +104,14 @@ public class GameOptions {
 
     public void setStartingTradeRowCards(String startingTradeRowCards) {
         this.startingTradeRowCards = startingTradeRowCards;
+    }
+
+    public boolean isPlayAgainstComputer() {
+        return playAgainstComputer;
+    }
+
+    public void setPlayAgainstComputer(boolean playAgainstComputer) {
+        this.playAgainstComputer = playAgainstComputer;
     }
 
     @Override

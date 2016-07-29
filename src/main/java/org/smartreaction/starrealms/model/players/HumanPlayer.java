@@ -13,4 +13,9 @@ public class HumanPlayer extends Player {
     public User getUser() {
         return user;
     }
+
+    @Override
+    public void takeTurn() {
+
+    }
 }

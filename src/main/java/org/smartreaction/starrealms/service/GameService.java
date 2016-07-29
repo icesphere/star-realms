@@ -30,6 +30,7 @@ import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
+import org.smartreaction.starrealms.model.players.bots.VelocityBot;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -53,7 +54,16 @@ public class GameService {
         Game game = new Game();
 
         HumanPlayer player1 = new HumanPlayer(user1);
-        HumanPlayer player2 = new HumanPlayer(user2);
+
+        Player player2;
+
+        if (gameOptions.isPlayAgainstComputer()) {
+            player2 = new HumanPlayer(user2);
+        } else {
+            player2 = new VelocityBot();
+            user2 = new User();
+            user2.setUsername(player2.getPlayerName());
+        }
 
         List<Player> players = new ArrayList<>(2);
         players.add(player1);

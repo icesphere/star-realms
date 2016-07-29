@@ -35,4 +35,8 @@ public class CardAction extends Action {
         cardActionCard.processCardActionResult(this, player, result);
         return true;
     }
+
+    public CardActionCard getCardActionCard() {
+        return cardActionCard;
+    }
 }

@@ -903,6 +903,13 @@ public abstract class Player {
             if (base.isAutoUse()) {
                 base.useBase(this);
             }
+
+            if (base instanceof AlliableCard) {
+                if (!base.isAlliedAbilityUsed() && base.isAutoAlly() && cardHasAlly(base)) {
+                    AlliableCard alliableCard = (AlliableCard) base;
+                    useAlliedAbility(alliableCard);
+                }
+            }
         }
 
         if (!gambits.isEmpty()) {
@@ -913,7 +920,11 @@ public abstract class Player {
         }
 
         resolveActions();
+
+        takeTurn();
     }
+
+    public abstract void takeTurn();
 
     public int getNumCardsScrappedThisTurn() {
         return numCardsScrappedThisTurn;
@@ -925,5 +936,9 @@ public abstract class Player {
         } else {
             reduceAuthority(authorityLost);
         }
+    }
+
+    public int getNumBases() {
+        return (int) getAllCards().stream().filter(Card::isBase).count();
     }
 }

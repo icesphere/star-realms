@@ -1,8 +1,8 @@
-package org.smartreaction.starrealms.model;
+package org.smartreaction.starrealms.model.players.bots.strategies;
 
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
 public interface BotStrategy {
-    public int getBuyCardScore(Card card, Player player);
+    int getBuyCardScore(Card card, Player player);
 }

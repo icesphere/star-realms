@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model.players;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.BlobWorld;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
@@ -61,7 +62,7 @@ public abstract class BotPlayer extends Player {
         boolean endTurn = false;
 
         while (!endTurn) {
-            endTurn = true;
+            endTurn = !resolveCurrentAction();
 
             List<Card> cardsToScrapForBenefit = new ArrayList<>();
 
@@ -69,6 +70,7 @@ public abstract class BotPlayer extends Player {
                 if (card.isScrappable()) {
                     if (shouldScrapCard(card)) {
                         cardsToScrapForBenefit.add(card);
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -78,6 +80,7 @@ public abstract class BotPlayer extends Player {
                 List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
                 for (Card card : sortedCardsToScrapForBenefit) {
                     this.scrapCardInPlayForBenefit(card);
+                    resolveCurrentAction();
                 }
             }
 
@@ -88,6 +91,7 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -97,7 +101,9 @@ public abstract class BotPlayer extends Player {
                 List<Gambit> sortedGambits = scrappableGambits.stream().sorted(useGambitScoreDescending).collect(toList());
                 for (Gambit gambit : sortedGambits) {
                     if (getUseGambitScore(gambit) > 0) {
+                        endTurn = false;
                         scrapCardInPlayForBenefit(gambit);
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -111,9 +117,11 @@ public abstract class BotPlayer extends Player {
                     playCard(card);
                     if (card instanceof AlliableCard && useAllyAfterPlay(card)) {
                         useAlliedAbility((AlliableCard) card);
+                        resolveCurrentAction();
                     }
                     if (card.isBase() && useBaseAfterPlay((Base) card)) {
                         ((Base) card).useBase(this);
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -122,6 +130,7 @@ public abstract class BotPlayer extends Player {
                 if (card instanceof AlliableCard) {
                     if (useAlliedAbility((AlliableCard) card)) {
                         endTurn = false;
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -132,6 +141,7 @@ public abstract class BotPlayer extends Player {
                     if (getUseHeroScore(hero) > 0) {
                         useHero(hero);
                         endTurn = false;
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -143,6 +153,7 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
+                        resolveCurrentAction();
                     }
                 }
             }
@@ -162,6 +173,7 @@ public abstract class BotPlayer extends Player {
                 List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
                 for (Card card : sortedCardsToScrapForBenefit) {
                     this.scrapCardInPlayForBenefit(card);
+                    resolveCurrentAction();
                 }
             }
 
@@ -171,12 +183,68 @@ public abstract class BotPlayer extends Player {
                     endTurn = false;
                     for (Card card : cardsToBuy) {
                         this.buyCard(card);
+                        resolveCurrentAction();
                     }
                 }
+            }
+
+            if (resolveCurrentAction()) {
+                endTurn = false;
             }
         }
 
         applyCombatAndEndTurn();
+    }
+
+    private boolean resolveCurrentAction() {
+        if (currentAction != null) {
+
+            if (currentAction instanceof CardAction) {
+                CardAction cardAction = (CardAction) currentAction;
+                if (cardAction.getCardActionCard() instanceof StealthTower) {
+                    //todo
+                } else if (cardAction.getCardActionCard() instanceof StealthNeedle) {
+                    //todo
+                }
+            } else if (currentAction instanceof CardFromDiscardToTopOfDeck) {
+                //todo
+            } else if (currentAction instanceof CardFromHandToTopOfDeck) {
+                //todo
+            } else if (currentAction instanceof ChoiceAction) {
+                //todo
+            } else if (currentAction instanceof DestroyOpponentBase) {
+                //todo
+            } else if (currentAction instanceof DiscardCardsFromHandForBenefit) {
+                //todo
+            } else if (currentAction instanceof DiscardCardsFromHand) {
+                //todo
+            } else if (currentAction instanceof DrawCardsAndPutSomeBackOnTopOfDeck) {
+                //todo
+            } else if (currentAction instanceof FreeCardFromTradeRow) {
+                //todo
+            } else if (currentAction instanceof ReturnBaseToHand) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromDiscardPile) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromHandForBenefit) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromHand) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromHandOrDiscardPileForBenefit) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromHandOrDiscardPile) {
+                //todo
+            } else if (currentAction instanceof ScrapCardsFromTradeRow) {
+                //todo
+            } else if (currentAction instanceof ShowTriggeredEvent) {
+                //todo
+            } else if (currentAction instanceof YesNoAbilityAction) {
+                //todo
+            }
+
+            return true;
+        }
+        return false;
     }
 
     public boolean useAllyAfterPlay(Card card) {

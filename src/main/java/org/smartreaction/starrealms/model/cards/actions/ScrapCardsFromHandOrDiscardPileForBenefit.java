@@ -23,6 +23,13 @@ public class ScrapCardsFromHandOrDiscardPileForBenefit extends ScrapCardsFromHan
     }
 
     @Override
+    public boolean processAction(Player player) {
+        boolean hasApplicableCardInHand = player.getHand().stream().anyMatch(c -> scrapCardsForBenefitActionCard.isCardApplicable(c));
+        boolean hasApplicableCardInDiscard = player.getDiscard().stream().anyMatch(c -> scrapCardsForBenefitActionCard.isCardApplicable(c));
+        return hasApplicableCardInHand || hasApplicableCardInDiscard;
+    }
+
+    @Override
     public boolean processActionResult(Player player, ActionResult result) {
         boolean doneWithAction = super.processActionResult(player, result);
 

@@ -308,11 +308,7 @@ public class GameView implements Serializable {
         if (!getGame().isGameOver()) {
             getPlayer().getOpponent().startTurn();
         }
-        if (getPlayer().getOpponent().getCurrentAction() != null) {
-            sendGameMessageToOpponent("refresh_game_page");
-        } else {
-            sendGameMessageToOpponent("refresh_game_page");
-        }
+        sendGameMessageToOpponent("refresh_game_page");
     }
 
     public void choiceMade(int choiceSelected) {

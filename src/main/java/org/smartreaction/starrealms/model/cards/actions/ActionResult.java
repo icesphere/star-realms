@@ -35,10 +35,6 @@ public class ActionResult {
         return selectedCards;
     }
 
-    public void setSelectedCards(List<Card> selectedCards) {
-        this.selectedCards = selectedCards;
-    }
-
     public Integer getChoiceSelected() {
         return choiceSelected;
     }

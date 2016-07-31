@@ -394,8 +394,12 @@
 .actionSection {
     clear: both;
     float: left;
-    padding-top: 20px;
-    max-width: 478px;
+    border: 2px solid red;
+    margin-top: 10px;
+    padding: 10px;
+    padding-top: 15px;
+    width: 456px;
+    background-color: white;
 }
 
 .red {

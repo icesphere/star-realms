@@ -58,11 +58,11 @@ public class GameService {
         Player player2;
 
         if (gameOptions.isPlayAgainstComputer()) {
-            player2 = new HumanPlayer(user2);
-        } else {
             player2 = new VelocityBot();
             user2 = new User();
             user2.setUsername(player2.getPlayerName());
+        } else {
+            player2 = new HumanPlayer(user2);
         }
 
         List<Player> players = new ArrayList<>(2);

@@ -19,7 +19,7 @@
 
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>sam</param-value>
+        <param-value>afternoon</param-value>
     </context-param>
 
     <session-config>

@@ -21,8 +21,8 @@
 
         <dependency>
             <groupId>org.primefaces.themes</groupId>
-            <artifactId>sam</artifactId>
-            <version>1.0.8</version>
+            <artifactId>afternoon</artifactId>
+            <version>1.0.10</version>
         </dependency>
 
         <dependency>

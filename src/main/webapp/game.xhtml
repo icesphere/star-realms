@@ -133,8 +133,8 @@
                             <div style="float: left;">
                                 <div style="padding-top: 5px;">
                                     <h:outputText styleClass="currentPlayerTurnText #{gameView.player.yourTurn ? 'player' : 'opponent'}" value="#{gameView.game.currentPlayer.playerName}'s Turn"/>
-                                    <h:outputText value="Trade: #{gameView.game.currentPlayer.trade}" style="padding-left: 15px;"/>
-                                    <h:outputText value="Combat: #{gameView.game.currentPlayer.combat}" style="padding-left: 15px;"/>
+                                    <h:outputText value="Trade: #{gameView.game.currentPlayer.trade}" styleClass="tradeAmount"/>
+                                    <h:outputText value="Combat: #{gameView.game.currentPlayer.combat}" styleClass="combatAmount"/>
                                 </div>
                             </div>
                         </h:panelGroup>

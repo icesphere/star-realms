@@ -189,14 +189,13 @@
 }
 
 .smallButtonWrapper {
-    clear: both;
     float: left;
     padding-top: 7px;
 }
 
 .smallButton {
     float: left;
-    min-width: 130px;
+    min-width: 80px;
     text-align: center;
     background: #3498db;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -204,13 +203,13 @@
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
     background-image: -o-linear-gradient(top, #3498db, #2980b9);
     background-image: linear-gradient(to bottom, #3498db, #2980b9);
-    border-radius: 10px;
+    border-radius: 9px;
     font-family: Arial, sans-serif;
     color: #ffffff;
-    font-size: 14px;
-    padding: 8px 16px 8px 16px;
+    font-size: 12px;
+    padding: 6px 12px 6px 12px;
     text-decoration: none;
-    border: solid #1f628d 2px;
+    border: solid #1f628d 1px;
 }
 
 .smallButton:hover {
@@ -395,7 +394,7 @@
     clear: both;
     float: left;
     border: 2px solid red;
-    margin-top: 10px;
+    margin-top: 25px;
     padding: 10px;
     padding-top: 15px;
     width: 456px;
@@ -439,5 +438,17 @@
 
 .radioSpacing td {
     padding-right: 10px;
+}
+
+.tradeAmount {
+    margin-left: 15px;
+    background-color: yellow;
+    padding: 8px 12px;
+}
+
+.combatAmount {
+    margin-left: 15px;
+    background-color: #ff3333;
+    padding: 8px 12px;
 }
 

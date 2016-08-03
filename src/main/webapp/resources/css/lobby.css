@@ -31,13 +31,13 @@
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
     background-image: -o-linear-gradient(top, #3498db, #2980b9);
     background-image: linear-gradient(to bottom, #3498db, #2980b9);
-    border-radius: 12px;
+    border-radius: 11px;
     text-shadow: 1px 1px 3px #666666;
     font-family: Arial, sans-serif;
     color: #ffffff;
     font-size: 16px;
     padding: 10px 20px 10px 20px;
-    border: solid #1f628d 2px;
+    border: solid #1f628d 1px;
     text-decoration: none;
 }
 

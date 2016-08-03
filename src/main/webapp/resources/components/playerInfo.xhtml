@@ -28,33 +28,37 @@
                            rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
         </div>
 
-        <h:panelGroup rendered="#{!cc.attrs.isOpponent}">
+        <div style="clear: both; padding-top: 5px;">
 
-            <div class="smallButtonWrapper">
-                <p:commandLink value="Deck (#{cc.attrs.player.deck.size()})" process="@this" styleClass="smallButton"
-                               actionListener="#{gameView.showCards(cc.attrs.player.deck, 'Cards in your deck', 'deck')}"/>
-            </div>
+            <h:panelGroup rendered="#{!cc.attrs.isOpponent}">
 
-            <div class="smallButtonWrapper">
-                <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton #{gameView.highlightDiscardButton ? 'selected' : ''}"
-                               actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard')}"/>
-            </div>
+                <div class="smallButtonWrapper" style="margin-right: 5px;">
+                    <p:commandLink value="Deck (#{cc.attrs.player.deck.size()})" process="@this" styleClass="smallButton"
+                                   actionListener="#{gameView.showCards(cc.attrs.player.deck, 'Cards in your deck', 'deck')}"/>
+                </div>
 
-        </h:panelGroup>
+                <div class="smallButtonWrapper">
+                    <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton #{gameView.highlightDiscardButton ? 'selected' : ''}"
+                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard')}"/>
+                </div>
 
-        <h:panelGroup rendered="#{cc.attrs.isOpponent}">
+            </h:panelGroup>
 
-            <div class="smallButtonWrapper">
-                <p:commandLink value="Hand &amp; Deck (#{cc.attrs.player.handAndDeck.size()})" process="@this" styleClass="smallButton"
-                               actionListener="#{gameView.showCards(cc.attrs.player.handAndDeck, 'Cards in your opponent\'s hand and deck', 'opponentDeckAndHand')}"/>
-            </div>
+            <h:panelGroup rendered="#{cc.attrs.isOpponent}">
 
-            <div class="smallButtonWrapper">
-                <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton"
-                               actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your opponent\'s discard pile', 'opponentDiscard')}"/>
-            </div>
+                <div class="smallButtonWrapper" style="margin-right: 5px;">
+                    <p:commandLink value="Hand &amp; Deck (#{cc.attrs.player.handAndDeck.size()})" process="@this" styleClass="smallButton"
+                                   actionListener="#{gameView.showCards(cc.attrs.player.handAndDeck, 'Cards in your opponent\'s hand and deck', 'opponentDeckAndHand')}"/>
+                </div>
 
-        </h:panelGroup>
+                <div class="smallButtonWrapper">
+                    <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton"
+                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your opponent\'s discard pile', 'opponentDiscard')}"/>
+                </div>
+
+            </h:panelGroup>
+
+        </div>
 
     </h:panelGroup>
 

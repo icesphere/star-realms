@@ -14,7 +14,7 @@ public class TradingPost extends Outpost implements ScrappableCard, ChoiceAction
     public TradingPost()
     {
         name = "Trading Post";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 3;
         set = CardSet.CORE;
         shield = 4;

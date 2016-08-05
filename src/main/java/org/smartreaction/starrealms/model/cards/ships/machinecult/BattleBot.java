@@ -11,7 +11,7 @@ public class BattleBot extends Ship implements AlliableCard
     public BattleBot()
     {
         name = "Battle Bot";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 1;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Combat; You may scrap a card in your hand; Ally: Add 2 Combat";
@@ -24,7 +24,7 @@ public class BattleBot extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 }

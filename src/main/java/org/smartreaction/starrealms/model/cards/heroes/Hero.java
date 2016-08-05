@@ -7,7 +7,6 @@ import org.smartreaction.starrealms.model.players.Player;
 
 public abstract class Hero extends Card implements ScrappableCard {
     protected Hero() {
-        faction = Faction.UNALIGNED;
     }
 
     @Override

@@ -10,7 +10,7 @@ public class MechWorld extends Outpost
     public MechWorld()
     {
         name = "Mech World";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 5;
         set = CardSet.CORE;
         shield = 6;

@@ -10,7 +10,7 @@ public class CentralStation extends Base
     public CentralStation()
     {
         name = "Central Station";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.COLONY_WARS;
         shield = 5;

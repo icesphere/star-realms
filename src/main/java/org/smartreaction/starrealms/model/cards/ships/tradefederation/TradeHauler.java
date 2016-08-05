@@ -11,7 +11,7 @@ public class TradeHauler extends Ship implements AlliableCard
     public TradeHauler()
     {
         name = "Trade Hauler";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 2;
         set = CardSet.COLONY_WARS;
         text = "Add 3 Trade; Ally: Add 3 Authority";
@@ -23,7 +23,7 @@ public class TradeHauler extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addAuthority(3);
     }
 }

@@ -10,7 +10,7 @@ public class FactoryWorld extends Outpost
     public FactoryWorld()
     {
         name = "Factory World";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 8;
         set = CardSet.COLONY_WARS;
         shield = 6;

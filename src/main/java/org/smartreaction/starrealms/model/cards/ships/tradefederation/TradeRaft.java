@@ -12,7 +12,7 @@ public class TradeRaft extends Ship implements AlliableCard, ScrappableCard
     public TradeRaft()
     {
         name = "Trade Raft";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 1;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 1 Trade; Ally: Draw a card; Scrap: Add 1 Trade";
@@ -25,7 +25,7 @@ public class TradeRaft extends Ship implements AlliableCard, ScrappableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 

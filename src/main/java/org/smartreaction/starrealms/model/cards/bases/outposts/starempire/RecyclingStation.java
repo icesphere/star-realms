@@ -17,7 +17,7 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
     public RecyclingStation()
     {
         name = "Recycling Station";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 4;
         set = CardSet.CORE;
         shield = 4;

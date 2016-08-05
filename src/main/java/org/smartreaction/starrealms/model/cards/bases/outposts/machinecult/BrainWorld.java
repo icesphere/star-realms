@@ -14,7 +14,7 @@ public class BrainWorld extends Outpost implements ScrapCardsForBenefitActionCar
     public BrainWorld()
     {
         name = "Brain World";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 8;
         set = CardSet.CORE;
         shield = 6;

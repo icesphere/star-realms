@@ -9,6 +9,8 @@ import org.smartreaction.starrealms.model.cards.actions.CardActionCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.List;
+
 public class StealthNeedle extends Ship implements CardActionCard
 {
     private Card cardBeingCopied;
@@ -16,7 +18,7 @@ public class StealthNeedle extends Ship implements CardActionCard
     public StealthNeedle()
     {
         name = "Stealth Needle";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 4;
         set = CardSet.CORE;
         text = "Copy another ship you've played this turn. Stealth Needle has that ship's faction in addition to Machine Cult.";
@@ -31,13 +33,13 @@ public class StealthNeedle extends Ship implements CardActionCard
         return cardBeingCopied;
     }
 
-    public void setCardBeingCopied(Card cardBeingCopied) {
-        this.cardBeingCopied = cardBeingCopied;
-    }
-
     @Override
-    public boolean isAlly(Card card) {
-        return super.isAlly(card) || cardBeingCopied != null && super.isAlly(cardBeingCopied);
+    public List<Faction> getAlliedFactions(Card card) {
+        List<Faction> alliedFactions = super.getAlliedFactions(card);
+        if (cardBeingCopied != null) {
+            alliedFactions.addAll(cardBeingCopied.getAlliedFactions(card));
+        }
+        return alliedFactions;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class Cutter extends Ship implements AlliableCard
     public Cutter()
     {
         name = "Cutter";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 2;
         set = CardSet.CORE;
         text = "Add 4 Authority; Add 2 Trade; Ally: Add 4 Combat";
@@ -25,7 +25,7 @@ public class Cutter extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(4);
     }

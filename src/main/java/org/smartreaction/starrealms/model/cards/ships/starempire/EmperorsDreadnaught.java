@@ -10,7 +10,7 @@ public class EmperorsDreadnaught extends Ship
     public EmperorsDreadnaught()
     {
         name = "Emperors Dreadnaught";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 8;
         set = CardSet.COLONY_WARS;
         text = "Add 8 Combat; Draw a card; Target opponent discards a card; When you acquire this card, if you've played a Star Empire card this turn, you may put this card directly into your hand";

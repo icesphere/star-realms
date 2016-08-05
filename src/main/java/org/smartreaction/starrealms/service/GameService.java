@@ -13,10 +13,14 @@ import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.LookoutPost;
 import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.bases.starempire.OrbitalPlatform;
 import org.smartreaction.starrealms.model.cards.bases.starempire.StarbaseOmega;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.united.EmbassyBase;
+import org.smartreaction.starrealms.model.cards.bases.united.ExchangePoint;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionStronghold;
 import org.smartreaction.starrealms.model.cards.events.*;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
@@ -28,6 +32,10 @@ import org.smartreaction.starrealms.model.cards.ships.blob.*;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.ships.united.AllianceTransport;
+import org.smartreaction.starrealms.model.cards.ships.united.BlobBot;
+import org.smartreaction.starrealms.model.cards.ships.united.CoalitionMessenger;
+import org.smartreaction.starrealms.model.cards.ships.united.TradeStar;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.model.players.bots.VelocityBot;
@@ -137,6 +145,10 @@ public class GameService {
         if (gameOptions.isIncludeCrisisHeroes()) {
             deck.addAll(getCrisisHeroes());
             game.getCardSets().add(CardSet.CRISIS_HEROES);
+        }
+        if (gameOptions.isIncludeUnitedVarious()) {
+            deck.addAll(getUnitedVarious());
+            game.getCardSets().add(CardSet.UNITED_VARIOUS);
         }
 
         if (gameOptions.isIncludeGambits()) {
@@ -559,6 +571,32 @@ public class GameService {
         cards.add(new FrontierStation());
 
         cards.add(new TheIncinerator());
+
+        return cards;
+    }
+
+    public List<Card> getUnitedVarious() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new BlobBot());
+        cards.add(new BlobBot());
+
+        cards.add(new TradeStar());
+        cards.add(new TradeStar());
+
+        cards.add(new AllianceTransport());
+        cards.add(new AllianceTransport());
+
+        cards.add(new CoalitionMessenger());
+        cards.add(new CoalitionMessenger());
+
+        cards.add(new UnionStronghold());
+
+        cards.add(new EmbassyBase());
+
+        cards.add(new LookoutPost());
+
+        cards.add(new ExchangePoint());
 
         return cards;
     }
@@ -1334,6 +1372,38 @@ public class GameService {
             case "warw":
             case "warworld":
                 return new WarWorld();
+
+            case "blobbot":
+            case "blobot":
+                return new BlobBot();
+
+            case "tradestar":
+            case "trasta":
+                return new TradeStar();
+
+            case "alliancetransport":
+            case "alltra":
+                return new AllianceTransport();
+
+            case "coalitionmessenger":
+            case "coames":
+                return new CoalitionMessenger();
+
+            case "unionstronghold":
+            case "unistr":
+                return new UnionStronghold();
+
+            case "embassybase":
+            case "embbas":
+                return new EmbassyBase();
+
+            case "lookoutpost":
+            case "loopos":
+                return new LookoutPost();
+
+            case "exchangepoint":
+            case "excpoi":
+                return new ExchangePoint();
 
             default:
                 return null;

@@ -11,7 +11,7 @@ public class BattleMech extends Ship implements AlliableCard
     public BattleMech()
     {
         name = "Battle Mech";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 5;
         set = CardSet.CORE;
         text = "Add 4 Combat; You may scrap a card in your hand or discard pile; Ally: Draw a card";
@@ -26,7 +26,7 @@ public class BattleMech extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

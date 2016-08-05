@@ -20,6 +20,8 @@ public class GameOptions {
 
     private boolean includeCrisisHeroes = false;
 
+    private boolean includeUnitedVarious = false;
+
     private boolean includeGambits = false;
 
     private String startingTradeRowCards = "";
@@ -90,6 +92,14 @@ public class GameOptions {
         this.includeCrisisHeroes = includeCrisisHeroes;
     }
 
+    public boolean isIncludeUnitedVarious() {
+        return includeUnitedVarious;
+    }
+
+    public void setIncludeUnitedVarious(boolean includeUnitedVarious) {
+        this.includeUnitedVarious = includeUnitedVarious;
+    }
+
     public boolean isIncludeGambits() {
         return includeGambits;
     }
@@ -116,7 +126,9 @@ public class GameOptions {
 
     @Override
     public int hashCode() {
-        return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships, includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeGambits, startingTradeRowCards);
+        return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
+                includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedVarious,
+                includeGambits, startingTradeRowCards);
     }
 
     @Override
@@ -135,6 +147,7 @@ public class GameOptions {
                 && Objects.equals(this.includeCrisisEvents, other.includeCrisisEvents)
                 && Objects.equals(this.includeCrisisFleetsAndFortresses, other.includeCrisisFleetsAndFortresses)
                 && Objects.equals(this.includeCrisisHeroes, other.includeCrisisHeroes)
+                && Objects.equals(this.includeUnitedVarious, other.includeUnitedVarious)
                 && Objects.equals(this.includeGambits, other.includeGambits)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);
     }

@@ -11,7 +11,7 @@ public class BattlePod extends Ship implements AlliableCard
     public BattlePod()
     {
         name = "Battle Pod";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 2;
         set = CardSet.CORE;
         text = "Add 4 Combat; You may scrap a card in the trade row; Ally: Add 2 Combat";
@@ -25,7 +25,7 @@ public class BattlePod extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(2);
     }

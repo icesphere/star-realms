@@ -14,7 +14,7 @@ public class DefenseCenter extends Outpost implements AlliableCard, ChoiceAction
     public DefenseCenter()
     {
         name = "Defense Center";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 5;
         set = CardSet.CORE;
         shield = 5;
@@ -31,7 +31,7 @@ public class DefenseCenter extends Outpost implements AlliableCard, ChoiceAction
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(2);
     }

@@ -1,13 +1,11 @@
 package org.smartreaction.starrealms.model.cards.events;
 
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ShowTriggeredEvent;
 import org.smartreaction.starrealms.model.players.Player;
 
 public abstract class Event extends Card {
     protected Event() {
-        faction = Faction.UNALIGNED;
     }
 
     @Override

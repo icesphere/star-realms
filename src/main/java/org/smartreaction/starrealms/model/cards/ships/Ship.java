@@ -16,7 +16,7 @@ public abstract class Ship extends Card {
         }
 
         if (cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA)) {
-            if (this instanceof AlliableCard && !alliedAbilityUsed && player.cardHasAlly(this)) {
+            if (this instanceof AlliableCard && player.cardHasAnyUnusedAlly(this)) {
                 return true;
             }
         }

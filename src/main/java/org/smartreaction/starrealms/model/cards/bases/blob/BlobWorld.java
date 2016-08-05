@@ -12,7 +12,7 @@ public class BlobWorld extends Base implements ChoiceActionCard
     public BlobWorld()
     {
         name = "Blob World";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 8;
         set = CardSet.CORE;
         shield = 7;

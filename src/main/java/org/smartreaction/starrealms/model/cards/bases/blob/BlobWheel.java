@@ -12,7 +12,7 @@ public class BlobWheel extends Base implements ScrappableCard
     public BlobWheel()
     {
         name = "Blob Wheel";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 3;
         set = CardSet.CORE;
         shield = 5;

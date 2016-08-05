@@ -11,7 +11,7 @@ public class PortOfCall extends Outpost implements ScrappableCard
     public PortOfCall()
     {
         name = "Port Of Call";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 6;
         set = CardSet.CORE;
         shield = 6;

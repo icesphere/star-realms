@@ -70,7 +70,7 @@
                                         <h:panelGroup layout="block" rendered="#{!empty gameView.cardToView}">
                                             <h:outputText value="#{gameView.cardToView.name}" style="font-weight: bold; font-size: 20px;"/>
                                             <div style="padding-top: 15px; font-size: 18px;">
-                                                <h:outputText value="#{gameView.getFactionDisplayName(gameView.cardToView.faction)}"/>
+                                                <h:outputText value="#{gameView.getFactionDisplayName(gameView.cardToView)}"/>
                                             </div>
                                             <h:panelGroup rendered="#{!gameView.cardToView.gambit}">
                                                 <div style="padding-top: 15px;">

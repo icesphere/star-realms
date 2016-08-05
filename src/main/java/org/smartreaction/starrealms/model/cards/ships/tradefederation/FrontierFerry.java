@@ -11,7 +11,7 @@ public class FrontierFerry extends Ship implements ScrappableCard
     public FrontierFerry()
     {
         name = "Frontier Ferry";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.COLONY_WARS;
         text = "Add 3 Trade; Add 4 Authority; Scrap: Destroy target base";

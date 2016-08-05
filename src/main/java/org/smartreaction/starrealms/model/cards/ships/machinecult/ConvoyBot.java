@@ -11,7 +11,7 @@ public class ConvoyBot extends Ship implements AlliableCard
     public ConvoyBot()
     {
         name = "Convoy Bot";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 3;
         set = CardSet.COLONY_WARS;
         text = "Add 4 Combat; You may scrap a card in your hand or discard pile; Ally: Add 2 Combat";
@@ -24,7 +24,7 @@ public class ConvoyBot extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 }

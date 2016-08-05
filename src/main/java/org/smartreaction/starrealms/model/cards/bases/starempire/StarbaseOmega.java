@@ -9,7 +9,7 @@ public class StarbaseOmega extends Base {
     public StarbaseOmega()
     {
         name = "Starbase Omega";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 4;
         set = CardSet.PROMO_YEAR_1;
         shield = 6;

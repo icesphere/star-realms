@@ -11,7 +11,7 @@ public class TradeWheel extends Base implements AlliableCard
     public TradeWheel()
     {
         name = "Trade Wheel";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 3;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         shield = 5;
@@ -30,7 +30,7 @@ public class TradeWheel extends Base implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(2);
     }

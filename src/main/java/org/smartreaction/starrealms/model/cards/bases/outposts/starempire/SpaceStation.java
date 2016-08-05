@@ -12,7 +12,7 @@ public class SpaceStation extends Outpost implements ScrappableCard, AlliableCar
     public SpaceStation()
     {
         name = "Space Station";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 4;
         set = CardSet.CORE;
         shield = 4;
@@ -31,7 +31,7 @@ public class SpaceStation extends Outpost implements ScrappableCard, AlliableCar
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 

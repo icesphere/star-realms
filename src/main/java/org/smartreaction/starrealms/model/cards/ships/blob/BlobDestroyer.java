@@ -11,7 +11,7 @@ public class BlobDestroyer extends Ship implements AlliableCard
     public BlobDestroyer()
     {
         name = "Blob Destroyer";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 4;
         set = CardSet.CORE;
         text = "Add 6 Combat; Ally: You may destroy target base and/or scrap a card in the trade row";
@@ -25,7 +25,7 @@ public class BlobDestroyer extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.destroyTargetBase();
         player.optionalScrapCardInTradeRow();

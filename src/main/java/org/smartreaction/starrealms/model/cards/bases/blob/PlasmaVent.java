@@ -10,7 +10,7 @@ public class PlasmaVent extends Base
     public PlasmaVent()
     {
         name = "Plasma Vent";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 6;
         set = CardSet.COLONY_WARS;
         shield = 5;

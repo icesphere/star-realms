@@ -11,7 +11,7 @@ public class Lancer extends Ship implements AlliableCard
     public Lancer()
     {
         name = "Lancer";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 2;
         set = CardSet.COLONY_WARS;
         text = "Add 4 Combat; If an opponent controls a base, gain an additional 2 Combat; Ally: Target Opponent discards a card";
@@ -27,7 +27,7 @@ public class Lancer extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.opponentDiscardsCard();
     }

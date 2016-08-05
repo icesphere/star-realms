@@ -13,7 +13,7 @@ public class Starmarket extends Base implements ChoiceActionCard
     public Starmarket()
     {
         name = "Starmarket";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.PROMO_YEAR_1;
         shield = 6;

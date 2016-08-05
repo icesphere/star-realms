@@ -11,7 +11,7 @@ public class CentralOffice extends Base implements AlliableCard
     public CentralOffice()
     {
         name = "Central Office";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 7;
         set = CardSet.CORE;
         shield = 6;
@@ -32,7 +32,7 @@ public class CentralOffice extends Base implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

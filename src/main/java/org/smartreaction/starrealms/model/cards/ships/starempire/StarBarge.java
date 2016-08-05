@@ -11,7 +11,7 @@ public class StarBarge extends Ship implements AlliableCard
     public StarBarge()
     {
         name = "Star Barge";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 1;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Trade; Ally: Add 2 Combat; Target Opponent discards a card";
@@ -23,7 +23,7 @@ public class StarBarge extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
         player.opponentDiscardsCard();
     }

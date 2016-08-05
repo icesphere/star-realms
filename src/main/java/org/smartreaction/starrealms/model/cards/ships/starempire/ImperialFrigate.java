@@ -12,7 +12,7 @@ public class ImperialFrigate extends Ship implements ScrappableCard, AlliableCar
     public ImperialFrigate()
     {
         name = "Imperial Frigate";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 3;
         set = CardSet.CORE;
         text = "Add 4 Combat; Target Opponent discards a card; Ally: Add 2 Combat; Scrap: Draw a card";
@@ -25,7 +25,7 @@ public class ImperialFrigate extends Ship implements ScrappableCard, AlliableCar
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 

@@ -11,7 +11,7 @@ public class Moonwurm extends Ship implements AlliableCard
     public Moonwurm()
     {
         name = "Moonwurm";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 7;
         set = CardSet.COLONY_WARS;
         text = "Add 8 Combat; Draw a card; Ally: Acquire a card of two or less for free and put it into your hand";
@@ -25,7 +25,7 @@ public class Moonwurm extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.acquireFreeCardToHand(2);
     }
 }

@@ -10,7 +10,7 @@ public class LoyalColony extends Base
     public LoyalColony()
     {
         name = "Loyal Colony";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 7;
         set = CardSet.COLONY_WARS;
         shield = 6;

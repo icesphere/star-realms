@@ -11,7 +11,7 @@ public class WarWorld extends Outpost implements AlliableCard
     public WarWorld()
     {
         name = "War World";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 5;
         set = CardSet.CORE;
         shield = 4;
@@ -30,7 +30,7 @@ public class WarWorld extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(4);
     }
 }

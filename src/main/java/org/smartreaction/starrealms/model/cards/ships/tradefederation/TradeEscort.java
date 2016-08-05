@@ -11,7 +11,7 @@ public class TradeEscort extends Ship implements AlliableCard
     public TradeEscort()
     {
         name = "Trade Escort";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 5;
         set = CardSet.CORE;
         text = "Add 4 Authority; Add 4 Combat; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class TradeEscort extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

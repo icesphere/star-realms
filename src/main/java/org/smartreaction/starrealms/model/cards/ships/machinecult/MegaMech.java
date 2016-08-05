@@ -11,7 +11,7 @@ public class MegaMech extends Ship implements AlliableCard
     public MegaMech()
     {
         name = "Mega Mech";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 5;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 6 Combat; You may return target base from play to its owner's hand; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class MegaMech extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

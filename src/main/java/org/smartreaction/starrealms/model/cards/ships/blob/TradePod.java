@@ -11,7 +11,7 @@ public class TradePod extends Ship implements AlliableCard
     public TradePod()
     {
         name = "Trade Pod";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 2;
         set = CardSet.CORE;
         text = "Add 3 Trade; Ally: Add 2 Combat";
@@ -23,7 +23,7 @@ public class TradePod extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 }

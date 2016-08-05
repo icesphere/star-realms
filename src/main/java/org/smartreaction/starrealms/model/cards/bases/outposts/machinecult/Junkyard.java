@@ -10,7 +10,7 @@ public class Junkyard extends Outpost
     public Junkyard()
     {
         name = "Junkyard";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 6;
         set = CardSet.CORE;
         shield = 5;

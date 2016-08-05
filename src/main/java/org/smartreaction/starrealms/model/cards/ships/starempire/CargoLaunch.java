@@ -11,7 +11,7 @@ public class CargoLaunch extends Ship implements ScrappableCard
     public CargoLaunch()
     {
         name = "Cargo Launch";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 1;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         text = "Draw a card; Scrap: Add 1 Trade";

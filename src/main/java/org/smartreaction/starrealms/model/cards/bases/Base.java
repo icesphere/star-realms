@@ -29,7 +29,7 @@ public abstract class Base extends Card {
                 baseUsed(player);
                 return true;
             } else if (this instanceof AlliableCard) {
-                return player.useAlliedAbility((AlliableCard) this);
+                return player.useAlliedAbilities((AlliableCard) this);
             }
         }
         return false;
@@ -51,7 +51,7 @@ public abstract class Base extends Card {
         }
 
         if (cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES)) {
-            if (!isUsed() || (this instanceof AlliableCard && !alliedAbilityUsed && player.cardHasAlly(this))) {
+            if (!isUsed() || (this instanceof AlliableCard && player.cardHasAnyUnusedAlly(this))) {
                 return true;
             }
         }

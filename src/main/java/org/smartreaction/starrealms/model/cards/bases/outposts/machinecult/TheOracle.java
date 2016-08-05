@@ -11,7 +11,7 @@ public class TheOracle extends Outpost implements AlliableCard
     public TheOracle()
     {
         name = "The Oracle";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 4;
         set = CardSet.COLONY_WARS;
         shield = 5;
@@ -24,7 +24,7 @@ public class TheOracle extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(3);
     }
 }

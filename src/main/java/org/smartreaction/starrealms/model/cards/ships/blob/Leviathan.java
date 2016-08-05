@@ -11,7 +11,7 @@ public class Leviathan extends Ship implements AlliableCard
     public Leviathan()
     {
         name = "Leviathan";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 8;
         set = CardSet.COLONY_WARS;
         text = "Add 9 Combat; Draw a card; You may destroy target base; Ally: Acquire a card of three or less for free and put it into your hand";
@@ -26,7 +26,7 @@ public class Leviathan extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.acquireFreeCardToHand(3);
     }
 }

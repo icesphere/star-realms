@@ -10,7 +10,7 @@ public class CapitolWorld extends Outpost
     public CapitolWorld()
     {
         name = "Capitol World";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 8;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 6;

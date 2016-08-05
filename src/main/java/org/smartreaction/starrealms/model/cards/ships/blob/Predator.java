@@ -11,7 +11,7 @@ public class Predator extends Ship implements AlliableCard
     public Predator()
     {
         name = "Predator";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 2;
         set = CardSet.COLONY_WARS;
         text = "Add 4 Combat; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class Predator extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

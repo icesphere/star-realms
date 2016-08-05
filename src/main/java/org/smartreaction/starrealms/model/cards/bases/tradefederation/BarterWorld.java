@@ -14,7 +14,7 @@ public class BarterWorld extends Base implements ScrappableCard, ChoiceActionCar
     public BarterWorld()
     {
         name = "Barter World";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.CORE;
         shield = 4;

@@ -11,6 +11,8 @@ import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.List;
+
 public class StealthTower extends Outpost implements CardActionCard
 {
     private Base baseBeingCopied;
@@ -18,7 +20,7 @@ public class StealthTower extends Outpost implements CardActionCard
     public StealthTower()
     {
         name = "Stealth Tower";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 5;
         set = CardSet.COLONY_WARS;
         shield = 5;
@@ -34,13 +36,13 @@ public class StealthTower extends Outpost implements CardActionCard
         return baseBeingCopied;
     }
 
-    public void setBaseBeingCopied(Base baseBeingCopied) {
-        this.baseBeingCopied = baseBeingCopied;
-    }
-
     @Override
-    public boolean isAlly(Card card) {
-        return super.isAlly(card) || baseBeingCopied != null && super.isAlly(baseBeingCopied);
+    public List<Faction> getAlliedFactions(Card card) {
+        List<Faction> alliedFactions = super.getAlliedFactions(card);
+        if (baseBeingCopied != null) {
+            alliedFactions.addAll(baseBeingCopied.getAlliedFactions(card));
+        }
+        return alliedFactions;
     }
 
     @Override

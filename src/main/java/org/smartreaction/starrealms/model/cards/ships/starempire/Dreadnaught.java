@@ -11,7 +11,7 @@ public class Dreadnaught extends Ship implements ScrappableCard
     public Dreadnaught()
     {
         name = "Dreadnaught";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 7;
         set = CardSet.CORE;
         text = "Add 7 Combat; Draw a card; Scrap: Add 5 Combat";

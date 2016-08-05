@@ -11,7 +11,7 @@ public class FighterBase extends Outpost implements AlliableCard
     public FighterBase()
     {
         name = "Fighter Base";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 3;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         shield = 5;
@@ -28,7 +28,7 @@ public class FighterBase extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.opponentDiscardsCard();
     }
 }

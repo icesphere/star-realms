@@ -116,7 +116,7 @@ public abstract class BotPlayer extends Player {
                     Card card = sortedCards.get(0);
                     playCard(card);
                     if (card instanceof AlliableCard && useAllyAfterPlay(card)) {
-                        useAlliedAbility((AlliableCard) card);
+                        useAlliedAbilities((AlliableCard) card);
                         resolveCurrentAction();
                     }
                     if (card.isBase() && useBaseAfterPlay((Base) card)) {
@@ -128,7 +128,7 @@ public abstract class BotPlayer extends Player {
 
             for (Card card : getInPlay()) {
                 if (card instanceof AlliableCard) {
-                    if (useAlliedAbility((AlliableCard) card)) {
+                    if (useAlliedAbilities((AlliableCard) card)) {
                         endTurn = false;
                         resolveCurrentAction();
                     }
@@ -475,7 +475,8 @@ public abstract class BotPlayer extends Player {
     }
 
     public int getScrapCardFromTradeRowScore(Card card) {
-        Faction factionWithMostCards = getFactionWithMostCards();
+        //todo fix this
+        /*Faction factionWithMostCards = getFactionWithMostCards();
         Faction opponentFactionWithMostCards = getOpponent().getFactionWithMostCards();
 
         if (opponentFactionWithMostCards != null) {
@@ -485,7 +486,7 @@ public abstract class BotPlayer extends Player {
             if (card.getFaction() == opponentFactionWithMostCards) {
                 return card.getCost();
             }
-        }
+        }*/
 
         return 0;
     }
@@ -609,11 +610,12 @@ public abstract class BotPlayer extends Player {
             return 5;
         }
 
-        for (Card card : getInPlay()) {
+        //todo fix this
+        /*for (Card card : getInPlay()) {
             if (card instanceof AlliableCard && !card.isAlliedAbilityUsed() && card.getFaction() == hero.getAlliedFaction()) {
                 return 15;
             }
-        }
+        }*/
 
         return 0;
     }

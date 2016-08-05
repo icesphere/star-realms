@@ -18,7 +18,7 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
     public SupplyDepot()
     {
         name = "Supply Depot";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 6;
         set = CardSet.COLONY_WARS;
         shield = 5;
@@ -47,7 +47,7 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 

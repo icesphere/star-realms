@@ -11,7 +11,7 @@ public class FederationShuttle extends Ship implements AlliableCard
     public FederationShuttle()
     {
         name = "Federation Shuttle";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 1;
         set = CardSet.CORE;
         text = "Add 2 Trade; Ally: Add 4 Authority";
@@ -23,7 +23,7 @@ public class FederationShuttle extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addAuthority(4);
     }
 }

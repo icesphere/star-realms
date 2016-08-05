@@ -133,43 +133,71 @@ public class GameView implements Serializable {
 
     public String getCardClass(Card card) {
         String cardClass = "";
-        
-        if (card.getFaction() == Faction.BLOB) {
-            cardClass = "blob";
-        } else if (card.getFaction() == Faction.MACHINE_CULT) {
-            cardClass = "machineCult";
-        } else if (card.getFaction() == Faction.STAR_EMPIRE) {
-            cardClass = "starEmpire";
-        } else if (card.getFaction() == Faction.TRADE_FEDERATION) {
-            cardClass = "tradeFederation";
-        } else if (card.getFaction() == Faction.UNALIGNED) {
-            cardClass = "unaligned";
-        } else if (card instanceof Event) {
+        if (card instanceof Event) {
             cardClass = "event";
         } else if (card instanceof Gambit) {
             cardClass = "gambit";
+        } else if (card.getFactions().size() == 0) {
+            cardClass = "unaligned";
+        } else if (card.getFactions().size() == 1) {
+            if (card.hasFaction(Faction.BLOB)) {
+                cardClass = "blob";
+            } else if (card.hasFaction(Faction.MACHINE_CULT)) {
+                cardClass = "machineCult";
+            } else if (card.hasFaction(Faction.STAR_EMPIRE)) {
+                cardClass = "starEmpire";
+            } else if (card.hasFaction(Faction.TRADE_FEDERATION)) {
+                cardClass = "tradeFederation";
+            }
+        } else {
+            if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.MACHINE_CULT)) {
+                return "blob-machineCult";
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "blob-starEmpire";
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.TRADE_FEDERATION)) {
+                return "blob-tradeFederation";
+            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "tradeFederation-starEmpire";
+            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.MACHINE_CULT)) {
+                return "tradeFederation-machineCult";
+            } else if (card.hasFaction(Faction.MACHINE_CULT) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "machineCult-starEmpire";
+            }
         }
 
         return cardClass;
     }
 
-    public String getFactionDisplayName(Faction faction) {
-        if (faction == null) {
-            return "";
+    public String getFactionDisplayName(Card card) {
+        if (card.getFactions().size() == 1) {
+            Faction faction = card.getFactions().get(0);
+            switch (faction) {
+                case BLOB:
+                    return "Blob";
+                case MACHINE_CULT:
+                    return "Machine Cult";
+                case STAR_EMPIRE:
+                    return "Star Empire";
+                case TRADE_FEDERATION:
+                    return "Trade Federation";
+            }
+        } else if (card.getFactions().size() == 2) {
+            if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.MACHINE_CULT)) {
+                return "Blob / Machine Cult";
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "Blob / Star Empire";
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.TRADE_FEDERATION)) {
+                return "Blob / Trade Federation";
+            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "Trade Federation / Star Empire";
+            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.MACHINE_CULT)) {
+                return "Trade Federation / Machine Cult";
+            } else if (card.hasFaction(Faction.MACHINE_CULT) && card.hasFaction(Faction.STAR_EMPIRE)) {
+                return "Machine Cult / Star Empire";
+            }
         }
 
-        switch (faction) {
-            case BLOB:
-                return "Blob";
-            case MACHINE_CULT:
-                return "Machine Cult";
-            case STAR_EMPIRE:
-                return "Star Empire";
-            case TRADE_FEDERATION:
-                return "Trade Federation";
-            default:
-                return "";
-        }
+        return "";
     }
 
     public List<Card> getCardsForPlayArea() {
@@ -233,7 +261,7 @@ public class GameView implements Serializable {
                     if (getAction() != null) {
                         handleCardClickedForAction(card, source);
                     } else if (card instanceof AlliableCard) {
-                        getPlayer().useAlliedAbility((AlliableCard) card);
+                        getPlayer().useAlliedAbilities((AlliableCard) card);
                         sendGameMessageToAll("refresh_game_page");
                     }
                 }

@@ -11,7 +11,7 @@ public class Flagship extends Ship implements AlliableCard
     public Flagship()
     {
         name = "Flagship";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 6;
         set = CardSet.CORE;
         text = "Add 5 Combat; Draw a card; Ally: Add 5 Authority";
@@ -24,7 +24,7 @@ public class Flagship extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addAuthority(5);
     }
 }

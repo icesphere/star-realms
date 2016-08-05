@@ -11,7 +11,7 @@ public class Obliterator extends Ship implements AlliableCard
     public Obliterator()
     {
         name = "Obliterator";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 6;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 7 Combat; If your opponent has two or more bases in play, gain 6 Combat; Ally: Draw a card";
@@ -27,7 +27,7 @@ public class Obliterator extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

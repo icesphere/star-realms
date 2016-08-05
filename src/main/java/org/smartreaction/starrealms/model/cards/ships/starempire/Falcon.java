@@ -11,7 +11,7 @@ public class Falcon extends Ship implements ScrappableCard
     public Falcon()
     {
         name = "Falcon";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 3;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Combat; Draw a card; Scrap: Target Opponent discards a card";

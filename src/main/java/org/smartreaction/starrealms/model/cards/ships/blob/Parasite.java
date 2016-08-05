@@ -13,7 +13,7 @@ public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
     public Parasite()
     {
         name = "Parasite";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat OR Acquire a card of six or less for free; Ally: Draw a card";
@@ -30,7 +30,7 @@ public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

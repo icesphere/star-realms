@@ -11,7 +11,7 @@ public class BattleStation extends Outpost implements ScrappableCard
     public BattleStation()
     {
         name = "Battle Station";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 3;
         set = CardSet.CORE;
         shield = 5;

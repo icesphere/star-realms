@@ -11,7 +11,7 @@ public class Mothership extends Ship implements AlliableCard
     public Mothership()
     {
         name = "Mothership";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 7;
         set = CardSet.CORE;
         text = "Add 6 Combat; Draw a card; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class Mothership extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

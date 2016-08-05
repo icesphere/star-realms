@@ -12,7 +12,7 @@ public class FrontierStation extends Outpost implements ChoiceActionCard
     public FrontierStation()
     {
         name = "Frontier Station";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 6;
         set = CardSet.COLONY_WARS;
         shield = 6;

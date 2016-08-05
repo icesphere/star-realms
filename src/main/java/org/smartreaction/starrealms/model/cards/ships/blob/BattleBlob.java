@@ -12,7 +12,7 @@ public class BattleBlob extends Ship implements ScrappableCard, AlliableCard
     public BattleBlob()
     {
         name = "Battle Blob";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 6;
         set = CardSet.CORE;
         text = "Add 8 Combat; Ally: Draw a card; Scrap: Add 4 Combat";
@@ -25,7 +25,7 @@ public class BattleBlob extends Ship implements ScrappableCard, AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

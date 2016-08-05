@@ -11,7 +11,7 @@ public class FederationShipyard extends Outpost implements AlliableCard
     public FederationShipyard()
     {
         name = "Federation Shipyard";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 6;
         set = CardSet.COLONY_WARS;
         shield = 6;
@@ -33,7 +33,7 @@ public class FederationShipyard extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(2);
     }

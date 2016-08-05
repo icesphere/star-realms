@@ -13,7 +13,7 @@ public class Ram extends Ship implements ScrappableCard, AlliableCard
     {
         name = "Ram";
 
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 3;
         set = CardSet.CORE;
         text = "Add 5 Combat; Ally: Add 2 Combat; Scrap: Add 3 Trade";
@@ -25,7 +25,7 @@ public class Ram extends Ship implements ScrappableCard, AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 

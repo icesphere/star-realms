@@ -11,7 +11,7 @@ public class StellarReef extends Base implements ScrappableCard
     public StellarReef()
     {
         name = "Stellar Reef";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 2;
         set = CardSet.COLONY_WARS;
         shield = 3;

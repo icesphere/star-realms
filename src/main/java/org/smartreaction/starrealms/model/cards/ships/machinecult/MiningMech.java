@@ -11,7 +11,7 @@ public class MiningMech extends Ship implements AlliableCard
     public MiningMech()
     {
         name = "Mining Mech";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 4;
         set = CardSet.COLONY_WARS;
         text = "Add 3 Trade; You may scrap a card in your hand or discard pile; Ally: Add 3 Combat";
@@ -24,7 +24,7 @@ public class MiningMech extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(3);
     }
 }

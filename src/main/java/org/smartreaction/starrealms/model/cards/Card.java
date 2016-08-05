@@ -10,19 +10,19 @@ import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.cards.ships.Viper;
 import org.smartreaction.starrealms.model.players.Player;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Card {
     protected String id;
     protected String name;
-    protected Faction faction;
+    protected List<Faction> factions = new ArrayList<>(1);
     protected int cost;
     protected CardSet set;
     protected String text;
     protected int shield;
-    protected boolean alliedAbilityUsed;
+    protected Map<Faction, Boolean> alliedAbilityUsed = new HashMap<>(4);
     protected boolean autoAlly = true;
+    protected List<Faction> autoAllyExcludedFactions = new ArrayList<>(0);
 
     public static String CARD_LOCATION_HAND = "hand";
     public static String CARD_LOCATION_PLAY_AREA = "playArea";
@@ -39,6 +39,10 @@ public abstract class Card {
 
     protected Card() {
         id = UUID.randomUUID().toString();
+        alliedAbilityUsed.put(Faction.BLOB, false);
+        alliedAbilityUsed.put(Faction.MACHINE_CULT, false);
+        alliedAbilityUsed.put(Faction.TRADE_FEDERATION, false);
+        alliedAbilityUsed.put(Faction.STAR_EMPIRE, false);
     }
 
     public String getName() {
@@ -49,12 +53,16 @@ public abstract class Card {
         this.name = name;
     }
 
-    public Faction getFaction() {
-        return faction;
+    public void addFaction(Faction faction) {
+        factions.add(faction);
     }
 
-    public void setFaction(Faction faction) {
-        this.faction = faction;
+    public boolean hasFaction(Faction faction) {
+        return factions.contains(faction);
+    }
+
+    public List<Faction> getFactions() {
+        return factions;
     }
 
     public int getCost() {
@@ -110,19 +118,19 @@ public abstract class Card {
     }
 
     public boolean isBlob() {
-        return this.faction == Faction.BLOB;
+        return hasFaction(Faction.BLOB);
     }
 
     public boolean isTradeFederation() {
-        return this.faction == Faction.TRADE_FEDERATION;
+        return hasFaction(Faction.TRADE_FEDERATION);
     }
 
     public boolean isMachineCult() {
-        return this.faction == Faction.MACHINE_CULT;
+        return hasFaction(Faction.MACHINE_CULT);
     }
 
     public boolean isStarEmpire() {
-        return this.faction == Faction.STAR_EMPIRE;
+        return hasFaction(Faction.STAR_EMPIRE);
     }
 
     public boolean isStarterCard() {
@@ -131,12 +139,18 @@ public abstract class Card {
 
     public abstract void cardPlayed(Player player);
 
-    public boolean isAlliedAbilityUsed() {
-        return alliedAbilityUsed;
+    public boolean isAlliedAbilityUsed(Faction faction) {
+        return alliedAbilityUsed.get(faction);
     }
 
-    public void setAlliedAbilityUsed(boolean alliedAbilityUsed) {
-        this.alliedAbilityUsed = alliedAbilityUsed;
+    public void setAlliedAbilityUsed(boolean used, Faction faction) {
+        alliedAbilityUsed.put(faction, used);
+    }
+
+    public void setAllAlliedAbilitesToNotUsed() {
+        for (Faction faction : alliedAbilityUsed.keySet()) {
+            alliedAbilityUsed.put(faction, false);
+        }
     }
 
     public void removedFromPlay(Player player) {}
@@ -161,8 +175,14 @@ public abstract class Card {
         return Objects.hash(this.id);
     }
 
-    public boolean isAlly(Card card) {
-        return card.getFaction() == this.getFaction();
+    public List<Faction> getAlliedFactions(Card card) {
+        List<Faction> alliedFactions = new ArrayList<>();
+        for (Faction faction : card.getFactions()) {
+            if (factions.contains(faction)) {
+                alliedFactions.add(faction);
+            }
+        }
+        return alliedFactions;
     }
 
     public int getCombatWhenScrapped() {
@@ -201,5 +221,22 @@ public abstract class Card {
 
     public boolean isGambit() {
         return this instanceof Gambit;
+    }
+
+    public boolean hasUnusedAllyAbility() {
+        for (Faction faction : factions) {
+            if (!alliedAbilityUsed.get(faction)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addAutoAllyExcludedFaction(Faction faction) {
+        autoAllyExcludedFactions.add(faction);
+    }
+
+    public List<Faction> getAutoAllyExcludedFactions() {
+        return autoAllyExcludedFactions;
     }
 }

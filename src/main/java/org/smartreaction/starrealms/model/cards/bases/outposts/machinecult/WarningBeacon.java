@@ -10,7 +10,7 @@ public class WarningBeacon extends Outpost
     public WarningBeacon()
     {
         name = "Warning Beacon";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 2;
         set = CardSet.COLONY_WARS;
         shield = 2;

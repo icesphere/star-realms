@@ -10,7 +10,7 @@ public class CommandCenter extends Outpost
     public CommandCenter()
     {
         name = "Command Center";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 4;
         set = CardSet.COLONY_WARS;
         shield = 4;

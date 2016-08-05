@@ -12,7 +12,7 @@ public class Battlecruiser extends Ship implements ScrappableCard, AlliableCard
     public Battlecruiser()
     {
         name = "Battlecruiser";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 6;
         set = CardSet.CORE;
         text = "Add 5 Combat; Draw a card; Ally: Target Opponent discards a card; Scrap: Draw a card. You may destroy target base.";
@@ -26,7 +26,7 @@ public class Battlecruiser extends Ship implements ScrappableCard, AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.opponentDiscardsCard();
     }

@@ -11,7 +11,7 @@ public class StarFortress extends Outpost implements AlliableCard
     public StarFortress()
     {
         name = "Star Fortress";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 7;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 6;
@@ -27,7 +27,7 @@ public class StarFortress extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
         player.discardCardFromHand();
     }

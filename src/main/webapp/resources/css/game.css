@@ -290,6 +290,60 @@
     background-color: #77AAEE;
 }
 
+.blob-machineCult {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #66AA66, #DD5555);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #66AA66, #DD5555);
+}
+
+.blob-starEmpire {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #66AA66, #EECC00);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #66AA66, #EECC00);
+}
+
+.blob-tradeFederation {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #66AA66, #77AAEE);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #66AA66, #77AAEE);
+}
+
+.tradeFederation-starEmpire {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #77AAEE, #EECC00);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #77AAEE, #EECC00);
+}
+
+.tradeFederation-machineCult {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #77AAEE, #DD5555);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #77AAEE, #DD5555);
+}
+
+.machineCult-starEmpire {
+    /* The old syntax, deprecated and prefixed, for old browsers */
+    background: -prefix-linear-gradient(left, #DD5555, #EECC00);
+
+    /* The new syntax needed by standard-compliant browsers (Opera 12.1,
+       IE 10, Firefox 16, Chrome 26, Safari 6.1), without prefix */
+    background: linear-gradient(to right, #DD5555, #EECC00);
+}
+
 .event {
     background-color: #EECC00;
 }

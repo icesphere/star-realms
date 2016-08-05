@@ -12,7 +12,7 @@ public class CargoPod extends Ship implements AlliableCard, ScrappableCard
     public CargoPod()
     {
         name = "Cargo Pod";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 3;
         set = CardSet.COLONY_WARS;
         text = "Add 3 Trade; Ally: Add 3 Combat; Scrap: Add 3 Combat";
@@ -24,7 +24,7 @@ public class CargoPod extends Ship implements AlliableCard, ScrappableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(3);
     }
 

@@ -13,7 +13,7 @@ import java.util.List;
 public class DeathWorld extends Base implements ScrapCardsForBenefitActionCard {
     public DeathWorld() {
         name = "Death World";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 7;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 6;

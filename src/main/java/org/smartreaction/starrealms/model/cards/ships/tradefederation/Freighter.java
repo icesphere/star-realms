@@ -11,7 +11,7 @@ public class Freighter extends Ship implements AlliableCard
     public Freighter()
     {
         name = "Freighter";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.CORE;
         text = "Add 4 Trade; Ally: You may put the next ship you acquire this turn on top of your deck";
@@ -23,7 +23,7 @@ public class Freighter extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.nextShipToTopOfDeck();
     }
 }

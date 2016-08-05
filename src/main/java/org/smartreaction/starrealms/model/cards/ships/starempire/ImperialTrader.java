@@ -11,7 +11,7 @@ public class ImperialTrader extends Ship implements AlliableCard
     public ImperialTrader()
     {
         name = "Imperial Trader";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 5;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 3 Trade; Draw a card; Ally: Add 4 Combat";
@@ -24,7 +24,7 @@ public class ImperialTrader extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(4);
     }
 }

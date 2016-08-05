@@ -11,7 +11,7 @@ public class MechCruiser extends Ship implements AlliableCard
     public MechCruiser()
     {
         name = "Mech Cruiser";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 5;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; You may scrap a card in your hand or discard pile; Ally: Destroy target base";
@@ -26,7 +26,7 @@ public class MechCruiser extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.destroyTargetBase();
     }

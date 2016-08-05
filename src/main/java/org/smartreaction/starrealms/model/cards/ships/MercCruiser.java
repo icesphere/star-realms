@@ -13,7 +13,6 @@ public class MercCruiser extends Ship implements ChoiceActionCard
     public MercCruiser()
     {
         name = "Merc Cruiser";
-        faction = Faction.UNALIGNED;
         cost = 3;
         set = CardSet.PROMO_YEAR_1;
         text = "Add 5 Combat; Choose a faction as you play Merc Cruiser. Merc Cruiser has that faction";

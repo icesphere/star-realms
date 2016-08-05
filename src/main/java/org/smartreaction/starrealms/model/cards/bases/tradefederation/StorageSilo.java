@@ -11,7 +11,7 @@ public class StorageSilo extends Base implements AlliableCard
     public StorageSilo()
     {
         name = "Storage Silo";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 2;
         set = CardSet.COLONY_WARS;
         shield = 3;
@@ -31,7 +31,7 @@ public class StorageSilo extends Base implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addTrade(2);
     }

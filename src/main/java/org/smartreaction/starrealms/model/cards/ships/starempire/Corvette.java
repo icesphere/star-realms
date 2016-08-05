@@ -11,7 +11,7 @@ public class Corvette extends Ship implements AlliableCard
     public Corvette()
     {
         name = "Corvette";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 2;
         set = CardSet.CORE;
         text = "Add 1 Combat; Draw a card; Ally: Add 2 Combat";
@@ -25,7 +25,7 @@ public class Corvette extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.addCombat(2);
     }

@@ -11,7 +11,7 @@ public class TheIncinerator extends Outpost implements AlliableCard
     public TheIncinerator()
     {
         name = "The Incinerator";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 8;
         set = CardSet.COLONY_WARS;
         shield = 6;
@@ -26,7 +26,7 @@ public class TheIncinerator extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2 * player.getNumCardsScrappedThisTurn());
     }
 }

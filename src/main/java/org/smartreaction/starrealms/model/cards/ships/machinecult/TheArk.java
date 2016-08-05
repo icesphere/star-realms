@@ -15,7 +15,7 @@ public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefit
     public TheArk()
     {
         name = "The Ark";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 7;
         set = CardSet.PROMO_YEAR_1;
         text = "Add 5 Combat; Scrap up to two cards in your hand and/or discard pile. Draw a card for each card scrapped this way; Scrap: Destroy target base";

@@ -11,7 +11,7 @@ public class SurveyShip extends Ship implements ScrappableCard
     public SurveyShip()
     {
         name = "Survey Ship";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 3;
         set = CardSet.CORE;
         text = "Add 1 Trade; Draw a card; Scrap: Target Opponent discards a card";

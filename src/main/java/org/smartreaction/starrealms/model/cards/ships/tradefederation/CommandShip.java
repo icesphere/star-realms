@@ -11,7 +11,7 @@ public class CommandShip extends Ship implements AlliableCard
     public CommandShip()
     {
         name = "Command Ship";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 8;
         set = CardSet.CORE;
         text = "Add 4 Authority; Add 5 Combat; Draw 2 Cards; Ally: You may destroy target base";
@@ -27,7 +27,7 @@ public class CommandShip extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.destroyTargetBase();
     }

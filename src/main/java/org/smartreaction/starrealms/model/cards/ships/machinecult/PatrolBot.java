@@ -13,7 +13,7 @@ public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
     public PatrolBot()
     {
         name = "Patrol Bot";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 2;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         text = "Add 2 Trade OR Add 4 Combat; Ally: You may scrap a card in your hand or discard pile";
@@ -29,7 +29,7 @@ public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.optionallyScrapCardFromHandOrDiscard();
     }
 

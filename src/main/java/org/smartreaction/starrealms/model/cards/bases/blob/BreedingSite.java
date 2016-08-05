@@ -10,7 +10,7 @@ public class BreedingSite extends Base
     public BreedingSite()
     {
         name = "Breeding Site";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 4;
         set = CardSet.PROMO_YEAR_1;
         shield = 7;

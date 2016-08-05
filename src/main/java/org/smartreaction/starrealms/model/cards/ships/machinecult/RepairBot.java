@@ -11,7 +11,7 @@ public class RepairBot extends Ship implements ScrappableCard
     public RepairBot()
     {
         name = "Repair Bot";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 2;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Trade; You may scrap a card in your discard pile; Scrap: Add 2 Combat";

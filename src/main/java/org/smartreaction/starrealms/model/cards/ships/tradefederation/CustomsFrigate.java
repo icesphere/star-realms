@@ -12,7 +12,7 @@ public class CustomsFrigate extends Ship implements AlliableCard, ScrappableCard
     public CustomsFrigate()
     {
         name = "Customs Frigate";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 4;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         text = "You may acquire a ship of cost four or less and put it on top of your deck; Ally: Add 4 Combat; Scrap: Draw a card";
@@ -24,7 +24,7 @@ public class CustomsFrigate extends Ship implements AlliableCard, ScrappableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(4);
     }
 

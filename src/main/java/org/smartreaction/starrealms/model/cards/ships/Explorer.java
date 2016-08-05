@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.cards.ships;
 
 import org.smartreaction.starrealms.model.CardSet;
-import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -10,7 +9,6 @@ public class Explorer extends Ship implements ScrappableCard
     public Explorer()
     {
         name = "Explorer";
-        faction = Faction.UNALIGNED;
         cost = 2;
         set = CardSet.CORE;
         text = "Add 2 Trade; Scrap: Add 2 Combat";

@@ -11,7 +11,7 @@ public class MissileMech extends Ship implements AlliableCard
     public MissileMech()
     {
         name = "Missile Mech";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 6;
         set = CardSet.CORE;
         text = "Add 6 Combat; You may destroy target base; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class MissileMech extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

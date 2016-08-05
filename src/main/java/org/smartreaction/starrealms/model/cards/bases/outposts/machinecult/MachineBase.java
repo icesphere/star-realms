@@ -10,7 +10,7 @@ public class MachineBase extends Outpost
     public MachineBase()
     {
         name = "Machine Base";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 7;
         set = CardSet.CORE;
         shield = 6;

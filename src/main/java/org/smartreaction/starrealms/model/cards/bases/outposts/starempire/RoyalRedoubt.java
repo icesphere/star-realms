@@ -11,7 +11,7 @@ public class RoyalRedoubt extends Outpost implements AlliableCard
     public RoyalRedoubt()
     {
         name = "Royal Redoubt";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 6;
         set = CardSet.CORE;
         shield = 6;
@@ -30,7 +30,7 @@ public class RoyalRedoubt extends Outpost implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.opponentDiscardsCard();
     }
 }

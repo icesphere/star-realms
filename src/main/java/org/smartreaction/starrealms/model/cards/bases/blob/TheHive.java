@@ -11,7 +11,7 @@ public class TheHive extends Base implements AlliableCard
     public TheHive()
     {
         name = "The Hive";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 5;
         set = CardSet.CORE;
         shield = 5;
@@ -30,7 +30,7 @@ public class TheHive extends Base implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

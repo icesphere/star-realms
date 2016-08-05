@@ -10,7 +10,7 @@ public class FortressOblivion extends Outpost
     public FortressOblivion()
     {
         name = "Fortress Oblivion";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 3;
         set = CardSet.PROMO_YEAR_1;
         shield = 4;

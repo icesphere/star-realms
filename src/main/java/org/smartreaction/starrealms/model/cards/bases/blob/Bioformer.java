@@ -11,7 +11,7 @@ public class Bioformer extends Base implements ScrappableCard
     public Bioformer()
     {
         name = "Bioformer";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 4;
         set = CardSet.COLONY_WARS;
         shield = 4;

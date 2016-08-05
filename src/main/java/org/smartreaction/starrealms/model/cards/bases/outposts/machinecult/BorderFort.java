@@ -13,7 +13,7 @@ public class BorderFort extends Outpost implements AlliableCard, ChoiceActionCar
     public BorderFort()
     {
         name = "Border Fort";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 4;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         shield = 5;
@@ -29,7 +29,7 @@ public class BorderFort extends Outpost implements AlliableCard, ChoiceActionCar
         player.makeChoice(this, choice1, choice2);
     }
 
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.optionallyScrapCardFromHandOrDiscard();
     }
 

@@ -10,7 +10,7 @@ public class FleetHQ extends Base
     public FleetHQ()
     {
         name = "Fleet HQ";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 8;
         set = CardSet.CORE;
         shield = 8;

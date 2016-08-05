@@ -11,7 +11,7 @@ public class ImperialFighter extends Ship implements AlliableCard
     public ImperialFighter()
     {
         name = "Imperial Fighter";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 1;
         set = CardSet.CORE;
         text = "Add 2 Combat; Target Opponent discards a card; Ally: Add 2 Combat";
@@ -24,7 +24,7 @@ public class ImperialFighter extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
 }

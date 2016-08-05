@@ -11,7 +11,7 @@ public class Peacekeeper extends Ship implements AlliableCard
     public Peacekeeper()
     {
         name = "Peacekeeper";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 6;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; Add 6 Authority; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class Peacekeeper extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

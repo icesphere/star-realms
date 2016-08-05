@@ -10,7 +10,7 @@ public class EmbassyYacht extends Ship
     public EmbassyYacht()
     {
         name = "Embassy Yacht";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 3;
         set = CardSet.CORE;
         text = "Add 3 Authority; Add 2 Trade; If you have two or more bases in play, draw two cards";

@@ -11,7 +11,7 @@ public class SolarSkiff extends Ship implements AlliableCard
     public SolarSkiff()
     {
         name = "Solar Skiff";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 1;
         set = CardSet.COLONY_WARS;
         text = "Add 2 Trade; Ally: Draw a card";
@@ -24,7 +24,7 @@ public class SolarSkiff extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

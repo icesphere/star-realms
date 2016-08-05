@@ -11,7 +11,7 @@ public class BlobFighter extends Ship implements AlliableCard
     public BlobFighter()
     {
         name = "Blob Fighter";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 1;
         set = CardSet.CORE;
         text = "Add 3 Combat; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class BlobFighter extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player)
+    public void cardAllied(Player player, Faction faction)
     {
         player.drawCard();
     }

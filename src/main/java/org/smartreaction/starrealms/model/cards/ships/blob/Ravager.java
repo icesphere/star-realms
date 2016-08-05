@@ -10,7 +10,7 @@ public class Ravager extends Ship
     public Ravager()
     {
         name = "Ravager";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 3;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; You may scrap up to two cards that are currently in the trade row";

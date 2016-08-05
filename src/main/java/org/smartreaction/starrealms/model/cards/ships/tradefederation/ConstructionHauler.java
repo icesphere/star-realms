@@ -11,7 +11,7 @@ public class ConstructionHauler extends Ship implements AlliableCard
     public ConstructionHauler()
     {
         name = "Construction Hauler";
-        faction = Faction.TRADE_FEDERATION;
+        addFaction(Faction.TRADE_FEDERATION);
         cost = 6;
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         text = "Add 3 Authority; Add 2 Trade; Draw a Card; Ally: You may put the next base you acquire this turn directly into play";
@@ -25,7 +25,7 @@ public class ConstructionHauler extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.nextBaseToHand();
     }
 }

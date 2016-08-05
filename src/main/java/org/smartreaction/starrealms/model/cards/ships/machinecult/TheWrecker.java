@@ -11,7 +11,7 @@ public class TheWrecker extends Ship implements AlliableCard
     public TheWrecker()
     {
         name = "The Wrecker";
-        faction = Faction.MACHINE_CULT;
+        addFaction(Faction.MACHINE_CULT);
         cost = 7;
         set = CardSet.COLONY_WARS;
         text = "Add 6 Combat; You may scrap up to two cards in your hand and/or discard pile; Ally: Draw a card";
@@ -25,7 +25,7 @@ public class TheWrecker extends Ship implements AlliableCard
     }
 
     @Override
-    public void cardAllied(Player player) {
+    public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
 }

@@ -15,7 +15,7 @@ public class OrbitalPlatform extends Base implements DiscardCardsForBenefitActio
     public OrbitalPlatform()
     {
         name = "Orbital Platform";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 3;
         set = CardSet.COLONY_WARS;
         shield = 4;

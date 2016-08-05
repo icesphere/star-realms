@@ -11,7 +11,7 @@ public class SpikePod extends Ship implements ScrappableCard
     public SpikePod()
     {
         name = "Spike Pod";
-        faction = Faction.BLOB;
+        addFaction(Faction.BLOB);
         cost = 1;
         set = CardSet.CRISIS_FLEETS_AND_FORTRESSES;
         text = "Add 3 Combat; You may scrap up to two cards currently in the Trade Row; Scrap: Add 2 Combat";

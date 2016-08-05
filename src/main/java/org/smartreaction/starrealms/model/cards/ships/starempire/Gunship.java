@@ -11,7 +11,7 @@ public class Gunship extends Ship implements ScrappableCard
     public Gunship()
     {
         name = "Gunship";
-        faction = Faction.STAR_EMPIRE;
+        addFaction(Faction.STAR_EMPIRE);
         cost = 4;
         set = CardSet.COLONY_WARS;
         text = "Add 5 Combat; Target Opponent discards a card; Scrap: Add 4 Trade";

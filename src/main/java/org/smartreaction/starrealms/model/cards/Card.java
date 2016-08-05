@@ -23,6 +23,7 @@ public abstract class Card {
     protected Map<Faction, Boolean> alliedAbilityUsed = new HashMap<>(4);
     protected boolean autoAlly = true;
     protected List<Faction> autoAllyExcludedFactions = new ArrayList<>(0);
+    protected boolean allFactionsAlliedTogether;
 
     public static String CARD_LOCATION_HAND = "hand";
     public static String CARD_LOCATION_PLAY_AREA = "playArea";
@@ -144,7 +145,13 @@ public abstract class Card {
     }
 
     public void setAlliedAbilityUsed(boolean used, Faction faction) {
-        alliedAbilityUsed.put(faction, used);
+        if (allFactionsAlliedTogether) {
+            for (Faction f : factions) {
+                alliedAbilityUsed.put(f, true);
+            }
+        } else {
+            alliedAbilityUsed.put(faction, used);
+        }
     }
 
     public void setAllAlliedAbilitesToNotUsed() {
@@ -238,5 +245,9 @@ public abstract class Card {
 
     public List<Faction> getAutoAllyExcludedFactions() {
         return autoAllyExcludedFactions;
+    }
+
+    public boolean isAllFactionsAlliedTogether() {
+        return allFactionsAlliedTogether;
     }
 }

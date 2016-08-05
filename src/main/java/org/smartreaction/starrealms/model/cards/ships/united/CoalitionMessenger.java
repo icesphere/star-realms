@@ -15,6 +15,7 @@ public class CoalitionMessenger extends Ship implements AlliableCard {
         cost = 3;
         set = CardSet.UNITED_VARIOUS;
         text = "Add 2 Trade; Ally: Choose a card of cost 5 or less in your discard pile. Put it on top of your deck.";
+        allFactionsAlliedTogether = true;
     }
 
     @Override

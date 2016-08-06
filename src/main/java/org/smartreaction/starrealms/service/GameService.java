@@ -13,13 +13,17 @@ import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.AllianceLanding;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.CoalitionFortress;
 import org.smartreaction.starrealms.model.cards.bases.outposts.united.LookoutPost;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.UnityStation;
 import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.bases.starempire.OrbitalPlatform;
 import org.smartreaction.starrealms.model.cards.bases.starempire.StarbaseOmega;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.*;
 import org.smartreaction.starrealms.model.cards.bases.united.EmbassyBase;
 import org.smartreaction.starrealms.model.cards.bases.united.ExchangePoint;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionCluster;
 import org.smartreaction.starrealms.model.cards.bases.united.UnionStronghold;
 import org.smartreaction.starrealms.model.cards.events.*;
 import org.smartreaction.starrealms.model.cards.gambits.*;
@@ -32,10 +36,7 @@ import org.smartreaction.starrealms.model.cards.ships.blob.*;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
-import org.smartreaction.starrealms.model.cards.ships.united.AllianceTransport;
-import org.smartreaction.starrealms.model.cards.ships.united.BlobBot;
-import org.smartreaction.starrealms.model.cards.ships.united.CoalitionMessenger;
-import org.smartreaction.starrealms.model.cards.ships.united.TradeStar;
+import org.smartreaction.starrealms.model.cards.ships.united.*;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.model.players.bots.VelocityBot;
@@ -149,6 +150,10 @@ public class GameService {
         if (gameOptions.isIncludeUnitedVarious()) {
             deck.addAll(getUnitedVarious());
             game.getCardSets().add(CardSet.UNITED_VARIOUS);
+        }
+        if (gameOptions.isIncludeUnitedShipsStationsAndPods()) {
+            deck.addAll(getUnitedShipsStationsAndPods());
+            game.getCardSets().add(CardSet.UNITED_SHIPS_STATIONS_AND_PODS);
         }
 
         if (gameOptions.isIncludeGambits()) {
@@ -597,6 +602,32 @@ public class GameService {
         cards.add(new LookoutPost());
 
         cards.add(new ExchangePoint());
+
+        return cards;
+    }
+
+    public List<Card> getUnitedShipsStationsAndPods() {
+        List<Card> cards = new ArrayList<>();
+
+        cards.add(new CoalitionFreighter());
+        cards.add(new CoalitionFreighter());
+
+        cards.add(new AllianceFrigate());
+        cards.add(new AllianceFrigate());
+
+        cards.add(new AssaultPod());
+        cards.add(new AssaultPod());
+
+        cards.add(new UnityFighter());
+        cards.add(new UnityFighter());
+
+        cards.add(new CoalitionFortress());
+
+        cards.add(new AllianceLanding());
+
+        cards.add(new UnityStation());
+
+        cards.add(new UnionCluster());
 
         return cards;
     }
@@ -1404,6 +1435,38 @@ public class GameService {
             case "exchangepoint":
             case "excpoi":
                 return new ExchangePoint();
+
+            case "coalitionfreighter":
+            case "coafre":
+                return new CoalitionFreighter();
+
+            case "alliancefrigate":
+            case "allfri":
+                return new AllianceFrigate();
+
+            case "assaultpod":
+            case "asspod":
+                return new AssaultPod();
+
+            case "unityfighter":
+            case "unifig":
+                return new UnityFighter();
+
+            case "coalitionfortress":
+            case "coafor":
+                return new CoalitionFortress();
+
+            case "alliancelanding":
+            case "alllan":
+                return new AllianceLanding();
+
+            case "unitystation":
+            case "unista":
+                return new UnityStation();
+
+            case "unioncluster":
+            case "uniclu":
+                return new UnionCluster();
 
             default:
                 return null;

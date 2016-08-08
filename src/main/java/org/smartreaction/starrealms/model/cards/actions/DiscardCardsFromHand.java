@@ -66,6 +66,7 @@ public class DiscardCardsFromHand extends Action {
 
     @Override
     public boolean isShowDone() {
+        //todo handle if not optional and available cards < numCardsToDiscard
         return selectedCards.size() > 0 && selectedCards.size() <= numCardsToDiscard && (optional || selectedCards.size() == numCardsToDiscard);
     }
 

@@ -21,7 +21,7 @@ public class Megahauler extends Ship implements AlliableCard
     @Override
     public void cardPlayed(Player player) {
         player.addAuthority(5);
-        player.acquireFreeShipAndPutOnTopOfDeck();
+        player.acquireFreeShipToTopOfDeck();
     }
 
     @Override

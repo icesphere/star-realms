@@ -19,7 +19,7 @@ public class CunningCaptain extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.opponentDiscardsCard();
         player.starEmpireAlliedUntilEndOfTurn();
+        player.opponentDiscardsCard();
     }
 }

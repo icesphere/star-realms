@@ -19,7 +19,7 @@ public class AdmiralRasmussen extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.drawCard();
         player.starEmpireAlliedUntilEndOfTurn();
+        player.drawCard();
     }
 }

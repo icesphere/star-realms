@@ -28,6 +28,7 @@ import org.smartreaction.starrealms.model.cards.bases.united.UnionStronghold;
 import org.smartreaction.starrealms.model.cards.events.*;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
+import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.MercCruiser;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
@@ -154,6 +155,10 @@ public class GameService {
         if (gameOptions.isIncludeUnitedShipsStationsAndPods()) {
             deck.addAll(getUnitedShipsStationsAndPods());
             game.getCardSets().add(CardSet.UNITED_SHIPS_STATIONS_AND_PODS);
+        }
+        if (gameOptions.isIncludeUnitedHeroes()) {
+            deck.addAll(getUnitedHeroes());
+            game.getCardSets().add(CardSet.UNITED_HEROES);
         }
 
         if (gameOptions.isIncludeGambits()) {
@@ -628,6 +633,32 @@ public class GameService {
         cards.add(new UnityStation());
 
         cards.add(new UnionCluster());
+
+        return cards;
+    }
+
+    public List<Hero> getUnitedHeroes() {
+        List<Hero> cards = new ArrayList<>();
+
+        cards.add(new CommanderKlik());
+        cards.add(new CommanderKlik());
+
+        cards.add(new Screecher());
+        cards.add(new Screecher());
+
+        cards.add(new ChairmanHaygan());
+        cards.add(new ChairmanHaygan());
+
+        cards.add(new ChancellorHartman());
+        cards.add(new ChancellorHartman());
+
+        cards.add(new CEOShaner());
+
+        cards.add(new CommanderZhang());
+
+        cards.add(new ConfessorMorris());
+
+        cards.add(new HiveLord());
 
         return cards;
     }
@@ -1519,6 +1550,39 @@ public class GameService {
             case "we":
             case "warelder":
                 return new WarElder();
+
+            case "commanderklik":
+            case "comkli":
+                return new CommanderKlik();
+
+            case "screecher":
+            case "scr":
+                return new Screecher();
+
+            case "chairmanhaygan":
+            case "chahay":
+                return new ChairmanHaygan();
+
+            case "chancellorhartman":
+            case "chahar":
+                return new ChancellorHartman();
+
+            case "ceoshaner":
+            case "ceosha":
+                return new CEOShaner();
+
+            case "commanderzhang":
+            case "comzha":
+                return new CommanderZhang();
+
+            case "confessormorris":
+            case "conmor":
+                return new ConfessorMorris();
+
+            case "hivelord":
+            case "hivlor":
+                return new HiveLord();
+
             default:
                 return null;
         }

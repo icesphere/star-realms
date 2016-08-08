@@ -11,7 +11,7 @@ public abstract class Hero extends Card implements ScrappableCard {
 
     @Override
     public void cardPlayed(Player player) {
-
+        //do nothing unless overridden
     }
 
     public abstract Faction getAlliedFaction();
@@ -19,5 +19,9 @@ public abstract class Hero extends Card implements ScrappableCard {
     @Override
     public boolean isActionable(Player player, String cardLocation) {
         return false;
+    }
+
+    public void heroBought(Player player) {
+        //do nothing unless overridden
     }
 }

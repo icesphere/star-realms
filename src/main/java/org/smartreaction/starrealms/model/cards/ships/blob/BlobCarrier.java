@@ -27,6 +27,6 @@ public class BlobCarrier extends Ship implements AlliableCard
     @Override
     public void cardAllied(Player player, Faction faction)
     {
-        player.acquireFreeShipAndPutOnTopOfDeck();
+        player.acquireFreeShipToTopOfDeck();
     }
 }

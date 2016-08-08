@@ -20,7 +20,7 @@ public class CustomsFrigate extends Ship implements AlliableCard, ScrappableCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.acquireFreeCardToTopOfDeck(4);
+        player.acquireFreeShipToTopOfDeck(4);
     }
 
     @Override

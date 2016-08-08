@@ -19,8 +19,8 @@ public class SpecialOpsDirector extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.addAuthority(4);
         player.tradeFederationAlliedUntilEndOfTurn();
+        player.addAuthority(4);
     }
 
     @Override

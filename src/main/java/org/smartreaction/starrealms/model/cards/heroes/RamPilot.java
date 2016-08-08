@@ -19,8 +19,8 @@ public class RamPilot extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.addCombat(2);
         player.blobAlliedUntilEndOfTurn();
+        player.addCombat(2);
     }
 
     @Override

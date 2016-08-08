@@ -19,8 +19,8 @@ public class BlobOverlord extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.addCombat(4);
         player.blobAlliedUntilEndOfTurn();
+        player.addCombat(4);
     }
 
     @Override

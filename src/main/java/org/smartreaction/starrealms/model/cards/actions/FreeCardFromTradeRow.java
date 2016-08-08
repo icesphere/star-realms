@@ -10,6 +10,8 @@ public class FreeCardFromTradeRow extends Action {
 
     private String destination;
 
+    private boolean onlyShips;
+
     public FreeCardFromTradeRow(Integer maxCost, String text) {
         this.maxCost = maxCost;
         this.text = text;
@@ -22,14 +24,29 @@ public class FreeCardFromTradeRow extends Action {
         this.destination = destination;
     }
 
+    public FreeCardFromTradeRow(Integer maxCost, String text, String destination, boolean onlyShips) {
+        this.maxCost = maxCost;
+        this.text = text;
+        this.destination = destination;
+        this.onlyShips = onlyShips;
+    }
+
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
         return (cardLocation.equals(Card.CARD_LOCATION_EXPLORERS) || cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW))
-                && (maxCost == null || (card.getCost() <= maxCost));
+                && (maxCost == null || (card.getCost() <= maxCost))
+                && (!onlyShips || card.isShip());
     }
 
     @Override
     public boolean processAction(Player player) {
+        if (onlyShips) {
+            long numShipsInTradeRow = player.getGame().getTradeRow().stream().filter(Card::isShip).count();
+            if (numShipsInTradeRow == 0) {
+                return false;
+            }
+        }
+
         if (player.getGame().getTradeRow().isEmpty()) {
             return false;
         } else {

@@ -77,6 +77,7 @@ public class ScrapCardsFromHandOrDiscardPile extends Action implements SelectFro
 
     @Override
     public boolean isShowDone() {
+        //todo handle if not optional and available cards < numCardsToScrap
         int totalSelectedCards = getTotalSelectedCards();
         return totalSelectedCards > 0 && totalSelectedCards <= numCardsToScrap && (optional || totalSelectedCards == numCardsToScrap);
     }

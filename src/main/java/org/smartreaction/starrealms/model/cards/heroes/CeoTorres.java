@@ -19,8 +19,8 @@ public class CeoTorres extends Hero {
 
     @Override
     public void cardScrapped(Player player) {
-        player.addAuthority(7);
         player.tradeFederationAlliedUntilEndOfTurn();
+        player.addAuthority(7);
     }
 
     @Override

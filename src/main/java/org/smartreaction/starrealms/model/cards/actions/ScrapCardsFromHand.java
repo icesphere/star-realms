@@ -66,6 +66,7 @@ public class ScrapCardsFromHand extends Action {
 
     @Override
     public boolean isShowDone() {
+        //todo handle if not optional and available cards < numCardsToScrap
         return selectedCards.size() > 0 && selectedCards.size() <= numCardsToScrap && (optional || selectedCards.size() == numCardsToScrap);
     }
 

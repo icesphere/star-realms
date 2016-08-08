@@ -357,6 +357,10 @@ public abstract class Player {
         addAction(new ScrapCardsFromHandOrDiscardPileOrTradeRow(cards, "Scrap up to " + cards + " from your hand or discard pile or the trade row", true));
     }
 
+    public void optionallyDiscardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
+        addAction(new DiscardCardsFromHandForBenefit(card, numCardsToDiscard, text, true));
+    }
+
     public void scrapCardFromDiscard(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from discard");
         discard.remove(card);
@@ -401,10 +405,6 @@ public abstract class Player {
         addAction(new ScrapCardsFromTradeRow(cards, true));
     }
 
-    public void acquireFreeShipAndPutOnTopOfDeck() {
-        addAction(new FreeCardFromTradeRow(null, "Choose a free ship from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK));
-    }
-
     public void addCardToTopOfDeck(Card card) {
         if (card instanceof Hero) {
             heroes.add((Hero) card);
@@ -432,7 +432,9 @@ public abstract class Player {
             addCardToHand(card);
             getGame().gameLog("Added " + card.getName() + " to hand");
         } else if (card instanceof Hero) {
-            heroes.add((Hero) card);
+            Hero hero = (Hero) card;
+            heroes.add(hero);
+            hero.heroBought(this);
         } else if (card.isShip() && (nextShipToTopOfDeck || nextShipOrBaseToTopOfDeck)) {
             nextShipToTopOfDeck = false;
             nextShipOrBaseToTopOfDeck = false;
@@ -679,6 +681,14 @@ public abstract class Player {
 
     public void acquireFreeCardToTopOfDeck(int maxCost) {
         addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to the top of your deck costing up to " + maxCost, Card.CARD_LOCATION_DECK));
+    }
+
+    public void acquireFreeShipToTopOfDeck() {
+        addAction(new FreeCardFromTradeRow(null, "Choose a free ship from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK, true));
+    }
+
+    public void acquireFreeShipToTopOfDeck(int maxCost) {
+        addAction(new FreeCardFromTradeRow(maxCost, "Choose a free ship costing up to " + maxCost + " from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK, true));
     }
 
     public void acquireFreeCardToHand(int maxCost) {

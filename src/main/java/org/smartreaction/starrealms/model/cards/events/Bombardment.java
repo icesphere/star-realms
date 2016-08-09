@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.cards.events;
 
 import org.smartreaction.starrealms.model.CardSet;
-import org.smartreaction.starrealms.model.cards.actions.DestroyOwnBase;
 import org.smartreaction.starrealms.model.cards.actions.DestroyOwnBaseActionCard;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -14,8 +13,8 @@ public class Bombardment extends Event implements DestroyOwnBaseActionCard {
 
     @Override
     public void handleEvent(Player player) {
-        player.addAction(new DestroyOwnBase(this, "Destroy a base you control or lose 6 Authority"));
-        player.getOpponent().addAction(new DestroyOwnBase(this, "Destroy a base you control or lose 6 Authority"));
+        player.destroyOwnBase(this, "Destroy a base you control or lose 6 Authority");
+        player.getOpponent().destroyOwnBase(this, "Destroy a base you control or lose 6 Authority");
     }
 
     @Override

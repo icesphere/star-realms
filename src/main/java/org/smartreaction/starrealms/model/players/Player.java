@@ -12,6 +12,7 @@ import org.smartreaction.starrealms.model.cards.bases.blob.PlasmaVent;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.WarningBeacon;
+import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
@@ -203,7 +204,6 @@ public abstract class Player {
     }
 
     public void discardCard(Card card) {
-        getGame().gameLog("Discarded " + card.getName());
         hand.remove(card);
         discard.add(card);
         cardRemovedFromPlay(card);
@@ -350,7 +350,11 @@ public abstract class Player {
     }
 
     public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap) {
-        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile", true));
+        optionallyScrapCardsFromHandOrDiscardForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile");
+    }
+
+    public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text) {
+        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, text, true));
     }
 
     public void optionallyScrapCardsFromHandOrDiscardOrTradeRow(int cards) {
@@ -359,6 +363,10 @@ public abstract class Player {
 
     public void optionallyDiscardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
         addAction(new DiscardCardsFromHandForBenefit(card, numCardsToDiscard, text, true));
+    }
+
+    public void discardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
+        addAction(new DiscardCardsFromHandForBenefit(card, numCardsToDiscard, text));
     }
 
     public void scrapCardFromDiscard(Card card) {
@@ -855,7 +863,7 @@ public abstract class Player {
         addAction(new DiscardCardsFromHand(cards));
     }
 
-    public void addAction(Action action) {
+    private void addAction(Action action) {
         actionsQueue.add(action);
         if (yourTurn && currentAction == null) {
             resolveActions();
@@ -905,7 +913,7 @@ public abstract class Player {
     }
 
     public void actionResult(Action action, ActionResult result) {
-        if (!result.getSelectedCards().isEmpty() || result.getChoiceSelected() != null
+        if (result.getSelectedCard() != null || result.getChoiceSelected() != null
                 || result.isDoNotUse() || result.isDoneWithAction()) {
             if (result.isDoNotUse() || action.processActionResult(this, result)) {
                 if (result.isDoNotUse()) {
@@ -976,5 +984,21 @@ public abstract class Player {
 
     public int getNumBases() {
         return (int) getAllCards().stream().filter(Card::isBase).count();
+    }
+
+    public void destroyOwnBase(DestroyOwnBaseActionCard card, String text) {
+        addAction(new DestroyOwnBase(card, text));
+    }
+
+    public void addCardAction(CardActionCard card, String text) {
+        addAction(new CardAction(card, text));
+    }
+
+    public void showTriggeredEvent(Event event) {
+        addAction(new ShowTriggeredEvent(event));
+    }
+
+    public void addCardFromDiscardToTopOfDeck(Integer maxCost) {
+        addAction(new CardFromDiscardToTopOfDeck(maxCost));
     }
 }

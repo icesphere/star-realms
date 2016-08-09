@@ -6,13 +6,17 @@ import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.actions.*;
+import org.smartreaction.starrealms.model.cards.actions.Action;
+import org.smartreaction.starrealms.model.cards.actions.ActionResult;
+import org.smartreaction.starrealms.model.cards.actions.SelectFromDiscardAction;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
+import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -43,6 +47,13 @@ public class GameView implements Serializable {
     List<Card> cardsToShow;
 
     String cardsToShowSource;
+
+    @PostConstruct
+    public void setup() {
+        if (getOpponent() instanceof BotPlayer) {
+            ((BotPlayer) getOpponent()).setGameService(gameService);
+        }
+    }
 
     public void sendGameMessageToAll(String message) {
         sendGameMessage("*", message);
@@ -232,7 +243,7 @@ public class GameView implements Serializable {
                     handleCardClickedForAction(card, source);
                 } else {
                     getPlayer().buyCard(card);
-                    sendGameMessageToAll("refresh_game_page");
+                    refreshGamePageForAll();
                 }
             }
         } else  {
@@ -262,7 +273,7 @@ public class GameView implements Serializable {
                         handleCardClickedForAction(card, source);
                     } else if (card instanceof AlliableCard) {
                         getPlayer().useAlliedAbilities((AlliableCard) card);
-                        sendGameMessageToAll("refresh_game_page");
+                        refreshGamePageForAll();
                     }
                 }
             } else if (source.equals(Card.CARD_LOCATION_PLAYER_BASES) || source.equals(Card.CARD_LOCATION_OPPONENT_BASES)) {
@@ -302,7 +313,7 @@ public class GameView implements Serializable {
         ActionResult result = new ActionResult();
         result.setCardLocation(cardLocation);
 
-        result.getSelectedCards().add(card);
+        result.setSelectedCard(card);
 
         getPlayer().actionResult(action, result);
 
@@ -319,7 +330,7 @@ public class GameView implements Serializable {
 
     public void playAll() {
         getPlayer().playAll();
-        sendGameMessageToOpponent("refresh_game_page");
+        refreshGamePageForOpponent();
         checkForAction();
     }
 
@@ -336,7 +347,7 @@ public class GameView implements Serializable {
         if (!getGame().isGameOver()) {
             getPlayer().getOpponent().startTurn();
         }
-        sendGameMessageToOpponent("refresh_game_page");
+        refreshGamePageForOpponent();
     }
 
     public void choiceMade(int choiceSelected) {
@@ -349,12 +360,12 @@ public class GameView implements Serializable {
     public void refreshGamePageWithCheckForAction() {
         if (getAction() != null) {
             sendShowActionToPlayer();
-            sendGameMessageToOpponent("refresh_game_page");
+            refreshGamePageForOpponent();
         } else {
             if (!getPlayer().isYourTurn()) {
                 refreshAfterEndTurn();
             } else {
-                sendGameMessageToAll("refresh_game_page");
+                refreshGamePageForAll();
             }
         }
     }
@@ -366,12 +377,12 @@ public class GameView implements Serializable {
     }
 
     public void sendShowActionToPlayer() {
-        sendGameMessageToPlayer("refresh_game_page");
+        refreshGamePageForPlayer();
     }
 
     public String quitGame() {
         getGame().quitGame(getPlayer());
-        sendGameMessageToOpponent("refresh_game_page");
+        refreshGamePageForOpponent();
         return exitGame();
     }
 
@@ -439,17 +450,17 @@ public class GameView implements Serializable {
 
     public void doNotUseAction() {
         getPlayer().actionResult(getAction(), ActionResult.doNotUseActionResult());
-        sendGameMessageToPlayer("refresh_game_page");
+        refreshGamePageForPlayer();
     }
 
     public void doneWithAction() {
         getPlayer().actionResult(getAction(), ActionResult.doneWithActionResult());
-        sendGameMessageToAll("refresh_game_page");
+        refreshGamePageForAll();
     }
 
     public void scrapCard(Card card) {
         getPlayer().scrapCardInPlayForBenefit(card);
-        sendGameMessageToAll("refresh_game_page");
+        refreshGamePageForAll();
     }
 
     public boolean isOpponentAttackable() {
@@ -458,7 +469,19 @@ public class GameView implements Serializable {
 
     public void attackOpponentBase(Base base) {
         getPlayer().destroyOpponentBase(base);
+        refreshGamePageForAll();
+    }
+    
+    public void refreshGamePageForAll() {
         sendGameMessageToAll("refresh_game_page");
+    }
+
+    public void refreshGamePageForPlayer() {
+        sendGameMessageToPlayer("refresh_game_page");
+    }
+
+    public void refreshGamePageForOpponent() {
+        sendGameMessageToOpponent("refresh_game_page");
     }
 
     public boolean isBaseAttackable(Base base) {

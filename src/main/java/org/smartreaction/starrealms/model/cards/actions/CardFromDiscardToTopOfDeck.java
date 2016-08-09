@@ -6,12 +6,12 @@ import org.smartreaction.starrealms.model.players.Player;
 public class CardFromDiscardToTopOfDeck extends Action implements SelectFromDiscardAction {
     Integer maxCost;
 
-    public CardFromDiscardToTopOfDeck(String text) {
-        this.text = text;
-    }
-
-    public CardFromDiscardToTopOfDeck(String text, int maxCost) {
-        this.text = text;
+    public CardFromDiscardToTopOfDeck(Integer maxCost) {
+        text = "Choose a card from your discard pile ";
+        if (maxCost != null) {
+            text += "of cost " + maxCost + " or less ";
+        }
+        text += "to put on top of your deck";
         this.maxCost = maxCost;
     }
 

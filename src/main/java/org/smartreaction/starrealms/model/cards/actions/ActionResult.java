@@ -2,11 +2,8 @@ package org.smartreaction.starrealms.model.cards.actions;
 
 import org.smartreaction.starrealms.model.cards.Card;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ActionResult {
-    private List<Card> selectedCards = new ArrayList<>(3);
+    private Card selectedCard;
 
     private Integer choiceSelected;
 
@@ -31,10 +28,6 @@ public class ActionResult {
         return actionResult;
     }
 
-    public List<Card> getSelectedCards() {
-        return selectedCards;
-    }
-
     public Integer getChoiceSelected() {
         return choiceSelected;
     }
@@ -52,10 +45,11 @@ public class ActionResult {
     }
 
     public Card getSelectedCard() {
-        if (selectedCards.size() > 0) {
-            return selectedCards.get(0);
-        }
-        return null;
+        return selectedCard;
+    }
+
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
     }
 
     public boolean isDoNotUse() {

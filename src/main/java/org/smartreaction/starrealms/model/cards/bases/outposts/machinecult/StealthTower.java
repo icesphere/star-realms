@@ -29,7 +29,7 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public void baseUsed(Player player) {
-        player.addAction(new CardAction(this, "Until your turn ends, Stealth Tower becomes a copy of any base in play. Stealth Tower has that base's faction in addition to Machine Cult."));
+        player.addCardAction(this, "Until your turn ends, Stealth Tower becomes a copy of any base in play. Stealth Tower has that base's faction in addition to Machine Cult.");
     }
 
     public Base getBaseBeingCopied() {

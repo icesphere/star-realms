@@ -4,7 +4,6 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
-import org.smartreaction.starrealms.model.cards.actions.ScrapCardsFromHandOrDiscardPileForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -23,7 +22,7 @@ public class DeathWorld extends Base implements ScrapCardsForBenefitActionCard {
     @Override
     public void baseUsed(Player player) {
         player.addCombat(4);
-        player.addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(this, 1, "You may scrap a Trade Federation, Machine Cult or Star Empire card from your hand or discard pile. If you do, draw a card.", true));
+        player.optionallyScrapCardsFromHandOrDiscardForBenefit(this, 1, "You may scrap a Trade Federation, Machine Cult or Star Empire card from your hand or discard pile. If you do, draw a card.");
     }
 
     @Override

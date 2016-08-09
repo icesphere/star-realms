@@ -3,7 +3,6 @@ package org.smartreaction.starrealms.model.cards.ships.united;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.actions.CardFromDiscardToTopOfDeck;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -26,6 +25,6 @@ public class CoalitionMessenger extends Ship implements AlliableCard {
 
     @Override
     public void cardAllied(Player player, Faction faction) {
-        player.addAction(new CardFromDiscardToTopOfDeck("Choose a card from your discard pile of cost 5 or less to put on top of your deck", 5));
+        player.addCardFromDiscardToTopOfDeck(5);
     }
 }

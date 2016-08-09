@@ -4,7 +4,6 @@ import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
-import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -24,7 +23,7 @@ public class OrbitalPlatform extends Base implements DiscardCardsForBenefitActio
 
     @Override
     public void baseUsed(Player player) {
-        player.addAction(new DiscardCardsFromHandForBenefit(this, 1, "Discard a card. If you do, draw a card."));
+        player.discardCardsForBenefit(this, 1, "Discard a card. If you do, draw a card.");
     }
 
     @Override

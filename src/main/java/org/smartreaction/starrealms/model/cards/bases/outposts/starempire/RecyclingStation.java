@@ -6,7 +6,6 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
-import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -48,7 +47,7 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
             player.addTrade(1);
         } else {
             player.getGame().gameLog("Chose Discard up to two cards, then draw that many cards");
-            player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards to then draw that many cards", true));
+            player.optionallyDiscardCardsForBenefit(this, 2, "Discard up to two cards to then draw that many cards");
         }
     }
 }

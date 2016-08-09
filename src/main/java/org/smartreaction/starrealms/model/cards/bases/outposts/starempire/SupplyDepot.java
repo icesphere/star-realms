@@ -7,7 +7,6 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
-import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -28,7 +27,7 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
 
     @Override
     public void baseUsed(Player player) {
-        player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "", true));
+        player.optionallyDiscardCardsForBenefit(this, 2, "Discard up to two cards. Gain 2 Trade or 2 Combat for each card discarded this way.");
     }
 
     @Override

@@ -26,7 +26,7 @@ public class StealthNeedle extends Ship implements CardActionCard
 
     @Override
     public void cardPlayed(Player player) {
-        player.addAction(new CardAction(this, "Copy another ship you've played this turn. Stealth Needle has that ship's faction in addition to Machine Cult."));
+        player.addCardAction(this, "Copy another ship you've played this turn. Stealth Needle has that ship's faction in addition to Machine Cult.");
     }
 
     public Card getCardBeingCopied() {

@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.cards.events;
 
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.actions.ShowTriggeredEvent;
 import org.smartreaction.starrealms.model.players.Player;
 
 public abstract class Event extends Card {
@@ -14,7 +13,7 @@ public abstract class Event extends Card {
     }
 
     public void eventTriggered(Player player) {
-        player.addAction(new ShowTriggeredEvent(this));
+        player.showTriggeredEvent(this);
         player.getGame().gameLog(name + " event triggered");
         handleEvent(player);
         player.getGame().scrapCardFromTradeRow(this);

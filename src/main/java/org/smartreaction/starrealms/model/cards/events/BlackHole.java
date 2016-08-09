@@ -3,7 +3,6 @@ package org.smartreaction.starrealms.model.cards.events;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.actions.DiscardCardsForBenefitActionCard;
-import org.smartreaction.starrealms.model.cards.actions.DiscardCardsFromHandForBenefit;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
@@ -17,8 +16,8 @@ public class BlackHole extends Event implements DiscardCardsForBenefitActionCard
 
     @Override
     public void handleEvent(Player player) {
-        player.addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards. For each card less than two, lose 4 Authority.", true));
-        player.getOpponent().addAction(new DiscardCardsFromHandForBenefit(this, 2, "Discard up to two cards. For each card less than two, lose 4 Authority.", true));
+        player.optionallyDiscardCardsForBenefit(this, 2, "Discard up to two cards. For each card less than two, lose 4 Authority.");
+        player.getOpponent().optionallyDiscardCardsForBenefit(this, 2, "Discard up to two cards. For each card less than two, lose 4 Authority.");
     }
 
     @Override

@@ -29,6 +29,7 @@ import org.smartreaction.starrealms.model.cards.ships.starempire.Falcon;
 import org.smartreaction.starrealms.model.cards.ships.starempire.ImperialFrigate;
 import org.smartreaction.starrealms.model.cards.ships.starempire.SurveyShip;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.CustomsFrigate;
+import org.smartreaction.starrealms.service.GameService;
 
 import java.util.*;
 
@@ -38,6 +39,8 @@ public abstract class BotPlayer extends Player {
     public BotPlayer() {
         playerName = getClass().getSimpleName();
     }
+
+    GameService gameService;
 
     protected Comparator<Card> discardScoreDescending = (c1, c2) -> Integer.compare(getDiscardCardScore(c2), getDiscardCardScore(c1));
     protected Comparator<Card> scrapScoreDescending = (c1, c2) -> Integer.compare(getScrapCardScore(c2), getScrapCardScore(c1));
@@ -199,12 +202,18 @@ public abstract class BotPlayer extends Player {
     private boolean resolveCurrentAction() {
         if (currentAction != null) {
 
+            ActionResult result = new ActionResult();
+
             if (currentAction instanceof CardAction) {
                 CardAction cardAction = (CardAction) currentAction;
                 if (cardAction.getCardActionCard() instanceof StealthTower) {
-                    //todo
+                    Base baseToCopy = getBaseToCopy();
+                    result.setSelectedCard(baseToCopy);
+                    cardAction.getCardActionCard().processCardActionResult(null, this, result);
                 } else if (cardAction.getCardActionCard() instanceof StealthNeedle) {
-                    //todo
+                    Ship shipToCopy = getShipToCopy();
+                    result.setSelectedCard(shipToCopy);
+                    cardAction.getCardActionCard().processCardActionResult(null, this, result);
                 }
             } else if (currentAction instanceof CardFromDiscardToTopOfDeck) {
                 //todo
@@ -242,8 +251,13 @@ public abstract class BotPlayer extends Player {
                 //todo
             }
 
+            refreshGamePageForOpponent();
+
             return true;
         }
+
+        refreshGamePageForOpponent();
+
         return false;
     }
 
@@ -1137,5 +1151,21 @@ public abstract class BotPlayer extends Player {
         //todo
         //todo - consider when discarding things besides Scout, Viper, and Explorer would be good
         return new ArrayList<>();//getCardsToDiscard(2, true);
+    }
+
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+    }
+
+    public void refreshGamePageForOpponent() {
+        sendGameMessageToOpponent("refresh_game_page");
+    }
+
+    public void sendGameMessageToOpponent(String message) {
+        sendGameMessage(getOpponent().getPlayerName(), message);
+    }
+
+    public void sendGameMessage(String recipient, String message) {
+        gameService.sendGameMessage(getPlayerName(), recipient, getGame().getGameId(), message);
     }
 }

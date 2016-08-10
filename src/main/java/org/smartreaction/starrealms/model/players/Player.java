@@ -286,9 +286,7 @@ public abstract class Player {
         this.getBases().add(base);
     }
 
-    public void destroyTargetBase() {
-        addAction(new DestroyOpponentBase("Destroy target base"));
-    }
+    public abstract void destroyTargetBase();
 
     public void baseDestroyed(Base base) {
         getGame().gameLog("Destroyed base: " + base.getName());
@@ -345,29 +343,19 @@ public abstract class Player {
         optionallyScrapCardsFromHandOrDiscard(1);
     }
 
-    public void optionallyScrapCardsFromHandOrDiscard(int cards) {
-        addAction(new ScrapCardsFromHandOrDiscardPile(cards, "Scrap up to " + cards + " from your hand or discard pile", true));
-    }
+    public abstract void optionallyScrapCardsFromHandOrDiscard(int cards);
 
     public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap) {
         optionallyScrapCardsFromHandOrDiscardForBenefit(card, numCardsToScrap, "Scrap up to " + numCardsToScrap + " from your hand or discard pile");
     }
 
-    public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text) {
-        addAction(new ScrapCardsFromHandOrDiscardPileForBenefit(card, numCardsToScrap, text, true));
-    }
+    public abstract void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text);
 
-    public void optionallyScrapCardsFromHandOrDiscardOrTradeRow(int cards) {
-        addAction(new ScrapCardsFromHandOrDiscardPileOrTradeRow(cards, "Scrap up to " + cards + " from your hand or discard pile or the trade row", true));
-    }
+    public abstract void optionallyScrapCardsFromHandOrDiscardOrTradeRow(int cards);
 
-    public void optionallyDiscardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
-        addAction(new DiscardCardsFromHandForBenefit(card, numCardsToDiscard, text, true));
-    }
+    public abstract void optionallyDiscardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text);
 
-    public void discardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
-        addAction(new DiscardCardsFromHandForBenefit(card, numCardsToDiscard, text));
-    }
+    public abstract void discardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text);
 
     public void scrapCardFromDiscard(Card card) {
         getGame().gameLog("Scrapped " + card.getName() + " from discard");
@@ -409,9 +397,7 @@ public abstract class Player {
         optionallyScrapCardsInTradeRow(1);
     }
 
-    public void optionallyScrapCardsInTradeRow(int cards) {
-        addAction(new ScrapCardsFromTradeRow(cards, true));
-    }
+    public abstract void optionallyScrapCardsInTradeRow(int cards);
 
     public void addCardToTopOfDeck(Card card) {
         if (card instanceof Hero) {
@@ -460,9 +446,7 @@ public abstract class Player {
         }
     }
 
-    public void makeChoice(ChoiceActionCard card, Choice... choices) {
-        addAction(new ChoiceAction(card, choices));
-    }
+    public abstract void makeChoice(ChoiceActionCard card, Choice... choices);
 
     public void nextShipToTopOfDeck() {
         nextShipToTopOfDeck = true;
@@ -484,17 +468,9 @@ public abstract class Player {
         this.allShipsAddOneCombat = allShipsAddOneCombat;
     }
 
-    public void scrapCardFromHand(boolean optional) {
-        if (optional) {
-            addAction(new ScrapCardsFromHand(1, "You may scrap a card from your hand", true));
-        } else {
-            addAction(new ScrapCardsFromHand(1, "Scrap a card from your hand", false));
-        }
-    }
+    public abstract void scrapCardFromHand(boolean optional);
 
-    public void optionallyScrapCardsFromDiscard(int cards) {
-        addAction(new ScrapCardsFromDiscardPile(cards, "You may scrap a card from your discard pile", true));
-    }
+    public abstract void optionallyScrapCardsFromDiscard(int cards);
 
     public void setAllFactionsAllied(boolean allFactionsAllied) {
         this.allFactionsAllied = allFactionsAllied;
@@ -667,9 +643,7 @@ public abstract class Player {
         return false;
     }
 
-    public void returnTargetBaseToHand() {
-        addAction(new ReturnBaseToHand("Return a base to owner's hand"));
-    }
+    public abstract void returnTargetBaseToHand();
 
     public int getCurrentDeckNumber() {
         return getShuffles() + 1;
@@ -683,25 +657,17 @@ public abstract class Player {
         this.preventFirstDamage = preventFirstDamage;
     }
 
-    public void acquireFreeCard(int maxCost) {
-        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row costing up to " + maxCost));
-    }
+    public abstract void acquireFreeCard(int maxCost);
 
-    public void acquireFreeCardToTopOfDeck(int maxCost) {
-        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to the top of your deck costing up to " + maxCost, Card.CARD_LOCATION_DECK));
-    }
+    public abstract void acquireFreeCardToTopOfDeck(int maxCost);
 
     public void acquireFreeShipToTopOfDeck() {
-        addAction(new FreeCardFromTradeRow(null, "Choose a free ship from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK, true));
+        acquireFreeShipToTopOfDeck(null);
     }
 
-    public void acquireFreeShipToTopOfDeck(int maxCost) {
-        addAction(new FreeCardFromTradeRow(maxCost, "Choose a free ship costing up to " + maxCost + " from the trade row to put on top of your deck", Card.CARD_LOCATION_DECK, true));
-    }
+    public abstract void acquireFreeShipToTopOfDeck(Integer maxCost);
 
-    public void acquireFreeCardToHand(int maxCost) {
-        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost, Card.CARD_LOCATION_HAND));
-    }
+    public abstract void acquireFreeCardToHand(int maxCost);
 
     public List<Gambit> getGambits() {
         return gambits;
@@ -757,9 +723,7 @@ public abstract class Player {
         return factionWithMostCards;
     }
 
-    public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
-        addAction(new DrawCardsAndPutSomeBackOnTopOfDeck(cardsToDraw, cardsToPutBack));
-    }
+    public abstract void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack);
 
     public void blobAlliedUntilEndOfTurn() {
         blobAlliedUntilEndOfTurn = true;
@@ -859,16 +823,7 @@ public abstract class Player {
         addGameLog(playerName + " discarded " + card.getName() + " from hand");
     }
 
-    public void discardCardsFromHand(int cards) {
-        addAction(new DiscardCardsFromHand(cards));
-    }
-
-    private void addAction(Action action) {
-        actionsQueue.add(action);
-        if (yourTurn && currentAction == null) {
-            resolveActions();
-        }
-    }
+    public abstract void discardCardsFromHand(int cards);
 
     public void resolveActions() {
         if (!actionsQueue.isEmpty()) {
@@ -986,19 +941,11 @@ public abstract class Player {
         return (int) getAllCards().stream().filter(Card::isBase).count();
     }
 
-    public void destroyOwnBase(DestroyOwnBaseActionCard card, String text) {
-        addAction(new DestroyOwnBase(card, text));
-    }
+    public abstract void destroyOwnBase(DestroyOwnBaseActionCard card, String text);
 
-    public void addCardAction(CardActionCard card, String text) {
-        addAction(new CardAction(card, text));
-    }
+    public abstract void addCardAction(CardActionCard card, String text);
 
-    public void showTriggeredEvent(Event event) {
-        addAction(new ShowTriggeredEvent(event));
-    }
+    public abstract void showTriggeredEvent(Event event);
 
-    public void addCardFromDiscardToTopOfDeck(Integer maxCost) {
-        addAction(new CardFromDiscardToTopOfDeck(maxCost));
-    }
+    public abstract void addCardFromDiscardToTopOfDeck(Integer maxCost);
 }

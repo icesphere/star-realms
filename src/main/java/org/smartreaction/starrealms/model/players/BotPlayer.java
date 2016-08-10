@@ -427,6 +427,8 @@ public abstract class BotPlayer extends Player {
         }
 
         endTurn();
+
+        refreshGamePageForOpponent();
     }
 
     public List<Card> getCardsToBuy() {

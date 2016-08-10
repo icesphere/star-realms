@@ -43,6 +43,11 @@ public class LobbyView implements Serializable {
         return null;
     }
 
+    public String playAgainstComputer() {
+        gameService.playAgainstComputer(userSession.getUser());
+        return "game.xhtml?faces-redirect=true";
+    }
+
     public String getUserStatus(User user) {
         if (user.getCurrentGame() != null) {
             return "(playing game with " + user.getCurrentPlayer().getOpponent().getPlayerName() + ")";

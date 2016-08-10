@@ -12,11 +12,9 @@ import org.smartreaction.starrealms.model.cards.actions.SelectFromDiscardAction;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
-import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -47,13 +45,6 @@ public class GameView implements Serializable {
     List<Card> cardsToShow;
 
     String cardsToShowSource;
-
-    @PostConstruct
-    public void setup() {
-        if (getOpponent() instanceof BotPlayer) {
-            ((BotPlayer) getOpponent()).setGameService(gameService);
-        }
-    }
 
     public void sendGameMessageToAll(String message) {
         sendGameMessage("*", message);
@@ -133,6 +124,10 @@ public class GameView implements Serializable {
     }
 
     public boolean highlightCard(Card card, String cardLocation) {
+        if (card == null) {
+            new IllegalArgumentException("Error highlighting card for location: " + cardLocation).printStackTrace();
+            return false;
+        }
         if (!getPlayer().isYourTurn()) {
             return false;
         } else if (getAction() != null) {
@@ -256,7 +251,7 @@ public class GameView implements Serializable {
                         handleCardClickedForAction(card, source);
                     } else {
                         getPlayer().playCard(card);
-                        refreshGamePageWithCheckForAction();
+                        refreshGamePageForAll();
                     }
                 }
             } else if (source.equals(Card.CARD_LOCATION_DISCARD)) {
@@ -317,7 +312,7 @@ public class GameView implements Serializable {
 
         getPlayer().actionResult(action, result);
 
-        refreshGamePageWithCheckForAction();
+        refreshGamePageForAll();
     }
 
     public Card getCardToView() {
@@ -339,35 +334,15 @@ public class GameView implements Serializable {
             sendShowActionToPlayer();
         } else {
             getPlayer().endTurn();
-            refreshAfterEndTurn();
+            refreshGamePageForOpponent();
         }
-    }
-
-    public void refreshAfterEndTurn() {
-        if (!getGame().isGameOver()) {
-            getPlayer().getOpponent().startTurn();
-        }
-        refreshGamePageForOpponent();
     }
 
     public void choiceMade(int choiceSelected) {
         ActionResult result = new ActionResult();
         result.setChoiceSelected(choiceSelected);
         getPlayer().actionResult(getAction(), result);
-        refreshGamePageWithCheckForAction();
-    }
-
-    public void refreshGamePageWithCheckForAction() {
-        if (getAction() != null) {
-            sendShowActionToPlayer();
-            refreshGamePageForOpponent();
-        } else {
-            if (!getPlayer().isYourTurn()) {
-                refreshAfterEndTurn();
-            } else {
-                refreshGamePageForAll();
-            }
-        }
+        refreshGamePageForAll();
     }
 
     public void checkForAction() {

@@ -88,6 +88,11 @@
 
                                 <p:outputLabel value="Gambits: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeGambits}"/>
+
+                                <p:outputLabel value="Play Against Computer (Not ready yet): "/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.playAgainstComputer}">
+                                    <p:ajax process="@form" update="@form"/>
+                                </p:selectBooleanButton>
                             </h:panelGrid>
                             <div style="padding-top: 15px;">
                                 <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):" style="padding-right: 10px;"/>
@@ -96,10 +101,15 @@
                         </h:panelGroup>
                     </h:panelGroup>
 
-                    <div style="padding-top: 15px;">
-                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}" rendered="#{!userSession.user.autoMatch}"
+                    <h:panelGroup layout="block" id="lobbyButtons" style="padding-top: 15px;">
+                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}"
+                                       rendered="#{!userSession.user.autoMatch and !userSession.user.gameOptions.playAgainstComputer}"
                                        process="@form" update="@form" value="Auto Match"/>
-                    </div>
+
+                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.playAgainstComputer}"
+                                       rendered="#{!userSession.user.autoMatch and userSession.user.gameOptions.playAgainstComputer}"
+                                       process="@form" update="@form" value="Play Against Computer"/>
+                    </h:panelGroup>
                 </h:panelGroup>
 
                 <h:panelGroup rendered="#{userSession.user.autoMatch}">

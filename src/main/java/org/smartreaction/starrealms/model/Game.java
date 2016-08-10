@@ -163,6 +163,10 @@ public class Game
         }
 
         turn++;
+
+        if (!isGameOver()) {
+            getCurrentPlayer().startTurn();
+        }
     }
 
     private void gameOver() {

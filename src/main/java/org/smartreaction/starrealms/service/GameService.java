@@ -38,6 +38,7 @@ import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
 import org.smartreaction.starrealms.model.cards.ships.united.*;
+import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.model.players.bots.VelocityBot;
@@ -69,6 +70,7 @@ public class GameService {
 
         if (gameOptions.isPlayAgainstComputer()) {
             player2 = new VelocityBot();
+            ((BotPlayer) player2).setGameService(this);
             user2 = new User();
             user2.setUsername(player2.getPlayerName());
         } else {
@@ -1631,6 +1633,14 @@ public class GameService {
                 user.setAutoMatch(true);
             }
         }
+    }
+
+    public void playAgainstComputer(User user) {
+        if (user.getCurrentGame() != null) {
+            return;
+        }
+
+        createGame(user, null, user.getGameOptions());
     }
 
     private User getMatchingUser(User user) {

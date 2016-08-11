@@ -7,6 +7,7 @@ import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.BlobWorld;
+import org.smartreaction.starrealms.model.cards.bases.blob.DeathWorld;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.RecyclingStation;
@@ -14,9 +15,11 @@ import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.Supply
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.DefenseCenter;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.PortOfCall;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.TradingPost;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.CoalitionFortress;
 import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.BarterWorld;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.Starmarket;
+import org.smartreaction.starrealms.model.cards.events.BlackHole;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
@@ -75,7 +78,7 @@ public abstract class BotPlayer extends Player {
                 if (card.isScrappable()) {
                     if (shouldScrapCard(card)) {
                         cardsToScrapForBenefit.add(card);
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -85,7 +88,7 @@ public abstract class BotPlayer extends Player {
                 List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
                 for (Card card : sortedCardsToScrapForBenefit) {
                     this.scrapCardInPlayForBenefit(card);
-                    refreshGamePageForOpponent();
+                    refreshAfterAction();
                 }
             }
 
@@ -96,7 +99,7 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -108,7 +111,7 @@ public abstract class BotPlayer extends Player {
                     if (getUseGambitScore(gambit) > 0) {
                         endTurn = false;
                         scrapCardInPlayForBenefit(gambit);
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -122,11 +125,11 @@ public abstract class BotPlayer extends Player {
                     playCard(card);
                     if (card instanceof AlliableCard && useAllyAfterPlay(card)) {
                         useAlliedAbilities((AlliableCard) card);
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                     if (card.isBase() && useBaseAfterPlay((Base) card)) {
                         ((Base) card).useBase(this);
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -135,7 +138,7 @@ public abstract class BotPlayer extends Player {
                 if (card instanceof AlliableCard) {
                     if (useAlliedAbilities((AlliableCard) card)) {
                         endTurn = false;
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -146,7 +149,7 @@ public abstract class BotPlayer extends Player {
                     if (getUseHeroScore(hero) > 0) {
                         useHero(hero);
                         endTurn = false;
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -158,7 +161,7 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -178,7 +181,7 @@ public abstract class BotPlayer extends Player {
                 List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
                 for (Card card : sortedCardsToScrapForBenefit) {
                     this.scrapCardInPlayForBenefit(card);
-                    refreshGamePageForOpponent();
+                    refreshAfterAction();
                 }
             }
 
@@ -188,7 +191,7 @@ public abstract class BotPlayer extends Player {
                     endTurn = false;
                     for (Card card : cardsToBuy) {
                         this.buyCard(card);
-                        refreshGamePageForOpponent();
+                        refreshAfterAction();
                     }
                 }
             }
@@ -199,8 +202,10 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void destroyOwnBase(DestroyOwnBaseActionCard card, String text) {
-        //todo
-        refreshGamePageForOpponent();
+        Base base = chooseOwnBaseToDestroy(true);
+        if (base == null) {
+            card.onNotUsed(this);
+        }
     }
 
     @Override
@@ -215,7 +220,7 @@ public abstract class BotPlayer extends Player {
             result.setSelectedCard(shipToCopy);
             card.processCardActionResult(null, this, result);
         }
-        refreshGamePageForOpponent();
+        refreshAfterAction();
     }
 
     @Override
@@ -229,17 +234,17 @@ public abstract class BotPlayer extends Player {
         if (card != null) {
             getDiscard().remove(card);
             addCardToTopOfDeck(card);
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
 
     @Override
     public void destroyTargetBase() {
-        Base base = chooseTargetBaseToDestroy();
+        Base base = chooseOpponentBaseToDestroy();
         if (base != null) {
             destroyOpponentBase(base);
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -252,45 +257,95 @@ public abstract class BotPlayer extends Player {
         cardsToScrapFromDiscard.forEach(this::scrapCardFromDiscard);
         cardsToScrapFromHand.forEach(this::scrapCardFromHand);
 
-        refreshGamePageForOpponent();
+        refreshAfterAction();
     }
 
     @Override
     public void optionallyScrapCardsFromHandOrDiscardForBenefit(ScrapCardsForBenefitActionCard card, int numCardsToScrap, String text) {
-        //todo
-        refreshGamePageForOpponent();
+        if (card instanceof DeathWorld) {
+            handleDeathWorld();
+            return;
+        } else {
+            List<List<Card>> cards = getCardsToOptionallyScrapFromDiscardOrHand(numCardsToScrap);
+
+            List<Card> cardsToScrapFromDiscard = cards.get(0);
+            List<Card> cardsToScrapFromHand = cards.get(1);
+
+            List<Card> cardsScrapped = new ArrayList<>(cardsToScrapFromDiscard);
+            cardsScrapped.addAll(cardsToScrapFromHand);
+
+            cardsToScrapFromDiscard.forEach(this::scrapCardFromDiscard);
+            cardsToScrapFromHand.forEach(this::scrapCardFromHand);
+
+            card.cardsScrapped(this, cardsScrapped);
+        }
+
+        refreshAfterAction();
     }
 
     @Override
     public void optionallyScrapCardsFromHandOrDiscardOrTradeRow(int cards) {
-        //todo
-        refreshGamePageForOpponent();
+        //todo consider trade row
+        optionallyScrapCardsFromHandOrDiscard(cards);
+        refreshAfterAction();
     }
 
     @Override
     public void optionallyScrapCardsInTradeRow(int cards) {
         List<Card> cardsToScrapInTradeRow = chooseCardsToScrapInTradeRow(cards);
         cardsToScrapInTradeRow.forEach(this.getGame()::scrapCardFromTradeRow);
-        refreshGamePageForOpponent();
+        refreshAfterAction();
+    }
+
+    @Override
+    public void discardCardsFromHand(int cards) {
+        List<Card> cardsToDiscard = getCardsToDiscard(cards, false);
+        cardsToDiscard.forEach(this::discardCardFromHand);
     }
 
     @Override
     public void optionallyDiscardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
-        //todo
-        refreshGamePageForOpponent();
+        boolean optionalDiscard = true;
+
+        if (card instanceof BlackHole) {
+            if (getAuthority() < 10) {
+                optionalDiscard = false;
+            }
+        }
+
+        List<Card> cardsToDiscard = getCardsToDiscard(numCardsToDiscard, optionalDiscard);
+
+        cardsToDiscard.forEach(this::discardCardFromHand);
+
+        if (!cardsToDiscard.isEmpty()) {
+            card.cardsDiscarded(this, cardsToDiscard);
+        } else {
+            card.onChoseDoNotUse(this);
+        }
+
+        refreshAfterAction();
     }
 
     @Override
     public void discardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text) {
-        //todo
-        refreshGamePageForOpponent();
+        //todo better logic
+
+        List<Card> cardsToDiscard = getCardsToDiscard(numCardsToDiscard, false);
+
+        if (!cardsToDiscard.isEmpty()) {
+            card.cardsDiscarded(this, cardsToDiscard);
+        } else {
+            card.onChoseDoNotUse(this);
+        }
+
+        refreshAfterAction();
     }
 
     @Override
     public void makeChoice(ChoiceActionCard card, Choice... choices) {
         int choice = getChoice(card);
         card.actionChoiceMade(this, choice);
-        refreshGamePageForOpponent();
+        refreshAfterAction();
     }
 
     @Override
@@ -298,14 +353,21 @@ public abstract class BotPlayer extends Player {
         Card card = getCardToScrapFromHand(optional);
         if (card != null) {
             scrapCardFromHand(card);
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
     @Override
     public void optionallyScrapCardsFromDiscard(int cards) {
-        //todo
-        refreshGamePageForOpponent();
+        //todo better logic
+
+        List<List<Card>> cardsToScrap = getCardsToOptionallyScrapFromDiscardOrHand(cards);
+
+        List<Card> cardsToScrapFromDiscard = cardsToScrap.get(0);
+
+        cardsToScrapFromDiscard.forEach(this::scrapCardFromDiscard);
+
+        refreshAfterAction();
     }
 
     @Override
@@ -314,7 +376,7 @@ public abstract class BotPlayer extends Player {
         if (base != null) {
             getBases().remove(base);
             addCardToHand(base);
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -329,7 +391,7 @@ public abstract class BotPlayer extends Player {
 
             cardAcquired(card);
 
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -344,7 +406,7 @@ public abstract class BotPlayer extends Player {
 
             addCardToTopOfDeck(card);
 
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -359,7 +421,7 @@ public abstract class BotPlayer extends Player {
 
             addCardToHand(card);
 
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -374,7 +436,7 @@ public abstract class BotPlayer extends Player {
 
             addCardToTopOfDeck(card);
 
-            refreshGamePageForOpponent();
+            refreshAfterAction();
         }
     }
 
@@ -428,7 +490,7 @@ public abstract class BotPlayer extends Player {
 
         endTurn();
 
-        refreshGamePageForOpponent();
+        refreshAfterEndTurn();
     }
 
     public List<Card> getCardsToBuy() {
@@ -608,18 +670,19 @@ public abstract class BotPlayer extends Player {
     }
 
     public int getScrapCardFromTradeRowScore(Card card) {
-        //todo fix this
-        /*Faction factionWithMostCards = getFactionWithMostCards();
+        //todo better logic
+
+        Faction factionWithMostCards = getFactionWithMostCards();
         Faction opponentFactionWithMostCards = getOpponent().getFactionWithMostCards();
 
         if (opponentFactionWithMostCards != null) {
             if (factionWithMostCards != null && factionWithMostCards == opponentFactionWithMostCards && getTrade() >= card.getCost()) {
                 return 0;
             }
-            if (card.getFaction() == opponentFactionWithMostCards) {
+            if (!card.getFactions().isEmpty() && card.getFactions().get(0) == opponentFactionWithMostCards) {
                 return card.getCost();
             }
-        }*/
+        }
 
         return 0;
     }
@@ -743,17 +806,18 @@ public abstract class BotPlayer extends Player {
             return 5;
         }
 
-        //todo fix this
-        /*for (Card card : getInPlay()) {
-            if (card instanceof AlliableCard && !card.isAlliedAbilityUsed() && card.getFaction() == hero.getAlliedFaction()) {
+        for (Card card : getInPlay()) {
+            if (card instanceof AlliableCard && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
                 return 15;
             }
-        }*/
+        }
 
         return 0;
     }
 
     public int getChoice(ChoiceActionCard card) {
+        //todo add in new cards
+
         int deck = getCurrentDeckNumber();
         int opponentAuthority = getOpponent().getAuthority();
 
@@ -867,6 +931,17 @@ public abstract class BotPlayer extends Player {
             } else {
                 return 2;
             }
+        } else if (card instanceof CoalitionFortress) {
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 1;
+            }
+            if (opponentAuthority <= 2) {
+                return 1;
+            }
+            if (opponentAuthority < 10 && getAuthority() > 10) {
+                return 1;
+            }
+            return 2;
         }
 
         return 1;
@@ -1030,7 +1105,7 @@ public abstract class BotPlayer extends Player {
         return cardsToScrap;
     }
 
-    public Base chooseTargetBaseToDestroy() {
+    public Base chooseOpponentBaseToDestroy() {
         if (!getOpponent().getOutposts().isEmpty()) {
             List<Base> sortedOutposts = getOpponent().getOutposts().stream().sorted(destroyBaseScoreDescending).collect(toList());
             Base baseToDestroy = sortedOutposts.get(0);
@@ -1042,6 +1117,17 @@ public abstract class BotPlayer extends Player {
             Base baseToDestroy = sortedBases.get(0);
             if (getDestroyBaseScore(baseToDestroy) > 0) {
                 return baseToDestroy;
+            }
+        }
+
+        return null;
+    }
+
+    public Base chooseOwnBaseToDestroy(boolean optional) {
+        Optional<Base> base = getBases().stream().sorted(destroyBaseScoreAscending).findFirst();
+        if (base.isPresent()) {
+            if (!optional || getDestroyBaseScore(base.get()) < 5) {
+                return base.get();
             }
         }
 
@@ -1206,27 +1292,6 @@ public abstract class BotPlayer extends Player {
         return 0;
     }
 
-    public void handleBlackHole() {
-        //todo
-        /*boolean optionalDiscard = getAuthority() >= 10;
-        int cardsDiscarded = discardCards(2, optionalDiscard);
-        getGame().gameLog(playerName + " chose to discard " + cardsDiscarded + " cards for Black Hole");
-        if (cardsDiscarded < 2) {
-            int authorityLost = (2 - cardsDiscarded) * 4;
-            reduceAuthority(authorityLost);
-            getGame().gameLog(playerName + " lost " + authorityLost + " from Black Hole");
-        }*/
-    }
-
-    public void handleBombardment() {
-        if (!getBases().isEmpty()) {
-            List<Base> sortedBases = getBases().stream().sorted(destroyBaseScoreAscending).collect(toList());
-            baseDestroyed(sortedBases.get(0));
-        } else {
-            reduceAuthority(6);
-        }
-    }
-
     @Override
     public void drawCardsAndPutSomeBackOnTop(int cardsToDraw, int cardsToPutBack) {
         List<Card> cards = drawCards(cardsToDraw);
@@ -1244,11 +1309,6 @@ public abstract class BotPlayer extends Player {
                 }
             }
         }
-    }
-
-    @Override
-    public void discardCardsFromHand(int cards) {
-
     }
 
     public void handleDeathWorld() {
@@ -1276,17 +1336,17 @@ public abstract class BotPlayer extends Player {
         }
     }
 
-    public List<Card> getCardsToDiscardForSupplyDepot() {
-        //todo - consider when discarding things besides Scout, Viper, and Explorer would be good
-        return getCardsToDiscard(2, true);
-    }
-
     public void setGameService(GameService gameService) {
         this.gameService = gameService;
     }
 
-    public void refreshGamePageForOpponent() {
+    public void refreshAfterEndTurn() {
         sendGameMessageToOpponent("refresh_game_page");
+    }
+
+    public void refreshAfterAction() {
+        //todo make it so player can actually see what is happening
+        //sendGameMessageToOpponent("refresh_game_page");
     }
 
     public void sendGameMessageToOpponent(String message) {

@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.smartreaction.starrealms.model.cards.Faction.*;
+
 @ManagedBean
 @ViewScoped
 public class GameView implements Serializable {
@@ -148,25 +150,25 @@ public class GameView implements Serializable {
         } else if (card.getFactions().size() == 1) {
             if (card.hasFaction(Faction.BLOB)) {
                 cardClass = "blob";
-            } else if (card.hasFaction(Faction.MACHINE_CULT)) {
+            } else if (card.hasFaction(MACHINE_CULT)) {
                 cardClass = "machineCult";
-            } else if (card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(STAR_EMPIRE)) {
                 cardClass = "starEmpire";
-            } else if (card.hasFaction(Faction.TRADE_FEDERATION)) {
+            } else if (card.hasFaction(TRADE_FEDERATION)) {
                 cardClass = "tradeFederation";
             }
         } else {
-            if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.MACHINE_CULT)) {
+            if (card.hasFaction(Faction.BLOB) && card.hasFaction(MACHINE_CULT)) {
                 return "blob-machineCult";
-            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(STAR_EMPIRE)) {
                 return "blob-starEmpire";
-            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.TRADE_FEDERATION)) {
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(TRADE_FEDERATION)) {
                 return "blob-tradeFederation";
-            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(TRADE_FEDERATION) && card.hasFaction(STAR_EMPIRE)) {
                 return "tradeFederation-starEmpire";
-            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.MACHINE_CULT)) {
+            } else if (card.hasFaction(TRADE_FEDERATION) && card.hasFaction(MACHINE_CULT)) {
                 return "tradeFederation-machineCult";
-            } else if (card.hasFaction(Faction.MACHINE_CULT) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(MACHINE_CULT) && card.hasFaction(STAR_EMPIRE)) {
                 return "machineCult-starEmpire";
             }
         }
@@ -176,29 +178,27 @@ public class GameView implements Serializable {
 
     public String getFactionDisplayName(Card card) {
         if (card.getFactions().size() == 1) {
-            Faction faction = card.getFactions().get(0);
-            switch (faction) {
-                case BLOB:
-                    return "Blob";
-                case MACHINE_CULT:
-                    return "Machine Cult";
-                case STAR_EMPIRE:
-                    return "Star Empire";
-                case TRADE_FEDERATION:
-                    return "Trade Federation";
+            if (card.hasFaction(BLOB)) {
+                return "Blob";
+            } else if (card.hasFaction(MACHINE_CULT)) {
+                return "Machine Cult";
+            } else if (card.hasFaction(STAR_EMPIRE)) {
+                return "Star Empire";
+            } else if (card.hasFaction(TRADE_FEDERATION)) {
+                return "Trade Federation";
             }
         } else if (card.getFactions().size() == 2) {
-            if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.MACHINE_CULT)) {
+            if (card.hasFaction(Faction.BLOB) && card.hasFaction(MACHINE_CULT)) {
                 return "Blob / Machine Cult";
-            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(STAR_EMPIRE)) {
                 return "Blob / Star Empire";
-            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(Faction.TRADE_FEDERATION)) {
+            } else if (card.hasFaction(Faction.BLOB) && card.hasFaction(TRADE_FEDERATION)) {
                 return "Blob / Trade Federation";
-            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(TRADE_FEDERATION) && card.hasFaction(STAR_EMPIRE)) {
                 return "Trade Federation / Star Empire";
-            } else if (card.hasFaction(Faction.TRADE_FEDERATION) && card.hasFaction(Faction.MACHINE_CULT)) {
+            } else if (card.hasFaction(TRADE_FEDERATION) && card.hasFaction(MACHINE_CULT)) {
                 return "Trade Federation / Machine Cult";
-            } else if (card.hasFaction(Faction.MACHINE_CULT) && card.hasFaction(Faction.STAR_EMPIRE)) {
+            } else if (card.hasFaction(MACHINE_CULT) && card.hasFaction(STAR_EMPIRE)) {
                 return "Machine Cult / Star Empire";
             }
         }
@@ -266,7 +266,7 @@ public class GameView implements Serializable {
                 if (highlightCard(card, source)) {
                     if (getAction() != null) {
                         handleCardClickedForAction(card, source);
-                    } else if (card instanceof AlliableCard) {
+                    } else if (card.isAlliableCard()) {
                         getPlayer().useAlliedAbilities((AlliableCard) card);
                         refreshGamePageForAll();
                     }
@@ -392,14 +392,12 @@ public class GameView implements Serializable {
     }
 
     public void showCards(List<Card> cards, String title, String source) {
-        if (!cards.isEmpty()) {
-            showingCards = true;
-            showingCardsTitle = title;
-            cardsToShow = cards;
-            cardsToShowSource = source;
+        showingCards = true;
+        showingCardsTitle = title;
+        cardsToShow = cards;
+        cardsToShowSource = source;
 
-            sendGameMessageToPlayer("refresh_middle_section");
-        }
+        sendGameMessageToPlayer("refresh_middle_section");
     }
 
     public void hideCardsToShow() {

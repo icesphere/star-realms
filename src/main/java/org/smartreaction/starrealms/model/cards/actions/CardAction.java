@@ -30,4 +30,9 @@ public class CardAction extends Action {
     public CardActionCard getCardActionCard() {
         return cardActionCard;
     }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return cardActionCard.isShowDoNotUse();
+    }
 }

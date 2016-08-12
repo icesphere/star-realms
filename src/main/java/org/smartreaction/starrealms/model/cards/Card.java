@@ -15,7 +15,7 @@ import java.util.*;
 public abstract class Card {
     protected String id;
     protected String name;
-    protected List<Faction> factions = new ArrayList<>(1);
+    protected Set<Faction> factions = new HashSet<>(1);
     protected int cost;
     protected CardSet set;
     protected String text;
@@ -24,6 +24,7 @@ public abstract class Card {
     protected boolean autoAlly = true;
     protected List<Faction> autoAllyExcludedFactions = new ArrayList<>(0);
     protected boolean allFactionsAlliedTogether;
+    protected boolean copied;
 
     public static String CARD_LOCATION_HAND = "hand";
     public static String CARD_LOCATION_PLAY_AREA = "playArea";
@@ -62,7 +63,7 @@ public abstract class Card {
         return factions.contains(faction);
     }
 
-    public List<Faction> getFactions() {
+    public Set<Faction> getFactions() {
         return factions;
     }
 
@@ -118,22 +119,6 @@ public abstract class Card {
         return this instanceof Ship;
     }
 
-    public boolean isBlob() {
-        return hasFaction(Faction.BLOB);
-    }
-
-    public boolean isTradeFederation() {
-        return hasFaction(Faction.TRADE_FEDERATION);
-    }
-
-    public boolean isMachineCult() {
-        return hasFaction(Faction.MACHINE_CULT);
-    }
-
-    public boolean isStarEmpire() {
-        return hasFaction(Faction.STAR_EMPIRE);
-    }
-
     public boolean isStarterCard() {
         return this instanceof Scout || this instanceof Viper;
     }
@@ -145,7 +130,7 @@ public abstract class Card {
     }
 
     public void setAlliedAbilityUsed(boolean used, Faction faction) {
-        if (allFactionsAlliedTogether) {
+        if (used && allFactionsAlliedTogether) {
             for (Faction f : factions) {
                 alliedAbilityUsed.put(f, true);
             }
@@ -154,9 +139,9 @@ public abstract class Card {
         }
     }
 
-    public void setAllAlliedAbilitesToNotUsed() {
+    public void setAllAlliedAbilitiesToNotUsed() {
         for (Faction faction : alliedAbilityUsed.keySet()) {
-            alliedAbilityUsed.put(faction, false);
+            setAlliedAbilityUsed(false, faction);
         }
     }
 
@@ -249,5 +234,17 @@ public abstract class Card {
 
     public boolean isAllFactionsAlliedTogether() {
         return allFactionsAlliedTogether;
+    }
+
+    public boolean isCopied() {
+        return copied;
+    }
+
+    public void setCopied(boolean copied) {
+        this.copied = copied;
+    }
+
+    public boolean isAlliableCard() {
+        return this instanceof AlliableCard;
     }
 }

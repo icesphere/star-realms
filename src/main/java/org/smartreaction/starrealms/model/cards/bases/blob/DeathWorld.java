@@ -32,6 +32,6 @@ public class DeathWorld extends Base implements ScrapCardsForBenefitActionCard {
 
     @Override
     public boolean isCardApplicable(Card card) {
-        return card.isTradeFederation() || card.isMachineCult() || card.isStarEmpire();
+        return card.hasFaction(Faction.TRADE_FEDERATION) || card.hasFaction(Faction.MACHINE_CULT) || card.hasFaction(Faction.STAR_EMPIRE);
     }
 }

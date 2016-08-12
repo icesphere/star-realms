@@ -19,6 +19,11 @@ public class BattleStation extends Outpost implements ScrappableCard
     }
 
     @Override
+    public void cardPlayed(Player player) {
+        this.useBase(player);
+    }
+
+    @Override
     public void cardScrapped(Player player)
     {
         player.addCombat(5);

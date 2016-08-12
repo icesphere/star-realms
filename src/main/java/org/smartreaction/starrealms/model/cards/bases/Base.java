@@ -24,11 +24,11 @@ public abstract class Base extends Card {
 
     public boolean useBase(Player player) {
         if (baseCanBeUsed(player)) {
-            if (!used) {
-                used = true;
+            if (!isUsed()) {
+                setUsed(true);
                 baseUsed(player);
                 return true;
-            } else if (this instanceof AlliableCard) {
+            } else if (this.isAlliableCard()) {
                 return player.useAlliedAbilities((AlliableCard) this);
             }
         }
@@ -51,7 +51,7 @@ public abstract class Base extends Card {
         }
 
         if (cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES)) {
-            if (!isUsed() || (this instanceof AlliableCard && player.cardHasAnyUnusedAlly(this))) {
+            if (!isUsed() || (this.isAlliableCard() && player.cardHasAnyUnusedAlly(this))) {
                 return true;
             }
         }
@@ -65,5 +65,9 @@ public abstract class Base extends Card {
 
     public void setAutoUse(boolean autoUse) {
         this.autoUse = autoUse;
+    }
+
+    public void onEndTurn() {
+        //do nothing
     }
 }

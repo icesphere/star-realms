@@ -199,7 +199,7 @@ public class Game
             System.out.println(log);
         }
         if (createGameLog) {
-            gameLog.append(log).append("<br/>");
+            gameLog.insert(0, log + "<br/>");
         }
     }
 

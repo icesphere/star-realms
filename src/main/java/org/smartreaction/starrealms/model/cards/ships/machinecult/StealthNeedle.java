@@ -10,6 +10,7 @@ import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.List;
+import java.util.Set;
 
 public class StealthNeedle extends Ship implements CardActionCard
 {
@@ -43,18 +44,12 @@ public class StealthNeedle extends Ship implements CardActionCard
     }
 
     @Override
-    public boolean isBlob() {
-        return cardBeingCopied != null && cardBeingCopied.isBlob();
-    }
-
-    @Override
-    public boolean isTradeFederation() {
-        return cardBeingCopied != null && cardBeingCopied.isTradeFederation();
-    }
-
-    @Override
-    public boolean isStarEmpire() {
-        return cardBeingCopied != null && cardBeingCopied.isStarEmpire();
+    public Set<Faction> getFactions() {
+        Set<Faction> factions = super.getFactions();
+        if (cardBeingCopied != null) {
+            factions.addAll(cardBeingCopied.getFactions());
+        }
+        return factions;
     }
 
     @Override
@@ -77,12 +72,63 @@ public class StealthNeedle extends Ship implements CardActionCard
         Card selectedCard = result.getSelectedCard();
         if (selectedCard != null) {
             try {
-                Card shipToCopyCopy = selectedCard.getClass().newInstance();
-                cardBeingCopied = shipToCopyCopy;
-                player.playCard(shipToCopyCopy);
+                cardBeingCopied = selectedCard.getClass().newInstance();
+                cardBeingCopied.setCopied(true);
+                player.addGameLog(player.getPlayerName() + " copied " + cardBeingCopied.getName());
+                player.playCard(cardBeingCopied);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public boolean isShowDoNotUse() {
+        return true;
+    }
+
+    @Override
+    public boolean isActionable(Player player, String cardLocation) {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isActionable(player, cardLocation);
+        } else {
+            return super.isActionable(player, cardLocation);
+        }
+    }
+
+    @Override
+    public boolean isAlliableCard() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAlliableCard();
+        } else {
+            return super.isAlliableCard();
+        }
+    }
+
+    @Override
+    public boolean isAlliedAbilityUsed(Faction faction) {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAlliedAbilityUsed(faction);
+        } else {
+            return super.isAlliedAbilityUsed(faction);
+        }
+    }
+
+    @Override
+    public void setAlliedAbilityUsed(boolean used, Faction faction) {
+        if (cardBeingCopied != null) {
+            cardBeingCopied.setAlliedAbilityUsed(used, faction);
+        } else {
+            super.setAlliedAbilityUsed(used, faction);
+        }
+    }
+
+    @Override
+    public boolean isScrappable() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isScrappable();
+        } else {
+            return super.isScrappable();
         }
     }
 }

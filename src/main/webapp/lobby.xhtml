@@ -89,7 +89,7 @@
                                 <p:outputLabel value="Gambits: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeGambits}"/>
 
-                                <p:outputLabel value="Play Against Computer (Not ready yet): "/>
+                                <p:outputLabel value="Play Against Computer: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.playAgainstComputer}">
                                     <p:ajax process="@form" update="@form"/>
                                 </p:selectBooleanButton>

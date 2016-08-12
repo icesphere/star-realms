@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model.players.bots.strategies;
 
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
@@ -495,7 +496,7 @@ public class DefenseVelocityStrategy implements BotStrategy {
         } else if (card instanceof CargoLaunch) {
             return 5;
         } else if (card instanceof CommandCenter) {
-            int numberOfStarEmpireCards = player.countCardsByType(player.getAllCards(), Card::isStarEmpire);
+            int numberOfStarEmpireCards = player.countCardsByType(player.getAllCards(), c -> c.hasFaction(Faction.STAR_EMPIRE));
             if (deck == 1) {
                 return 50;
             } else if (deck == 2) {
@@ -545,7 +546,7 @@ public class DefenseVelocityStrategy implements BotStrategy {
             }
             return 30;
         } else if (card instanceof ImperialPalace) {
-            if (player.countCardsByType(player.getAllCards(), Card::isStarEmpire) > 2) {
+            if (player.countCardsByType(player.getAllCards(), c -> c.hasFaction(Faction.STAR_EMPIRE)) > 2) {
                 return 50;
             }
             return 35;

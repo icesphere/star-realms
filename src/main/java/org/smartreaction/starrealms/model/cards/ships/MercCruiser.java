@@ -6,6 +6,8 @@ import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.Set;
+
 public class MercCruiser extends Ship implements ChoiceActionCard
 {
     Faction factionChoice;
@@ -45,23 +47,12 @@ public class MercCruiser extends Ship implements ChoiceActionCard
     }
 
     @Override
-    public boolean isTradeFederation() {
-        return Faction.TRADE_FEDERATION == factionChoice;
-    }
-
-    @Override
-    public boolean isBlob() {
-        return Faction.BLOB == factionChoice;
-    }
-
-    @Override
-    public boolean isMachineCult() {
-        return Faction.MACHINE_CULT == factionChoice;
-    }
-
-    @Override
-    public boolean isStarEmpire() {
-        return Faction.STAR_EMPIRE == factionChoice;
+    public Set<Faction> getFactions() {
+        Set<Faction> factions = super.getFactions();
+        if (factionChoice != null) {
+            factions.add(factionChoice);
+        }
+        return factions;
     }
 
     @Override

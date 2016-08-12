@@ -123,7 +123,7 @@ public abstract class BotPlayer extends Player {
                             .sorted(playCardScoreDescending).collect(toList());
                     Card card = sortedCards.get(0);
                     playCard(card);
-                    if (card instanceof AlliableCard && useAllyAfterPlay(card)) {
+                    if (card.isAlliableCard() && useAllyAfterPlay(card)) {
                         useAlliedAbilities((AlliableCard) card);
                         refreshAfterAction();
                     }
@@ -135,7 +135,7 @@ public abstract class BotPlayer extends Player {
             }
 
             for (Card card : getInPlay()) {
-                if (card instanceof AlliableCard) {
+                if (card.isAlliableCard()) {
                     if (useAlliedAbilities((AlliableCard) card)) {
                         endTurn = false;
                         refreshAfterAction();
@@ -634,7 +634,7 @@ public abstract class BotPlayer extends Player {
                 return 7;
             }
         } else if (card instanceof BlobWorld) {
-            int opponentBlobCards = getOpponent().countCardsByType(getOpponent().getAllCards(), Card::isBlob);
+            int opponentBlobCards = getOpponent().countCardsByType(getOpponent().getAllCards(), c -> c.hasFaction(Faction.BLOB));
             if (opponentBlobCards >= 6) {
                 return 10;
             } else if (opponentBlobCards >= 3) {
@@ -679,7 +679,7 @@ public abstract class BotPlayer extends Player {
             if (factionWithMostCards != null && factionWithMostCards == opponentFactionWithMostCards && getTrade() >= card.getCost()) {
                 return 0;
             }
-            if (!card.getFactions().isEmpty() && card.getFactions().get(0) == opponentFactionWithMostCards) {
+            if (!card.getFactions().isEmpty() && card.getFactions().iterator().next() == opponentFactionWithMostCards) {
                 return card.getCost();
             }
         }
@@ -807,7 +807,7 @@ public abstract class BotPlayer extends Player {
         }
 
         for (Card card : getInPlay()) {
-            if (card instanceof AlliableCard && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
+            if (card.isAlliableCard() && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
                 return 15;
             }
         }
@@ -826,7 +826,7 @@ public abstract class BotPlayer extends Player {
                 return 2;
             }
         } else if (card instanceof BlobWorld) {
-            int blobCardsPlayed = countCardsByType(getPlayed(), Card::isBlob);
+            int blobCardsPlayed = countCardsByType(getPlayed(), c -> c.hasFaction(Faction.BLOB));
             if (blobCardsPlayed >= 2 && opponentAuthority > 5) {
                 return 2;
             }
@@ -1186,10 +1186,10 @@ public abstract class BotPlayer extends Player {
 
         Map<Faction, Integer> factionCounts = new HashMap<>(4);
 
-        factionCounts.put(Faction.BLOB, countCardsByType(cards, Card::isBlob));
-        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, Card::isStarEmpire));
-        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, Card::isTradeFederation));
-        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, Card::isMachineCult));
+        factionCounts.put(Faction.BLOB, countCardsByType(cards, c -> c.hasFaction(Faction.BLOB)));
+        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, c -> c.hasFaction(Faction.STAR_EMPIRE)));
+        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, c -> c.hasFaction(Faction.TRADE_FEDERATION)));
+        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, c -> c.hasFaction(Faction.MACHINE_CULT)));
 
         Faction factionWithLeastCards = null;
         int lowestFactionCount = 100;
@@ -1313,7 +1313,12 @@ public abstract class BotPlayer extends Player {
 
     public void handleDeathWorld() {
         if (!getDiscard().isEmpty()) {
-            List<Card> sortedDiscard = getDiscard().stream().filter(c -> c.isTradeFederation() || c.isStarEmpire() || c.isMachineCult()).sorted(cardToBuyScoreAscending).collect(toList());
+            List<Card> sortedDiscard = getDiscard()
+                    .stream()
+                    .filter(c -> c.hasFaction(Faction.TRADE_FEDERATION) || c.hasFaction(Faction.STAR_EMPIRE) || c.hasFaction(Faction.MACHINE_CULT))
+                    .sorted(cardToBuyScoreAscending)
+                    .collect(toList());
+
             if (!sortedDiscard.isEmpty()) {
                 Card card = sortedDiscard.get(0);
                 if (getBuyCardScore(card) <= 20) {
@@ -1325,7 +1330,12 @@ public abstract class BotPlayer extends Player {
         }
 
         if (!getHand().isEmpty()) {
-            List<Card> sortedHand = getHand().stream().filter(c -> c.isTradeFederation() || c.isStarEmpire() || c.isMachineCult()).sorted(cardToBuyScoreAscending).collect(toList());
+            List<Card> sortedHand = getHand()
+                    .stream()
+                    .filter(c -> c.hasFaction(Faction.TRADE_FEDERATION) || c.hasFaction(Faction.STAR_EMPIRE) || c.hasFaction(Faction.MACHINE_CULT))
+                    .sorted(cardToBuyScoreAscending)
+                    .collect(toList());
+
             if (!sortedHand.isEmpty()) {
                 Card card = sortedHand.get(0);
                 if (getBuyCardScore(card) <= 10) {

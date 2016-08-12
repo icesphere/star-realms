@@ -203,19 +203,13 @@ public abstract class Player {
         return cardsDrawn;
     }
 
-    public void discardCard(Card card) {
-        hand.remove(card);
-        discard.add(card);
-        cardRemovedFromPlay(card);
-    }
-
     public void opponentDiscardsCard() {
         getGame().gameLog("Opponent discarding card");
         opponent.discardCardFromHand();
     }
 
     private void cardRemovedFromPlay(Card card) {
-        card.setAllAlliedAbilitesToNotUsed();
+        card.setAllAlliedAbilitiesToNotUsed();
 
         if (card instanceof Base) {
             ((Base) card).setUsed(false);
@@ -263,7 +257,8 @@ public abstract class Player {
         for (Card card : inPlay) {
             if (card.isBase()) {
                 ((Base) card).setUsed(false);
-                card.setAllAlliedAbilitesToNotUsed();
+                ((Base) card).onEndTurn();
+                card.setAllAlliedAbilitiesToNotUsed();
             } else {
                 discard.add(card);
                 cardRemovedFromPlay(card);
@@ -566,19 +561,19 @@ public abstract class Player {
             return true;
         }
 
-        if (card.isBlob() && blobAlliedUntilEndOfTurn) {
+        if (card.hasFaction(Faction.BLOB) && blobAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.isStarEmpire() && starEmpireAlliedUntilEndOfTurn) {
+        if (card.hasFaction(Faction.STAR_EMPIRE) && starEmpireAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.isTradeFederation() && tradeFederationAlliedUntilEndOfTurn) {
+        if (card.hasFaction(Faction.TRADE_FEDERATION) && tradeFederationAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.isMachineCult() && machineCultAlliedUntilEndOfTurn) {
+        if (card.hasFaction(Faction.MACHINE_CULT) && machineCultAlliedUntilEndOfTurn) {
             return true;
         }
 
@@ -592,20 +587,23 @@ public abstract class Player {
     }
 
     public void playCard(Card card) {
-        game.gameLog("Played card: " + card.getName());
-        played.add(card);
-        inPlay.add(card);
-        hand.remove(card);
+        if (!card.isCopied()) {
+            game.gameLog("Played card: " + card.getName());
 
-        if (card.isBase()) {
-            addBase((Base) card);
+            played.add(card);
+            inPlay.add(card);
+            hand.remove(card);
+
+            if (card.isBase()) {
+                addBase((Base) card);
+            }
         }
 
         if (card.isShip()) {
             if (allShipsAddOneCombat) {
                 addCombat(1);
             }
-            if (card.isStarEmpire() && gainTwoCombatWhenStarEmpireShipPlayed) {
+            if (card.hasFaction(Faction.STAR_EMPIRE) && gainTwoCombatWhenStarEmpireShipPlayed) {
                 addCombat(2);
             }
         }
@@ -613,7 +611,7 @@ public abstract class Player {
         factionsPlayedThisTurn.addAll(card.getFactions());
 
         for (Card c : inPlay) {
-            if (c instanceof AlliableCard) {
+            if (c.isAlliableCard()) {
                 if (c.hasUnusedAllyAbility() && c.isAutoAlly()) {
                     for (Faction faction : c.getFactions()) {
                         if (!c.getAutoAllyExcludedFactions().contains(faction)
@@ -706,10 +704,10 @@ public abstract class Player {
 
         Map<Faction, Integer> factionCounts = new HashMap<>(4);
 
-        factionCounts.put(Faction.BLOB, countCardsByType(cards, Card::isBlob));
-        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, Card::isStarEmpire));
-        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, Card::isTradeFederation));
-        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, Card::isMachineCult));
+        factionCounts.put(Faction.BLOB, countCardsByType(cards, c -> c.hasFaction(Faction.BLOB)));
+        factionCounts.put(Faction.STAR_EMPIRE, countCardsByType(cards, c -> c.hasFaction(Faction.STAR_EMPIRE)));
+        factionCounts.put(Faction.TRADE_FEDERATION, countCardsByType(cards, c -> c.hasFaction(Faction.TRADE_FEDERATION)));
+        factionCounts.put(Faction.MACHINE_CULT, countCardsByType(cards, c -> c.hasFaction(Faction.MACHINE_CULT)));
 
         Faction factionWithMostCards = null;
         int highestFactionCount = 0;
@@ -761,19 +759,19 @@ public abstract class Player {
     }
 
     public boolean blobCardPlayedThisTurn() {
-        return cardPlayedThisTurn(Card::isBlob);
+        return cardPlayedThisTurn(c -> c.hasFaction(Faction.BLOB));
     }
 
     public boolean tradeFederationCardPlayedThisTurn() {
-        return cardPlayedThisTurn(Card::isTradeFederation);
+        return cardPlayedThisTurn(c -> c.hasFaction(Faction.TRADE_FEDERATION));
     }
 
     public boolean starEmpireCardPlayedThisTurn() {
-        return cardPlayedThisTurn(Card::isStarEmpire);
+        return cardPlayedThisTurn(c -> c.hasFaction(Faction.STAR_EMPIRE));
     }
 
     public boolean machineCultCardPlayedThisTurn() {
-        return cardPlayedThisTurn(Card::isMachineCult);
+        return cardPlayedThisTurn(c -> c.hasFaction(Faction.MACHINE_CULT));
     }
 
     public boolean cardPlayedThisTurn(Function<Card, Boolean> typeMatcher) {
@@ -796,7 +794,7 @@ public abstract class Player {
     }
 
     public int getNumBlobCardsPlayedThisTurn() {
-        return countCardsByType(played, Card::isBlob);
+        return countCardsByType(played, c -> c.hasFaction(Faction.BLOB));
     }
 
     public List getHandAndDeck() {
@@ -897,7 +895,7 @@ public abstract class Player {
                 base.useBase(this);
             }
 
-            if (base instanceof AlliableCard) {
+            if (base.isAlliableCard()) {
                 if (base.hasUnusedAllyAbility() && base.isAutoAlly()) {
                     for (Faction faction : base.getFactions()) {
                         if (!base.getAutoAllyExcludedFactions().contains(faction)

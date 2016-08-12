@@ -9,4 +9,6 @@ public interface CardActionCard {
     boolean processCardAction(Player player);
 
     void processCardActionResult(CardAction cardAction, Player player, ActionResult result);
+
+    boolean isShowDoNotUse();
 }

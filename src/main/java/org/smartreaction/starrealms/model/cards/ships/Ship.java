@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.model.cards.ships;
 
-import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -16,7 +15,7 @@ public abstract class Ship extends Card {
         }
 
         if (cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA)) {
-            if (this instanceof AlliableCard && player.cardHasAnyUnusedAlly(this)) {
+            if (this.isAlliableCard() && player.cardHasAnyUnusedAlly(this)) {
                 return true;
             }
         }

@@ -130,7 +130,7 @@ public abstract class Card {
     }
 
     public void setAlliedAbilityUsed(boolean used, Faction faction) {
-        if (used && allFactionsAlliedTogether) {
+        if (used && isAllFactionsAlliedTogether()) {
             for (Faction f : factions) {
                 alliedAbilityUsed.put(f, true);
             }
@@ -246,5 +246,12 @@ public abstract class Card {
 
     public boolean isAlliableCard() {
         return this instanceof AlliableCard;
+    }
+
+    public AlliableCard getAlliableCard() {
+        if (this instanceof AlliableCard) {
+            return (AlliableCard) this;
+        }
+        return null;
     }
 }

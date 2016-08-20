@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model.cards.ships.machinecult;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ActionResult;
@@ -9,6 +10,8 @@ import org.smartreaction.starrealms.model.cards.actions.CardActionCard;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +39,7 @@ public class StealthNeedle extends Ship implements CardActionCard
 
     @Override
     public List<Faction> getAlliedFactions(Card card) {
-        List<Faction> alliedFactions = super.getAlliedFactions(card);
+        List<Faction> alliedFactions = new ArrayList<>(super.getAlliedFactions(card));
         if (cardBeingCopied != null) {
             alliedFactions.addAll(cardBeingCopied.getAlliedFactions(card));
         }
@@ -45,11 +48,16 @@ public class StealthNeedle extends Ship implements CardActionCard
 
     @Override
     public Set<Faction> getFactions() {
-        Set<Faction> factions = super.getFactions();
+        Set<Faction> factions = new HashSet<>(super.getFactions());
         if (cardBeingCopied != null) {
             factions.addAll(cardBeingCopied.getFactions());
         }
         return factions;
+    }
+
+    @Override
+    public boolean hasFaction(Faction faction) {
+        return (cardBeingCopied != null && cardBeingCopied.hasFaction(faction)) || super.hasFaction(faction);
     }
 
     @Override
@@ -129,6 +137,41 @@ public class StealthNeedle extends Ship implements CardActionCard
             return cardBeingCopied.isScrappable();
         } else {
             return super.isScrappable();
+        }
+    }
+
+    @Override
+    public AlliableCard getAlliableCard() {
+        if (cardBeingCopied != null && cardBeingCopied instanceof AlliableCard) {
+            return (AlliableCard) cardBeingCopied;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isAllFactionsAlliedTogether() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAllFactionsAlliedTogether();
+        } else {
+            return super.isAllFactionsAlliedTogether();
+        }
+    }
+
+    @Override
+    public boolean isAutoAlly() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAutoAlly();
+        } else {
+            return super.isAutoAlly();
+        }
+    }
+
+    @Override
+    public boolean hasUnusedAllyAbility() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.hasUnusedAllyAbility();
+        } else {
+            return super.hasUnusedAllyAbility();
         }
     }
 }

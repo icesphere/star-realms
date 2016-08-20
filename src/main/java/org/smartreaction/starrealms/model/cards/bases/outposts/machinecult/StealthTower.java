@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ActionResult;
@@ -10,12 +11,11 @@ import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.players.Player;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StealthTower extends Outpost implements CardActionCard
 {
-    private Base baseBeingCopied;
+    private Base cardBeingCopied;
 
     public StealthTower()
     {
@@ -29,39 +29,43 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public void baseUsed(Player player) {
-        if (baseBeingCopied != null) {
-            baseBeingCopied.baseUsed(player);
+        if (cardBeingCopied != null) {
+            cardBeingCopied.baseUsed(player);
         } else {
             player.addCardAction(this, "Choose a base to copy. Until your turn ends, Stealth Tower becomes a copy of the chosen base. Stealth Tower has that base's faction in addition to Machine Cult.");
         }
     }
 
-    public Base getBaseBeingCopied() {
-        return baseBeingCopied;
+    public Base getCardBeingCopied() {
+        return cardBeingCopied;
     }
 
     @Override
     public List<Faction> getAlliedFactions(Card card) {
-        List<Faction> alliedFactions = super.getAlliedFactions(card);
-        if (baseBeingCopied != null) {
-            alliedFactions.addAll(baseBeingCopied.getAlliedFactions(card));
+        List<Faction> alliedFactions = new ArrayList<>(super.getAlliedFactions(card));
+        if (cardBeingCopied != null) {
+            alliedFactions.addAll(cardBeingCopied.getAlliedFactions(card));
         }
         return alliedFactions;
     }
 
-
     @Override
     public Set<Faction> getFactions() {
-        Set<Faction> factions = super.getFactions();
-        if (baseBeingCopied != null) {
-            factions.addAll(baseBeingCopied.getFactions());
+        Set<Faction> factions = new HashSet<>(super.getFactions());
+        if (cardBeingCopied != null) {
+            factions.addAll(cardBeingCopied.getFactions());
         }
         return factions;
     }
 
     @Override
+    public boolean hasFaction(Faction faction) {
+        return (cardBeingCopied != null && cardBeingCopied.hasFaction(faction)) || super.hasFaction(faction);
+    }
+
+    @Override
     public void removedFromPlay(Player player) {
-        baseBeingCopied = null;
+        cardBeingCopied = null;
     }
 
     @Override
@@ -81,10 +85,10 @@ public class StealthTower extends Outpost implements CardActionCard
         Card selectedCard = result.getSelectedCard();
         if (selectedCard != null) {
             try {
-                baseBeingCopied = (Base) selectedCard.getClass().newInstance();
-                baseBeingCopied.setCopied(true);
-                player.addGameLog(player.getPlayerName() + " copied " + baseBeingCopied.getName());
-                player.playCard(baseBeingCopied);
+                cardBeingCopied = (Base) selectedCard.getClass().newInstance();
+                cardBeingCopied.setCopied(true);
+                player.addGameLog(player.getPlayerName() + " copied " + cardBeingCopied.getName());
+                player.playCard(cardBeingCopied);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,8 +97,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isUsed() {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isUsed();
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isUsed();
         } else {
             return super.isUsed();
         }
@@ -102,8 +106,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public void setUsed(boolean used) {
-        if (baseBeingCopied != null) {
-            baseBeingCopied.setUsed(used);
+        if (cardBeingCopied != null) {
+            cardBeingCopied.setUsed(used);
         } else {
             super.setUsed(used);
         }
@@ -111,7 +115,7 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean baseCanBeUsed(Player player) {
-        if (baseBeingCopied != null) {
+        if (cardBeingCopied != null) {
             return super.baseCanBeUsed(player);
         } else {
             return super.baseCanBeUsed(player);
@@ -120,8 +124,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isAutoUse() {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isAutoUse();
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAutoUse();
         } else {
             return super.isAutoUse();
         }
@@ -129,9 +133,15 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isActionable(Player player, String cardLocation) {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isActionable(player, cardLocation);
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isActionable(player, cardLocation);
         } else {
+            //noinspection SimplifiableIfStatement
+            if (Objects.equals(cardLocation, CARD_LOCATION_PLAYER_BASES)
+                    && player.getBases().size() == 1
+                    && player.getOpponent().getBases().size() == 0) {
+                return false;
+            }
             return super.isActionable(player, cardLocation);
         }
     }
@@ -139,7 +149,7 @@ public class StealthTower extends Outpost implements CardActionCard
     @Override
     public void onEndTurn() {
         super.onEndTurn();
-        baseBeingCopied = null;
+        cardBeingCopied = null;
     }
 
     @Override
@@ -149,8 +159,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isAlliableCard() {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isAlliableCard();
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAlliableCard();
         } else {
             return super.isAlliableCard();
         }
@@ -158,8 +168,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isAlliedAbilityUsed(Faction faction) {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isAlliedAbilityUsed(faction);
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAlliedAbilityUsed(faction);
         } else {
             return super.isAlliedAbilityUsed(faction);
         }
@@ -167,8 +177,8 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public void setAlliedAbilityUsed(boolean used, Faction faction) {
-        if (baseBeingCopied != null) {
-            baseBeingCopied.setAlliedAbilityUsed(used, faction);
+        if (cardBeingCopied != null) {
+            cardBeingCopied.setAlliedAbilityUsed(used, faction);
         } else {
             super.setAlliedAbilityUsed(used, faction);
         }
@@ -176,10 +186,45 @@ public class StealthTower extends Outpost implements CardActionCard
 
     @Override
     public boolean isScrappable() {
-        if (baseBeingCopied != null) {
-            return baseBeingCopied.isScrappable();
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isScrappable();
         } else {
             return super.isScrappable();
+        }
+    }
+
+    @Override
+    public AlliableCard getAlliableCard() {
+        if (cardBeingCopied != null && cardBeingCopied instanceof AlliableCard) {
+            return (AlliableCard) cardBeingCopied;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isAllFactionsAlliedTogether() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAllFactionsAlliedTogether();
+        } else {
+            return super.isAllFactionsAlliedTogether();
+        }
+    }
+
+    @Override
+    public boolean isAutoAlly() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isAutoAlly();
+        } else {
+            return super.isAutoAlly();
+        }
+    }
+
+    @Override
+    public boolean hasUnusedAllyAbility() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.hasUnusedAllyAbility();
+        } else {
+            return super.hasUnusedAllyAbility();
         }
     }
 }

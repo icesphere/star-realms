@@ -18,12 +18,6 @@ public class CentralStation extends Base
     }
 
     @Override
-    public void cardPlayed(Player player)
-    {
-        this.useBase(player);
-    }
-
-    @Override
     public void baseUsed(Player player) {
         player.addTrade(2);
         if (player.getBases().size() >= 3) {

@@ -17,6 +17,7 @@ public class TheHive extends Base implements AlliableCard
         shield = 5;
         text = "Add 3 Combat; Ally: Draw a card";
         autoAlly = false;
+        autoUse = true;
     }
 
     @Override

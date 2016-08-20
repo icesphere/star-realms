@@ -256,8 +256,8 @@ public abstract class Player {
 
         for (Card card : inPlay) {
             if (card.isBase()) {
-                ((Base) card).setUsed(false);
                 ((Base) card).onEndTurn();
+                ((Base) card).setUsed(false);
                 card.setAllAlliedAbilitiesToNotUsed();
             } else {
                 discard.add(card);
@@ -526,8 +526,8 @@ public abstract class Player {
         if (card instanceof StealthNeedle && ((StealthNeedle) card).getCardBeingCopied() != null) {
             cardToUse = ((StealthNeedle) card).getCardBeingCopied();
         }
-        if (card instanceof StealthTower && ((StealthTower) card).getBaseBeingCopied() != null) {
-            cardToUse = ((StealthTower) card).getBaseBeingCopied();
+        if (card instanceof StealthTower && ((StealthTower) card).getCardBeingCopied() != null) {
+            cardToUse = ((StealthTower) card).getCardBeingCopied();
         }
 
         boolean allyAbilityUsed = false;
@@ -611,21 +611,25 @@ public abstract class Player {
         factionsPlayedThisTurn.addAll(card.getFactions());
 
         for (Card c : inPlay) {
-            if (c.isAlliableCard()) {
-                if (c.hasUnusedAllyAbility() && c.isAutoAlly()) {
-                    for (Faction faction : c.getFactions()) {
-                        if (!c.getAutoAllyExcludedFactions().contains(faction)
-                                && !c.isAlliedAbilityUsed(faction)
-                                && cardHasAlly(c, faction)) {
-                            c.setAlliedAbilityUsed(true, faction);
-                            ((AlliableCard) c).cardAllied(this, faction);
-                        }
+            allyCardIfAvailable(c);
+        }
+
+        card.cardPlayed(this);
+    }
+
+    private void allyCardIfAvailable(Card card) {
+        if (card.isAlliableCard()) {
+            if (card.hasUnusedAllyAbility() && card.isAutoAlly()) {
+                for (Faction faction : card.getFactions()) {
+                    if (!card.getAutoAllyExcludedFactions().contains(faction)
+                            && !card.isAlliedAbilityUsed(faction)
+                            && cardHasAlly(card, faction)) {
+                        card.setAlliedAbilityUsed(true, faction);
+                        card.getAlliableCard().cardAllied(this, faction);
                     }
                 }
             }
         }
-
-        card.cardPlayed(this);
     }
 
     public int countCardsByType(List<Card> cards, Function<Card, Boolean> typeMatcher) {
@@ -895,18 +899,7 @@ public abstract class Player {
                 base.useBase(this);
             }
 
-            if (base.isAlliableCard()) {
-                if (base.hasUnusedAllyAbility() && base.isAutoAlly()) {
-                    for (Faction faction : base.getFactions()) {
-                        if (!base.getAutoAllyExcludedFactions().contains(faction)
-                                && !base.isAlliedAbilityUsed(faction)
-                                && cardHasAlly(base, faction)) {
-                            base.setAlliedAbilityUsed(true, faction);
-                            ((AlliableCard) base).cardAllied(this, faction);
-                        }
-                    }
-                }
-            }
+            allyCardIfAvailable(base);
         }
 
         if (!gambits.isEmpty()) {

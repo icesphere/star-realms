@@ -23,9 +23,9 @@ public class AttackStrategy implements BotStrategy {
     @Override
     public int getBuyCardScore(Card card, Player player) {
         int deck = player.getCurrentDeckNumber();
-        int bases = player.getNumBases();
+        int bases = player.getNumBasesInAllCards();
         Player opponent = player.getOpponent();
-        int opponentBases = opponent.getNumBases();
+        int opponentBases = opponent.getNumBasesInAllCards();
 
         //Heroes
         if (card instanceof RamPilot) {

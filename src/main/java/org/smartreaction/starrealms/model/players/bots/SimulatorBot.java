@@ -3,25 +3,54 @@ package org.smartreaction.starrealms.model.players.bots;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
-import org.smartreaction.starrealms.service.GameService;
+import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SimulatorBot extends BotPlayer {
     BotStrategy strategy = null;
 
-    private GameService gameService;
-
-    public SimulatorBot(GameService gameService) {
+    public SimulatorBot() {
         super();
-        this.gameService = gameService;
+    }
+
+    @Override
+    public void takeTurn() {
+        useBestStrategy();
+        super.takeTurn();
+    }
+
+    private void useBestStrategy() {
+        System.out.println("Determining best strategy");
+
+        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 50);
+
+        float bestWinPercentage = 0;
+
+        BotStrategy bestStrategy = null;
+
+        for (BotStrategy strategy : results.keySet()) {
+            Float winPercentage = results.get(strategy);
+            if (winPercentage > bestWinPercentage) {
+                bestStrategy = strategy;
+                bestWinPercentage = winPercentage;
+            }
+        }
+
+        if (bestStrategy == null) {
+            bestStrategy = new VelocityStrategy();
+        } else {
+            System.out.println("Best strategy: " + bestStrategy.getClass().getSimpleName());
+        }
+
+        this.strategy = bestStrategy;
     }
 
     @Override
     public List<Card> getCardsToBuy() {
+        return super.getCardsToBuy();
         //todo
-        return new ArrayList<>();
         /*if (strategy != null) {
             return super.getCardsToBuy();
         }

@@ -28,7 +28,7 @@ public class AttackVelocityStrategy implements BotStrategy {
     @Override
     public int getBuyCardScore(Card card, Player player) {
         int deck = player.getCurrentDeckNumber();
-        int bases = player.getNumBases();
+        int bases = player.getNumBasesInAllCards();
 
         //Heroes
         if (card instanceof RamPilot) {

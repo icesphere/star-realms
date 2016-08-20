@@ -23,10 +23,7 @@ import org.smartreaction.starrealms.model.cards.events.BlackHole;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
-import org.smartreaction.starrealms.model.cards.ships.Explorer;
-import org.smartreaction.starrealms.model.cards.ships.Scout;
-import org.smartreaction.starrealms.model.cards.ships.Ship;
-import org.smartreaction.starrealms.model.cards.ships.Viper;
+import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.AgingBattleship;
@@ -45,7 +42,7 @@ public abstract class BotPlayer extends Player {
         playerName = getClass().getSimpleName();
     }
 
-    GameService gameService;
+    protected GameService gameService;
 
     protected Comparator<Card> discardScoreDescending = (c1, c2) -> Integer.compare(getDiscardCardScore(c2), getDiscardCardScore(c1));
     protected Comparator<Card> scrapScoreDescending = (c1, c2) -> Integer.compare(getScrapCardScore(c2), getScrapCardScore(c1));
@@ -503,6 +500,14 @@ public abstract class BotPlayer extends Player {
         cards.add(getGame().getExplorer());
 
         List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+
+        if (cardToBuyThisTurn != null && getTrade() >= cardToBuyThisTurn.getCost()) {
+            if (cardToBuyThisTurn instanceof DoNotBuyCard) {
+                return cardsToBuy;
+            }
+            cardsToBuy.add(cardToBuyThisTurn);
+            return cardsToBuy;
+        }
 
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
             Card cardWithHighestBuyScore = sortedCards.get(0);

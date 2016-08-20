@@ -16,7 +16,9 @@ import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
+import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
+import org.smartreaction.starrealms.model.cards.ships.Scout;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.cards.ships.starempire.EmperorsDreadnaught;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.ColonySeedShip;
@@ -37,8 +39,6 @@ public abstract class Player {
     private List<Base> bases = new ArrayList<>();
     private List<Gambit> gambits = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
-
-    private Map<Integer, Set<Card>> cardsAcquiredByDeck = new HashMap<>();
 
     protected List<Action> actionsQueue = new ArrayList<>();
 
@@ -66,13 +66,13 @@ public abstract class Player {
 
     private boolean preventFirstDamage;
 
-    private int shuffles;
+    protected int shuffles;
 
     private boolean firstPlayer;
 
     protected String playerName;
 
-    private int turns;
+    protected int turns;
 
     protected int turn;
 
@@ -89,6 +89,14 @@ public abstract class Player {
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
+
+    //these are for simulating which card is the best to buy
+    protected Card cardToBuyThisTurn;
+    protected boolean firstTurn = true;
+    protected boolean boughtSpecifiedCardOnFirstTurn = false;
+    private long scoutsInFirstHand;
+    private long scoutsInSecondHand;
+    private Map<Integer, Set<Card>> cardsAcquiredByDeck = new HashMap<>();
 
     protected Player() {
     }
@@ -234,6 +242,14 @@ public abstract class Player {
         getGame().gameLog("Ending turn");
 
         turns++;
+
+        firstTurn = false;
+
+        if (cardToBuyThisTurn != null && cardToBuyThisTurn instanceof DoNotBuyCard) {
+            boughtSpecifiedCardOnFirstTurn = true;
+        }
+
+        cardToBuyThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -439,6 +455,13 @@ public abstract class Player {
         } else {
             discard.add(card);
         }
+
+        if (cardToBuyThisTurn != null && cardToBuyThisTurn.equals(card)) {
+            cardToBuyThisTurn = null;
+            if (firstTurn) {
+                boughtSpecifiedCardOnFirstTurn = true;
+            }
+        }
     }
 
     public abstract void makeChoice(ChoiceActionCard card, Choice... choices);
@@ -516,6 +539,7 @@ public abstract class Player {
         } else {
             cards.addAll(inPlay);
         }
+        cards.addAll(heroes);
 
         return cards;
     }
@@ -697,6 +721,10 @@ public abstract class Player {
 
     public void setAuthority(int authority) {
         this.authority = authority;
+    }
+
+    public int getTurn() {
+        return turn;
     }
 
     public int getTurns() {
@@ -894,6 +922,13 @@ public abstract class Player {
 
         inPlay.addAll(bases);
 
+        long scoutsInHand = hand.stream().filter(c -> c instanceof Scout).count();
+        if (turns == 0) {
+            scoutsInFirstHand = scoutsInHand;
+        } else if (turns == 1) {
+            scoutsInSecondHand = scoutsInHand;
+        }
+
         for (Base base : bases) {
             if (base.isAutoUse()) {
                 base.useBase(this);
@@ -928,7 +963,7 @@ public abstract class Player {
         }
     }
 
-    public int getNumBases() {
+    public int getNumBasesInAllCards() {
         return (int) getAllCards().stream().filter(Card::isBase).count();
     }
 
@@ -939,4 +974,24 @@ public abstract class Player {
     public abstract void showTriggeredEvent(Event event);
 
     public abstract void addCardFromDiscardToTopOfDeck(Integer maxCost);
+
+    public void setCardToBuyThisTurn(Card cardToBuyThisTurn) {
+        this.cardToBuyThisTurn = cardToBuyThisTurn;
+    }
+
+    public boolean isBoughtSpecifiedCardOnFirstTurn() {
+        return boughtSpecifiedCardOnFirstTurn;
+    }
+
+    public long getScoutsInFirstHand() {
+        return scoutsInFirstHand;
+    }
+
+    public long getScoutsInSecondHand() {
+        return scoutsInSecondHand;
+    }
+
+    public Map<Integer, Set<Card>> getCardsAcquiredByDeck() {
+        return cardsAcquiredByDeck;
+    }
 }

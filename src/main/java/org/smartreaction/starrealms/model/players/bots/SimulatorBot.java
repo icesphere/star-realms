@@ -4,6 +4,7 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
+import org.smartreaction.starrealms.service.GameService;
 
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ import java.util.Map;
 public class SimulatorBot extends BotPlayer {
     BotStrategy strategy = null;
 
-    public SimulatorBot() {
-        super();
+    public SimulatorBot(GameService gameService) {
+        super(gameService);
     }
 
     @Override
@@ -39,6 +40,7 @@ public class SimulatorBot extends BotPlayer {
         }
 
         if (bestStrategy == null) {
+            System.out.println("Best strategy was null, using Velocity Strategy");
             bestStrategy = new VelocityStrategy();
         } else {
             System.out.println("Best strategy: " + bestStrategy.getClass().getSimpleName());

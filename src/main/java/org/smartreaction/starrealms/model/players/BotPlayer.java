@@ -38,7 +38,8 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 public abstract class BotPlayer extends Player {
-    public BotPlayer() {
+    public BotPlayer(GameService gameService) {
+        this.gameService = gameService;
         playerName = getClass().getSimpleName();
     }
 
@@ -133,7 +134,7 @@ public abstract class BotPlayer extends Player {
 
             for (Card card : getInPlay()) {
                 if (card.isAlliableCard()) {
-                    if (useAlliedAbilities((AlliableCard) card)) {
+                    if (useAlliedAbilities(card.getAlliableCard())) {
                         endTurn = false;
                         refreshAfterAction();
                     }
@@ -1351,10 +1352,6 @@ public abstract class BotPlayer extends Player {
         }
     }
 
-    public void setGameService(GameService gameService) {
-        this.gameService = gameService;
-    }
-
     public void refreshAfterEndTurn() {
         sendGameMessageToOpponent("refresh_game_page");
     }
@@ -1369,6 +1366,8 @@ public abstract class BotPlayer extends Player {
     }
 
     public void sendGameMessage(String recipient, String message) {
-        gameService.sendGameMessage(getPlayerName(), recipient, getGame().getGameId(), message);
+        if (!getGame().isSimulation()) {
+            gameService.sendGameMessage(getPlayerName(), recipient, getGame().getGameId(), message);
+        }
     }
 }

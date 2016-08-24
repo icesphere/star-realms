@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.service;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -48,7 +47,6 @@ import org.smartreaction.starrealms.model.simulator.SimulationResults;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Stream;
@@ -72,8 +70,8 @@ public class GameService {
         Player player2;
 
         if (gameOptions.isPlayAgainstComputer()) {
-            player2 = new StrategyBot(new VelocityStrategy(), this);
-            //player2 = new SimulatorBot();
+            //player2 = new StrategyBot(new VelocityStrategy(), this);
+            player2 = new SimulatorBot(this);
             user2 = new User();
             user2.setUsername(player2.getPlayerName());
         } else {
@@ -1681,25 +1679,15 @@ public class GameService {
         return eventBus;
     }
 
-    Game cloneGame(Game game) {
-        try {
-            return (Game) BeanUtils.cloneBean(game);
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public BotStrategy determineStrategyBasedOnCards(List<Card> cards) {
         //todo
         return new VelocityStrategy();
     }
 
     public Map<BotStrategy, Float> simulateBestStrategy(Game originalGame, int timesToSimulate) {
-        Game game = cloneGame(originalGame);
+        Game copiedGame = originalGame.copyGameForSimulation();
 
-        BotStrategy opponentStrategy = determineStrategyBasedOnCards(game.getCurrentPlayer().getOpponent().getAllCards());
-        StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, game.getCurrentPlayer().getOpponent());
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
 
         Map<BotStrategy, Float> strategyResults = new LinkedHashMap<>();
 
@@ -1713,14 +1701,15 @@ public class GameService {
         strategies.add(new VelocityStrategy());
 
         for (BotStrategy strategy : strategies) {
-            StrategyBot strategyBot = new StrategyBot(strategy, this, game.getCurrentPlayer());
+            StrategyBot strategyBot = new StrategyBot(strategy, this, originalGame.getCurrentPlayer(), copiedGame);
+            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, strategyBot, copiedGame);
 
             strategyBot.setOpponent(opponentBot);
             opponentBot.setOpponent(strategyBot);
 
             List<Player> players = new ArrayList<>();
 
-            if (game.getCurrentPlayer().isFirstPlayer()) {
+            if (originalGame.getCurrentPlayer().isFirstPlayer()) {
                 players.add(strategyBot);
                 players.add(opponentBot);
             } else {
@@ -1728,9 +1717,9 @@ public class GameService {
                 players.add(strategyBot);
             }
 
-            game.setPlayers(players);
+            copiedGame.setPlayers(players);
 
-            SimulationResults results = simulateGameToEnd(game, timesToSimulate, null, true, false);
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, null, true, false);
 
             strategyResults.put(strategy, results.getWinPercentage());
         }
@@ -1738,7 +1727,9 @@ public class GameService {
         return strategyResults;
     }
 
-    public SimulationResults simulateGameToEnd(Game originalGame, int timesToSimulate, Card cardToBuyThisTurn, boolean simulatingBestBot, boolean simulatingBestCardToBuy) {
+    public SimulationResults simulateGameToEnd(Game copiedGame, int timesToSimulate, Card cardToBuyThisTurn,
+                                               boolean simulatingBestBot, boolean simulatingBestCardToBuy) {
+
         SimulationResults results = new SimulationResults();
 
         boolean createdWinGameLog = false;
@@ -1784,17 +1775,18 @@ public class GameService {
 
         int wins = 0;
 
-        Player player = originalGame.getCurrentPlayer();
+        Player player = copiedGame.getCurrentPlayer();
         player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
         averageAuthorityByPlayerByTurn.put(player.getPlayerName(), new HashMap<>());
 
-        Player opponent = originalGame.getCurrentPlayer().getOpponent();
+        Player opponent = copiedGame.getCurrentPlayer().getOpponent();
         opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
         averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
 
         for (int i = 0; i < timesToSimulate; i++) {
+            System.out.println("Simulating game " + i);
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
-            Game game = simulateGameToEnd(originalGame, createGameLog, cardToBuyThisTurn);
+            Game game = simulateGameToEnd(copiedGame, createGameLog, cardToBuyThisTurn);
             if (game == null || cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
                 continue;
             }
@@ -1914,7 +1906,7 @@ public class GameService {
                 });
 
                 if (game.getWinner().getCardsAcquiredByDeck().get(1) != null) {
-                    game.getWinner().getCardsAcquiredByDeck().get(1).stream().forEach(c -> {
+                    game.getWinner().getCardsAcquiredByDeck().get(1).forEach(c -> {
                         Integer winsForCard = winnerFirstDeckWinsMap.get(c.getName());
                         if (winsForCard == null) {
                             winsForCard = 1;
@@ -2121,44 +2113,57 @@ public class GameService {
         return results;
     }
 
-    private Game simulateGameToEnd(Game originalGame, boolean createGameLog, Card cardToBuyThisTurn) {
-        Game game = cloneGame(originalGame);
-        Collections.shuffle(game.getDeck());
+    private Game simulateGameToEnd(Game copiedGame, boolean createGameLog, Card cardToBuyThisTurn) {
+        Game copiedGameCopy = copiedGame.copyGameForSimulation();
+        Collections.shuffle(copiedGameCopy.getDeck());
 
-        game.setCreateGameLog(createGameLog);
+        copiedGameCopy.setCreateGameLog(createGameLog);
 
-        Player player = game.getCurrentPlayer();
-        if (player instanceof SimulatorBot && cardToBuyThisTurn != null) {
-            ((SimulatorBot) player).setStrategy(new VelocityStrategy());
-        }
+        Player player = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer()).getStrategy(), this, copiedGame.getCurrentPlayer(), copiedGameCopy);
 
-        Player opponent = player.getOpponent();
+        Player opponent = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer().getOpponent()).getStrategy(), this, copiedGame.getCurrentPlayer().getOpponent(), copiedGameCopy);
 
         player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
+
         opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
 
         player.setCardToBuyThisTurn(cardToBuyThisTurn);
 
-        if (cardToBuyThisTurn != null) {
-            game.setTrackAuthority(false);
+        List<Player> players = new ArrayList<>();
+
+        player.setOpponent(opponent);
+        opponent.setOpponent(player);
+
+        if (copiedGame.getCurrentPlayer().isFirstPlayer()) {
+            players.add(player);
+            players.add(opponent);
         } else {
-            game.setupPlayerAuthorityMap();
+            players.add(opponent);
+            players.add(player);
         }
 
-        game.getCurrentPlayer().takeTurn();
+        copiedGameCopy.setPlayers(players);
 
-        while (!game.isGameOver()) {
-            if (game.getTurn() > 200) {
+        if (cardToBuyThisTurn != null) {
+            copiedGameCopy.setTrackAuthority(false);
+        } else {
+            copiedGameCopy.setupPlayerAuthorityMap();
+        }
+
+        copiedGameCopy.getCurrentPlayer().takeTurn();
+
+        while (!copiedGameCopy.isGameOver()) {
+            if (copiedGameCopy.getTurn() > 200) {
                 //todo
                 return null;
             } else {
-                if (game.isGameOver()) {
-                    return game;
+                if (copiedGameCopy.isGameOver()) {
+                    return copiedGameCopy;
                 }
             }
         }
 
-        return game;
+        return copiedGameCopy;
     }
 
     private <S, T extends Comparable> LinkedHashMap<S, T> sortByValueDescending(LinkedHashMap<S, T> map) {

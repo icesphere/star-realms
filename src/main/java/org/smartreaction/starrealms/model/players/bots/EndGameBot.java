@@ -3,8 +3,13 @@ package org.smartreaction.starrealms.model.players.bots;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.players.BotPlayer;
+import org.smartreaction.starrealms.service.GameService;
 
 public class EndGameBot extends BotPlayer {
+
+    public EndGameBot(GameService gameService) {
+        super(gameService);
+    }
 
     @Override
     public int getBuyCardScore(Card card) {

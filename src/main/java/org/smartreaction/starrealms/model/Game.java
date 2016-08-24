@@ -41,8 +41,23 @@ public class Game
 
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
+    private boolean simulation;
+
     public Game() {
         gameId = UUID.randomUUID().toString();
+    }
+
+    public Game copyGameForSimulation() {
+        Game game = new Game();
+        game.setCurrentPlayerIndex(currentPlayerIndex);
+        game.setTradeRow(new ArrayList<>(tradeRow));
+        game.setTradeRowCardsScrapped(new ArrayList<>(tradeRowCardsScrapped));
+        game.setDeck(new ArrayList<>(deck));
+        game.setTurn(turn);
+        game.setCreateGameLog(false);
+        game.setTrackAuthority(false);
+        game.setSimulation(true);
+        return game;
     }
 
     public int getTurn()
@@ -74,6 +89,10 @@ public class Game
 
     public void setTradeRow(List<Card> tradeRow) {
         this.tradeRow = tradeRow;
+    }
+
+    public void setTradeRowCardsScrapped(List<Card> tradeRowCardsScrapped) {
+        this.tradeRowCardsScrapped = tradeRowCardsScrapped;
     }
 
     public Card getExplorer() {
@@ -280,5 +299,13 @@ public class Game
 
     public List<ChatMessage> getChatMessages() {
         return chatMessages;
+    }
+
+    public boolean isSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(boolean simulation) {
+        this.simulation = simulation;
     }
 }

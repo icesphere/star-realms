@@ -2,7 +2,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sr="http://java.sun.com/jsf/composite/components">
 <ui:composition template="/templates/commonLayout.xhtml">
 
     <ui:define name="head">
@@ -106,9 +107,9 @@
                                        rendered="#{!userSession.user.autoMatch and !userSession.user.gameOptions.playAgainstComputer}"
                                        process="@form" update="@form" value="Auto Match"/>
 
-                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.playAgainstComputer}"
+                        <sr:linkWithSpinner styleClass="lobbyButton" actionMethod="#{lobbyView.playAgainstComputer}"
                                        rendered="#{!userSession.user.autoMatch and userSession.user.gameOptions.playAgainstComputer}"
-                                       process="@form" update="@form" value="Play Against Computer"/>
+                                       process="@form" update="@form" linkText="Play Against Computer"/>
                     </h:panelGroup>
                 </h:panelGroup>
 

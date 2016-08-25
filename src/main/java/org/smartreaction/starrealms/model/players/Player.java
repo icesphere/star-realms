@@ -2,6 +2,7 @@ package org.smartreaction.starrealms.model.players;
 
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
+import org.smartreaction.starrealms.model.TurnSummary;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
@@ -97,6 +98,10 @@ public abstract class Player {
     private long scoutsInFirstHand;
     private long scoutsInSecondHand;
     private Map<Integer, Set<Card>> cardsAcquiredByDeck = new HashMap<>();
+
+    private TurnSummary lastTurnSummary;
+
+    private TurnSummary currentTurnSummary = new TurnSummary();
 
     protected Player() {
     }
@@ -236,10 +241,17 @@ public abstract class Player {
 
     public void addAuthority(int authority) {
         this.authority += authority;
+        if (yourTurn) {
+            currentTurnSummary.setAuthorityGained(currentTurnSummary.getAuthorityGained() + authority);
+        }
     }
 
     public void endTurn() {
         getGame().gameLog("Ending turn");
+
+        currentTurnSummary.getCardsPlayed().addAll(played);
+
+        lastTurnSummary = currentTurnSummary;
 
         turns++;
 
@@ -304,6 +316,9 @@ public abstract class Player {
         bases.remove(base);
         discard.add(base);
         cardRemovedFromPlay(base);
+        if (!yourTurn) {
+            getOpponent().getCurrentTurnSummary().getOpponentBasesDestroyed().add(base);
+        }
     }
 
     public List<Base> getUnusedBasesAndOutposts() {
@@ -386,6 +401,10 @@ public abstract class Player {
         }
         cardRemovedFromPlay(card);
         numCardsScrappedThisTurn++;
+
+        if (yourTurn) {
+            currentTurnSummary.getCardsScrapped().add(card);
+        }
     }
 
     public void scrapCardInPlayForBenefit(Card card) {
@@ -462,6 +481,10 @@ public abstract class Player {
                 boughtSpecifiedCardOnFirstTurn = true;
             }
         }
+
+        if (yourTurn) {
+            currentTurnSummary.getCardsAcquired().add(card);
+        }
     }
 
     public abstract void makeChoice(ChoiceActionCard card, Choice... choices);
@@ -521,11 +544,14 @@ public abstract class Player {
     public void attackOpponentWithRemainingCombat() {
         getGame().gameLog("Applied " + combat + " combat to opponent");
         if (opponent.isPreventFirstDamage() && combat > 0) {
-            opponent.reduceAuthority(combat - 1);
+            combat--;
             opponent.setPreventFirstDamage(false);
-        } else {
-            opponent.reduceAuthority(combat);
         }
+
+        opponent.reduceAuthority(combat);
+
+        currentTurnSummary.setDamageToOpponent(currentTurnSummary.getDamageToOpponent() + combat);
+
         combat = 0;
     }
 
@@ -920,6 +946,9 @@ public abstract class Player {
         turn++;
         addGameLog("** " + playerName + "'s Turn " + turn + " **");
 
+        currentTurnSummary = new TurnSummary();
+        currentTurnSummary.setGameTurn(getGame().getTurn());
+
         inPlay.addAll(bases);
 
         long scoutsInHand = hand.stream().filter(c -> c instanceof Scout).count();
@@ -993,5 +1022,17 @@ public abstract class Player {
 
     public Map<Integer, Set<Card>> getCardsAcquiredByDeck() {
         return cardsAcquiredByDeck;
+    }
+
+    public TurnSummary getLastTurnSummary() {
+        return lastTurnSummary;
+    }
+
+    public TurnSummary getCurrentTurnSummary() {
+        return currentTurnSummary;
+    }
+
+    public boolean isBot() {
+        return this instanceof BotPlayer;
     }
 }

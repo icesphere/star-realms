@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+    <composite:attribute name="linkText" required="true"/>
+    <composite:attribute name="linkStyle"/>
+    <composite:attribute name="styleClass"/>
+    <composite:attribute name="process"/>
+    <composite:attribute name="update"/>
+    <composite:attribute name="actionMethod" method-signature="java.lang.String action()" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+    <script type="text/javascript">
+        function linkWithSpinnerStart_#{cc.id}()
+        {
+            $(".#{cc.id}_link").hide();
+            $(".#{cc.id}_loading").show();
+        }
+
+        function linkWithSpinnerEnd_#{cc.id}()
+        {
+            $(".#{cc.id}_loading").hide();
+            $(".#{cc.id}_link").show();
+        }
+    </script>
+
+    <h:graphicImage id="loadingImage" library="images" name="loadingSmall.gif" style="display:none;" styleClass="#{cc.id}_loading"/>
+    <p:commandLink id="link" value="#{cc.attrs.linkText}" action="#{cc.attrs.actionMethod}" style="#{cc.attrs.linkStyle}"
+                   process="#{cc.attrs.process}" update="#{cc.attrs.update}" styleClass="#{cc.id}_link #{cc.attrs.styleClass}"
+                   onstart="linkWithSpinnerStart_#{cc.id}()" oncomplete="linkWithSpinnerEnd_#{cc.id}()"/>
+</composite:implementation>
+
+</html>

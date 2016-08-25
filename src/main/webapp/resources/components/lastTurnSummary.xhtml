@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+        >
+
+<composite:interface>
+    <composite:attribute name="player" required="true" type="org.smartreaction.starrealms.model.players.Player"/>
+    <composite:attribute name="playerClass" required="true"/>
+    <composite:attribute name="isOpponent" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup layout="block" styleClass="lastTurnSummarySection" style="#{cc.attrs.isOpponent ? '' : 'margin-top: 15px;'}">
+
+        <div>
+            <h:outputText value="#{cc.attrs.player.playerName}'s Last Turn" styleClass="sectionHeader"/>
+            <h:outputText value=" (Game turn #{cc.attrs.player.lastTurnSummary.gameTurn})"
+                          rendered="#{!empty cc.attrs.player.lastTurnSummary}"/>
+        </div>
+
+        <h:panelGroup layout="block" rendered="#{empty cc.attrs.player.lastTurnSummary}" style="padding-top: 10px;">
+            <h:outputText value="No last turn"/>
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" styleClass="lastTurnSummary"
+                      rendered="#{!empty cc.attrs.player.lastTurnSummary}">
+
+            <div class="lastTurnSummaryInfo">
+                <h:outputText value="Cards Acquired: " styleClass="boldText"/>
+                <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.cardsAcquired)}"/>
+            </div>
+
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{!empty cc.attrs.player.lastTurnSummary.opponentBasesDestroyed}">
+                <h:outputText value="Opponent Bases Destroyed: " styleClass="boldText"/>
+                <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.opponentBasesDestroyed)}"/>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{cc.attrs.player.lastTurnSummary.damageToOpponent gt 0}">
+                <h:outputText value="Damage to Opponent: " styleClass="boldText"/>
+                <h:outputText value="#{cc.attrs.player.lastTurnSummary.damageToOpponent}"/>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{cc.attrs.player.lastTurnSummary.authorityGained gt 0}">
+                <h:outputText value="Authority Gained: " styleClass="boldText"/>
+                <h:outputText value="#{cc.attrs.player.lastTurnSummary.authorityGained}"/>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{!empty cc.attrs.player.lastTurnSummary.cardsScrapped}">
+                <h:outputText value="Cards Scrapped: " styleClass="boldText"/>
+                <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.cardsScrapped)}"/>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{!empty cc.attrs.player.lastTurnSummary.cardsPlayed}">
+                <h:outputText value="Cards Played: " styleClass="boldText"/>
+                <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.cardsPlayed)}"/>
+            </h:panelGroup>
+
+        </h:panelGroup>
+
+    </h:panelGroup>
+
+</composite:implementation>
+
+</html>

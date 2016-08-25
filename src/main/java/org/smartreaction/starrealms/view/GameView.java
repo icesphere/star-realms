@@ -334,7 +334,7 @@ public class GameView implements Serializable {
             sendShowActionToPlayer();
         } else {
             getPlayer().endTurn();
-            refreshGamePageForOpponent();
+            refreshGamePageForAll();
         }
     }
 

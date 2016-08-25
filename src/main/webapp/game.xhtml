@@ -296,14 +296,9 @@
 
                     <h:panelGroup layout="block" id="rightSection" styleClass="rightSection">
 
-                        <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection">
-                            <div style="padding-bottom: 5px;">
-                                <h:outputText value="Game Log" styleClass="sectionHeader"/>
-                            </div>
-                            <div class="gameLog">
-                                <h:outputText value="#{gameView.game.gameLog.toString()}" escape="false"/>
-                            </div>
-                        </h:panelGroup>
+                        <sr:lastTurnSummary player="#{gameView.opponent}" playerClass="opponent" isOpponent="true"/>
+
+                        <sr:lastTurnSummary player="#{gameView.player}" playerClass="player" isOpponent="false"/>
 
                         <h:panelGroup layout="block" rendered="#{!gameView.game.gameOver}" id="turnButtonsSection" styleClass="turnButtonsSection">
 
@@ -314,7 +309,8 @@
                                 </h:panelGroup>
 
                                 <h:panelGroup layout="block" styleClass="turnButtonWrapper">
-                                    <p:commandLink process="@this" update="gamePage" styleClass="turnButton" value="END TURN" actionListener="#{gameView.endTurn}"/>
+                                    <sr:linkWithSpinner process="@this" update=":gameForm:gamePage" styleClass="turnButton"
+                                                        linkText="END TURN" actionMethod="#{gameView.endTurn}"/>
                                 </h:panelGroup>
                             </h:panelGroup>
 
@@ -352,26 +348,39 @@
 
                     </h:panelGroup>
 
-                </h:panelGroup>
+                    <h:panelGroup layout="block" id="farRightSection" styleClass="farRightSection">
 
-                <h:panelGroup layout="block" id="chatSection" styleClass="chatSection">
-                    <div style="padding-bottom: 5px;">
-                        <h:outputText value="Chat" styleClass="sectionHeader"/>
-                    </div>
-                    <div id="chats" class="chats">
-                        <ui:repeat value="#{gameView.game.chatMessages}" var="chatMessage">
-                            <div style="padding-top: 10px;">
-                                <h:outputText value="#{chatMessage.username}:"
-                                              styleClass="#{gameView.player.playerName eq chatMessage.username ? 'player' : 'opponent'}"/>
-                                <h:outputText value="#{chatMessage.message}" style="padding-left: 10px;"/>
+                        <h:panelGroup layout="block" id="chatSection" styleClass="chatSection" style="#{gameView.opponent.bot ? 'display: none;' : ''}">
+                            <div style="padding-bottom: 5px;">
+                                <h:outputText value="Chat" styleClass="sectionHeader"/>
                             </div>
-                        </ui:repeat>
-                    </div>
-                    <div style="padding-top: 10px;">
-                        <p:inputText value="#{gameView.chatMessage}" style="margin-right: 10px;"/>
-                        <p:commandButton value="Send" process="chatSection" update="chatSection"
-                                         actionListener="#{gameView.sendChatMessage}" oncomplete="scrollChat()"/>
-                    </div>
+                            <div id="chats" class="chats">
+                                <ui:repeat value="#{gameView.game.chatMessages}" var="chatMessage">
+                                    <div style="padding-top: 10px;">
+                                        <h:outputText value="#{chatMessage.username}:"
+                                                      styleClass="#{gameView.player.playerName eq chatMessage.username ? 'player' : 'opponent'}"/>
+                                        <h:outputText value="#{chatMessage.message}" style="padding-left: 10px;"/>
+                                    </div>
+                                </ui:repeat>
+                            </div>
+                            <div style="padding-top: 10px;">
+                                <p:inputText value="#{gameView.chatMessage}" style="margin-right: 10px;"/>
+                                <p:commandButton value="Send" process="chatSection" update="chatSection"
+                                                 actionListener="#{gameView.sendChatMessage}" oncomplete="scrollChat()"/>
+                            </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection" style="#{gameView.opponent.bot ? '' : 'clear: both; float: left; margin-top: 15px;'}">
+                            <div style="padding-bottom: 5px;">
+                                <h:outputText value="Game Log" styleClass="sectionHeader"/>
+                            </div>
+                            <div class="gameLog" style="#{gameView.opponent.bot ? 'height: 530px;' : ''}">
+                                <h:outputText value="#{gameView.game.gameLog.toString()}" escape="false"/>
+                            </div>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+
                 </h:panelGroup>
 
             </div>

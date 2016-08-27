@@ -11,6 +11,7 @@ import org.smartreaction.starrealms.model.cards.bases.starempire.OrbitalPlatform
 import org.smartreaction.starrealms.model.cards.bases.starempire.StarbaseOmega;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
+import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.MercCruiser;
 import org.smartreaction.starrealms.model.cards.ships.blob.*;
@@ -84,6 +85,58 @@ public class DefenseStrategy implements BotStrategy {
                 return 15;
             }
             return 5;
+        }
+        //todo update scores
+        else if (card instanceof CEOShaner) {
+            if (deck <= 3) {
+                return 60;
+            }
+            return 40;
+        } else if (card instanceof ChairmanHaygan) {
+            if (deck == 1) {
+                return 25;
+            } else if (deck <= 3) {
+                return 35;
+            }
+            return 30;
+        } else if (card instanceof ChancellorHartman) {
+            if (deck <= 3) {
+                return 45;
+            }
+            return 15;
+        } else if (card instanceof ConfessorMorris) {
+            if (deck <= 3) {
+                return 55;
+            }
+            return 30;
+        } else if (card instanceof CommanderKlik) {
+            if (deck == 1) {
+                return 10;
+            } else if (deck <= 3) {
+                return 30;
+            }
+            return 10;
+        } else if (card instanceof CommanderZhang) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck <= 3) {
+                return 40;
+            }
+            return 35;
+        } else if (card instanceof Screecher) {
+            if (deck == 1) {
+                return 10;
+            } else if (deck <= 3) {
+                return 30;
+            }
+            return 10;
+        } else if (card instanceof HiveLord) {
+            if (deck == 1) {
+                return 10;
+            } else if (deck <= 3) {
+                return 30;
+            }
+            return 35;
         }
 
         //Blob

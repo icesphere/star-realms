@@ -14,6 +14,7 @@ import org.smartreaction.starrealms.model.cards.bases.tradefederation.BarterWorl
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.CentralOffice;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.Starmarket;
 import org.smartreaction.starrealms.model.cards.heroes.*;
+import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.BlobFighter;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.Battlecruiser;
@@ -87,6 +88,53 @@ public class AttackVelocityStrategy implements BotStrategy {
                 return 40;
             }
             return 20;
+        } else if (card instanceof CEOShaner) {
+            return 20;
+        } else if (card instanceof ChairmanHaygan) {
+            if (deck == 1) {
+                return 5;
+            } else if (deck <= 3) {
+                return 15;
+            }
+            return 10;
+        } else if (card instanceof ChancellorHartman) {
+            if (deck <= 3) {
+                return 55;
+            }
+            return 25;
+        } else if (card instanceof ConfessorMorris) {
+            if (deck <= 3) {
+                return 65;
+            }
+            return 40;
+        } else if (card instanceof CommanderKlik) {
+            if (deck == 1) {
+                return 30;
+            } else if (deck <= 3) {
+                return 50;
+            }
+            return 30;
+        } else if (card instanceof CommanderZhang) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck <= 3) {
+                return 55;
+            }
+            return 60;
+        } else if (card instanceof Screecher) {
+            if (deck == 1) {
+                return 25;
+            } else if (deck <= 3) {
+                return 45;
+            }
+            return 30;
+        } else if (card instanceof HiveLord) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck <= 3) {
+                return 55;
+            }
+            return 60;
         }
 
         //Blob

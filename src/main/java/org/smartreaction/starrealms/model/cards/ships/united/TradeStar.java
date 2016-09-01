@@ -25,4 +25,9 @@ public class TradeStar extends Ship implements ScrappableCard {
     public void cardScrapped(Player player) {
         player.addCombat(2);
     }
+
+    @Override
+    public int getCombatWhenScrapped() {
+        return 2;
+    }
 }

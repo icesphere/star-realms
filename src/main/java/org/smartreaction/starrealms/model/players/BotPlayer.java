@@ -31,6 +31,7 @@ import org.smartreaction.starrealms.model.cards.ships.starempire.Falcon;
 import org.smartreaction.starrealms.model.cards.ships.starempire.ImperialFrigate;
 import org.smartreaction.starrealms.model.cards.ships.starempire.SurveyShip;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.CustomsFrigate;
+import org.smartreaction.starrealms.model.cards.ships.united.UnityFighter;
 import org.smartreaction.starrealms.service.GameService;
 
 import java.util.*;
@@ -772,6 +773,24 @@ public abstract class BotPlayer extends Player {
         if (card instanceof AgingBattleship) {
             if (getHand().isEmpty() && (opponentAuthority <= 10 || authority <= 10 || (opponentAuthority <= 20 && canOnlyDestroyBaseWithExtraCombat(2)))) {
                 return 5;
+            }
+        }
+
+        if (card instanceof UnityFighter) {
+            Card cardToScrapFromDiscard = getCardToScrapFromDiscard(true);
+            if (cardToScrapFromDiscard instanceof Scout || cardToScrapFromDiscard instanceof Viper) {
+                return 15;
+            }
+            Card cardToScrapFromHand = getCardToScrapFromHand(true);
+            if (cardToScrapFromHand instanceof Viper) {
+                return 10;
+            } else if (cardToScrapFromHand instanceof Scout) {
+                addTrade(-1);
+                int buyScoreIncrease = getBuyScoreIncrease(1);
+                addTrade(1);
+                if (buyScoreIncrease < 20) {
+                    return 5;
+                }
             }
         }
 

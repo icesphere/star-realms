@@ -18,6 +18,7 @@ import org.smartreaction.starrealms.model.cards.ships.blob.*;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.ships.united.*;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class DefenseVelocityStrategy implements BotStrategy {
@@ -138,6 +139,68 @@ public class DefenseVelocityStrategy implements BotStrategy {
                 return 35;
             }
             return 40;
+        }
+
+        //United
+        if (card instanceof AllianceFrigate) {
+            if (deck < 3) {
+                return 5;
+            }
+            return 15;
+        } else if (card instanceof AllianceTransport) {
+            if (deck == 1) {
+                return 35;
+            } else if (deck == 2) {
+                return 20;
+            } else if (deck == 3) {
+                return 5;
+            }
+        } else if (card instanceof AssaultPod) {
+            if (deck == 1) {
+                return 4;
+            } else if (deck == 2) {
+                return 10;
+            }
+            return 25;
+        } else if (card instanceof BlobBot) {
+            if (deck <= 2) {
+                return 35;
+            } else if (deck == 3) {
+                return 25;
+            }
+            return 10;
+        } else if (card instanceof CoalitionFreighter) {
+            if (deck == 1) {
+                return 80;
+            } else if (deck == 2) {
+                return 50;
+            } else if (deck == 3) {
+                return 20;
+            }
+        } else if (card instanceof CoalitionMessenger) {
+            if (deck == 1) {
+                return 45;
+            } else if (deck == 2) {
+                return 30;
+            } else if (deck == 3) {
+                return 10;
+            }
+        } else if (card instanceof TradeStar) {
+            if (deck == 1) {
+                return 20;
+            } else if (deck == 2) {
+                return 10;
+            } else if (deck == 3) {
+                return 4;
+            }
+        } else if (card instanceof UnityFighter) {
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 30;
+            } else if (deck == 3) {
+                return 15;
+            }
         }
 
         //Blob

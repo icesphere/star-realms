@@ -174,4 +174,13 @@ public class StealthNeedle extends Ship implements CardActionCard
             return super.hasUnusedAllyAbility();
         }
     }
+
+    @Override
+    public boolean isScrapper() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isScrapper();
+        } else {
+            return super.isScrapper();
+        }
+    }
 }

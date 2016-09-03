@@ -227,4 +227,13 @@ public class StealthTower extends Outpost implements CardActionCard
             return super.hasUnusedAllyAbility();
         }
     }
+
+    @Override
+    public boolean isScrapper() {
+        if (cardBeingCopied != null) {
+            return cardBeingCopied.isScrapper();
+        } else {
+            return super.isScrapper();
+        }
+    }
 }

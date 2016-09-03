@@ -522,7 +522,7 @@ public abstract class Player {
             getGame().gameLog("Bought card: " + card.getName());
             trade -= card.getCost();
             if (card instanceof Explorer) {
-                cardAcquired(new Explorer());
+                cardAcquired(card);
             } else {
                 game.getTradeRow().remove(card);
                 game.addCardToTradeRow();

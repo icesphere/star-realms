@@ -58,7 +58,7 @@ public class SimulatorBot extends BotPlayer {
     public List<Card> getCardsToBuy() {
         ArrayList<Card> cardsToBuy = new ArrayList<>();
 
-        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 300);
+        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 400);
 
         if (results.isEmpty()) {
             return cardsToBuy;

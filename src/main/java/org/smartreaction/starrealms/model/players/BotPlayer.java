@@ -460,7 +460,6 @@ public abstract class BotPlayer extends Player {
     }
 
     public void applyCombatAndEndTurn() {
-        getGame().gameLog("Combat: " + getCombat());
         if (getCombat() > 0 && !getOpponent().getOutposts().isEmpty()) {
             List<Outpost> sortedOutposts = getOpponent().getOutposts().stream().sorted(attackBaseScoreDescending).collect(toList());
             for (Outpost outpost : sortedOutposts) {
@@ -495,8 +494,6 @@ public abstract class BotPlayer extends Player {
     public List<Card> getCardsToBuy() {
         List<Card> cardsToBuy = new ArrayList<>();
 
-        getGame().gameLog("Determining cards to buy. Current Trade: " + getTrade());
-
         List<Card> cards = new ArrayList<>(getGame().getTradeRow());
         cards.add(getGame().getExplorer());
         cards.add(getGame().getExplorer());
@@ -513,8 +510,6 @@ public abstract class BotPlayer extends Player {
 
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
             Card cardWithHighestBuyScore = sortedCards.get(0);
-
-            getGame().gameLog("Card with highest buy score: " + cardWithHighestBuyScore.getName());
 
             if (sortedCards.size() > 2) {
                 Map<Card, Integer> cardToBuyScoreMap = new HashMap<>();
@@ -540,9 +535,6 @@ public abstract class BotPlayer extends Player {
                     int totalBuyScore = 0;
                     totalBuyScore += cardToBuyScoreMap.get(cardList.get(0));
                     totalBuyScore += cardToBuyScoreMap.get(cardList.get(1));
-
-                    getGame().gameLog("Buy score for " + cardWithHighestBuyScore.getName() + ": " + cardToBuyScoreMap.get(cardWithHighestBuyScore));
-                    getGame().gameLog("Buy score for " + getGame().getCardsAsString(cardList) + ": " + totalBuyScore);
 
                     if (totalBuyScore > cardToBuyScoreMap.get(cardWithHighestBuyScore)) {
                         return cardList;

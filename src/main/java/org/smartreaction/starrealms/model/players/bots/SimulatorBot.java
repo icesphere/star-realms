@@ -1,11 +1,13 @@
 package org.smartreaction.starrealms.model.players.bots;
 
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
 import org.smartreaction.starrealms.service.GameService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class SimulatorBot extends BotPlayer {
     }
 
     private void useBestStrategy() {
-        System.out.println("Determining best strategy");
+        getGame().gameLog("Simulator Bot determining best strategy");
 
         Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 50);
 
@@ -33,6 +35,9 @@ public class SimulatorBot extends BotPlayer {
 
         for (BotStrategy strategy : results.keySet()) {
             Float winPercentage = results.get(strategy);
+
+            getGame().gameLog("Win percentage for " + strategy.getClass().getSimpleName() + ": " + winPercentage);
+
             if (winPercentage > bestWinPercentage) {
                 bestStrategy = strategy;
                 bestWinPercentage = winPercentage;
@@ -40,10 +45,10 @@ public class SimulatorBot extends BotPlayer {
         }
 
         if (bestStrategy == null) {
-            System.out.println("Best strategy was null, using Velocity Strategy");
+            getGame().gameLog("Best strategy was not found, using Velocity Strategy");
             bestStrategy = new VelocityStrategy();
         } else {
-            System.out.println("Best strategy: " + bestStrategy.getClass().getSimpleName());
+            getGame().gameLog("Best strategy: " + bestStrategy.getClass().getSimpleName());
         }
 
         this.strategy = bestStrategy;
@@ -51,42 +56,43 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public List<Card> getCardsToBuy() {
-        return super.getCardsToBuy();
-        //todo
-        /*if (strategy != null) {
+        ArrayList<Card> cardsToBuy = new ArrayList<>();
+
+        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 300);
+
+        if (results.isEmpty()) {
+            return cardsToBuy;
+        }
+
+        float bestWinPercentage = 0;
+
+        Card bestCardToBuy = null;
+
+        for (Card cardToBuy : results.keySet()) {
+            Float winPercentage = results.get(cardToBuy);
+
+            if (winPercentage > 0) {
+                getGame().gameLog("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);
+            }
+
+            if (winPercentage > bestWinPercentage) {
+                bestCardToBuy = cardToBuy;
+                bestWinPercentage = winPercentage;
+            }
+        }
+
+        if (bestCardToBuy == null) {
+            getGame().gameLog("Best card to buy was not found, using default buy score");
             return super.getCardsToBuy();
+        } else {
+            getGame().gameLog("Best card to buy: " + bestCardToBuy.getName());
         }
 
-        Map<Card, CardToBuySimulationResults> results = gameService.simulateBestCardToBuy(gameService.getGameStateFromGame(getGame()), 5);
-
-        if (!results.isEmpty()) {
-            Card bestCardToBuy = null;
-
-            float bestWinPercentage = 0;
-
-            for (Card card : results.keySet()) {
-                float winPercentage = results.get(card).getWinPercentage();
-                if (winPercentage > bestWinPercentage) {
-                    bestCardToBuy = card;
-                    bestWinPercentage = winPercentage;
-                }
-            }
-
-            setStrategy(new VelocityStrategy());
-
-            setCardToBuyThisTurn(bestCardToBuy);
-
-            DecimalFormat f = new DecimalFormat("##.00");
-
-            if (bestCardToBuy != null) {
-                getGame().gameLog("Best card to buy this turn: " + bestCardToBuy.getName());
-                getGame().gameLog("Win % with best card: " + f.format(bestWinPercentage) + "%");
-            }
+        if (!(bestCardToBuy instanceof DoNotBuyCard)) {
+            cardsToBuy.add(bestCardToBuy);
         }
 
-        List<Card> cards = super.getCardsToBuy();
-        setStrategy(null);
-        return cards;*/
+        return cardsToBuy;
     }
 
     @Override
@@ -101,7 +107,7 @@ public class SimulatorBot extends BotPlayer {
         }
     }
 
-    public void setStrategy(BotStrategy strategy) {
-        this.strategy = strategy;
+    public BotStrategy getStrategy() {
+        return strategy;
     }
 }

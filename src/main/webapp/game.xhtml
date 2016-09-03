@@ -305,7 +305,8 @@
                             <h:panelGroup rendered="#{gameView.player.yourTurn and empty gameView.action}">
 
                                 <h:panelGroup layout="block" styleClass="turnButtonWrapper" rendered="#{!empty gameView.player.hand}">
-                                    <p:commandLink process="@this" update="gamePage" styleClass="turnButton" value="PLAY ALL" actionListener="#{gameView.playAll}"/>
+                                    <sr:linkWithSpinner process="@this" update=":gameForm:gamePage" styleClass="turnButton"
+                                                        linkText="PLAY ALL" actionMethod="#{gameView.playAll}"/>
                                 </h:panelGroup>
 
                                 <h:panelGroup layout="block" styleClass="turnButtonWrapper">

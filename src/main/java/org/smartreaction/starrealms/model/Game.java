@@ -183,7 +183,7 @@ public class Game
 
         turn++;
 
-        if (!isGameOver()) {
+        if (!isGameOver() && !simulation) {
             getCurrentPlayer().startTurn();
         }
     }
@@ -218,7 +218,7 @@ public class Game
             System.out.println(log);
         }
         if (createGameLog) {
-            gameLog.insert(0, log + "<br/>");
+            gameLog.append(log).append("<br/>");
         }
     }
 

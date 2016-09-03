@@ -30,10 +30,7 @@ import org.smartreaction.starrealms.model.cards.events.*;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
-import org.smartreaction.starrealms.model.cards.ships.Explorer;
-import org.smartreaction.starrealms.model.cards.ships.MercCruiser;
-import org.smartreaction.starrealms.model.cards.ships.Scout;
-import org.smartreaction.starrealms.model.cards.ships.Viper;
+import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.*;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
 import org.smartreaction.starrealms.model.cards.ships.starempire.*;
@@ -1732,10 +1729,62 @@ public class GameService {
         return (count / cards.size()) * 100;
     }
 
+    public Map<Card, Float> simulateBestCardToBuy(Game originalGame, int timesToSimulate) {
+        Game copiedGame = originalGame.copyGameForSimulation();
+
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+
+        Map<Card, Float> cardResults = new LinkedHashMap<>();
+
+        List<Card> cardsToBuy = originalGame.getTradeRow()
+                .stream()
+                .filter(c -> c.getCost() <= originalGame.getCurrentPlayer().getTrade())
+                .collect(toList());
+
+        if (originalGame.getCurrentPlayer().getTrade() >= 2) {
+            cardsToBuy.add(new Explorer());
+        }
+
+        if (cardsToBuy.isEmpty()) {
+            return cardResults;
+        }
+
+        cardsToBuy.add(new DoNotBuyCard());
+
+        for (Card cardToBuy : cardsToBuy) {
+            StrategyBot strategyBot = new StrategyBot(((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy(),
+                    this, originalGame.getCurrentPlayer(), copiedGame);
+
+            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, strategyBot, copiedGame);
+
+            strategyBot.setOpponent(opponentBot);
+            opponentBot.setOpponent(strategyBot);
+
+            List<Player> players = new ArrayList<>();
+
+            if (originalGame.getCurrentPlayer().isFirstPlayer()) {
+                players.add(strategyBot);
+                players.add(opponentBot);
+            } else {
+                players.add(opponentBot);
+                players.add(strategyBot);
+            }
+
+            copiedGame.setPlayers(players);
+
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, cardToBuy, false, true);
+
+            cardResults.put(cardToBuy, results.getWinPercentage());
+        }
+
+        return cardResults;
+    }
+
     public Map<BotStrategy, Float> simulateBestStrategy(Game originalGame, int timesToSimulate) {
         Game copiedGame = originalGame.copyGameForSimulation();
 
         BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+        originalGame.gameLog("Opponent determined to be using " + opponentStrategy.getClass().getSimpleName());
 
         Map<BotStrategy, Float> strategyResults = new LinkedHashMap<>();
 
@@ -1832,7 +1881,6 @@ public class GameService {
         averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
 
         for (int i = 0; i < timesToSimulate; i++) {
-            System.out.println("Simulating game " + i);
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
             Game game = simulateGameToEnd(copiedGame, createGameLog, cardToBuyThisTurn);
             if (game == null || cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
@@ -2202,11 +2250,13 @@ public class GameService {
 
         while (!copiedGameCopy.isGameOver()) {
             if (copiedGameCopy.getTurn() > 200) {
-                //todo
+                System.out.println("Turn over 200, stopping simulation");
                 return null;
             } else {
                 if (copiedGameCopy.isGameOver()) {
                     return copiedGameCopy;
+                } else {
+                    copiedGameCopy.getCurrentPlayer().takeTurn();
                 }
             }
         }

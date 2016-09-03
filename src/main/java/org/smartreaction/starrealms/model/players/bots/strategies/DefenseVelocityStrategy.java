@@ -6,10 +6,18 @@ import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.AllianceLanding;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.CoalitionFortress;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.LookoutPost;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.UnityStation;
 import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.bases.starempire.OrbitalPlatform;
 import org.smartreaction.starrealms.model.cards.bases.starempire.StarbaseOmega;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.united.EmbassyBase;
+import org.smartreaction.starrealms.model.cards.bases.united.ExchangePoint;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionCluster;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionStronghold;
 import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
@@ -88,7 +96,6 @@ public class DefenseVelocityStrategy implements BotStrategy {
             return 5;
         }
 
-        //todo update scores
         else if (card instanceof CEOShaner) {
             if (deck <= 3) {
                 return 55;
@@ -201,6 +208,61 @@ public class DefenseVelocityStrategy implements BotStrategy {
             } else if (deck == 3) {
                 return 15;
             }
+        }
+
+        //United Bases
+        if (card instanceof EmbassyBase) {
+            return 95;
+        } else if (card instanceof ExchangePoint) {
+            if (deck < 3) {
+                return 80;
+            }
+            if (deck == 3) {
+                return 70;
+            }
+            return 45;
+        } else if (card instanceof UnionCluster) {
+            return 75;
+        } else if (card instanceof UnionStronghold) {
+            if (bases > 3) {
+                return 30;
+            }
+            return 10;
+        } else if (card instanceof AllianceLanding) {
+            if (deck == 1) {
+                return 55;
+            } else if (deck == 2) {
+                return 45;
+            } else if (deck == 3) {
+                return 30;
+            }
+            return 20;
+        } else if (card instanceof CoalitionFortress) {
+            if (deck == 1) {
+                return 70;
+            } else if (deck == 2) {
+                return 60;
+            } else if (deck == 3) {
+                return 50;
+            }
+            return 40;
+        } else if (card instanceof LookoutPost) {
+            if (deck < 3) {
+                return 85;
+            }
+            if (deck == 3) {
+                return 75;
+            }
+            return 65;
+        } else if (card instanceof UnityStation) {
+            if (deck < 3) {
+                return 85;
+            } else if (bases > 3) {
+                return 65;
+            } else if (deck == 3) {
+                return 45;
+            }
+            return 35;
         }
 
         //Blob

@@ -6,10 +6,18 @@ import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.AllianceLanding;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.CoalitionFortress;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.LookoutPost;
+import org.smartreaction.starrealms.model.cards.bases.outposts.united.UnityStation;
 import org.smartreaction.starrealms.model.cards.bases.starempire.FleetHQ;
 import org.smartreaction.starrealms.model.cards.bases.starempire.OrbitalPlatform;
 import org.smartreaction.starrealms.model.cards.bases.starempire.StarbaseOmega;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.*;
+import org.smartreaction.starrealms.model.cards.bases.united.EmbassyBase;
+import org.smartreaction.starrealms.model.cards.bases.united.ExchangePoint;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionCluster;
+import org.smartreaction.starrealms.model.cards.bases.united.UnionStronghold;
 import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
@@ -199,6 +207,57 @@ public class VelocityStrategy implements BotStrategy {
                 return 30;
             }
             return 20;
+        }
+
+        //United Bases
+        if (card instanceof EmbassyBase) {
+            return 80;
+        } else if (card instanceof ExchangePoint) {
+            if (deck < 3) {
+                return 75;
+            }
+            if (deck == 3) {
+                return 65;
+            }
+            return 40;
+        } else if (card instanceof UnionCluster) {
+            return 75;
+        } else if (card instanceof UnionStronghold) {
+            if (bases > 3) {
+                return 25;
+            }
+            return 5;
+        } else if (card instanceof AllianceLanding) {
+            if (deck == 1) {
+                return 45;
+            } else if (deck == 2) {
+                return 35;
+            }
+            return 15;
+        } else if (card instanceof CoalitionFortress) {
+            if (deck == 1) {
+                return 50;
+            } else if (deck == 2) {
+                return 40;
+            }
+            return 20;
+        } else if (card instanceof LookoutPost) {
+            if (deck < 3) {
+                return 70;
+            }
+            if (deck == 3) {
+                return 60;
+            }
+            return 50;
+        } else if (card instanceof UnityStation) {
+            if (deck < 3) {
+                return 75;
+            } else if (bases > 3) {
+                return 55;
+            } else if (deck == 3) {
+                return 35;
+            }
+            return 25;
         }
 
         //Blob
@@ -826,9 +885,9 @@ public class VelocityStrategy implements BotStrategy {
                 return 90;
             }
             if (deck == 3) {
-                return 85;
+                return 80;
             }
-            return 80;
+            return 70;
         } else if (card instanceof MechCruiser) {
             if (deck < 3) {
                 return 75;

@@ -1713,7 +1713,7 @@ public class GameService {
                 }
             }
 
-            if (economyStrategy) {
+            if (economyStrategy && !scrapStrategy) {
                 return new EconomyStrategy();
             }
         }

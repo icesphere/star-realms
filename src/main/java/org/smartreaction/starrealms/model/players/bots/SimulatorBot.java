@@ -68,6 +68,8 @@ public class SimulatorBot extends BotPlayer {
 
         Card bestCardToBuy = null;
 
+        getGame().gameLog("Simulator Bot determining best card to buy");
+
         for (Card cardToBuy : results.keySet()) {
             Float winPercentage = results.get(cardToBuy);
 

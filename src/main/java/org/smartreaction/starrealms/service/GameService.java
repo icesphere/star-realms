@@ -1755,7 +1755,7 @@ public class GameService {
             StrategyBot strategyBot = new StrategyBot(((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy(),
                     this, originalGame.getCurrentPlayer(), copiedGame);
 
-            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, strategyBot, copiedGame);
+            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
 
             strategyBot.setOpponent(opponentBot);
             opponentBot.setOpponent(strategyBot);
@@ -1799,7 +1799,7 @@ public class GameService {
 
         for (BotStrategy strategy : strategies) {
             StrategyBot strategyBot = new StrategyBot(strategy, this, originalGame.getCurrentPlayer(), copiedGame);
-            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, strategyBot, copiedGame);
+            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
 
             strategyBot.setOpponent(opponentBot);
             opponentBot.setOpponent(strategyBot);

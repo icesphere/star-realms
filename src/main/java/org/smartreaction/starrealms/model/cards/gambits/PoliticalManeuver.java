@@ -13,4 +13,9 @@ public class PoliticalManeuver extends Gambit implements ScrappableCard {
     public void cardScrapped(Player player) {
         player.addTrade(2);
     }
+
+    @Override
+    public int getTradeWhenScrapped() {
+        return 2;
+    }
 }

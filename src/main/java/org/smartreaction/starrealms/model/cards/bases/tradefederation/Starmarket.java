@@ -43,4 +43,9 @@ public class Starmarket extends Base implements ChoiceActionCard
             player.addTrade(3);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

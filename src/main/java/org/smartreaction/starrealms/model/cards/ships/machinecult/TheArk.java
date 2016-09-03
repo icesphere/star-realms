@@ -46,4 +46,9 @@ public class TheArk extends Ship implements ScrappableCard, ScrapCardsForBenefit
     public boolean isCardApplicable(Card card) {
         return true;
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

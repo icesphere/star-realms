@@ -30,4 +30,9 @@ public class MechCruiser extends Ship implements AlliableCard
     {
         player.destroyTargetBase();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

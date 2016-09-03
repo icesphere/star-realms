@@ -36,4 +36,9 @@ public class CentralOffice extends Base implements AlliableCard
     {
         player.drawCard();
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

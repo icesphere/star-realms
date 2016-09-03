@@ -15,6 +15,6 @@ public class DoNotBuyCard extends Ship
 
     @Override
     public void cardPlayed(Player player) {
-        player.addTrade(1);
+        //do nothing
     }
 }

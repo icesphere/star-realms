@@ -43,4 +43,14 @@ public class BorderFort extends Outpost implements AlliableCard, ChoiceActionCar
             player.addCombat(2);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

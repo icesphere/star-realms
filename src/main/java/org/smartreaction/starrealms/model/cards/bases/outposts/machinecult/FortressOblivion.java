@@ -30,4 +30,9 @@ public class FortressOblivion extends Outpost
     public boolean baseCanBeUsed(Player player) {
         return player.basePlayedThisTurn();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

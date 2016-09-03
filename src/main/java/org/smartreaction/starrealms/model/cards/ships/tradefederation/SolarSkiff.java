@@ -27,4 +27,9 @@ public class SolarSkiff extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

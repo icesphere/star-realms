@@ -19,7 +19,7 @@ public class ChairmanHaygan extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.tradeFederationAlliedUntilEndOfTurn();
         player.addAuthority(4);
     }

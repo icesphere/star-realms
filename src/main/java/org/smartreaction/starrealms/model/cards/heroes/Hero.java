@@ -21,7 +21,7 @@ public abstract class Hero extends Card implements ScrappableCard {
         return false;
     }
 
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         //do nothing unless overridden
     }
 }

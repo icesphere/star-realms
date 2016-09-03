@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model.cards;
 
 import org.smartreaction.starrealms.model.CardSet;
+import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
@@ -193,6 +194,10 @@ public abstract class Card {
         return 0;
     }
 
+    public int getTradeWhenPlayed() {
+        return 0;
+    }
+
     public abstract boolean isActionable(Player player, String cardLocation);
 
     public String getId() {
@@ -253,5 +258,9 @@ public abstract class Card {
             return (AlliableCard) this;
         }
         return null;
+    }
+
+    public boolean isScrapper() {
+        return false;
     }
 }

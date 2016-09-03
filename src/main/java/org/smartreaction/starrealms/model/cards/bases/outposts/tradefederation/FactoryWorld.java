@@ -28,4 +28,9 @@ public class FactoryWorld extends Outpost
         player.addTrade(3);
         player.nextShipOrBaseToHand();
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

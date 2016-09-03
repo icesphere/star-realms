@@ -43,4 +43,14 @@ public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
             player.addCombat(4);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

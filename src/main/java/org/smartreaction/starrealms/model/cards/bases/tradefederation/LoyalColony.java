@@ -30,4 +30,9 @@ public class LoyalColony extends Base
         player.addCombat(3);
         player.addAuthority(3);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

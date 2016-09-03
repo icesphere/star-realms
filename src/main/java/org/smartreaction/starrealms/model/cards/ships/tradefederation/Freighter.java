@@ -26,4 +26,9 @@ public class Freighter extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.nextShipToTopOfDeck();
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 4;
+    }
 }

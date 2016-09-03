@@ -19,7 +19,7 @@ public class CommanderZhang extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.starEmpireAlliedUntilEndOfTurn();
         player.addCombat(4);
     }

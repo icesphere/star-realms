@@ -50,4 +50,9 @@ public class RecyclingStation extends Outpost implements DiscardCardsForBenefitA
             player.optionallyDiscardCardsForBenefit(this, 2, "Discard up to two cards to then draw that many cards");
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

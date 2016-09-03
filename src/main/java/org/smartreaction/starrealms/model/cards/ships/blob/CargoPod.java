@@ -37,4 +37,9 @@ public class CargoPod extends Ship implements AlliableCard, ScrappableCard
     public int getCombatWhenScrapped() {
         return 3;
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

@@ -24,4 +24,9 @@ public class DefenseBot extends Ship
             player.addCombat(8);
         }
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

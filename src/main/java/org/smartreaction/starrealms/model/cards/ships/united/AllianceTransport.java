@@ -30,4 +30,9 @@ public class AllianceTransport extends Ship implements AlliableCard {
             player.addAuthority(4);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

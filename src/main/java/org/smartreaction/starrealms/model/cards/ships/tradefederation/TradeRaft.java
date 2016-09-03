@@ -38,4 +38,9 @@ public class TradeRaft extends Ship implements AlliableCard, ScrappableCard
     public int getTradeWhenScrapped() {
         return 1;
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

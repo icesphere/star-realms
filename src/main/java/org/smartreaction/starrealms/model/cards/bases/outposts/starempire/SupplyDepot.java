@@ -60,4 +60,9 @@ public class SupplyDepot extends Outpost implements AlliableCard, ChoiceActionCa
             player.addCombat(2);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

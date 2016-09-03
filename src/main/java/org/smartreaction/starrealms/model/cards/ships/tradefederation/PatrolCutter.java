@@ -29,4 +29,9 @@ public class PatrolCutter extends Ship implements AlliableCard
     {
         player.addAuthority(4);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

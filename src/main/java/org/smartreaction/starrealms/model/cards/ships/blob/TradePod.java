@@ -26,4 +26,9 @@ public class TradePod extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

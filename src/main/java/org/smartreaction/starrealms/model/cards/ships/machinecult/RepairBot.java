@@ -32,4 +32,14 @@ public class RepairBot extends Ship implements ScrappableCard
     public int getCombatWhenScrapped() {
         return 2;
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

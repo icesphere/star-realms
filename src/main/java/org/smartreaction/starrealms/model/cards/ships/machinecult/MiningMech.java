@@ -27,4 +27,14 @@ public class MiningMech extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(3);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

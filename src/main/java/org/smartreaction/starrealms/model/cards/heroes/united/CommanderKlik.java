@@ -23,7 +23,7 @@ public class CommanderKlik extends Hero implements DiscardCardsForBenefitActionC
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.starEmpireAlliedUntilEndOfTurn();
         player.optionallyDiscardCardsForBenefit(this, 1, "You may discard a card. If you do, draw a card.");
     }

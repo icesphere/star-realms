@@ -36,4 +36,9 @@ public class BrainWorld extends Outpost implements ScrapCardsForBenefitActionCar
     public boolean isCardApplicable(Card card) {
         return true;
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

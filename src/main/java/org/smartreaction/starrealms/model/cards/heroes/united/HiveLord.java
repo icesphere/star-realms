@@ -19,7 +19,7 @@ public class HiveLord extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.blobAlliedUntilEndOfTurn();
         player.optionallyScrapCardsInTradeRow(player.getGame().getTradeRow().size());
     }

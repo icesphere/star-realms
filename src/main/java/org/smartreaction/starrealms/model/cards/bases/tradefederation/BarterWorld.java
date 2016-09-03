@@ -50,4 +50,9 @@ public class BarterWorld extends Base implements ScrappableCard, ChoiceActionCar
             player.addTrade(2);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

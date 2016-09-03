@@ -19,7 +19,7 @@ public class ChancellorHartman extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.machineCultAlliedUntilEndOfTurn();
         player.optionallyScrapCardFromHandOrDiscard();
     }
@@ -28,5 +28,10 @@ public class ChancellorHartman extends Hero {
     public void cardScrapped(Player player) {
         player.machineCultAlliedUntilEndOfTurn();
         player.optionallyScrapCardFromHandOrDiscard();
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
     }
 }

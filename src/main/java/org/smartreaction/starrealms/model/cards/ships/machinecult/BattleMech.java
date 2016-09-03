@@ -30,4 +30,9 @@ public class BattleMech extends Ship implements AlliableCard
     {
         player.drawCard();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

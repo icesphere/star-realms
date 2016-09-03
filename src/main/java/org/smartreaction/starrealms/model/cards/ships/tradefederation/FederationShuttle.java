@@ -26,4 +26,9 @@ public class FederationShuttle extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addAuthority(4);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

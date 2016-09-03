@@ -458,7 +458,7 @@ public abstract class Player {
         } else if (card instanceof Hero) {
             Hero hero = (Hero) card;
             heroes.add(hero);
-            hero.heroBought(this);
+            hero.heroAcquired(this);
         } else if (card.isShip() && (nextShipToTopOfDeck || nextShipOrBaseToTopOfDeck)) {
             nextShipToTopOfDeck = false;
             nextShipOrBaseToTopOfDeck = false;

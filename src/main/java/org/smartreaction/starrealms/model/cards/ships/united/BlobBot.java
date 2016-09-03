@@ -31,4 +31,9 @@ public class BlobBot extends Ship implements AlliableCard {
             player.optionallyScrapCardsFromHandOrDiscard(1);
         }
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

@@ -39,4 +39,9 @@ public class PortOfCall extends Outpost implements ScrappableCard
     public boolean canDestroyBasedWhenScrapped() {
         return true;
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

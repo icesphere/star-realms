@@ -22,4 +22,9 @@ public class MachineBase extends Outpost
         player.drawCard();
         player.scrapCardFromHand(false);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

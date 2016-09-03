@@ -26,4 +26,9 @@ public class UnityFighter extends Ship implements ScrappableCard {
     public void cardScrapped(Player player) {
         player.optionallyScrapCardFromHandOrDiscard();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

@@ -38,4 +38,9 @@ public class FrontierStation extends Outpost implements ChoiceActionCard
             player.addCombat(3);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

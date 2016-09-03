@@ -17,4 +17,9 @@ public class Scout extends Ship
     public void cardPlayed(Player player) {
         player.addTrade(1);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

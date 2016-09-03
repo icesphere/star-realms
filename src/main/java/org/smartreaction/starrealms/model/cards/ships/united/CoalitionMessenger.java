@@ -27,4 +27,9 @@ public class CoalitionMessenger extends Ship implements AlliableCard {
     public void cardAllied(Player player, Faction faction) {
         player.addCardFromDiscardToTopOfDeck(5);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

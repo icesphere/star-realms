@@ -21,4 +21,9 @@ public class Junkyard extends Outpost
     public void baseUsed(Player player) {
         player.optionallyScrapCardFromHandOrDiscard();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

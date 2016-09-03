@@ -29,4 +29,9 @@ public class TheIncinerator extends Outpost implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(2 * player.getNumCardsScrappedThisTurn());
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

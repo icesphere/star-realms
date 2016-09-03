@@ -27,4 +27,9 @@ public class SurveyShip extends Ship implements ScrappableCard
     public void cardScrapped(Player player) {
         player.opponentDiscardsCard();
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

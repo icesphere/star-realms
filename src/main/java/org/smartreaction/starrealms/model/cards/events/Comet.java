@@ -15,4 +15,9 @@ public class Comet extends Event {
         player.optionallyScrapCardsFromHandOrDiscard(2);
         player.getOpponent().optionallyScrapCardsFromHandOrDiscard(2);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

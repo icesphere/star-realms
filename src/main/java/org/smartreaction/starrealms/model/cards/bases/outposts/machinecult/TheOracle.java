@@ -27,4 +27,9 @@ public class TheOracle extends Outpost implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(3);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

@@ -27,4 +27,9 @@ public class ConvoyBot extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

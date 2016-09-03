@@ -40,4 +40,9 @@ public class StellarReef extends Base implements ScrappableCard
     public int getCombatWhenScrapped() {
         return 3;
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

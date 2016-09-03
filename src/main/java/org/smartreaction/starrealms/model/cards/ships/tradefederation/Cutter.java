@@ -29,4 +29,9 @@ public class Cutter extends Ship implements AlliableCard
     {
         player.addCombat(4);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

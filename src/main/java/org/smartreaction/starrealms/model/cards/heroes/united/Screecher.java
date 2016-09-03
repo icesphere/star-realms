@@ -19,7 +19,7 @@ public class Screecher extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.blobAlliedUntilEndOfTurn();
         player.addCombat(2);
         player.optionalScrapCardInTradeRow();

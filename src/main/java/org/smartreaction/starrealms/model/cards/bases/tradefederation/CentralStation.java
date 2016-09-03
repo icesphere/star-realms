@@ -25,4 +25,9 @@ public class CentralStation extends Base
             player.drawCard();
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

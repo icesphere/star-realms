@@ -22,4 +22,9 @@ public class HighPriestLyle extends Hero {
         player.machineCultAlliedUntilEndOfTurn();
         player.optionallyScrapCardFromHandOrDiscard();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

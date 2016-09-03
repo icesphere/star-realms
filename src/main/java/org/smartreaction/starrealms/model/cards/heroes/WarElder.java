@@ -22,4 +22,9 @@ public class WarElder extends Hero {
         player.machineCultAlliedUntilEndOfTurn();
         player.scrapCardFromHand(true);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

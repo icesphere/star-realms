@@ -37,4 +37,9 @@ public class FederationShipyard extends Outpost implements AlliableCard
     {
         player.addCombat(2);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

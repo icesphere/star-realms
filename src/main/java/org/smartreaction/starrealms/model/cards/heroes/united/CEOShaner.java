@@ -19,7 +19,7 @@ public class CEOShaner extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.tradeFederationAlliedUntilEndOfTurn();
         player.acquireFreeShipToTopOfDeck(3);
     }

@@ -28,4 +28,9 @@ public class TheWrecker extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.drawCard();
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

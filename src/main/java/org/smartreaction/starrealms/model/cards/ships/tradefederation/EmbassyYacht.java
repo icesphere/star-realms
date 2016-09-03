@@ -25,4 +25,9 @@ public class EmbassyYacht extends Ship
             player.drawCards(2);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

@@ -27,4 +27,14 @@ public class SupplyBot extends Ship implements AlliableCard
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(2);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

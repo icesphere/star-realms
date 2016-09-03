@@ -8,6 +8,7 @@ import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
@@ -49,7 +50,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Stateless
 public class GameService {
@@ -1680,8 +1684,52 @@ public class GameService {
     }
 
     public BotStrategy determineStrategyBasedOnCards(List<Card> cards) {
-        //todo
+        List<Card> nonStarterCards = cards.stream().filter(c -> !(c instanceof Scout) && !(c instanceof Viper)).collect(toList());
+
+        if (nonStarterCards.size() > 1) {
+            double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards, c -> c.hasFaction(Faction.BLOB) || c.hasFaction(Faction.STAR_EMPIRE));
+            double economyPercentage = getPercentageByType(nonStarterCards, c -> c.getTradeWhenPlayed() >= 2);
+            double scrapPercentage = getPercentageByType(nonStarterCards, Card::isScrapper);
+            double basesPercentage = getPercentageByType(nonStarterCards, Card::isBase);
+
+            boolean attackStrategy = blobOrStarEmpirePercentage >= 60;
+
+            boolean scrapStrategy = scrapPercentage >= 10;
+
+            boolean economyStrategy = economyPercentage >= 70;
+
+            boolean defenseStrategy = basesPercentage >= 60;
+
+            if (attackStrategy) {
+                if (scrapStrategy) {
+                    return new AttackVelocityStrategy();
+                } else {
+                    return new AttackStrategy();
+                }
+            }
+
+            if (defenseStrategy) {
+                if (scrapStrategy) {
+                    return new DefenseVelocityStrategy();
+                } else {
+                    return new DefenseStrategy();
+                }
+            }
+
+            if (economyStrategy) {
+                return new EconomyStrategy();
+            }
+        }
+
         return new VelocityStrategy();
+    }
+
+    private double getPercentageByType(List<Card> cards, Function<Card, Boolean> typeMatcher) {
+        double count = cards.stream().filter(typeMatcher::apply).count();
+        if (count == 0) {
+            return 0;
+        }
+        return (count / cards.size()) * 100;
     }
 
     public Map<BotStrategy, Float> simulateBestStrategy(Game originalGame, int timesToSimulate) {

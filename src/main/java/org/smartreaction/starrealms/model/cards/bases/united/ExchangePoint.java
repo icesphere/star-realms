@@ -33,4 +33,9 @@ public class ExchangePoint extends Base implements AlliableCard {
     public void cardAllied(Player player, Faction faction) {
         player.optionallyScrapCardsFromHandOrDiscardOrTradeRow(1);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

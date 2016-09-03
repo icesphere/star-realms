@@ -19,7 +19,7 @@ public class ConfessorMorris extends Hero {
     }
 
     @Override
-    public void heroBought(Player player) {
+    public void heroAcquired(Player player) {
         player.machineCultAlliedUntilEndOfTurn();
         player.optionallyScrapCardsFromHandOrDiscard(2);
     }
@@ -28,5 +28,10 @@ public class ConfessorMorris extends Hero {
     public void cardScrapped(Player player) {
         player.machineCultAlliedUntilEndOfTurn();
         player.drawCard();
+    }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
     }
 }

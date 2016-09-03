@@ -23,4 +23,9 @@ public class ColonySeedShip extends Ship
         player.addCombat(3);
         player.addAuthority(3);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 3;
+    }
 }

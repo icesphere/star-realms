@@ -50,4 +50,9 @@ public class TradingPost extends Outpost implements ScrappableCard, ChoiceAction
             player.addTrade(1);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

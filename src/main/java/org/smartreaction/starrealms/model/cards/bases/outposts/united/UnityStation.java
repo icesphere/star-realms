@@ -34,4 +34,9 @@ public class UnityStation extends Outpost implements AlliableCard {
     public void cardAllied(Player player, Faction faction) {
         player.addCombat(4);
     }
+
+    @Override
+    public boolean isScrapper() {
+        return true;
+    }
 }

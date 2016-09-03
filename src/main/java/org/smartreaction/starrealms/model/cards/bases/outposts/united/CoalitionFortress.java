@@ -44,4 +44,9 @@ public class CoalitionFortress extends Outpost implements AlliableCard, ChoiceAc
             player.addAuthority(3);
         }
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 2;
+    }
 }

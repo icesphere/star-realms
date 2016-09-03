@@ -34,4 +34,9 @@ public class TradeWheel extends Base implements AlliableCard
     {
         player.addCombat(2);
     }
+
+    @Override
+    public int getTradeWhenPlayed() {
+        return 1;
+    }
 }

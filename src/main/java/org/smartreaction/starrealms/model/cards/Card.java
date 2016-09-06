@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.cards;
 
 import org.smartreaction.starrealms.model.CardSet;
-import org.smartreaction.starrealms.model.cards.actions.ScrapCardsForBenefitActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
@@ -48,6 +47,35 @@ public abstract class Card {
         alliedAbilityUsed.put(Faction.STAR_EMPIRE, false);
     }
 
+    public Card copyCardForSimulation() {
+        Card card;
+        try {
+            card = this.getClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException("Unable to copy card");
+        }
+
+        Map<Faction, Boolean> alliedAbilityUsedCopy = new HashMap<>();
+        for (Faction faction : alliedAbilityUsed.keySet()) {
+            alliedAbilityUsedCopy.put(faction, alliedAbilityUsed.get(faction));
+        }
+        card.setAlliedAbilityUsed(alliedAbilityUsedCopy);
+
+        card.setFactions(new HashSet<>(factions));
+
+        card.setAutoAllyExcludedFactions(new ArrayList<>(autoAllyExcludedFactions));
+
+        card.setCost(cost);
+        card.setSet(set);
+        card.setText(text);
+        card.setShield(shield);
+        card.setAutoAlly(autoAlly);
+        card.setAllFactionsAlliedTogether(allFactionsAlliedTogether);
+        card.setCopied(copied);
+
+        return card;
+    }
+
     public String getName() {
         return name;
     }
@@ -66,6 +94,10 @@ public abstract class Card {
 
     public Set<Faction> getFactions() {
         return factions;
+    }
+
+    private void setFactions(Set<Faction> factions) {
+        this.factions = factions;
     }
 
     public int getCost() {
@@ -138,6 +170,10 @@ public abstract class Card {
         } else {
             alliedAbilityUsed.put(faction, used);
         }
+    }
+
+    private void setAlliedAbilityUsed(Map<Faction, Boolean> alliedAbilityUsed) {
+        this.alliedAbilityUsed = alliedAbilityUsed;
     }
 
     public void setAllAlliedAbilitiesToNotUsed() {
@@ -237,8 +273,16 @@ public abstract class Card {
         return autoAllyExcludedFactions;
     }
 
+    private void setAutoAllyExcludedFactions(List<Faction> autoAllyExcludedFactions) {
+        this.autoAllyExcludedFactions = autoAllyExcludedFactions;
+    }
+
     public boolean isAllFactionsAlliedTogether() {
         return allFactionsAlliedTogether;
+    }
+
+    private void setAllFactionsAlliedTogether(boolean allFactionsAlliedTogether) {
+        this.allFactionsAlliedTogether = allFactionsAlliedTogether;
     }
 
     public boolean isCopied() {

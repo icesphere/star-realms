@@ -28,6 +28,13 @@ public class StealthTower extends Outpost implements CardActionCard
     }
 
     @Override
+    public Card copyCardForSimulation() {
+        StealthTower card = (StealthTower) super.copyCardForSimulation();
+        card.setCardBeingCopied(cardBeingCopied);
+        return card;
+    }
+
+    @Override
     public void baseUsed(Player player) {
         if (cardBeingCopied != null) {
             cardBeingCopied.baseUsed(player);
@@ -38,6 +45,10 @@ public class StealthTower extends Outpost implements CardActionCard
 
     public Base getCardBeingCopied() {
         return cardBeingCopied;
+    }
+
+    private void setCardBeingCopied(Base cardBeingCopied) {
+        this.cardBeingCopied = cardBeingCopied;
     }
 
     @Override

@@ -106,6 +106,33 @@ public abstract class Player {
     protected Player() {
     }
 
+    @SuppressWarnings("unchecked")
+    public void copyFromPlayerForSimulation(Player player) {
+        setAuthority(player.getAuthority());
+        setCombat(player.getCombat());
+        setTrade(player.getTrade());
+
+        getDeck().addAll(copyCards(player.getDeck()));
+        getDiscard().addAll(copyCards(player.getDiscard()));
+        getHand().addAll(copyCards(player.getHand()));
+        getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
+        getInPlay().addAll(copyCards(player.getInPlay()));
+        getPlayed().addAll(copyCards(player.getPlayed()));
+        getHeroes().addAll((Collection<? extends Hero>) copyCards(player.getHeroes()));
+        getGambits().addAll((Collection<? extends Gambit>) copyCards(player.getGambits()));
+
+        shuffles = player.getShuffles();
+        turn = player.getTurn();
+        turns = player.getTurns();
+    }
+
+    private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
+        return cardsToCopy
+                .stream()
+                .map(Card::copyCardForSimulation)
+                .collect(toList());
+    }
+
     public Game getGame() {
         return game;
     }

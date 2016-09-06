@@ -1883,7 +1883,7 @@ public class GameService {
         for (int i = 0; i < timesToSimulate; i++) {
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
             Game game = simulateGameToEnd(copiedGame, createGameLog, cardToBuyThisTurn);
-            if (game == null || cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn()) {
+            if (game == null || (cardToBuyThisTurn != null && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn())) {
                 continue;
             }
 

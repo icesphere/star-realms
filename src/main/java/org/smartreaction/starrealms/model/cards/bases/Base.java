@@ -18,6 +18,16 @@ public abstract class Base extends Card {
     }
 
     @Override
+    public Card copyCardForSimulation() {
+        Base base = (Base) super.copyCardForSimulation();
+
+        base.setUsed(used);
+        base.setAutoUse(autoUse);
+
+        return base;
+    }
+
+    @Override
     public void cardPlayed(Player player) {
 
     }

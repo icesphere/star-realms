@@ -27,7 +27,7 @@ public class SimulatorBot extends BotPlayer {
     private void useBestStrategy() {
         getGame().gameLog("Simulator Bot determining best strategy");
 
-        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 50);
+        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 100);
 
         float bestWinPercentage = 0;
 

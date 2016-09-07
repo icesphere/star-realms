@@ -124,6 +124,8 @@ public abstract class Player {
         shuffles = player.getShuffles();
         turn = player.getTurn();
         turns = player.getTurns();
+
+        firstPlayer = player.isFirstPlayer();
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {

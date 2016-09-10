@@ -1697,23 +1697,25 @@ public class GameService {
 
             boolean defenseStrategy = basesPercentage >= 60;
 
-            if (attackStrategy) {
-                if (scrapStrategy) {
+            if (scrapStrategy) {
+                if (blobOrStarEmpirePercentage >= 50) {
                     return new AttackVelocityStrategy();
+                } else if (basesPercentage >= 50) {
+                    return new DefenseVelocityStrategy();
                 } else {
-                    return new AttackStrategy();
+                    return new VelocityStrategy();
                 }
+            }
+
+            if (attackStrategy) {
+                return new AttackStrategy();
             }
 
             if (defenseStrategy) {
-                if (scrapStrategy) {
-                    return new DefenseVelocityStrategy();
-                } else {
-                    return new DefenseStrategy();
-                }
+                return new DefenseStrategy();
             }
 
-            if (economyStrategy && !scrapStrategy) {
+            if (economyStrategy) {
                 return new EconomyStrategy();
             }
         }
@@ -1727,6 +1729,31 @@ public class GameService {
             return 0;
         }
         return (count / cards.size()) * 100;
+    }
+
+    public Map<Boolean, Float> simulateScrapCardForBeneift(Game originalGame, int timesToSimulate, Card cardToScrapForBenefit) {
+        Map<Boolean, Float> results = new HashMap<>(2);
+
+        BotStrategy playerStrategy = ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy();
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+
+        Game copiedGameNoChange = originalGame.copyGameForSimulation();
+        setupPlayersForCopiedGame(originalGame, copiedGameNoChange, opponentStrategy, playerStrategy);
+        SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoChange, timesToSimulate, null, false, false);
+        results.put(false, resultsForNoChange.getWinPercentage());
+
+        Game copiedGameWithCardScrapped = originalGame.copyGameForSimulation();
+        setupPlayersForCopiedGame(originalGame, copiedGameWithCardScrapped, opponentStrategy, playerStrategy);
+        for (Card card : copiedGameWithCardScrapped.getCurrentPlayer().getInPlay()) {
+            if (card.getName().equals(cardToScrapForBenefit.getName())) {
+                copiedGameWithCardScrapped.getCurrentPlayer().scrapCardInPlayForBenefit(card);
+
+            }
+        }
+        SimulationResults resultsWithCardScrapped = simulateGameToEnd(copiedGameWithCardScrapped, timesToSimulate, null, false, false);
+        results.put(true, resultsWithCardScrapped.getWinPercentage());
+
+        return results;
     }
 
     public Map<Card, Float> simulateBestCardToBuy(Game originalGame, int timesToSimulate) {
@@ -1752,25 +1779,7 @@ public class GameService {
         cardsToBuy.add(new DoNotBuyCard());
 
         for (Card cardToBuy : cardsToBuy) {
-            StrategyBot strategyBot = new StrategyBot(((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy(),
-                    this, originalGame.getCurrentPlayer(), copiedGame);
-
-            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
-
-            strategyBot.setOpponent(opponentBot);
-            opponentBot.setOpponent(strategyBot);
-
-            List<Player> players = new ArrayList<>();
-
-            if (originalGame.getCurrentPlayer().isFirstPlayer()) {
-                players.add(strategyBot);
-                players.add(opponentBot);
-            } else {
-                players.add(opponentBot);
-                players.add(strategyBot);
-            }
-
-            copiedGame.setPlayers(players);
+            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
 
             SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, cardToBuy, false, true);
 
@@ -1778,6 +1787,27 @@ public class GameService {
         }
 
         return cardResults;
+    }
+
+    private void setupPlayersForCopiedGame(Game originalGame, Game copiedGame, BotStrategy opponentStrategy, BotStrategy playerStrategy) {
+        StrategyBot strategyBot = new StrategyBot(playerStrategy, this, originalGame.getCurrentPlayer(), copiedGame);
+
+        StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
+
+        strategyBot.setOpponent(opponentBot);
+        opponentBot.setOpponent(strategyBot);
+
+        List<Player> players = new ArrayList<>();
+
+        if (originalGame.getCurrentPlayer().isFirstPlayer()) {
+            players.add(strategyBot);
+            players.add(opponentBot);
+        } else {
+            players.add(opponentBot);
+            players.add(strategyBot);
+        }
+
+        copiedGame.setPlayers(players);
     }
 
     public Map<BotStrategy, Float> simulateBestStrategy(Game originalGame, int timesToSimulate) {
@@ -1798,23 +1828,7 @@ public class GameService {
         strategies.add(new VelocityStrategy());
 
         for (BotStrategy strategy : strategies) {
-            StrategyBot strategyBot = new StrategyBot(strategy, this, originalGame.getCurrentPlayer(), copiedGame);
-            StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
-
-            strategyBot.setOpponent(opponentBot);
-            opponentBot.setOpponent(strategyBot);
-
-            List<Player> players = new ArrayList<>();
-
-            if (originalGame.getCurrentPlayer().isFirstPlayer()) {
-                players.add(strategyBot);
-                players.add(opponentBot);
-            } else {
-                players.add(opponentBot);
-                players.add(strategyBot);
-            }
-
-            copiedGame.setPlayers(players);
+            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, strategy);
 
             SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, null, true, false);
 

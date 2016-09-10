@@ -455,7 +455,7 @@ public abstract class BotPlayer extends Player {
         return false;
     }
 
-    private boolean shouldScrapCard(Card card) {
+    protected boolean shouldScrapCard(Card card) {
         return getScrapForBenefitScore(card) > 0;
     }
 

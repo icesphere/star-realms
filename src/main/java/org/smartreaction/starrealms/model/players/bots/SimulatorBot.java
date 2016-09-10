@@ -109,6 +109,28 @@ public class SimulatorBot extends BotPlayer {
         }
     }
 
+    @Override
+    public List<Card> chooseCardsToScrapInTradeRow(int cards) {
+        //todo simulate
+        return super.chooseCardsToScrapInTradeRow(cards);
+    }
+
+    @Override
+    protected boolean shouldScrapCard(Card card) {
+        getGame().gameLog("Simulator Bot determining whether or not to scrap " + card.getName());
+        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 100, card);
+
+        Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
+        Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
+
+        getGame().gameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
+        getGame().gameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
+
+        return scrappingWinPercentage > notScrappingWinPercentage;
+    }
+
+    //todo simulate best choice
+
     public BotStrategy getStrategy() {
         return strategy;
     }

@@ -1744,7 +1744,8 @@ public class GameService {
 
         Game copiedGameWithCardScrapped = originalGame.copyGameForSimulation();
         setupPlayersForCopiedGame(originalGame, copiedGameWithCardScrapped, opponentStrategy, playerStrategy);
-        for (Card card : copiedGameWithCardScrapped.getCurrentPlayer().getInPlay()) {
+        List<Card> inPlay = new ArrayList<>(copiedGameWithCardScrapped.getCurrentPlayer().getInPlay());
+        for (Card card : inPlay) {
             if (card.getName().equals(cardToScrapForBenefit.getName())) {
                 copiedGameWithCardScrapped.getCurrentPlayer().scrapCardInPlayForBenefit(card);
 

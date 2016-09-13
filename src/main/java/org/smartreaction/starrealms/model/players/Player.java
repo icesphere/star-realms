@@ -973,7 +973,8 @@ public abstract class Player {
     public void startTurn() {
         yourTurn = true;
         turn++;
-        addGameLog("** " + playerName + "'s Turn " + turn + " **");
+        addGameLog("");
+        addGameLog("*** " + playerName + "'s Turn " + turn + " ***");
 
         currentTurnSummary = new TurnSummary();
         currentTurnSummary.setGameTurn(getGame().getTurn());

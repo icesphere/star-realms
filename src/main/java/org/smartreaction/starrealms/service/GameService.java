@@ -1683,7 +1683,12 @@ public class GameService {
     public BotStrategy determineStrategyBasedOnCards(List<Card> cards) {
         List<Card> nonStarterCards = cards.stream().filter(c -> !(c instanceof Scout) && !(c instanceof Viper)).collect(toList());
 
-        double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards, c -> c.hasFaction(Faction.BLOB) || c.hasFaction(Faction.STAR_EMPIRE));
+        double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards,
+                c -> c.hasFaction(Faction.BLOB)
+                        || c.hasFaction(Faction.STAR_EMPIRE)
+                        || (c.isHero() && (((Hero)c).getAlliedFaction() == Faction.BLOB
+                            || ((Hero)c).getAlliedFaction() == Faction.STAR_EMPIRE)));
+
         double economyPercentage = getPercentageByType(nonStarterCards, c -> c.getTradeWhenPlayed() >= 2);
         double scrapPercentage = getPercentageByType(nonStarterCards, Card::isScrapper);
         double basesPercentage = getPercentageByType(nonStarterCards, Card::isBase);
@@ -1692,7 +1697,7 @@ public class GameService {
 
         boolean scrapStrategy = scrapPercentage >= 10;
 
-        boolean economyStrategy = economyPercentage >= 70 && nonStarterCards.size() > 2;
+        boolean economyStrategy = economyPercentage >= 75 && nonStarterCards.size() > 2;
 
         boolean defenseStrategy = (basesPercentage >= 60 && nonStarterCards.size() > 2) || basesPercentage == 100;
 

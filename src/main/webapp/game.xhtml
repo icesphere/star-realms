@@ -263,14 +263,14 @@
                                     </div>
                                 </h:panelGroup>
 
-                                <h:panelGroup rendered="#{!empty gameView.player.heroes}">
+                                <h:panelGroup rendered="#{!empty gameView.player.opponent.heroes}">
                                     <div style="clear: both; float: left; padding-top: 10px;">
                                         <div>
                                             <h:outputText value="Heroes"/>
                                         </div>
                                         <div style="clear: both; float:left; padding-top: 5px;">
-                                            <ui:repeat value="#{gameView.player.heroes}" var="card">
-                                                <sr:card card="#{card}" source="playerHeroes"/>
+                                            <ui:repeat value="#{gameView.player.opponent.heroes}" var="card">
+                                                <sr:card card="#{card}" source="opponentHeroes"/>
                                             </ui:repeat>
                                         </div>
                                     </div>

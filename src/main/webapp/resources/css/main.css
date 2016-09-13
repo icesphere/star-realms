@@ -101,6 +101,10 @@ a {
     vertical-align: top;
 }
 
+.alignMiddle {
+    vertical-align: middle;
+}
+
 .alignRight {
     text-align: right;
 }

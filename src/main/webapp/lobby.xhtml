@@ -56,7 +56,7 @@
 
                     <h:panelGroup rendered="#{userSession.user.gameOptions.customGameOptions}" layout="block" style="padding-top: 5px;">
                         <h:panelGroup id="gameOptions" layout="block">
-                            <h:panelGrid columns="1" columnClasses="boldText smallRightPadding tinyBottomPadding alignTop, tinyBottomPadding alignTop">
+                            <h:panelGrid columns="2" columnClasses="boldText smallRightPadding smallBottomPadding alignMiddle, smallBottomPadding alignMiddle">
                                 <p:outputLabel value="Base Set: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeBaseSet}"/>
 

@@ -1683,41 +1683,39 @@ public class GameService {
     public BotStrategy determineStrategyBasedOnCards(List<Card> cards) {
         List<Card> nonStarterCards = cards.stream().filter(c -> !(c instanceof Scout) && !(c instanceof Viper)).collect(toList());
 
-        if (nonStarterCards.size() > 1) {
-            double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards, c -> c.hasFaction(Faction.BLOB) || c.hasFaction(Faction.STAR_EMPIRE));
-            double economyPercentage = getPercentageByType(nonStarterCards, c -> c.getTradeWhenPlayed() >= 2);
-            double scrapPercentage = getPercentageByType(nonStarterCards, Card::isScrapper);
-            double basesPercentage = getPercentageByType(nonStarterCards, Card::isBase);
+        double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards, c -> c.hasFaction(Faction.BLOB) || c.hasFaction(Faction.STAR_EMPIRE));
+        double economyPercentage = getPercentageByType(nonStarterCards, c -> c.getTradeWhenPlayed() >= 2);
+        double scrapPercentage = getPercentageByType(nonStarterCards, Card::isScrapper);
+        double basesPercentage = getPercentageByType(nonStarterCards, Card::isBase);
 
-            boolean attackStrategy = blobOrStarEmpirePercentage >= 60;
+        boolean attackStrategy = (blobOrStarEmpirePercentage >= 60 && nonStarterCards.size() > 2) || blobOrStarEmpirePercentage == 100;
 
-            boolean scrapStrategy = scrapPercentage >= 10;
+        boolean scrapStrategy = scrapPercentage >= 10;
 
-            boolean economyStrategy = economyPercentage >= 70;
+        boolean economyStrategy = economyPercentage >= 70 && nonStarterCards.size() > 2;
 
-            boolean defenseStrategy = basesPercentage >= 60;
+        boolean defenseStrategy = (basesPercentage >= 60 && nonStarterCards.size() > 2) || basesPercentage == 100;
 
-            if (scrapStrategy) {
-                if (blobOrStarEmpirePercentage >= 50) {
-                    return new AttackVelocityStrategy();
-                } else if (basesPercentage >= 50) {
-                    return new DefenseVelocityStrategy();
-                } else {
-                    return new VelocityStrategy();
-                }
+        if (scrapStrategy) {
+            if (blobOrStarEmpirePercentage >= 50) {
+                return new AttackVelocityStrategy();
+            } else if (basesPercentage >= 50) {
+                return new DefenseVelocityStrategy();
+            } else {
+                return new VelocityStrategy();
             }
+        }
 
-            if (attackStrategy) {
-                return new AttackStrategy();
-            }
+        if (attackStrategy) {
+            return new AttackStrategy();
+        }
 
-            if (defenseStrategy) {
-                return new DefenseStrategy();
-            }
+        if (defenseStrategy) {
+            return new DefenseStrategy();
+        }
 
-            if (economyStrategy) {
-                return new EconomyStrategy();
-            }
+        if (economyStrategy) {
+            return new EconomyStrategy();
         }
 
         return new VelocityStrategy();
@@ -1744,15 +1742,20 @@ public class GameService {
 
         Game copiedGameWithCardScrapped = originalGame.copyGameForSimulation();
         setupPlayersForCopiedGame(originalGame, copiedGameWithCardScrapped, opponentStrategy, playerStrategy);
-        List<Card> inPlay = new ArrayList<>(copiedGameWithCardScrapped.getCurrentPlayer().getInPlay());
-        for (Card card : inPlay) {
-            if (card.getName().equals(cardToScrapForBenefit.getName())) {
-                copiedGameWithCardScrapped.getCurrentPlayer().scrapCardInPlayForBenefit(card);
 
-            }
+        Optional<Card> cardToScrap = copiedGameWithCardScrapped.getCurrentPlayer().getInPlay()
+                .stream()
+                .filter(c -> c.getName().equals(cardToScrapForBenefit.getName()))
+                .findFirst();
+
+        if (cardToScrap.isPresent()) {
+            copiedGameWithCardScrapped.getCurrentPlayer().scrapCardInPlayForBenefit(cardToScrap.get());
+            SimulationResults resultsWithCardScrapped = simulateGameToEnd(copiedGameWithCardScrapped, timesToSimulate, null, false, false);
+            results.put(true, resultsWithCardScrapped.getWinPercentage());
+        } else {
+            System.out.println("Error finding card to scrap for benefit");
+            results.put(true, 0f);
         }
-        SimulationResults resultsWithCardScrapped = simulateGameToEnd(copiedGameWithCardScrapped, timesToSimulate, null, false, false);
-        results.put(true, resultsWithCardScrapped.getWinPercentage());
 
         return results;
     }

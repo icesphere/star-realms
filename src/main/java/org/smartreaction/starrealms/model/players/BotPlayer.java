@@ -824,7 +824,7 @@ public abstract class BotPlayer extends Player {
         }
 
         for (Card card : getInPlay()) {
-            if (card.isAlliableCard() && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
+            if (card.isAlliableCard() && card.hasFaction(hero.getAlliedFaction()) && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
                 return 15;
             }
         }

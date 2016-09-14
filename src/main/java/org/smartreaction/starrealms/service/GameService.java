@@ -3,12 +3,10 @@ package org.smartreaction.starrealms.service;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-import org.smartreaction.starrealms.model.CardSet;
-import org.smartreaction.starrealms.model.Game;
-import org.smartreaction.starrealms.model.GameOptions;
-import org.smartreaction.starrealms.model.User;
+import org.smartreaction.starrealms.model.*;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
@@ -1763,6 +1761,26 @@ public class GameService {
         }
 
         return results;
+    }
+
+    public Map<Integer, Float> simulateBestChoice(Game originalGame, int timesToSimulate, ChoiceActionCard choiceActionCard, Choice[] choices) {
+        Map<Integer, Float> choiceResults = new HashMap<>(2);
+
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+
+        for (Choice choice : choices) {
+            Game copiedGame = originalGame.copyGameForSimulation();
+
+            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
+            choiceActionCard.actionChoiceMade(copiedGame.getCurrentPlayer(), choice.getChoiceNumber());
+
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, null, false, false);
+
+            choiceResults.put(choice.getChoiceNumber(), results.getWinPercentage());
+        }
+
+        return choiceResults;
     }
 
     public Map<Card, Float> simulateBestCardToBuy(Game originalGame, int timesToSimulate) {

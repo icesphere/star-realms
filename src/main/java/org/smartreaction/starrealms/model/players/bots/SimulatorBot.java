@@ -1,6 +1,8 @@
 package org.smartreaction.starrealms.model.players.bots;
 
+import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
@@ -25,7 +27,7 @@ public class SimulatorBot extends BotPlayer {
     }
 
     private void useBestStrategy() {
-        getGame().gameLog("Simulator Bot determining best strategy");
+        addGameLog("Simulator Bot determining best strategy");
 
         Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 100);
 
@@ -36,7 +38,7 @@ public class SimulatorBot extends BotPlayer {
         for (BotStrategy strategy : results.keySet()) {
             Float winPercentage = results.get(strategy);
 
-            getGame().gameLog("Win percentage for " + strategy.getClass().getSimpleName() + ": " + winPercentage);
+            addGameLog("Win percentage for " + strategy.getClass().getSimpleName() + ": " + winPercentage);
 
             if (winPercentage > bestWinPercentage) {
                 bestStrategy = strategy;
@@ -45,10 +47,10 @@ public class SimulatorBot extends BotPlayer {
         }
 
         if (bestStrategy == null) {
-            getGame().gameLog("Best strategy was not found, using Velocity Strategy");
+            addGameLog("Best strategy was not found, using Velocity Strategy");
             bestStrategy = new VelocityStrategy();
         } else {
-            getGame().gameLog("Best strategy: " + bestStrategy.getClass().getSimpleName());
+            addGameLog("Best strategy: " + bestStrategy.getClass().getSimpleName());
         }
 
         this.strategy = bestStrategy;
@@ -68,13 +70,13 @@ public class SimulatorBot extends BotPlayer {
 
         Card bestCardToBuy = null;
 
-        getGame().gameLog("Simulator Bot determining best card to buy");
+        addGameLog("Simulator Bot determining best card to buy");
 
         for (Card cardToBuy : results.keySet()) {
             Float winPercentage = results.get(cardToBuy);
 
             if (winPercentage > 0) {
-                getGame().gameLog("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);
+                addGameLog("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);
             }
 
             if (winPercentage > bestWinPercentage) {
@@ -84,10 +86,10 @@ public class SimulatorBot extends BotPlayer {
         }
 
         if (bestCardToBuy == null) {
-            getGame().gameLog("Best card to buy was not found, using default buy score");
+            addGameLog("Best card to buy was not found, using default buy score");
             return super.getCardsToBuy();
         } else {
-            getGame().gameLog("Best card to buy: " + bestCardToBuy.getName());
+            addGameLog("Best card to buy: " + bestCardToBuy.getName());
         }
 
         if (!(bestCardToBuy instanceof DoNotBuyCard)) {
@@ -117,19 +119,47 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     protected boolean shouldScrapCard(Card card) {
-        getGame().gameLog("Simulator Bot determining whether or not to scrap " + card.getName());
+        addGameLog("Simulator Bot determining whether or not to scrap " + card.getName());
         Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 100, card);
 
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
         Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
 
-        getGame().gameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
-        getGame().gameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
+        addGameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
+        addGameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
 
         return scrappingWinPercentage > notScrappingWinPercentage;
     }
 
-    //todo simulate best choice
+    @Override
+    public int getChoice(ChoiceActionCard choiceActionCard, Choice[] choices) {
+        Card card = (Card) choiceActionCard;
+
+        addGameLog("Simulator Bot determining best choice for " + card.getName());
+
+        Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 100, choiceActionCard, choices);
+
+        float bestWinPercentage = 0;
+        
+        Choice bestChoice = null;
+
+        for (Choice choice : choices) {
+            Float choiceWinPercent = choiceResults.get(choice.getChoiceNumber());
+            addGameLog("Win percentage for " + choice.getText() + ": " + choiceWinPercent);
+            if (choiceWinPercent > bestWinPercentage) {
+                bestChoice = choice;
+            }
+        }
+
+        if (bestChoice == null) {
+            addGameLog("Best choice was not found, using default choice for strategy");
+            return super.getChoice(choiceActionCard, choices);
+        } else {
+            addGameLog("Best choice: " + bestChoice.getText());
+        }
+
+        return bestChoice.getChoiceNumber();
+    }
 
     public BotStrategy getStrategy() {
         return strategy;

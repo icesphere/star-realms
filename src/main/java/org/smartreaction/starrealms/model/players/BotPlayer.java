@@ -342,7 +342,7 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void makeChoice(ChoiceActionCard card, Choice... choices) {
-        int choice = getChoice(card);
+        int choice = getChoice(card, choices);
         card.actionChoiceMade(this, choice);
         refreshAfterAction();
     }
@@ -833,7 +833,7 @@ public abstract class BotPlayer extends Player {
         return 0;
     }
 
-    public int getChoice(ChoiceActionCard card) {
+    public int getChoice(ChoiceActionCard card, Choice[] choices) {
         //todo add in new cards
 
         int deck = getCurrentDeckNumber();

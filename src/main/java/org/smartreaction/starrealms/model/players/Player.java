@@ -41,6 +41,8 @@ public abstract class Player {
     private List<Gambit> gambits = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
 
+    private List<Card> cardsInHandBeforeShuffle = new ArrayList<>();
+
     protected List<Action> actionsQueue = new ArrayList<>();
 
     protected Action currentAction;
@@ -112,9 +114,25 @@ public abstract class Player {
         setCombat(player.getCombat());
         setTrade(player.getTrade());
 
-        getDeck().addAll(copyCards(player.getDeck()));
+        int handSize = player.getHand().size();
+
+        List<Card> handAndDeckCopy = new ArrayList<>(player.getHandAndDeck());
+
+        handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());
+
+        List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle());
+
+        List<? extends Card> deckCopy = copyCards(handAndDeckCopy);
+
+        getDeck().addAll(deckCopy);
+        Collections.shuffle(getDeck());
+
+        getHand().addAll(cardsInHandBeforeShuffleCopy);
+
+        drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
+
         getDiscard().addAll(copyCards(player.getDiscard()));
-        getHand().addAll(copyCards(player.getHand()));
+
         getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
         getInPlay().addAll(copyCards(player.getInPlay()));
         getPlayed().addAll(copyCards(player.getPlayed()));
@@ -183,6 +201,10 @@ public abstract class Player {
         return hand;
     }
 
+    public List<Card> getCardsInHandBeforeShuffle() {
+        return cardsInHandBeforeShuffle;
+    }
+
     public List<Card> getDiscard() {
         return discard;
     }
@@ -225,12 +247,13 @@ public abstract class Player {
         }
 
         List<Card> cardsDrawn = new ArrayList<>();
-        getGame().gameLog(playerName + " drawing " + cards + " cards");
+        addGameLog(playerName + " drawing " + cards + " cards");
         for (int i = 0; i < cards; i++) {
             if (deck.isEmpty()) {
+                cardsInHandBeforeShuffle.addAll(cardsDrawn);
                 deck.addAll(discard);
                 discard.clear();
-                getGame().gameLog("Shuffling deck");
+                addGameLog("Shuffling deck");
                 Collections.shuffle(deck);
                 shuffles++;
             }
@@ -242,11 +265,15 @@ public abstract class Player {
             }
         }
 
+        if (yourTurn && deck.isEmpty()) {
+            cardsInHandBeforeShuffle.addAll(cardsDrawn);
+        }
+
         return cardsDrawn;
     }
 
     public void opponentDiscardsCard() {
-        getGame().gameLog("Opponent discarding card");
+        addGameLog("Opponent discarding card");
         opponent.discardCardFromHand();
     }
 
@@ -276,7 +303,7 @@ public abstract class Player {
     }
 
     public void endTurn() {
-        getGame().gameLog("Ending turn");
+        addGameLog("Ending turn");
 
         currentTurnSummary.getCardsPlayed().addAll(played);
 
@@ -326,6 +353,7 @@ public abstract class Player {
 
         discard.addAll(hand);
         hand.clear();
+        cardsInHandBeforeShuffle.clear();
 
         drawCards(5);
 
@@ -341,7 +369,7 @@ public abstract class Player {
     public abstract void destroyTargetBase();
 
     public void baseDestroyed(Base base) {
-        getGame().gameLog("Destroyed base: " + base.getName());
+        addGameLog("Destroyed base: " + base.getName());
         bases.remove(base);
         discard.add(base);
         cardRemovedFromPlay(base);
@@ -413,14 +441,15 @@ public abstract class Player {
     public abstract void discardCardsForBenefit(DiscardCardsForBenefitActionCard card, int numCardsToDiscard, String text);
 
     public void scrapCardFromDiscard(Card card) {
-        getGame().gameLog("Scrapped " + card.getName() + " from discard");
+        addGameLog("Scrapped " + card.getName() + " from discard");
         discard.remove(card);
         playerCardScrapped(card);
     }
 
     public void scrapCardFromHand(Card card) {
-        getGame().gameLog("Scrapped " + card.getName() + " from hand");
+        addGameLog("Scrapped " + card.getName() + " from hand");
         hand.remove(card);
+        cardsInHandBeforeShuffle.remove(card);
         playerCardScrapped(card);
     }
 
@@ -438,7 +467,7 @@ public abstract class Player {
 
     public void scrapCardInPlayForBenefit(Card card) {
         if (card.isScrappable()) {
-            getGame().gameLog("Scrapped " + card.getName() + " from in play for benefit");
+            addGameLog("Scrapped " + card.getName() + " from in play for benefit");
             inPlay.remove(card);
             if (card instanceof Base) {
                 bases.remove(card);
@@ -483,7 +512,7 @@ public abstract class Player {
                 (card instanceof PlasmaVent && blobCardPlayedThisTurn()) ||
                 (card instanceof WarningBeacon && machineCultCardPlayedThisTurn())) {
             addCardToHand(card);
-            getGame().gameLog("Added " + card.getName() + " to hand");
+            addGameLog("Added " + card.getName() + " to hand");
         } else if (card instanceof Hero) {
             Hero hero = (Hero) card;
             heroes.add(hero);
@@ -496,7 +525,7 @@ public abstract class Player {
             nextBaseToHand = false;
             nextShipOrBaseToHand = false;
             addCardToHand(card);
-            getGame().gameLog("Added " + card.getName() + " to hand");
+            addGameLog("Added " + card.getName() + " to hand");
         } else if (card.isBase() && nextShipOrBaseToTopOfDeck) {
             nextShipOrBaseToTopOfDeck = false;
             addCardToTopOfDeck(card);
@@ -548,7 +577,7 @@ public abstract class Player {
 
     public void buyCard(Card card) {
         if (trade >= card.getCost()) {
-            getGame().gameLog("Bought card: " + card.getName());
+            addGameLog("Bought card: " + card.getName());
             trade -= card.getCost();
             if (card instanceof Explorer) {
                 cardAcquired(card);
@@ -571,7 +600,7 @@ public abstract class Player {
     }
 
     public void attackOpponentWithRemainingCombat() {
-        getGame().gameLog("Applied " + combat + " combat to opponent");
+        addGameLog("Applied " + combat + " combat to opponent");
         if (opponent.isPreventFirstDamage() && combat > 0) {
             combat--;
             opponent.setPreventFirstDamage(false);
@@ -672,6 +701,7 @@ public abstract class Player {
             played.add(card);
             inPlay.add(card);
             hand.remove(card);
+            cardsInHandBeforeShuffle.remove(card);
 
             if (card.isBase()) {
                 addBase((Base) card);
@@ -831,7 +861,7 @@ public abstract class Player {
     }
 
     public void useHero(Hero hero) {
-        getGame().gameLog("Using hero " + hero.getName());
+        addGameLog("Using hero " + hero.getName());
         heroes.remove(hero);
         playerCardScrapped(hero);
         hero.cardScrapped(this);
@@ -891,7 +921,9 @@ public abstract class Player {
     }
 
     public void addGameLog(String log) {
-        getGame().gameLog(log);
+        if (getGame() != null) {
+            getGame().gameLog(log);
+        }
     }
 
     public void addCardToDiscard(Card card) {
@@ -904,6 +936,7 @@ public abstract class Player {
 
     public void discardCardFromHand(Card card) {
         hand.remove(card);
+        cardsInHandBeforeShuffle.remove(card);
         addCardToDiscard(card);
         addGameLog(playerName + " discarded " + card.getName() + " from hand");
     }

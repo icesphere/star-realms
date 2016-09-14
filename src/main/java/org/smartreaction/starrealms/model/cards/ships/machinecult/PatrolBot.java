@@ -35,8 +35,8 @@ public class PatrolBot extends Ship implements AlliableCard, ChoiceActionCard
 
     @Override
     public void actionChoiceMade(Player player, int choice) {
-        player.getGame().gameLog("Chose Add 2 Trade");
         if (choice == 1) {
+            player.getGame().gameLog("Chose Add 2 Trade");
             player.addTrade(2);
         } else if (choice == 2) {
             player.getGame().gameLog("Chose Add 4 Combat");

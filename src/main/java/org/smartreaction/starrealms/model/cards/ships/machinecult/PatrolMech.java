@@ -35,8 +35,8 @@ public class PatrolMech extends Ship implements AlliableCard, ChoiceActionCard
 
     @Override
     public void actionChoiceMade(Player player, int choice) {
-        player.getGame().gameLog("Chose Add 3 Trade");
         if (choice == 1) {
+            player.getGame().gameLog("Chose Add 3 Trade");
             player.addTrade(3);
         } else if (choice == 2) {
             player.getGame().gameLog("Chose Add 5 Combat");

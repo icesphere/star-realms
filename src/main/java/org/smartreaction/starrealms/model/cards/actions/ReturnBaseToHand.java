@@ -27,6 +27,7 @@ public class ReturnBaseToHand extends Action {
     @Override
     public boolean processActionResult(Player player, ActionResult result) {
         Base base = (Base) result.getSelectedCard();
+        base.setUsed(false);
         if (result.getCardLocation().equals(Card.CARD_LOCATION_OPPONENT_BASES)) {
             player.getOpponent().getBases().remove(base);
             player.getOpponent().addCardToHand(base);

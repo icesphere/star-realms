@@ -373,6 +373,7 @@ public abstract class BotPlayer extends Player {
     public void returnTargetBaseToHand() {
         Base base = chooseBaseToReturnToHand();
         if (base != null) {
+            base.setUsed(false);
             getBases().remove(base);
             addCardToHand(base);
             refreshAfterAction();

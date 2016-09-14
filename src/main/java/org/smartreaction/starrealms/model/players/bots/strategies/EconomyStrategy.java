@@ -10,8 +10,10 @@ public class EconomyStrategy implements BotStrategy {
     public int getBuyCardScore(Card card, Player player) {
         int score = velocityStrategy.getBuyCardScore(card, player);
 
-        if (card.getTradeWhenPlayed() > 0) {
-            score += 5 * card.getTradeWhenPlayed();
+        if (card.getCost() >= 6) {
+            score += card.getCost();
+        } else if (card.getTradeWhenPlayed() > 0) {
+            score += 10 * card.getTradeWhenPlayed();
         }
 
         return score;

@@ -21,6 +21,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -127,7 +129,7 @@ public class GameView implements Serializable {
 
     public boolean highlightCard(Card card, String cardLocation) {
         if (card == null) {
-            new IllegalArgumentException("Error highlighting card for location: " + cardLocation).printStackTrace();
+            System.out.println("Error highlighting card for location");
             return false;
         }
         if (!getPlayer().isYourTurn()) {
@@ -391,10 +393,13 @@ public class GameView implements Serializable {
         sendGameMessageToAll("refresh_middle_section");
     }
 
-    public void showCards(List<Card> cards, String title, String source) {
+    public void showCards(List<Card> cards, String title, String source, boolean shuffle) {
         showingCards = true;
         showingCardsTitle = title;
-        cardsToShow = cards;
+        cardsToShow = new ArrayList<>(cards);
+        if (shuffle) {
+            Collections.shuffle(cardsToShow);
+        }
         cardsToShowSource = source;
 
         sendGameMessageToPlayer("refresh_middle_section");

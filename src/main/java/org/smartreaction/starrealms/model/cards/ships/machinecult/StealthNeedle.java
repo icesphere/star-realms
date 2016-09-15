@@ -44,7 +44,7 @@ public class StealthNeedle extends Ship implements CardActionCard
         return cardBeingCopied;
     }
 
-    private void setCardBeingCopied(Card cardBeingCopied) {
+    public void setCardBeingCopied(Card cardBeingCopied) {
         this.cardBeingCopied = cardBeingCopied;
     }
 

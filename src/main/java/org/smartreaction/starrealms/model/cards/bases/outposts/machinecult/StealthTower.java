@@ -47,7 +47,7 @@ public class StealthTower extends Outpost implements CardActionCard
         return cardBeingCopied;
     }
 
-    private void setCardBeingCopied(Base cardBeingCopied) {
+    public void setCardBeingCopied(Base cardBeingCopied) {
         this.cardBeingCopied = cardBeingCopied;
     }
 

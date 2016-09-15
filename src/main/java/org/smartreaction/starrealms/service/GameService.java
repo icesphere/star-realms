@@ -2321,8 +2321,8 @@ public class GameService {
         copiedGameCopy.getCurrentPlayer().takeTurn();
 
         while (!copiedGameCopy.isGameOver()) {
-            if (copiedGameCopy.getTurn() > 200) {
-                System.out.println("Turn over 200, stopping simulation");
+            if (copiedGameCopy.getTurn() > 150) {
+                System.out.println("Turn over 150, stopping simulation");
                 return null;
             } else {
                 if (copiedGameCopy.isGameOver()) {

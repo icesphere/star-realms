@@ -3,11 +3,13 @@ package org.smartreaction.starrealms.model.cards;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
+import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.cards.ships.Viper;
+import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.*;
@@ -55,23 +57,35 @@ public abstract class Card {
             throw new RuntimeException("Unable to copy card");
         }
 
+        if (card instanceof StealthTower) {
+            StealthTower stealthTower = (StealthTower) card;
+            if (stealthTower.getCardBeingCopied() != null) {
+                stealthTower.setCardBeingCopied((Base) stealthTower.getCardBeingCopied().copyCardForSimulation());
+            }
+        } else if (card instanceof StealthNeedle) {
+            StealthNeedle stealthNeedle = (StealthNeedle) card;
+            if (stealthNeedle.getCardBeingCopied() != null) {
+                stealthNeedle.setCardBeingCopied(stealthNeedle.getCardBeingCopied().copyCardForSimulation());
+            }
+        }
+
         Map<Faction, Boolean> alliedAbilityUsedCopy = new HashMap<>();
         for (Faction faction : alliedAbilityUsed.keySet()) {
-            alliedAbilityUsedCopy.put(faction, alliedAbilityUsed.get(faction));
+            alliedAbilityUsedCopy.put(faction, isAlliedAbilityUsed(faction));
         }
         card.setAlliedAbilityUsed(alliedAbilityUsedCopy);
 
-        card.setFactions(new HashSet<>(factions));
+        card.setFactions(new HashSet<>(getFactions()));
 
-        card.setAutoAllyExcludedFactions(new ArrayList<>(autoAllyExcludedFactions));
+        card.setAutoAllyExcludedFactions(new ArrayList<>(getAutoAllyExcludedFactions()));
 
-        card.setCost(cost);
-        card.setSet(set);
-        card.setText(text);
-        card.setShield(shield);
-        card.setAutoAlly(autoAlly);
-        card.setAllFactionsAlliedTogether(allFactionsAlliedTogether);
-        card.setCopied(copied);
+        card.setCost(getCost());
+        card.setSet(getSet());
+        card.setText(getText());
+        card.setShield(getShield());
+        card.setAutoAlly(isAutoAlly());
+        card.setAllFactionsAlliedTogether(isAllFactionsAlliedTogether());
+        card.setCopied(isCopied());
 
         return card;
     }

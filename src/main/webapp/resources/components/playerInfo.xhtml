@@ -34,12 +34,12 @@
 
                 <div class="smallButtonWrapper" style="margin-right: 5px;">
                     <p:commandLink value="Deck (#{cc.attrs.player.deck.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.deck, 'Cards in your deck', 'deck')}"/>
+                                   actionListener="#{gameView.showCards(cc.attrs.player.deck, 'Cards in your deck', 'deck', true)}"/>
                 </div>
 
                 <div class="smallButtonWrapper">
                     <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton #{gameView.highlightDiscardButton ? 'selected' : ''}"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard')}"/>
+                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard', false)}"/>
                 </div>
 
             </h:panelGroup>
@@ -48,12 +48,12 @@
 
                 <div class="smallButtonWrapper" style="margin-right: 5px;">
                     <p:commandLink value="Hand &amp; Deck (#{cc.attrs.player.handAndDeck.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.handAndDeck, 'Cards in your opponent\'s hand and deck', 'opponentDeckAndHand')}"/>
+                                   actionListener="#{gameView.showCards(cc.attrs.player.handAndDeck, 'Cards in your opponent\'s hand and deck', 'opponentDeckAndHand', true)}"/>
                 </div>
 
                 <div class="smallButtonWrapper">
                     <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your opponent\'s discard pile', 'opponentDiscard')}"/>
+                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your opponent\'s discard pile', 'opponentDiscard', false)}"/>
                 </div>
 
             </h:panelGroup>

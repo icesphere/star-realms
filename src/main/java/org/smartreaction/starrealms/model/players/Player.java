@@ -150,6 +150,23 @@ public abstract class Player {
         turns = player.getTurns();
 
         firstPlayer = player.isFirstPlayer();
+
+        yourTurn = player.isYourTurn();
+
+        blobAlliedUntilEndOfTurn = player.isBlobAlliedUntilEndOfTurn();
+        starEmpireAlliedUntilEndOfTurn = player.isStarEmpireAlliedUntilEndOfTurn();
+        tradeFederationAlliedUntilEndOfTurn = player.isTradeFederationAlliedUntilEndOfTurn();
+        machineCultAlliedUntilEndOfTurn = player.isMachineCultAlliedUntilEndOfTurn();
+
+        nextBaseToHand = player.isNextBaseToHand();
+        nextShipOrBaseToTopOfDeck = player.isNextShipOrBaseToTopOfDeck();
+        nextShipOrBaseToHand = player.isNextShipOrBaseToHand();
+        nextShipToTopOfDeck = player.isNextShipToTopOfDeck();
+
+        allShipsAddOneCombat = player.isAllShipsAddOneCombat();
+        allFactionsAllied = player.isAllFactionsAllied();
+        gainTwoCombatWhenStarEmpireShipPlayed = player.isGainTwoCombatWhenStarEmpireShipPlayed();
+
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
@@ -253,7 +270,14 @@ public abstract class Player {
         }
 
         List<Card> cardsDrawn = new ArrayList<>();
-        addGameLog(playerName + " drawing " + cards + " cards");
+        String log = playerName + " drawing " + cards;
+        if (cards == 1) {
+            log += " card";
+        } else {
+            log += " cards";
+        }
+        addGameLog(log);
+
         for (int i = 0; i < cards; i++) {
             if (deck.isEmpty()) {
                 cardsInHandBeforeShuffle.addAll(cardsDrawn);
@@ -725,11 +749,11 @@ public abstract class Player {
 
         factionsPlayedThisTurn.addAll(card.getFactions());
 
+        card.cardPlayed(this);
+
         for (Card c : inPlay) {
             allyCardIfAvailable(c);
         }
-
-        card.cardPlayed(this);
     }
 
     private void allyCardIfAvailable(Card card) {
@@ -871,6 +895,10 @@ public abstract class Player {
         heroes.remove(hero);
         playerCardScrapped(hero);
         hero.cardScrapped(this);
+
+        for (Card c : inPlay) {
+            allyCardIfAvailable(c);
+        }
     }
 
     public boolean factionPlayedThisTurn(Faction faction) {
@@ -1103,5 +1131,49 @@ public abstract class Player {
 
     public boolean isBot() {
         return this instanceof BotPlayer;
+    }
+
+    public boolean isBlobAlliedUntilEndOfTurn() {
+        return blobAlliedUntilEndOfTurn;
+    }
+
+    public boolean isStarEmpireAlliedUntilEndOfTurn() {
+        return starEmpireAlliedUntilEndOfTurn;
+    }
+
+    public boolean isTradeFederationAlliedUntilEndOfTurn() {
+        return tradeFederationAlliedUntilEndOfTurn;
+    }
+
+    public boolean isMachineCultAlliedUntilEndOfTurn() {
+        return machineCultAlliedUntilEndOfTurn;
+    }
+
+    public boolean isNextShipToTopOfDeck() {
+        return nextShipToTopOfDeck;
+    }
+
+    public boolean isNextShipOrBaseToTopOfDeck() {
+        return nextShipOrBaseToTopOfDeck;
+    }
+
+    public boolean isNextShipOrBaseToHand() {
+        return nextShipOrBaseToHand;
+    }
+
+    public boolean isNextBaseToHand() {
+        return nextBaseToHand;
+    }
+
+    public boolean isAllShipsAddOneCombat() {
+        return allShipsAddOneCombat;
+    }
+
+    public boolean isAllFactionsAllied() {
+        return allFactionsAllied;
+    }
+
+    public boolean isGainTwoCombatWhenStarEmpireShipPlayed() {
+        return gainTwoCombatWhenStarEmpireShipPlayed;
     }
 }

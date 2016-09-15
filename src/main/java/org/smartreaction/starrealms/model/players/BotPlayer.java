@@ -434,6 +434,8 @@ public abstract class BotPlayer extends Player {
                 getGame().addCardToTradeRow();
             }
 
+            addGameLog(getPlayerName() + " acquired free " + card.getName() + " to top of deck");
+
             addCardToTopOfDeck(card);
 
             refreshAfterAction();

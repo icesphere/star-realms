@@ -121,6 +121,7 @@ public class Game
     }
 
     public void addCardToTradeRow(Card card) {
+        gameLog("Added " + card.getName() + " to the trade row");
         tradeRow.add(card);
         if (card instanceof Event) {
             ((Event) card).eventTriggered(getCurrentPlayer());

@@ -15,10 +15,10 @@ public class StrategyBot extends BotPlayer {
         this.strategy = strategy;
     }
 
-    public StrategyBot(BotStrategy strategy, GameService gameService, Player player, Game game) {
+    public StrategyBot(BotStrategy strategy, GameService gameService, Player player, Game game, boolean opponent) {
         this(strategy, gameService);
 
-        copyFromPlayerForSimulation(player);
+        copyFromPlayerForSimulation(player, opponent);
 
         setGame(game);
     }

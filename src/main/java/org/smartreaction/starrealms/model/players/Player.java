@@ -109,29 +109,35 @@ public abstract class Player {
     }
 
     @SuppressWarnings("unchecked")
-    public void copyFromPlayerForSimulation(Player player) {
+    public void copyFromPlayerForSimulation(Player player, boolean opponent) {
         setAuthority(player.getAuthority());
         setCombat(player.getCombat());
         setTrade(player.getTrade());
 
+        getDiscard().addAll(copyCards(player.getDiscard()));
+
         int handSize = player.getHand().size();
 
-        List<Card> handAndDeckCopy = new ArrayList<>(player.getHandAndDeck());
+        if (opponent) {
+            List<Card> handAndDeckCopy = new ArrayList<>(player.getHandAndDeck());
 
-        handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());
+            handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());
 
-        List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle());
+            List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle());
 
-        List<? extends Card> deckCopy = copyCards(handAndDeckCopy);
+            List<? extends Card> deckCopy = copyCards(handAndDeckCopy);
 
-        getDeck().addAll(deckCopy);
-        Collections.shuffle(getDeck());
+            getDeck().addAll(deckCopy);
+            Collections.shuffle(getDeck());
 
-        getHand().addAll(cardsInHandBeforeShuffleCopy);
+            getHand().addAll(cardsInHandBeforeShuffleCopy);
 
-        drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
-
-        getDiscard().addAll(copyCards(player.getDiscard()));
+            drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
+        } else {
+            getHand().addAll(copyCards(player.getHand()));
+            getDeck().addAll(copyCards(player.getDeck()));
+            Collections.shuffle(getDeck());
+        }
 
         getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
         getInPlay().addAll(copyCards(player.getInPlay()));

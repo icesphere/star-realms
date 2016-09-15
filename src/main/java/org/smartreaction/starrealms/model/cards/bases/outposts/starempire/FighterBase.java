@@ -20,11 +20,12 @@ public class FighterBase extends Outpost implements AlliableCard
 
     @Override
     public void cardPlayed(Player player) {
+        this.useBase(player);
     }
 
     @Override
     public void baseUsed(Player player) {
-
+        //do nothing
     }
 
     @Override

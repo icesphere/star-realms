@@ -1817,9 +1817,9 @@ public class GameService {
     }
 
     private void setupPlayersForCopiedGame(Game originalGame, Game copiedGame, BotStrategy opponentStrategy, BotStrategy playerStrategy) {
-        StrategyBot strategyBot = new StrategyBot(playerStrategy, this, originalGame.getCurrentPlayer(), copiedGame);
+        StrategyBot strategyBot = new StrategyBot(playerStrategy, this, originalGame.getCurrentPlayer(), copiedGame, false);
 
-        StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame);
+        StrategyBot opponentBot = new StrategyBot(opponentStrategy, this, originalGame.getCurrentPlayer().getOpponent(), copiedGame, true);
 
         strategyBot.setOpponent(opponentBot);
         opponentBot.setOpponent(strategyBot);
@@ -2256,9 +2256,9 @@ public class GameService {
 
         copiedGameCopy.setCreateGameLog(createGameLog);
 
-        Player player = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer()).getStrategy(), this, copiedGame.getCurrentPlayer(), copiedGameCopy);
+        Player player = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer()).getStrategy(), this, copiedGame.getCurrentPlayer(), copiedGameCopy, false);
 
-        Player opponent = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer().getOpponent()).getStrategy(), this, copiedGame.getCurrentPlayer().getOpponent(), copiedGameCopy);
+        Player opponent = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer().getOpponent()).getStrategy(), this, copiedGame.getCurrentPlayer().getOpponent(), copiedGameCopy, true);
 
         player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
 

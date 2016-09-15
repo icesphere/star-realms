@@ -23,6 +23,10 @@ import org.smartreaction.starrealms.model.cards.events.BlackHole;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
+import org.smartreaction.starrealms.model.cards.heroes.HighPriestLyle;
+import org.smartreaction.starrealms.model.cards.heroes.WarElder;
+import org.smartreaction.starrealms.model.cards.heroes.united.ChancellorHartman;
+import org.smartreaction.starrealms.model.cards.heroes.united.ConfessorMorris;
 import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
@@ -145,7 +149,7 @@ public abstract class BotPlayer extends Player {
             if (!getHeroes().isEmpty()) {
                 List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
                 for (Hero hero : sortedHeroes) {
-                    if (getUseHeroScore(hero) > 0) {
+                    if (shouldUseHero(hero)) {
                         useHero(hero);
                         endTurn = false;
                         refreshAfterAction();
@@ -197,6 +201,10 @@ public abstract class BotPlayer extends Player {
         }
 
         applyCombatAndEndTurn();
+    }
+
+    protected boolean shouldUseHero(Hero hero) {
+        return getUseHeroScore(hero) > 0;
     }
 
     @Override
@@ -829,6 +837,18 @@ public abstract class BotPlayer extends Player {
         for (Card card : getInPlay()) {
             if (card.isAlliableCard() && card.hasFaction(hero.getAlliedFaction()) && !card.isAlliedAbilityUsed(hero.getAlliedFaction())) {
                 return 15;
+            }
+        }
+
+        if (hero.isScrapper()) {
+            Card cardToScrapFromHand = getCardToScrapFromHand(true);
+            List<List<Card>> cardsToScrap = getCardsToOptionallyScrapFromDiscardOrHand(2);
+            if (hero instanceof WarElder && cardToScrapFromHand != null) {
+                return 5;
+            } else if ((hero instanceof HighPriestLyle || hero instanceof ChancellorHartman) && cardsToScrap.size() > 0) {
+                return 5;
+            } else if (hero instanceof ConfessorMorris && cardsToScrap.size() >= 2) {
+                return 5;
             }
         }
 

@@ -1763,6 +1763,37 @@ public class GameService {
         return results;
     }
 
+    public Map<Boolean, Float> simulateUseHero(Game originalGame, int timesToSimulate, Hero hero) {
+        Map<Boolean, Float> results = new HashMap<>(2);
+
+        BotStrategy playerStrategy = ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy();
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+
+        Game copiedGameNoChange = originalGame.copyGameForSimulation();
+        setupPlayersForCopiedGame(originalGame, copiedGameNoChange, opponentStrategy, playerStrategy);
+        SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoChange, timesToSimulate, null, false, false);
+        results.put(false, resultsForNoChange.getWinPercentage());
+
+        Game copiedGameWithHeroUsed = originalGame.copyGameForSimulation();
+        setupPlayersForCopiedGame(originalGame, copiedGameWithHeroUsed, opponentStrategy, playerStrategy);
+
+        Optional<Hero> heroToUse = copiedGameWithHeroUsed.getCurrentPlayer().getHeroes()
+                .stream()
+                .filter(h -> h.getName().equals(hero.getName()))
+                .findFirst();
+
+        if (heroToUse.isPresent()) {
+            copiedGameWithHeroUsed.getCurrentPlayer().useHero(heroToUse.get());
+            SimulationResults resultsWithUseHero = simulateGameToEnd(copiedGameWithHeroUsed, timesToSimulate, null, false, false);
+            results.put(true, resultsWithUseHero.getWinPercentage());
+        } else {
+            System.out.println("Error finding hero to use");
+            results.put(true, 0f);
+        }
+
+        return results;
+    }
+
     public Map<Integer, Float> simulateBestChoice(Game originalGame, int timesToSimulate, ChoiceActionCard choiceActionCard, Choice[] choices) {
         Map<Integer, Float> choiceResults = new HashMap<>(2);
 

@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model.players.bots;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
+import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
@@ -129,6 +130,20 @@ public class SimulatorBot extends BotPlayer {
         addGameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
 
         return scrappingWinPercentage > notScrappingWinPercentage;
+    }
+
+    @Override
+    protected boolean shouldUseHero(Hero hero) {
+        addGameLog("Simulator Bot determining whether or not to use hero " + hero.getName());
+        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 100, hero);
+
+        Float notUseHeroWinPercentage = useHeroResults.get(false);
+        Float useHeroWinPercentage = useHeroResults.get(true);
+
+        addGameLog("Win percentage when not using hero" + hero.getName() + ": " + notUseHeroWinPercentage);
+        addGameLog("Win percentage when using hero " + hero.getName() + ": " + useHeroWinPercentage);
+
+        return useHeroWinPercentage > notUseHeroWinPercentage;
     }
 
     @Override

@@ -31,7 +31,9 @@ public class StealthNeedle extends Ship implements CardActionCard
     @Override
     public Card copyCardForSimulation() {
         StealthNeedle card = (StealthNeedle) super.copyCardForSimulation();
-        card.setCardBeingCopied(cardBeingCopied);
+        if (cardBeingCopied != null) {
+            card.setCardBeingCopied(cardBeingCopied.copyCardForSimulation());
+        }
         return card;
     }
 

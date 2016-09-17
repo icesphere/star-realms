@@ -30,7 +30,9 @@ public class StealthTower extends Outpost implements CardActionCard
     @Override
     public Card copyCardForSimulation() {
         StealthTower card = (StealthTower) super.copyCardForSimulation();
-        card.setCardBeingCopied(cardBeingCopied);
+        if (cardBeingCopied != null) {
+            card.setCardBeingCopied((Base) cardBeingCopied.copyCardForSimulation());
+        }
         return card;
     }
 

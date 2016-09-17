@@ -3,13 +3,11 @@ package org.smartreaction.starrealms.model.cards;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
-import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
 import org.smartreaction.starrealms.model.cards.ships.Ship;
 import org.smartreaction.starrealms.model.cards.ships.Viper;
-import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.*;
@@ -55,18 +53,6 @@ public abstract class Card {
             card = this.getClass().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Unable to copy card");
-        }
-
-        if (card instanceof StealthTower) {
-            StealthTower stealthTower = (StealthTower) card;
-            if (stealthTower.getCardBeingCopied() != null) {
-                stealthTower.setCardBeingCopied((Base) stealthTower.getCardBeingCopied().copyCardForSimulation());
-            }
-        } else if (card instanceof StealthNeedle) {
-            StealthNeedle stealthNeedle = (StealthNeedle) card;
-            if (stealthNeedle.getCardBeingCopied() != null) {
-                stealthNeedle.setCardBeingCopied(stealthNeedle.getCardBeingCopied().copyCardForSimulation());
-            }
         }
 
         Map<Faction, Boolean> alliedAbilityUsedCopy = new HashMap<>();

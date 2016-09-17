@@ -22,11 +22,8 @@ import org.smartreaction.starrealms.model.cards.bases.tradefederation.Starmarket
 import org.smartreaction.starrealms.model.cards.events.BlackHole;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.*;
-import org.smartreaction.starrealms.model.cards.heroes.Hero;
-import org.smartreaction.starrealms.model.cards.heroes.HighPriestLyle;
-import org.smartreaction.starrealms.model.cards.heroes.WarElder;
-import org.smartreaction.starrealms.model.cards.heroes.united.ChancellorHartman;
-import org.smartreaction.starrealms.model.cards.heroes.united.ConfessorMorris;
+import org.smartreaction.starrealms.model.cards.heroes.*;
+import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
@@ -75,26 +72,6 @@ public abstract class BotPlayer extends Player {
         while (!endTurn) {
             endTurn = true;
 
-            List<Card> cardsToScrapForBenefit = new ArrayList<>();
-
-            for (Card card : getInPlay()) {
-                if (card.isScrappable()) {
-                    if (shouldScrapCard(card)) {
-                        cardsToScrapForBenefit.add(card);
-                        refreshAfterAction();
-                    }
-                }
-            }
-
-            if (!cardsToScrapForBenefit.isEmpty()) {
-                endTurn = false;
-                List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
-                for (Card card : sortedCardsToScrapForBenefit) {
-                    this.scrapCardInPlayForBenefit(card);
-                    refreshAfterAction();
-                }
-            }
-
             List<Base> unusedBasesAndOutposts = getUnusedBasesAndOutposts();
 
             if (!unusedBasesAndOutposts.isEmpty()) {
@@ -134,6 +111,10 @@ public abstract class BotPlayer extends Player {
                         ((Base) card).useBase(this);
                         refreshAfterAction();
                     }
+                    if (card.isScrappable() && shouldScrapCard(card)) {
+                        this.scrapCardInPlayForBenefit(card);
+                        refreshAfterAction();
+                    }
                 }
             }
 
@@ -149,7 +130,7 @@ public abstract class BotPlayer extends Player {
             if (!getHeroes().isEmpty()) {
                 List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
                 for (Hero hero : sortedHeroes) {
-                    if (shouldUseHero(hero)) {
+                    if (usingHeroHasPossibleBenefit(hero) && shouldUseHero(hero)) {
                         useHero(hero);
                         endTurn = false;
                         refreshAfterAction();
@@ -169,25 +150,6 @@ public abstract class BotPlayer extends Player {
                 }
             }
 
-            cardsToScrapForBenefit = new ArrayList<>();
-
-            for (Card card : getInPlay()) {
-                if (card.isScrappable()) {
-                    if (shouldScrapCard(card)) {
-                        cardsToScrapForBenefit.add(card);
-                    }
-                }
-            }
-
-            if (!cardsToScrapForBenefit.isEmpty()) {
-                endTurn = false;
-                List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
-                for (Card card : sortedCardsToScrapForBenefit) {
-                    this.scrapCardInPlayForBenefit(card);
-                    refreshAfterAction();
-                }
-            }
-
             if (getTrade() > 0) {
                 List<Card> cardsToBuy = getCardsToBuy();
                 if (!cardsToBuy.isEmpty()) {
@@ -198,9 +160,42 @@ public abstract class BotPlayer extends Player {
                     }
                 }
             }
+
+            if (endTurn) {
+                List<Card> cardsToScrapForBenefit = new ArrayList<>();
+
+                for (Card card : getInPlay()) {
+                    if (card.isScrappable()) {
+                        if (shouldScrapCard(card)) {
+                            cardsToScrapForBenefit.add(card);
+                            refreshAfterAction();
+                        }
+                    }
+                }
+
+                if (!cardsToScrapForBenefit.isEmpty()) {
+                    endTurn = false;
+                    List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
+                    for (Card card : sortedCardsToScrapForBenefit) {
+                        this.scrapCardInPlayForBenefit(card);
+                        refreshAfterAction();
+                    }
+                }
+            }
         }
 
         applyCombatAndEndTurn();
+    }
+
+    private boolean usingHeroHasPossibleBenefit(Hero hero) {
+        return getUseHeroScore(hero) > 0
+                || hero instanceof AdmiralRasmussen
+                || hero instanceof CunningCaptain
+                || hero instanceof CEOShaner
+                || hero instanceof CommanderKlik
+                || hero instanceof ConfessorMorris
+                || hero instanceof HiveLord
+                || hero instanceof Screecher;
     }
 
     protected boolean shouldUseHero(Hero hero) {

@@ -16,6 +16,7 @@ public class BattleBlob extends Ship implements ScrappableCard, AlliableCard
         cost = 6;
         set = CardSet.CORE;
         text = "Add 8 Combat; Ally: Draw a card; Scrap: Add 4 Combat";
+        autoAlly = false;
     }
 
     @Override

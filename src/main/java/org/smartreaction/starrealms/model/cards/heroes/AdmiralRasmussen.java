@@ -6,7 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 
 public class AdmiralRasmussen extends Hero {
     public AdmiralRasmussen() {
-        name = "Cunning Captain";
+        name = "Admiral Rasmussen";
         set = CardSet.CRISIS_HEROES;
         cost = 2;
         text = "Scrap: Until end of turn, you may use all of your Star Empire Ally abilities. Draw a card";

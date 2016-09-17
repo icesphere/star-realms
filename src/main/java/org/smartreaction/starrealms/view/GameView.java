@@ -48,6 +48,8 @@ public class GameView implements Serializable {
 
     List<Card> cardsToShow;
 
+    boolean shuffleCardsToShow;
+
     String cardsToShowSource;
 
     public void sendGameMessageToAll(String message) {
@@ -396,10 +398,8 @@ public class GameView implements Serializable {
     public void showCards(List<Card> cards, String title, String source, boolean shuffle) {
         showingCards = true;
         showingCardsTitle = title;
-        cardsToShow = new ArrayList<>(cards);
-        if (shuffle) {
-            Collections.shuffle(cardsToShow);
-        }
+        cardsToShow = cards;
+        shuffleCardsToShow = shuffle;
         cardsToShowSource = source;
 
         sendGameMessageToPlayer("refresh_middle_section");
@@ -415,6 +415,11 @@ public class GameView implements Serializable {
     }
 
     public List<Card> getCardsToShow() {
+        if (shuffleCardsToShow) {
+            ArrayList<Card> shuffledCards = new ArrayList<>(cardsToShow);
+            Collections.shuffle(shuffledCards);
+            return shuffledCards;
+        }
         return cardsToShow;
     }
 

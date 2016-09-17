@@ -1,6 +1,8 @@
 package org.smartreaction.starrealms.view;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.smartreaction.starrealms.model.ChatMessage;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
@@ -20,6 +22,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -484,5 +488,17 @@ public class GameView implements Serializable {
         Action action = getAction();
         return action != null && getPlayer().isYourTurn() && !getPlayer().getDiscard().isEmpty()
                 && (action instanceof SelectFromDiscardAction);
+    }
+
+    public StreamedContent getGameLog() {
+        FileInputStream fileInputStream;
+        try {
+            fileInputStream = new FileInputStream(getGame().getGameLogFile());
+            return new DefaultStreamedContent(fileInputStream, "text/plain", "game_log.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -1,10 +1,13 @@
 package org.smartreaction.starrealms.model;
 
+import org.apache.commons.io.FileUtils;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Game
@@ -203,6 +206,22 @@ public class Game
             String playerName = player.getPlayerName();
             gameLog(playerName + "'s cards: ");
             player.getAllCards().forEach(c -> gameLog(c.getName()));
+        }
+
+        writeGameLog();
+    }
+
+    public File getGameLogFile() {
+        File userDirectory = FileUtils.getUserDirectory();
+        File gameLogDirectory = new File(userDirectory, "starrealmsgamelogs");
+        return new File(gameLogDirectory, "game_log_" + gameId);
+    }
+
+    private void writeGameLog() {
+        try {
+            FileUtils.writeStringToFile(getGameLogFile(), gameLog.toString().replaceAll("<br/>", "\n"), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

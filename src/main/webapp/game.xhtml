@@ -342,6 +342,12 @@
                             </h:panelGroup>
 
                             <h:panelGroup layout="block" styleClass="turnButtonWrapper">
+                                <p:commandLink ajax="false" styleClass="turnButton" value="GAME LOG">
+                                    <p:fileDownload value="#{gameView.gameLog}" />
+                                </p:commandLink>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" styleClass="turnButtonWrapper">
                                 <p:commandLink process="@this" styleClass="turnButton" value="EXIT GAME" action="#{gameView.exitGame}"/>
                             </h:panelGroup>
 

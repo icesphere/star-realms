@@ -95,6 +95,8 @@ public abstract class Player {
 
     //these are for simulating which card is the best to buy
     protected Card cardToBuyThisTurn;
+    protected Card cardToNotScrapThisTurn;
+    protected Hero heroToNotPlayThisTurn;
     protected boolean firstTurn = true;
     protected boolean boughtSpecifiedCardOnFirstTurn = false;
     private long scoutsInFirstHand;
@@ -167,6 +169,9 @@ public abstract class Player {
         allFactionsAllied = player.isAllFactionsAllied();
         gainTwoCombatWhenStarEmpireShipPlayed = player.isGainTwoCombatWhenStarEmpireShipPlayed();
 
+        cardToBuyThisTurn = getCardToBuyThisTurn();
+        cardToNotScrapThisTurn = getCardToNotScrapThisTurn();
+        heroToNotPlayThisTurn = getHeroToNotPlayThisTurn();
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
@@ -348,6 +353,7 @@ public abstract class Player {
         }
 
         cardToBuyThisTurn = null;
+        cardToNotScrapThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -1101,8 +1107,28 @@ public abstract class Player {
 
     public abstract void addCardFromDiscardToTopOfDeck(Integer maxCost);
 
+    public Card getCardToBuyThisTurn() {
+        return cardToBuyThisTurn;
+    }
+
     public void setCardToBuyThisTurn(Card cardToBuyThisTurn) {
         this.cardToBuyThisTurn = cardToBuyThisTurn;
+    }
+
+    public Card getCardToNotScrapThisTurn() {
+        return cardToNotScrapThisTurn;
+    }
+
+    public void setCardToNotScrapThisTurn(Card cardToNotScrapThisTurn) {
+        this.cardToNotScrapThisTurn = cardToNotScrapThisTurn;
+    }
+
+    public Hero getHeroToNotPlayThisTurn() {
+        return heroToNotPlayThisTurn;
+    }
+
+    public void setHeroToNotPlayThisTurn(Hero heroToNotPlayThisTurn) {
+        this.heroToNotPlayThisTurn = heroToNotPlayThisTurn;
     }
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {

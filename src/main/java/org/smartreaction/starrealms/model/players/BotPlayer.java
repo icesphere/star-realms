@@ -111,9 +111,11 @@ public abstract class BotPlayer extends Player {
                         ((Base) card).useBase(this);
                         refreshAfterAction();
                     }
-                    if (card.isScrappable() && shouldScrapCard(card)) {
-                        this.scrapCardInPlayForBenefit(card);
-                        refreshAfterAction();
+                    if (cardToNotScrapThisTurn == null || !cardToNotScrapThisTurn.equals(card)) {
+                        if (card.isScrappable() && shouldScrapCard(card)) {
+                            this.scrapCardInPlayForBenefit(card);
+                            refreshAfterAction();
+                        }
                     }
                 }
             }
@@ -166,9 +168,11 @@ public abstract class BotPlayer extends Player {
 
                 for (Card card : getInPlay()) {
                     if (card.isScrappable()) {
-                        if (shouldScrapCard(card)) {
-                            cardsToScrapForBenefit.add(card);
-                            refreshAfterAction();
+                        if (cardToNotScrapThisTurn == null || !cardToNotScrapThisTurn.equals(card)) {
+                            if (shouldScrapCard(card)) {
+                                cardsToScrapForBenefit.add(card);
+                                refreshAfterAction();
+                            }
                         }
                     }
                 }
@@ -188,6 +192,11 @@ public abstract class BotPlayer extends Player {
     }
 
     private boolean usingHeroHasPossibleBenefit(Hero hero) {
+        //noinspection SimplifiableIfStatement
+        if (heroToNotPlayThisTurn != null && hero.equals(heroToNotPlayThisTurn)) {
+            return false;
+        }
+
         return getUseHeroScore(hero) > 0
                 || hero instanceof AdmiralRasmussen
                 || hero instanceof CunningCaptain

@@ -142,7 +142,7 @@ public class Game
         if (trackAuthority) {
             for (Player player : players) {
                 TreeMap<Integer, Integer> playerAuthority = new TreeMap<>();
-                authorityByPlayerByTurn.put(player.getPlayerName(), playerAuthority);
+                authorityByPlayerByTurn.put(player.getSimulationPlayerId(), playerAuthority);
                 playerAuthority.put(player.getTurns(), player.getAuthority());
             }
         }
@@ -167,7 +167,7 @@ public class Game
         for (Player player : players) {
             gameLog(player.getPlayerName() + "'s authority: " + player.getAuthority());
             if (trackAuthority) {
-                TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getPlayerName());
+                TreeMap<Integer, Integer> playerAuthority = authorityByPlayerByTurn.get(player.getSimulationPlayerId());
                 playerAuthority.put(player.getTurns(), player.getAuthority());
             }
         }

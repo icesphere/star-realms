@@ -12,7 +12,7 @@ public class EconomyStrategy implements BotStrategy {
 
         if (card.getCost() >= 6) {
             score += card.getCost();
-        } else if (card.getTradeWhenPlayed() > 0) {
+        } else if (card.getTradeWhenPlayed() > 0 && player.getTrade() < 6) {
             score += 10 * card.getTradeWhenPlayed();
         }
 

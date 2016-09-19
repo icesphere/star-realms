@@ -1970,12 +1970,12 @@ public class GameService {
         int wins = 0;
 
         Player player = copiedGame.getCurrentPlayer();
-        player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
-        averageAuthorityByPlayerByTurn.put(player.getPlayerName(), new HashMap<>());
+        player.setSimulationPlayerId(UUID.randomUUID().toString());
+        averageAuthorityByPlayerByTurn.put(player.getSimulationPlayerId(), new HashMap<>());
 
         Player opponent = copiedGame.getCurrentPlayer().getOpponent();
-        opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
-        averageAuthorityByPlayerByTurn.put(opponent.getPlayerName(), new HashMap<>());
+        opponent.setSimulationPlayerId(UUID.randomUUID().toString());
+        averageAuthorityByPlayerByTurn.put(opponent.getSimulationPlayerId(), new HashMap<>());
 
         boolean simulatingBestCardToBuy = player.getCardToBuyThisTurn() != null;
 
@@ -2001,7 +2001,7 @@ public class GameService {
             Map<String, Integer> winnerNumScoutsFirstTwoHandsTotalGamesMap;
             Map<String, Integer> loserNumScoutsFirstTwoHandsTotalGamesMap;
 
-            if (game.getWinner().getPlayerName().equals(player.getPlayerName())) {
+            if (game.getWinner().equals(player)) {
                 winnerWinDifferentialMap = playerWinDifferentialByCardsAtEndOfGame;
                 loserWinDifferentialMap = opponentWinDifferentialByCardsAtEndOfGame;
 
@@ -2166,39 +2166,41 @@ public class GameService {
             }
 
             totalGamesCounted++;
-            games.add(game);
+            if (includeExtraSimulationInfo) {
+                games.add(game);
+            }
             turnTotal += game.getTurn();
         }
 
-        for (Game game : games) {
-            Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = game.getAuthorityByPlayerByTurn();
-            for (String playerName : authorityByPlayerByTurn.keySet()) {
-                Map<Integer, Integer> authorityByTurn = authorityByPlayerByTurn.get(playerName);
-                Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
+        if (includeExtraSimulationInfo) {
+            for (Game game : games) {
+                Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = game.getAuthorityByPlayerByTurn();
+                for (String playerName : authorityByPlayerByTurn.keySet()) {
+                    Map<Integer, Integer> authorityByTurn = authorityByPlayerByTurn.get(playerName);
+                    Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
 
-                for (Integer turn : authorityByTurn.keySet()) {
-                    Integer authority = averageAuthorityByTurn.get(turn);
-                    if (authority == null) {
-                        authority = 0;
+                    for (Integer turn : authorityByTurn.keySet()) {
+                        Integer authority = averageAuthorityByTurn.get(turn);
+                        if (authority == null) {
+                            authority = 0;
+                        }
+
+                        authority += authorityByTurn.get(turn);
+
+                        averageAuthorityByTurn.put(turn, authority);
                     }
+                }
+            }
 
-                    authority += authorityByTurn.get(turn);
-
+            for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {
+                Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
+                for (Integer turn : averageAuthorityByTurn.keySet()) {
+                    Integer authority = averageAuthorityByTurn.get(turn);
+                    authority = authority / games.size();
                     averageAuthorityByTurn.put(turn, authority);
                 }
             }
-        }
 
-        for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {
-            Map<Integer, Integer> averageAuthorityByTurn = averageAuthorityByPlayerByTurn.get(playerName);
-            for (Integer turn : averageAuthorityByTurn.keySet()) {
-                Integer authority = averageAuthorityByTurn.get(turn);
-                authority = authority / games.size();
-                averageAuthorityByTurn.put(turn, authority);
-            }
-        }
-
-        if (includeExtraSimulationInfo) {
             playerTotalGamesByFirstDeckCard.keySet().forEach(cardName -> {
                 Integer totalGamesForCard = playerTotalGamesByFirstDeckCard.get(cardName);
                 Integer winsForCard = playerWinsByFirstDeckCard.get(cardName);
@@ -2282,7 +2284,7 @@ public class GameService {
             }
         }
 
-        if (!simulatingBestCardToBuy) {
+        if (includeExtraSimulationInfo) {
             results.setPlayerWinDifferentialByCardsAtEndOfGame(sortByValueDescending(playerWinDifferentialByCardsAtEndOfGame));
             results.setOpponentWinDifferentialByCardsAtEndOfGame(sortByValueDescending(opponentWinDifferentialByCardsAtEndOfGame));
 
@@ -2312,30 +2314,11 @@ public class GameService {
         Game copiedGameCopy = copiedGame.copyGameForSimulation();
         Collections.shuffle(copiedGameCopy.getDeck());
 
-        copiedGameCopy.setCreateGameLog(createGameLog);
+        //copiedGameCopy.setCreateGameLog(createGameLog);
 
-        Player player = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer()).getStrategy(), this, copiedGame.getCurrentPlayer(), copiedGameCopy, false);
-
-        Player opponent = new StrategyBot(((StrategyBot) copiedGame.getCurrentPlayer().getOpponent()).getStrategy(), this, copiedGame.getCurrentPlayer().getOpponent(), copiedGameCopy, true);
-
-        player.setPlayerName(player.getClass().getSimpleName() + "(Player)");
-
-        opponent.setPlayerName(opponent.getClass().getSimpleName() + "(Opponent)");
-
-        List<Player> players = new ArrayList<>();
-
-        player.setOpponent(opponent);
-        opponent.setOpponent(player);
-
-        if (copiedGame.getCurrentPlayer().isFirstPlayer()) {
-            players.add(player);
-            players.add(opponent);
-        } else {
-            players.add(opponent);
-            players.add(player);
-        }
-
-        copiedGameCopy.setPlayers(players);
+        setupPlayersForCopiedGame(copiedGame, copiedGameCopy,
+                ((StrategyBot) copiedGame.getCurrentPlayer().getOpponent()).getStrategy(),
+                ((StrategyBot) copiedGame.getCurrentPlayer()).getStrategy());
 
         copiedGameCopy.setupPlayerAuthorityMap();
 

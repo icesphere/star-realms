@@ -107,11 +107,15 @@ public abstract class Player {
 
     private TurnSummary currentTurnSummary = new TurnSummary();
 
+    private String simulationPlayerId;
+
     protected Player() {
     }
 
     @SuppressWarnings("unchecked")
     public void copyFromPlayerForSimulation(Player player, boolean opponent) {
+        setSimulationPlayerId(player.getSimulationPlayerId());
+
         setAuthority(player.getAuthority());
         setCombat(player.getCombat());
         setTrade(player.getTrade());
@@ -169,9 +173,9 @@ public abstract class Player {
         allFactionsAllied = player.isAllFactionsAllied();
         gainTwoCombatWhenStarEmpireShipPlayed = player.isGainTwoCombatWhenStarEmpireShipPlayed();
 
-        cardToBuyThisTurn = getCardToBuyThisTurn();
-        cardToNotScrapThisTurn = getCardToNotScrapThisTurn();
-        heroToNotPlayThisTurn = getHeroToNotPlayThisTurn();
+        cardToBuyThisTurn = player.getCardToBuyThisTurn();
+        cardToNotScrapThisTurn = player.getCardToNotScrapThisTurn();
+        heroToNotPlayThisTurn = player.getHeroToNotPlayThisTurn();
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
@@ -1201,5 +1205,30 @@ public abstract class Player {
 
     public boolean isGainTwoCombatWhenStarEmpireShipPlayed() {
         return gainTwoCombatWhenStarEmpireShipPlayed;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(simulationPlayerId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Player other = (Player) obj;
+        return Objects.equals(this.simulationPlayerId, other.simulationPlayerId);
+    }
+
+    public String getSimulationPlayerId() {
+        return simulationPlayerId;
+    }
+
+    public void setSimulationPlayerId(String simulationPlayerId) {
+        this.simulationPlayerId = simulationPlayerId;
     }
 }

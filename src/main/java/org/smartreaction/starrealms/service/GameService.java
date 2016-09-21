@@ -1908,7 +1908,6 @@ public class GameService {
         strategies.add(new AttackVelocityStrategy());
         strategies.add(new DefenseStrategy());
         strategies.add(new DefenseVelocityStrategy());
-        strategies.add(new EconomyStrategy());
         strategies.add(new VelocityStrategy());
 
         for (BotStrategy strategy : strategies) {

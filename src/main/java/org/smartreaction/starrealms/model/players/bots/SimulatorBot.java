@@ -129,7 +129,7 @@ public class SimulatorBot extends BotPlayer {
         addGameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
         addGameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
 
-        return scrappingWinPercentage > notScrappingWinPercentage;
+        return scrappingWinPercentage > notScrappingWinPercentage || scrappingWinPercentage >= 100;
     }
 
     @Override

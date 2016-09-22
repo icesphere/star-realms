@@ -231,7 +231,9 @@ public class Game
             player.getAllCards().forEach(c -> gameLog(c.getName()));
         }
 
-        writeGameLog();
+        if (!simulation) {
+            writeGameLog();
+        }
     }
 
     public File getGameLogFile() {
@@ -242,7 +244,9 @@ public class Game
 
     private void writeGameLog() {
         try {
-            FileUtils.writeStringToFile(getGameLogFile(), gameLog.toString().replaceAll("<br/>", "\n"), "UTF-8");
+            File gameLogFile = getGameLogFile();
+            gameLog.append("Game log file: ").append(gameLogFile.getAbsolutePath());
+            FileUtils.writeStringToFile(gameLogFile, gameLog.toString().replaceAll("<br/>", "\n"), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }

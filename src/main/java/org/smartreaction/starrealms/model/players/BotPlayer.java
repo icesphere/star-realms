@@ -1,7 +1,6 @@
 package org.smartreaction.starrealms.model.players;
 
 import org.smartreaction.starrealms.model.Choice;
-import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.*;
@@ -104,7 +103,7 @@ public abstract class BotPlayer extends Player {
                     Card card = sortedCards.get(0);
                     playCard(card);
                     if (card.isAlliableCard() && useAllyAfterPlay(card)) {
-                        useAlliedAbilities((AlliableCard) card);
+                        useAlliedAbilities(card);
                         refreshAfterAction();
                     }
                     if (card.isBase() && useBaseAfterPlay((Base) card)) {
@@ -122,7 +121,7 @@ public abstract class BotPlayer extends Player {
 
             for (Card card : getInPlay()) {
                 if (card.isAlliableCard()) {
-                    if (useAlliedAbilities(card.getAlliableCard())) {
+                    if (useAlliedAbilities((Card) card.getAlliableCard())) {
                         endTurn = false;
                         refreshAfterAction();
                     }

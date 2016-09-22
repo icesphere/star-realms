@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.model.cards.bases;
 
-import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.players.Player;
 
@@ -39,7 +38,7 @@ public abstract class Base extends Card {
                 baseUsed(player);
                 return true;
             } else if (this.isAlliableCard()) {
-                return player.useAlliedAbilities((AlliableCard) this);
+                return player.useAlliedAbilities(this);
             }
         }
         return false;

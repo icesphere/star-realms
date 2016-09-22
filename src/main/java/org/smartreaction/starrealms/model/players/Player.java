@@ -668,8 +668,8 @@ public abstract class Player {
         return cards;
     }
 
-    public boolean useAlliedAbilities(AlliableCard card) {
-        Card cardToUse = (Card) card;
+    public boolean useAlliedAbilities(Card card) {
+        Card cardToUse = card;
 
         if (card instanceof StealthNeedle && ((StealthNeedle) card).getCardBeingCopied() != null) {
             cardToUse = ((StealthNeedle) card).getCardBeingCopied();

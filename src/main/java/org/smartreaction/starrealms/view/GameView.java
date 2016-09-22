@@ -5,7 +5,6 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.smartreaction.starrealms.model.ChatMessage;
 import org.smartreaction.starrealms.model.Game;
-import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.Action;
@@ -275,7 +274,7 @@ public class GameView implements Serializable {
                     if (getAction() != null) {
                         handleCardClickedForAction(card, source);
                     } else if (card.isAlliableCard()) {
-                        getPlayer().useAlliedAbilities((AlliableCard) card);
+                        getPlayer().useAlliedAbilities(card);
                         refreshGamePageForAll();
                     }
                 }

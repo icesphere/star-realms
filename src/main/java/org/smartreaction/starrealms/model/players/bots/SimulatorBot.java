@@ -3,8 +3,10 @@ package org.smartreaction.starrealms.model.players.bots;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
+import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
+import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
@@ -121,6 +123,13 @@ public class SimulatorBot extends BotPlayer {
     @Override
     protected boolean shouldScrapCard(Card card) {
         addGameLog("Simulator Bot determining whether or not to scrap " + card.getName());
+
+        if (card instanceof StealthNeedle && ((StealthNeedle) card).getCardBeingCopied() != null) {
+            card = ((StealthNeedle) card).getCardBeingCopied();
+        } else if (card instanceof StealthTower && ((StealthTower) card).getCardBeingCopied() != null) {
+            card = ((StealthTower) card).getCardBeingCopied();
+        }
+
         Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 150, card);
 
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);

@@ -518,6 +518,10 @@ public abstract class Player {
             }
             playerCardScrapped(card);
             ((ScrappableCard) card).cardScrapped(this);
+
+            for (Card c : inPlay) {
+                allyCardIfAvailable(c);
+            }
         }
     }
 
@@ -898,17 +902,6 @@ public abstract class Player {
 
     public List<Hero> getHeroes() {
         return heroes;
-    }
-
-    public void useHero(Hero hero) {
-        addGameLog("Using hero " + hero.getName());
-        heroes.remove(hero);
-        playerCardScrapped(hero);
-        hero.cardScrapped(this);
-
-        for (Card c : inPlay) {
-            allyCardIfAvailable(c);
-        }
     }
 
     public boolean factionPlayedThisTurn(Faction faction) {

@@ -1807,7 +1807,7 @@ public class GameService {
                 .findFirst();
 
         if (heroToUse.isPresent()) {
-            copiedGameWithHeroUsed.getCurrentPlayer().useHero(heroToUse.get());
+            copiedGameWithHeroUsed.getCurrentPlayer().scrapCardInPlayForBenefit(heroToUse.get());
             SimulationResults resultsWithUseHero = simulateGameToEnd(copiedGameWithHeroUsed, timesToSimulate, false);
             results.put(true, resultsWithUseHero.getWinPercentage());
         } else {

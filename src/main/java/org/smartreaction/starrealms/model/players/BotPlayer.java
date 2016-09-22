@@ -132,7 +132,7 @@ public abstract class BotPlayer extends Player {
                 List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
                 for (Hero hero : sortedHeroes) {
                     if (usingHeroHasPossibleBenefit(hero) && shouldUseHero(hero)) {
-                        useHero(hero);
+                        scrapCardInPlayForBenefit(hero);
                         endTurn = false;
                         refreshAfterAction();
                     }

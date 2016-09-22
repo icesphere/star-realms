@@ -78,7 +78,6 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
-                        refreshAfterAction();
                     }
                 }
             }
@@ -90,7 +89,6 @@ public abstract class BotPlayer extends Player {
                     if (getUseGambitScore(gambit) > 0) {
                         endTurn = false;
                         scrapCardInPlayForBenefit(gambit);
-                        refreshAfterAction();
                     }
                 }
             }
@@ -104,16 +102,13 @@ public abstract class BotPlayer extends Player {
                     playCard(card);
                     if (card.isAlliableCard() && useAllyAfterPlay(card)) {
                         useAlliedAbilities(card);
-                        refreshAfterAction();
                     }
                     if (card.isBase() && useBaseAfterPlay((Base) card)) {
                         ((Base) card).useBase(this);
-                        refreshAfterAction();
                     }
                     if (cardToNotScrapThisTurn == null || !cardToNotScrapThisTurn.equals(card)) {
                         if (card.isScrappable() && shouldScrapCard(card)) {
                             this.scrapCardInPlayForBenefit(card);
-                            refreshAfterAction();
                         }
                     }
                 }
@@ -123,10 +118,11 @@ public abstract class BotPlayer extends Player {
                 if (card.isAlliableCard()) {
                     if (useAlliedAbilities((Card) card.getAlliableCard())) {
                         endTurn = false;
-                        refreshAfterAction();
                     }
                 }
             }
+
+            refreshGamePageForOpponent();
 
             if (!getHeroes().isEmpty()) {
                 List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
@@ -134,7 +130,6 @@ public abstract class BotPlayer extends Player {
                     if (usingHeroHasPossibleBenefit(hero) && shouldUseHero(hero)) {
                         scrapCardInPlayForBenefit(hero);
                         endTurn = false;
-                        refreshAfterAction();
                     }
                 }
             }
@@ -146,7 +141,6 @@ public abstract class BotPlayer extends Player {
                 for (Base sortedBase : sortedBases) {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
-                        refreshAfterAction();
                     }
                 }
             }
@@ -157,7 +151,6 @@ public abstract class BotPlayer extends Player {
                     endTurn = false;
                     for (Card card : cardsToBuy) {
                         this.buyCard(card);
-                        refreshAfterAction();
                     }
                 }
             }
@@ -170,7 +163,6 @@ public abstract class BotPlayer extends Player {
                         if (cardToNotScrapThisTurn == null || !cardToNotScrapThisTurn.equals(card)) {
                             if (shouldScrapCard(card)) {
                                 cardsToScrapForBenefit.add(card);
-                                refreshAfterAction();
                             }
                         }
                     }
@@ -181,9 +173,12 @@ public abstract class BotPlayer extends Player {
                     List<Card> sortedCardsToScrapForBenefit = cardsToScrapForBenefit.stream().sorted(scrapForBenefitScoreDescending).collect(toList());
                     for (Card card : sortedCardsToScrapForBenefit) {
                         this.scrapCardInPlayForBenefit(card);
-                        refreshAfterAction();
                     }
                 }
+            }
+
+            if (!endTurn) {
+                refreshGamePageForOpponent();
             }
         }
 
@@ -230,7 +225,6 @@ public abstract class BotPlayer extends Player {
             result.setSelectedCard(shipToCopy);
             card.processCardActionResult(null, this, result);
         }
-        refreshAfterAction();
     }
 
     @Override
@@ -244,7 +238,6 @@ public abstract class BotPlayer extends Player {
         if (card != null) {
             getDiscard().remove(card);
             addCardToTopOfDeck(card);
-            refreshAfterAction();
         }
     }
 
@@ -254,7 +247,6 @@ public abstract class BotPlayer extends Player {
         Base base = chooseOpponentBaseToDestroy();
         if (base != null) {
             destroyOpponentBase(base);
-            refreshAfterAction();
         }
     }
 
@@ -266,8 +258,6 @@ public abstract class BotPlayer extends Player {
 
         cardsToScrapFromDiscard.forEach(this::scrapCardFromDiscard);
         cardsToScrapFromHand.forEach(this::scrapCardFromHand);
-
-        refreshAfterAction();
     }
 
     @Override
@@ -289,22 +279,18 @@ public abstract class BotPlayer extends Player {
 
             card.cardsScrapped(this, cardsScrapped);
         }
-
-        refreshAfterAction();
     }
 
     @Override
     public void optionallyScrapCardsFromHandOrDiscardOrTradeRow(int cards) {
         //todo consider trade row
         optionallyScrapCardsFromHandOrDiscard(cards);
-        refreshAfterAction();
     }
 
     @Override
     public void optionallyScrapCardsInTradeRow(int cards) {
         List<Card> cardsToScrapInTradeRow = chooseCardsToScrapInTradeRow(cards);
         cardsToScrapInTradeRow.forEach(this.getGame()::scrapCardFromTradeRow);
-        refreshAfterAction();
     }
 
     @Override
@@ -332,8 +318,6 @@ public abstract class BotPlayer extends Player {
         } else {
             card.onChoseDoNotUse(this);
         }
-
-        refreshAfterAction();
     }
 
     @Override
@@ -347,15 +331,12 @@ public abstract class BotPlayer extends Player {
         } else {
             card.onChoseDoNotUse(this);
         }
-
-        refreshAfterAction();
     }
 
     @Override
     public void makeChoice(ChoiceActionCard card, Choice... choices) {
         int choice = getChoice(card, choices);
         card.actionChoiceMade(this, choice);
-        refreshAfterAction();
     }
 
     @Override
@@ -363,7 +344,6 @@ public abstract class BotPlayer extends Player {
         Card card = getCardToScrapFromHand(optional);
         if (card != null) {
             scrapCardFromHand(card);
-            refreshAfterAction();
         }
     }
 
@@ -376,8 +356,6 @@ public abstract class BotPlayer extends Player {
         List<Card> cardsToScrapFromDiscard = cardsToScrap.get(0);
 
         cardsToScrapFromDiscard.forEach(this::scrapCardFromDiscard);
-
-        refreshAfterAction();
     }
 
     @Override
@@ -387,7 +365,6 @@ public abstract class BotPlayer extends Player {
             base.setUsed(false);
             getBases().remove(base);
             addCardToHand(base);
-            refreshAfterAction();
         }
     }
 
@@ -401,8 +378,6 @@ public abstract class BotPlayer extends Player {
             }
 
             cardAcquired(card);
-
-            refreshAfterAction();
         }
     }
 
@@ -416,8 +391,6 @@ public abstract class BotPlayer extends Player {
             }
 
             addCardToTopOfDeck(card);
-
-            refreshAfterAction();
         }
     }
 
@@ -431,8 +404,6 @@ public abstract class BotPlayer extends Player {
             }
 
             addCardToHand(card);
-
-            refreshAfterAction();
         }
     }
 
@@ -448,8 +419,6 @@ public abstract class BotPlayer extends Player {
             addGameLog(getPlayerName() + " acquired free " + card.getName() + " to top of deck");
 
             addCardToTopOfDeck(card);
-
-            refreshAfterAction();
         }
     }
 
@@ -502,7 +471,7 @@ public abstract class BotPlayer extends Player {
 
         endTurn();
 
-        refreshAfterEndTurn();
+        refreshGamePageForOpponent();
     }
 
     public List<Card> getCardsToBuy() {
@@ -1389,13 +1358,10 @@ public abstract class BotPlayer extends Player {
         }
     }
 
-    public void refreshAfterEndTurn() {
-        sendGameMessageToOpponent("refresh_game_page");
-    }
-
-    public void refreshAfterAction() {
-        //todo make it so player can actually see what is happening
-        //sendGameMessageToOpponent("refresh_game_page");
+    public void refreshGamePageForOpponent() {
+        if (!getGame().isSimulation()) {
+            sendGameMessageToOpponent("refresh_game_page");
+        }
     }
 
     public void sendGameMessageToOpponent(String message) {

@@ -139,6 +139,21 @@
                             </div>
                         </h:panelGroup>
 
+                        <h:panelGroup layout="block" styleClass="actionSection"
+                                      rendered="#{gameView.player.waitingForComputer}">
+
+                            <div style="float: left;">
+                                <h:outputText value="Computer's Turn" styleClass="currentActionLabel"/>
+                            </div>
+
+                            <div style="clear: both; float: left; padding-top: 10px;">
+                                <h:outputText value="Waiting for computer..." style="padding-right: 10px;" />
+
+                                <h:graphicImage id="loadingImage" library="images" name="loadingSmall.gif"/>
+                            </div>
+
+                        </h:panelGroup>
+
                         <h:panelGroup layout="block" id="actionSection" styleClass="actionSection"
                                       rendered="#{gameView.player.yourTurn and !empty gameView.action}">
 

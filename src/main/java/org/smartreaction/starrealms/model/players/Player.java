@@ -109,6 +109,8 @@ public abstract class Player {
 
     private String simulationPlayerId;
 
+    private boolean waitingForComputer;
+
     protected Player() {
     }
 
@@ -1041,6 +1043,7 @@ public abstract class Player {
     }
 
     public void startTurn() {
+        waitingForComputer = false;
         yourTurn = true;
         turn++;
         addGameLog("");
@@ -1223,5 +1226,13 @@ public abstract class Player {
 
     public void setSimulationPlayerId(String simulationPlayerId) {
         this.simulationPlayerId = simulationPlayerId;
+    }
+
+    public boolean isWaitingForComputer() {
+        return waitingForComputer;
+    }
+
+    public void setWaitingForComputer(boolean waitingForComputer) {
+        this.waitingForComputer = waitingForComputer;
     }
 }

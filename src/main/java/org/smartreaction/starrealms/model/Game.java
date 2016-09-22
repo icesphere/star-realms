@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
+import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 
 import java.io.File;
@@ -144,7 +145,20 @@ public class Game
         currentPlayerIndex = 0;
         turn = 1;
         setupPlayerAuthorityMap();
-        getCurrentPlayer().startTurn();
+
+        startTurnInNewThreadIfComputerVsHuman();
+    }
+
+    private void startTurnInNewThreadIfComputerVsHuman() {
+        if (getCurrentPlayer().isBot() && getCurrentPlayer().getOpponent() instanceof HumanPlayer) {
+            HumanPlayer humanPlayer = (HumanPlayer) getCurrentPlayer().getOpponent();
+            humanPlayer.setWaitingForComputer(true);
+            new Thread(() -> {
+                getCurrentPlayer().startTurn();
+            }).start();
+        } else {
+            getCurrentPlayer().startTurn();
+        }
     }
 
     public void setupPlayerAuthorityMap() {
@@ -197,7 +211,7 @@ public class Game
         turn++;
 
         if (!isGameOver() && !simulation) {
-            getCurrentPlayer().startTurn();
+            startTurnInNewThreadIfComputerVsHuman();
         }
     }
 

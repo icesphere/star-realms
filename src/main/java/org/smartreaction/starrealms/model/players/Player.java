@@ -573,7 +573,7 @@ public abstract class Player {
             discard.add(card);
         }
 
-        if (cardToBuyThisTurn != null && cardToBuyThisTurn.equals(card)) {
+        if (cardToBuyThisTurn != null && cardToBuyThisTurn.getName().equals(card.getName())) {
             cardToBuyThisTurn = null;
             if (firstTurn) {
                 boughtSpecifiedCardOnFirstTurn = true;

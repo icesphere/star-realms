@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
+
 public class Game
 {
     private String gameId;
@@ -20,7 +22,7 @@ public class Game
 
     private List<Player> players;
 
-    private List<Card> deck;
+    private List<Card> deck = new ArrayList<>();
 
     private List<Card> tradeRow = new ArrayList<>();
 
@@ -53,14 +55,21 @@ public class Game
     public Game copyGameForSimulation() {
         Game game = new Game();
         game.setCurrentPlayerIndex(currentPlayerIndex);
-        game.setTradeRow(new ArrayList<>(tradeRow));
+        game.getTradeRow().addAll(copyCards(tradeRow));
         game.setTradeRowCardsScrapped(new ArrayList<>(tradeRowCardsScrapped));
-        game.setDeck(new ArrayList<>(deck));
+        game.getDeck().addAll(copyCards(deck));
         game.setTurn(turn);
         game.setCreateGameLog(false);
         game.setTrackAuthority(false);
         game.setSimulation(true);
         return game;
+    }
+
+    private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
+        return cardsToCopy
+                .stream()
+                .map(Card::copyCardForSimulation)
+                .collect(toList());
     }
 
     public int getTurn()

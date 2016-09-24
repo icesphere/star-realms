@@ -56,12 +56,20 @@ public class ScrapCardsFromHandOrDiscardPile extends Action implements SelectFro
                 if (selectedCardsFromDiscard.contains(selectedCard)) {
                     selectedCardsFromDiscard.remove(selectedCard);
                 } else {
+                    if (numCardsToScrap == 1) {
+                        selectedCardsFromDiscard.clear();
+                        selectedCardsFromHand.clear();
+                    }
                     selectedCardsFromDiscard.add(selectedCard);
                 }
             } else if (result.getCardLocation().equals(Card.CARD_LOCATION_HAND)) {
                 if (selectedCardsFromHand.contains(selectedCard)) {
                     selectedCardsFromHand.remove(selectedCard);
                 } else {
+                    if (numCardsToScrap == 1) {
+                        selectedCardsFromDiscard.clear();
+                        selectedCardsFromHand.clear();
+                    }
                     selectedCardsFromHand.add(selectedCard);
                 }
             }

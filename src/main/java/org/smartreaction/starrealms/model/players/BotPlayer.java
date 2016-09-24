@@ -93,6 +93,20 @@ public abstract class BotPlayer extends Player {
                 }
             }
 
+            if (!getHeroes().isEmpty()) {
+                List<Hero> sortedHeroes = getHeroes().stream().sorted(useHeroScoreDescending).collect(toList());
+                for (Hero hero : sortedHeroes) {
+                    if (usingHeroHasPossibleBenefit(hero) && shouldUseHero(hero)) {
+                        scrapCardInPlayForBenefit(hero);
+                        endTurn = false;
+                    }
+                }
+
+                if (!endTurn) {
+                    refreshGamePageForOpponent();
+                }
+            }
+
             if (!getHand().isEmpty()) {
                 endTurn = false;
                 while (!getHand().isEmpty()) {
@@ -363,6 +377,7 @@ public abstract class BotPlayer extends Player {
         Base base = chooseBaseToReturnToHand();
         if (base != null) {
             base.setUsed(false);
+            base.setAllAlliedAbilitiesToNotUsed();
             getBases().remove(base);
             addCardToHand(base);
         }

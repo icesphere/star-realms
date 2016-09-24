@@ -52,6 +52,9 @@ public class DiscardCardsFromHand extends Action {
             if (selectedCards.contains(selectedCard)) {
                 selectedCards.remove(selectedCard);
             } else {
+                if (numCardsToDiscard == 1) {
+                    selectedCards.clear();
+                }
                 selectedCards.add(selectedCard);
             }
         }

@@ -221,6 +221,7 @@ public class Game
         gameLog("Game over");
         gameLog("Turns: " + turn);
         for (Player player : players) {
+            player.setWaitingForComputer(false);
             String playerName = player.getPlayerName();
             gameLog(playerName + "'s authority: " + player.getAuthority());
         }
@@ -239,7 +240,7 @@ public class Game
     public File getGameLogFile() {
         File userDirectory = FileUtils.getUserDirectory();
         File gameLogDirectory = new File(userDirectory, "starrealmsgamelogs");
-        return new File(gameLogDirectory, "game_log_" + gameId);
+        return new File(gameLogDirectory, "game_" + getWinner().getPlayerName() + "_over_" + getLoser().getPlayerName() + "_" + gameId);
     }
 
     private void writeGameLog() {

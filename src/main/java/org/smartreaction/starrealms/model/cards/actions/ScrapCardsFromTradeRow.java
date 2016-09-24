@@ -51,6 +51,9 @@ public class ScrapCardsFromTradeRow extends Action {
             if (selectedCards.contains(selectedCard)) {
                 selectedCards.remove(selectedCard);
             } else {
+                if (numCardsToScrap == 1) {
+                    selectedCards.clear();
+                }
                 selectedCards.add(selectedCard);
             }
         }

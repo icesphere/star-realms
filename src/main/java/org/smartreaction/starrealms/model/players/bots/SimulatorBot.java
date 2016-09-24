@@ -130,7 +130,7 @@ public class SimulatorBot extends BotPlayer {
             card = ((StealthTower) card).getCardBeingCopied();
         }
 
-        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 150, card);
+        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 200, card);
 
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
         Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
@@ -144,7 +144,7 @@ public class SimulatorBot extends BotPlayer {
     @Override
     protected boolean shouldUseHero(Hero hero) {
         addGameLog("Simulator Bot determining whether or not to use hero " + hero.getName());
-        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 150, hero);
+        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 200, hero);
 
         Float notUseHeroWinPercentage = useHeroResults.get(false);
         Float useHeroWinPercentage = useHeroResults.get(true);

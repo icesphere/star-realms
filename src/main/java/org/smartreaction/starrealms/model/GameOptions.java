@@ -20,7 +20,7 @@ public class GameOptions {
 
     private boolean includeCrisisHeroes = false;
 
-    private boolean includedUnitedAssault = false;
+    private boolean includeUnitedAssault = false;
 
     private boolean includeUnitedCommand = false;
 
@@ -97,11 +97,11 @@ public class GameOptions {
     }
 
     public boolean isIncludeUnitedAssault() {
-        return includedUnitedAssault;
+        return includeUnitedAssault;
     }
 
-    public void setIncludedUnitedAssault(boolean includedUnitedAssault) {
-        this.includedUnitedAssault = includedUnitedAssault;
+    public void setIncludeUnitedAssault(boolean includeUnitedAssault) {
+        this.includeUnitedAssault = includeUnitedAssault;
     }
 
     public boolean isIncludeUnitedCommand() {
@@ -147,7 +147,7 @@ public class GameOptions {
     @Override
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
-                includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includedUnitedAssault,
+                includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedAssault,
                 includeUnitedCommand, includeUnitedHeroes, includeGambits, startingTradeRowCards);
     }
 
@@ -167,7 +167,7 @@ public class GameOptions {
                 && Objects.equals(this.includeCrisisEvents, other.includeCrisisEvents)
                 && Objects.equals(this.includeCrisisFleetsAndFortresses, other.includeCrisisFleetsAndFortresses)
                 && Objects.equals(this.includeCrisisHeroes, other.includeCrisisHeroes)
-                && Objects.equals(this.includedUnitedAssault, other.includedUnitedAssault)
+                && Objects.equals(this.includeUnitedAssault, other.includeUnitedAssault)
                 && Objects.equals(this.includeUnitedCommand, other.includeUnitedCommand)
                 && Objects.equals(this.includeUnitedHeroes, other.includeUnitedHeroes)
                 && Objects.equals(this.includeGambits, other.includeGambits)

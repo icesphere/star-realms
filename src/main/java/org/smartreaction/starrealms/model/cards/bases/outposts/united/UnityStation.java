@@ -12,7 +12,7 @@ public class UnityStation extends Outpost implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.MACHINE_CULT);
         cost = 7;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         shield = 6;
         text = "Scrap a card in your hand or discard pile; You may scrap a card in the trade row; Ally: Add 4 Combat";
         allFactionsAlliedTogether = true;

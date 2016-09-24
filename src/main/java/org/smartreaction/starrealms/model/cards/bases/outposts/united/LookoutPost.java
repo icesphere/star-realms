@@ -11,7 +11,7 @@ public class LookoutPost extends Outpost {
         addFaction(Faction.TRADE_FEDERATION);
         addFaction(Faction.MACHINE_CULT);
         cost = 7;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         shield = 6;
         text = "Draw a card";
     }

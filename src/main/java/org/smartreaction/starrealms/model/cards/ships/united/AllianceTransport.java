@@ -12,7 +12,7 @@ public class AllianceTransport extends Ship implements AlliableCard {
         addFaction(Faction.STAR_EMPIRE);
         addFaction(Faction.TRADE_FEDERATION);
         cost = 2;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         text = "Add 2 Trade; Ally Star Empire: Target opponent discards a card; Ally Trade Federation: Add 4 Authority";
         autoAlly = true;
     }

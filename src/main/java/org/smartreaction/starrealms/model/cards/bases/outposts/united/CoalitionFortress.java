@@ -14,7 +14,7 @@ public class CoalitionFortress extends Outpost implements AlliableCard, ChoiceAc
         addFaction(Faction.TRADE_FEDERATION);
         addFaction(Faction.MACHINE_CULT);
         cost = 6;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         shield = 6;
         text = "Add 2 Trade; Ally: Add 2 Combat or Add 3 Authority";
         allFactionsAlliedTogether = true;

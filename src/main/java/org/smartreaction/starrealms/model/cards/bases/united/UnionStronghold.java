@@ -12,7 +12,7 @@ public class UnionStronghold extends Base implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.STAR_EMPIRE);
         cost = 5;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         shield = 5;
         text = "Add 3 Combat; Ally Blob: Scrap a card in the trade row; Ally Star Empire: Target opponent discards a card";
         autoAlly = true;

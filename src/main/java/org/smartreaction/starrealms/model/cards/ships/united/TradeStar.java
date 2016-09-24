@@ -12,7 +12,7 @@ public class TradeStar extends Ship implements ScrappableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.STAR_EMPIRE);
         cost = 1;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         text = "Add 2 Trade; Scrap: Add 2 Combat";
     }
 

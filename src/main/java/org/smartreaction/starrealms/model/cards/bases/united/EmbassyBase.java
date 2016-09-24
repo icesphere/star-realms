@@ -11,7 +11,7 @@ public class EmbassyBase extends Base {
         addFaction(Faction.STAR_EMPIRE);
         addFaction(Faction.TRADE_FEDERATION);
         cost = 8;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         shield = 6;
         text = "Draw two cards then discard a card";
     }

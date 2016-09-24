@@ -12,7 +12,7 @@ public class CoalitionFreighter extends Ship implements AlliableCard {
         addFaction(Faction.TRADE_FEDERATION);
         addFaction(Faction.MACHINE_CULT);
         cost = 4;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         text = "Add 3 Trade; Ally Trade Federation: Put the next ship you acquire this turn on top of your deck; Ally Machine Cult: Scrap a card in your hand or discard pile";
         autoAlly = true;
         addAutoAllyExcludedFaction(Faction.MACHINE_CULT);

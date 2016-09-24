@@ -12,7 +12,7 @@ public class AssaultPod extends Ship implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.STAR_EMPIRE);
         cost = 2;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         text = "Add 3 Combat; Ally: Draw a card";
         autoAlly = true;
         allFactionsAlliedTogether = true;

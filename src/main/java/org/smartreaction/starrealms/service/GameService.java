@@ -150,13 +150,13 @@ public class GameService {
             deck.addAll(getCrisisHeroes());
             game.getCardSets().add(CardSet.CRISIS_HEROES);
         }
-        if (gameOptions.isIncludeUnitedVarious()) {
-            deck.addAll(getUnitedVarious());
-            game.getCardSets().add(CardSet.UNITED_VARIOUS);
+        if (gameOptions.isIncludeUnitedAssault()) {
+            deck.addAll(getUnitedAssault());
+            game.getCardSets().add(CardSet.UNITED_ASSAULT);
         }
-        if (gameOptions.isIncludeUnitedShipsStationsAndPods()) {
-            deck.addAll(getUnitedShipsStationsAndPods());
-            game.getCardSets().add(CardSet.UNITED_SHIPS_STATIONS_AND_PODS);
+        if (gameOptions.isIncludeUnitedCommand()) {
+            deck.addAll(getUnitedCommand());
+            game.getCardSets().add(CardSet.UNITED_COMMAND);
         }
         if (gameOptions.isIncludeUnitedHeroes()) {
             deck.addAll(getUnitedHeroes());
@@ -587,7 +587,7 @@ public class GameService {
         return cards;
     }
 
-    public List<Card> getUnitedVarious() {
+    public List<Card> getUnitedAssault() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new BlobBot());
@@ -613,7 +613,7 @@ public class GameService {
         return cards;
     }
 
-    public List<Card> getUnitedShipsStationsAndPods() {
+    public List<Card> getUnitedCommand() {
         List<Card> cards = new ArrayList<>();
 
         cards.add(new CoalitionFreighter());

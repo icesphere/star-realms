@@ -12,7 +12,7 @@ public class UnionCluster extends Base implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.STAR_EMPIRE);
         cost = 8;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         shield = 8;
         text = "Add 4 Combat; Ally: Draw a card";
         allFactionsAlliedTogether = true;

@@ -20,9 +20,9 @@ public class GameOptions {
 
     private boolean includeCrisisHeroes = false;
 
-    private boolean includeUnitedVarious = false;
+    private boolean includedUnitedAssault = false;
 
-    private boolean includeUnitedShipsStationsAndPods = false;
+    private boolean includeUnitedCommand = false;
 
     private boolean includeUnitedHeroes = false;
 
@@ -96,20 +96,20 @@ public class GameOptions {
         this.includeCrisisHeroes = includeCrisisHeroes;
     }
 
-    public boolean isIncludeUnitedVarious() {
-        return includeUnitedVarious;
+    public boolean isIncludeUnitedAssault() {
+        return includedUnitedAssault;
     }
 
-    public void setIncludeUnitedVarious(boolean includeUnitedVarious) {
-        this.includeUnitedVarious = includeUnitedVarious;
+    public void setIncludedUnitedAssault(boolean includedUnitedAssault) {
+        this.includedUnitedAssault = includedUnitedAssault;
     }
 
-    public boolean isIncludeUnitedShipsStationsAndPods() {
-        return includeUnitedShipsStationsAndPods;
+    public boolean isIncludeUnitedCommand() {
+        return includeUnitedCommand;
     }
 
-    public void setIncludeUnitedShipsStationsAndPods(boolean includeUnitedShipsStationsAndPods) {
-        this.includeUnitedShipsStationsAndPods = includeUnitedShipsStationsAndPods;
+    public void setIncludeUnitedCommand(boolean includeUnitedCommand) {
+        this.includeUnitedCommand = includeUnitedCommand;
     }
 
     public boolean isIncludeUnitedHeroes() {
@@ -147,8 +147,8 @@ public class GameOptions {
     @Override
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
-                includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedVarious,
-                includeUnitedShipsStationsAndPods, includeUnitedHeroes, includeGambits, startingTradeRowCards);
+                includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includedUnitedAssault,
+                includeUnitedCommand, includeUnitedHeroes, includeGambits, startingTradeRowCards);
     }
 
     @Override
@@ -167,8 +167,8 @@ public class GameOptions {
                 && Objects.equals(this.includeCrisisEvents, other.includeCrisisEvents)
                 && Objects.equals(this.includeCrisisFleetsAndFortresses, other.includeCrisisFleetsAndFortresses)
                 && Objects.equals(this.includeCrisisHeroes, other.includeCrisisHeroes)
-                && Objects.equals(this.includeUnitedVarious, other.includeUnitedVarious)
-                && Objects.equals(this.includeUnitedShipsStationsAndPods, other.includeUnitedShipsStationsAndPods)
+                && Objects.equals(this.includedUnitedAssault, other.includedUnitedAssault)
+                && Objects.equals(this.includeUnitedCommand, other.includeUnitedCommand)
                 && Objects.equals(this.includeUnitedHeroes, other.includeUnitedHeroes)
                 && Objects.equals(this.includeGambits, other.includeGambits)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);

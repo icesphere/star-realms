@@ -12,7 +12,7 @@ public class AllianceLanding extends Outpost implements AlliableCard {
         addFaction(Faction.TRADE_FEDERATION);
         addFaction(Faction.STAR_EMPIRE);
         cost = 5;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         shield = 5;
         text = "Add 2 Trade; Ally: Add 2 Combat";
         allFactionsAlliedTogether = true;

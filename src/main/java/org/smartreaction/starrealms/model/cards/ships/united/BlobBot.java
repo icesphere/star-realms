@@ -12,7 +12,7 @@ public class BlobBot extends Ship implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.MACHINE_CULT);
         cost = 3;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         text = "Add 5 Combat; Ally Blob: Add 2 Trade; Ally Machine Cult: Scrap a card in your hand or discard pile";
         autoAlly = true;
         addAutoAllyExcludedFaction(Faction.MACHINE_CULT);

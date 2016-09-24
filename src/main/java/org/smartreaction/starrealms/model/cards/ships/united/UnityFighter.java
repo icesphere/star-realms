@@ -12,7 +12,7 @@ public class UnityFighter extends Ship implements ScrappableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.MACHINE_CULT);
         cost = 1;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         text = "Add 3 Combat; You may scrap a card in the trade row; Scrap: You may scrap a card in your hand or discard pile";
     }
 

@@ -12,7 +12,7 @@ public class CoalitionMessenger extends Ship implements AlliableCard {
         addFaction(Faction.MACHINE_CULT);
         addFaction(Faction.TRADE_FEDERATION);
         cost = 3;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         text = "Add 2 Trade; Ally: Choose a card of cost 5 or less in your discard pile. Put it on top of your deck.";
         allFactionsAlliedTogether = true;
         autoAlly = false;

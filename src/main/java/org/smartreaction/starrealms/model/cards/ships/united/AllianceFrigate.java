@@ -12,7 +12,7 @@ public class AllianceFrigate extends Ship implements AlliableCard {
         addFaction(Faction.TRADE_FEDERATION);
         addFaction(Faction.STAR_EMPIRE);
         cost = 3;
-        set = CardSet.UNITED_SHIPS_STATIONS_AND_PODS;
+        set = CardSet.UNITED_COMMAND;
         text = "Add 4 Combat; Ally Star Empire: Add 3 Combat; Ally Trade Federation: Add 5 Authority";
         autoAlly = true;
     }

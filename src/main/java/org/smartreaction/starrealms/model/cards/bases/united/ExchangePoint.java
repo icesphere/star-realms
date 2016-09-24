@@ -12,7 +12,7 @@ public class ExchangePoint extends Base implements AlliableCard {
         addFaction(Faction.BLOB);
         addFaction(Faction.MACHINE_CULT);
         cost = 6;
-        set = CardSet.UNITED_VARIOUS;
+        set = CardSet.UNITED_ASSAULT;
         shield = 7;
         text = "Add 2 Combat; Ally: Scrap a card in your hand, your discard pile, or the trade row";
         allFactionsAlliedTogether = true;

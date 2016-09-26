@@ -5,6 +5,12 @@ import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class Monopolize extends Mission {
+    public Monopolize() {
+        name = "Monopolize";
+        objectiveText = "Play a Trade Federation ship while you have a Trade Federation base in play.";
+        rewardText = "";
+    }
+
     @Override
     public boolean isMissionCompleted(Player player) {
         return PlayShipWhileBaseInPlay.isMissionCompleted(player, Faction.TRADE_FEDERATION);
@@ -12,6 +18,6 @@ public class Monopolize extends Mission {
 
     @Override
     public void onMissionClaimed(Player player) {
-
+        player.addAuthority(10);
     }
 }

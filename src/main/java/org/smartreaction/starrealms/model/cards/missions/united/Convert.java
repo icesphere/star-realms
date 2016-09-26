@@ -5,6 +5,12 @@ import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class Convert extends Mission {
+    public Convert() {
+        name = "Convert";
+        objectiveText = "";
+        rewardText = "";
+    }
+
     @Override
     public boolean isMissionCompleted(Player player) {
         return PlayShipWhileBaseInPlay.isMissionCompleted(player, Faction.MACHINE_CULT);

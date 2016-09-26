@@ -1247,7 +1247,9 @@ public abstract class BotPlayer extends Player {
             cardsToChooseFrom.add(getGame().getExplorer());
 
             List<Card> sortedCards = cardsToChooseFrom.stream()
-                    .filter(c -> (maxCost == null || c.getCost() <= maxCost) && (!onlyShips || c.isShip()))
+                    .filter(c -> (maxCost == null || c.getCost() <= maxCost)
+                            && (c.isShip() || c.isBase())
+                            && (!onlyShips || c.isShip()))
                     .sorted(cardToBuyScoreDescending).collect(toList());
 
             if (!sortedCards.isEmpty()) {

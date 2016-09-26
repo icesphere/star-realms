@@ -35,6 +35,7 @@ public class FreeCardFromTradeRow extends Action {
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
         return (cardLocation.equals(Card.CARD_LOCATION_EXPLORERS) || cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW))
                 && (maxCost == null || (card.getCost() <= maxCost))
+                && (card.isShip() || card.isBase())
                 && (!onlyShips || card.isShip());
     }
 

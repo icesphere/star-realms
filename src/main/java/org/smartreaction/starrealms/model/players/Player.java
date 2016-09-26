@@ -87,8 +87,13 @@ public abstract class Player {
     private boolean gainTwoCombatWhenStarEmpireShipPlayed;
 
     private int numCardsScrappedThisTurn;
+    private int tradeGainedThisTurn;
+    private int combatGainedThisTurn;
+    private int authorityGainedThisTurn;
+    private int shipsPlayedThisTurn;
 
     private Set<Faction> factionsPlayedThisTurn = new HashSet<>();
+    private Set<Faction> factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>();
 
     protected Comparator<Base> baseShieldAscending = (b1, b2) -> Integer.compare(b1.getShield(), b2.getShield());
     protected Comparator<Base> baseShieldDescending = baseShieldAscending.reversed();
@@ -110,6 +115,8 @@ public abstract class Player {
     private String simulationPlayerId;
 
     private boolean waitingForComputer;
+
+    private boolean addShipToHandForMission;
 
     protected Player() {
     }
@@ -178,6 +185,15 @@ public abstract class Player {
         cardToBuyThisTurn = player.getCardToBuyThisTurn();
         cardToNotScrapThisTurn = player.getCardToNotScrapThisTurn();
         heroToNotPlayThisTurn = player.getHeroToNotPlayThisTurn();
+
+        numCardsScrappedThisTurn = player.getNumCardsScrappedThisTurn();
+        tradeGainedThisTurn = player.getTradeGainedThisTurn();
+        combatGainedThisTurn = player.getCombatGainedThisTurn();
+        authorityGainedThisTurn = player.getAuthorityGainedThisTurn();
+        shipsPlayedThisTurn = player.getShipsPlayedThisTurn();
+
+        factionsPlayedThisTurn = new HashSet<>(player.getFactionsPlayedThisTurn());
+        factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>(player.getFactionsWithAllyAbilitiesUsedThisTurn());
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
@@ -330,14 +346,17 @@ public abstract class Player {
 
     public void addTrade(int trade) {
         this.trade += trade;
+        tradeGainedThisTurn += trade;
     }
 
     public void addCombat(int combat) {
         this.combat += combat;
+        combatGainedThisTurn += combat;
     }
 
     public void addAuthority(int authority) {
         this.authority += authority;
+        authorityGainedThisTurn += authority;
         if (yourTurn) {
             currentTurnSummary.setAuthorityGained(currentTurnSummary.getAuthorityGained() + authority);
         }
@@ -375,8 +394,13 @@ public abstract class Player {
         machineCultAlliedUntilEndOfTurn = false;
 
         numCardsScrappedThisTurn = 0;
+        tradeGainedThisTurn = 0;
+        combatGainedThisTurn = 0;
+        authorityGainedThisTurn = 0;
+        shipsPlayedThisTurn = 0;
 
         factionsPlayedThisTurn.clear();
+        factionsWithAllyAbilitiesUsedThisTurn.clear();
 
         played.clear();
 
@@ -567,6 +591,14 @@ public abstract class Player {
             nextShipToTopOfDeck = false;
             nextShipOrBaseToTopOfDeck = false;
             addCardToTopOfDeck(card);
+        } else if (card.isShip() && (addShipToHandForMission || nextShipOrBaseToHand)) {
+            if (addShipToHandForMission) {
+                addShipToHandForMission = false;
+            } else {
+                nextShipOrBaseToHand = false;
+            }
+            addCardToHand(card);
+            addGameLog("Added " + card.getName() + " to hand");
         } else if (card.isBase() && (nextBaseToHand || nextShipOrBaseToHand)) {
             nextBaseToHand = false;
             nextShipOrBaseToHand = false;
@@ -690,6 +722,7 @@ public abstract class Player {
             for (Faction faction : cardToUse.getFactions()) {
                 if (!cardToUse.isAlliedAbilityUsed(faction) && cardHasAlly(cardToUse, faction)) {
                     cardToUse.setAlliedAbilityUsed(true, faction);
+                    factionsWithAllyAbilitiesUsedThisTurn.add(faction);
                     ((AlliableCard) cardToUse).cardAllied(this, faction);
                     allyAbilityUsed = true;
                 }
@@ -755,6 +788,7 @@ public abstract class Player {
         }
 
         if (card.isShip()) {
+            shipsPlayedThisTurn++;
             if (allShipsAddOneCombat) {
                 addCombat(1);
             }
@@ -780,6 +814,7 @@ public abstract class Player {
                             && !card.isAlliedAbilityUsed(faction)
                             && cardHasAlly(card, faction)) {
                         card.setAlliedAbilityUsed(true, faction);
+                        factionsWithAllyAbilitiesUsedThisTurn.add(faction);
                         card.getAlliableCard().cardAllied(this, faction);
                     }
                 }
@@ -1234,5 +1269,33 @@ public abstract class Player {
 
     public void setWaitingForComputer(boolean waitingForComputer) {
         this.waitingForComputer = waitingForComputer;
+    }
+
+    public int getTradeGainedThisTurn() {
+        return tradeGainedThisTurn;
+    }
+
+    public int getCombatGainedThisTurn() {
+        return combatGainedThisTurn;
+    }
+
+    public int getAuthorityGainedThisTurn() {
+        return authorityGainedThisTurn;
+    }
+
+    public int getShipsPlayedThisTurn() {
+        return shipsPlayedThisTurn;
+    }
+
+    public void setAddShipToHandForMission(boolean addShipToHandForMission) {
+        this.addShipToHandForMission = addShipToHandForMission;
+    }
+
+    public Set<Faction> getFactionsPlayedThisTurn() {
+        return factionsPlayedThisTurn;
+    }
+
+    public Set<Faction> getFactionsWithAllyAbilitiesUsedThisTurn() {
+        return factionsWithAllyAbilitiesUsedThisTurn;
     }
 }

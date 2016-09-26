@@ -172,6 +172,7 @@ public class SimulatorBot extends BotPlayer {
             addGameLog("Win percentage for " + choice.getText() + ": " + choiceWinPercent);
             if (choiceWinPercent > bestWinPercentage) {
                 bestChoice = choice;
+                bestWinPercentage = choiceWinPercent;
             }
         }
 

@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model;
 import org.apache.commons.io.FileUtils;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
+import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
@@ -48,6 +49,8 @@ public class Game
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     private boolean simulation;
+
+    private List<Mission> allMissions = new ArrayList<>();
 
     public Game() {
         gameId = UUID.randomUUID().toString();
@@ -355,5 +358,13 @@ public class Game
 
     public void setSimulation(boolean simulation) {
         this.simulation = simulation;
+    }
+
+    public List<Mission> getAllMissions() {
+        return allMissions;
+    }
+
+    public void setAllMissions(List<Mission> allMissions) {
+        this.allMissions = allMissions;
     }
 }

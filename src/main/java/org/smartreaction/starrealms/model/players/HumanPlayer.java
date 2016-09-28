@@ -70,6 +70,10 @@ public class HumanPlayer extends Player {
         addAction(new ChoiceAction(card, choices));
     }
 
+    public void makeChoice(ChoiceActionCard card, String text, Choice... choices) {
+        addAction(new ChoiceAction(card, text, choices));
+    }
+
     @Override
     public void scrapCardFromHand(boolean optional) {
         if (optional) {

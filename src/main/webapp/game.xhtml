@@ -25,6 +25,7 @@
         <h:form name="gameForm" id="gameForm">
 
             <p:remoteCommand name="updateCardView" actionListener="#{gameView.updateCardView}" update="cardViewSection"/>
+            <p:remoteCommand name="updateCardViewWithMission" actionListener="#{gameView.updateCardViewWithMission}" update="cardViewSection"/>
 
             <p:remoteCommand name="cardClicked" actionListener="#{gameView.cardClicked}"/>
 
@@ -86,7 +87,24 @@
                                                 <h:outputText value="#{gameView.cardToView.text}"/>
                                             </div>
                                         </h:panelGroup>
-                                        <h:panelGroup layout="block" rendered="#{empty gameView.cardToView}" styleClass="emptyCardView">
+
+                                        <h:panelGroup layout="block" rendered="#{!empty gameView.missionToView}">
+                                            <h:outputText value="#{gameView.missionToView.name}" style="font-weight: bold; font-size: 20px;"/>
+                                            <div style="padding-top: 15px; font-weight: bold; font-size: 16px;">
+                                                <h:outputText value="Objective:"/>
+                                            </div>
+                                            <div>
+                                                <h:outputText value="#{gameView.missionToView.objectiveText}"/>
+                                            </div>
+                                            <div style="padding-top: 15px; font-weight: bold; font-size: 16px;">
+                                                <h:outputText value="Reward:"/>
+                                            </div>
+                                            <div>
+                                                <h:outputText value="#{gameView.missionToView.rewardText}"/>
+                                            </div>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block" rendered="#{empty gameView.cardToView and empty gameView.missionToView}" styleClass="emptyCardView">
                                             Hover over a card to see card details.
                                         </h:panelGroup>
                                     </div>
@@ -258,6 +276,32 @@
                                         </div>
                                     </div>
                                 </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.unClaimedMissions}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Unclaimed Missions"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.unClaimedMissions}" var="mission">
+                                                <sr:mission mission="#{mission}" opponentMission="false"/>
+                                            </ui:repeat>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.claimedMissions}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Claimed Missions"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.claimedMissions}" var="mission">
+                                                <sr:mission mission="#{mission}" opponentMission="false"/>
+                                            </ui:repeat>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
                             </h:panelGroup>
 
                             <h:panelGroup layout="block" id="opponentDeployedSection" styleClass="opponentDeployedSection opponent">
@@ -299,6 +343,19 @@
                                         <div style="clear: both; float:left; padding-top: 5px;">
                                             <ui:repeat value="#{gameView.player.opponent.gambits}" var="card">
                                                 <sr:card card="#{card}" source="opponentGambits"/>
+                                            </ui:repeat>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{!empty gameView.player.opponent.claimedMissions}">
+                                    <div style="clear: both; float: left; padding-top: 10px;">
+                                        <div>
+                                            <h:outputText value="Claimed Missions"/>
+                                        </div>
+                                        <div style="clear: both; float:left; padding-top: 5px;">
+                                            <ui:repeat value="#{gameView.player.opponent.claimedMissions}" var="mission">
+                                                <sr:mission mission="#{mission}" opponentMission="true"/>
                                             </ui:repeat>
                                         </div>
                                     </div>

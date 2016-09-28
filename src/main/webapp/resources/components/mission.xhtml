@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<composite:interface>
+    <composite:attribute name="mission" required="true" type="org.smartreaction.starrealms.model.cards.missions.Mission"/>
+    <composite:attribute name="opponentMission" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup layout="block" styleClass="card" onmouseover="updateCardViewWithMission([{name:'missionName', value:'#{cc.attrs.mission.name}'}])">
+
+        <div class="cardInfo mission">
+            <div style="float: left;">
+                <h:outputText value="#{cc.attrs.mission.name}"/>
+            </div>
+            <div style="float: right;">
+                <p:commandLink value="Claim" style="position: relative; top: 3px;" styleClass="tinyButton"
+                               rendered="#{!cc.attrs.opponentMission and gameView.isShowClaimLink(cc.attrs.mission)}"
+                               actionListener="#{gameView.claimMission(cc.attrs.mission)}"/>
+            </div>
+        </div>
+
+    </h:panelGroup>
+
+</composite:implementation>
+
+</html>

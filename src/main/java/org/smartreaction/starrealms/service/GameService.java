@@ -28,6 +28,8 @@ import org.smartreaction.starrealms.model.cards.events.*;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
+import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.missions.united.*;
 import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.*;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
@@ -161,6 +163,11 @@ public class GameService {
         if (gameOptions.isIncludeUnitedHeroes()) {
             deck.addAll(getUnitedHeroes());
             game.getCardSets().add(CardSet.UNITED_HEROES);
+        }
+
+        if (gameOptions.isIncludeUnitedMissions()) {
+            addMissions(game);
+            game.getCardSets().add(CardSet.UNITED_MISSIONS);
         }
 
         if (gameOptions.isIncludeGambits()) {
@@ -665,6 +672,25 @@ public class GameService {
         return cards;
     }
 
+    public List<Mission> getUnitedMissions() {
+        List<Mission> missions = new ArrayList<>();
+
+        missions.add(new Ally());
+        missions.add(new Armada());
+        missions.add(new Colonize());
+        missions.add(new Convert());
+        missions.add(new Defend());
+        missions.add(new Diversify());
+        missions.add(new Dominate());
+        missions.add(new Exterminate());
+        missions.add(new Influence());
+        missions.add(new Monopolize());
+        missions.add(new Rule());
+        missions.add(new Unite());
+
+        return missions;
+    }
+
     public List<Gambit> getGambits() {
         List<Gambit> gambits = new ArrayList<>();
 
@@ -687,6 +713,20 @@ public class GameService {
         gambits.add(new UnlikelyAlliance());
 
         return gambits;
+    }
+
+    private void addMissions(Game game) {
+        List<Mission> missions = getUnitedMissions();
+
+        game.setAllMissions(missions);
+
+        Collections.shuffle(missions);
+
+        List<Mission> missionsForFirstPlayer = missions.subList(0, 3);
+        game.getPlayers().get(0).setMissions(missionsForFirstPlayer);
+
+        List<Mission> missionsForSecondPlayer = missions.subList(3, 6);
+        game.getPlayers().get(1).setMissions(missionsForSecondPlayer);
     }
 
     private void addGambits(Game game) {
@@ -1585,6 +1625,44 @@ public class GameService {
             case "hivlor":
                 return new HiveLord();
 
+            default:
+                return null;
+        }
+    }
+
+    public Mission getMissionByName(String missionName) {
+        if (missionName == null) {
+            return null;
+        }
+
+        missionName = missionName.replaceAll("\\s", "").toLowerCase();
+        missionName = missionName.replaceAll("'", "");
+
+        switch (missionName) {
+            case "ally":
+                return new Ally();
+            case "armada":
+                return new Armada();
+            case "colonize":
+                return new Colonize();
+            case "convert":
+                return new Convert();
+            case "defend":
+                return new Defend();
+            case "diversify":
+                return new Diversify();
+            case "dominate":
+                return new Dominate();
+            case "exterminate":
+                return new Exterminate();
+            case "influence":
+                return new Influence();
+            case "monopolize":
+                return new Monopolize();
+            case "rule":
+                return new Rule();
+            case "unite":
+                return new Unite();
             default:
                 return null;
         }

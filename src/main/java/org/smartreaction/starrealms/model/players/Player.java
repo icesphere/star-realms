@@ -17,6 +17,7 @@ import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
+import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
@@ -40,6 +41,7 @@ public abstract class Player {
     private List<Base> bases = new ArrayList<>();
     private List<Gambit> gambits = new ArrayList<>();
     private List<Hero> heroes = new ArrayList<>();
+    private List<Mission> missions = new ArrayList<>();
 
     private List<Card> cardsInHandBeforeShuffle = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public abstract class Player {
     private int tradeGainedThisTurn;
     private int combatGainedThisTurn;
     private int authorityGainedThisTurn;
-    private int shipsPlayedThisTurn;
+    private List<Card> shipsPlayedThisTurn = new ArrayList<>();
 
     private Set<Faction> factionsPlayedThisTurn = new HashSet<>();
     private Set<Faction> factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>();
@@ -148,10 +150,25 @@ public abstract class Player {
             getHand().addAll(cardsInHandBeforeShuffleCopy);
 
             drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
+
+            List<Mission> missionsToCopy = getClaimedMissions();
+
+            if (missionsToCopy.size() < 3) {
+                List<Mission> availableMissions = new ArrayList<>(getGame().getAllMissions());
+                availableMissions.removeAll(player.getOpponent().getMissions());
+                availableMissions.removeAll(missionsToCopy);
+
+                Collections.shuffle(availableMissions);
+
+                missionsToCopy.addAll(availableMissions.subList(0, 3 - missionsToCopy.size()));
+            }
+
+            getMissions().addAll(copyMissions(missionsToCopy));
         } else {
             getHand().addAll(copyCards(player.getHand()));
             getDeck().addAll(copyCards(player.getDeck()));
             Collections.shuffle(getDeck());
+            getMissions().addAll(copyMissions(player.getMissions()));
         }
 
         getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
@@ -190,7 +207,7 @@ public abstract class Player {
         tradeGainedThisTurn = player.getTradeGainedThisTurn();
         combatGainedThisTurn = player.getCombatGainedThisTurn();
         authorityGainedThisTurn = player.getAuthorityGainedThisTurn();
-        shipsPlayedThisTurn = player.getShipsPlayedThisTurn();
+        getShipsPlayedThisTurn().addAll(copyCards(player.getShipsPlayedThisTurn()));
 
         factionsPlayedThisTurn = new HashSet<>(player.getFactionsPlayedThisTurn());
         factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>(player.getFactionsWithAllyAbilitiesUsedThisTurn());
@@ -200,6 +217,13 @@ public abstract class Player {
         return cardsToCopy
                 .stream()
                 .map(Card::copyCardForSimulation)
+                .collect(toList());
+    }
+
+    private List<Mission> copyMissions(List<Mission> missionsToCopy) {
+        return missionsToCopy
+                .stream()
+                .map(Mission::copyMissionForSimulation)
                 .collect(toList());
     }
 
@@ -308,11 +332,7 @@ public abstract class Player {
         for (int i = 0; i < cards; i++) {
             if (deck.isEmpty()) {
                 cardsInHandBeforeShuffle.addAll(cardsDrawn);
-                deck.addAll(discard);
-                discard.clear();
-                addGameLog("Shuffling deck");
-                Collections.shuffle(deck);
-                shuffles++;
+                shuffleDiscardIntoDeck();
             }
 
             if (!deck.isEmpty()) {
@@ -327,6 +347,14 @@ public abstract class Player {
         }
 
         return cardsDrawn;
+    }
+
+    private void shuffleDiscardIntoDeck() {
+        deck.addAll(discard);
+        discard.clear();
+        addGameLog("Shuffling deck");
+        Collections.shuffle(deck);
+        shuffles++;
     }
 
     public void opponentDiscardsCard() {
@@ -397,7 +425,7 @@ public abstract class Player {
         tradeGainedThisTurn = 0;
         combatGainedThisTurn = 0;
         authorityGainedThisTurn = 0;
-        shipsPlayedThisTurn = 0;
+        shipsPlayedThisTurn.clear();
 
         factionsPlayedThisTurn.clear();
         factionsWithAllyAbilitiesUsedThisTurn.clear();
@@ -625,6 +653,8 @@ public abstract class Player {
 
     public abstract void makeChoice(ChoiceActionCard card, Choice... choices);
 
+    public abstract void makeChoice(ChoiceActionCard card, String text, Choice... choices);
+
     public void nextShipToTopOfDeck() {
         nextShipToTopOfDeck = true;
     }
@@ -788,7 +818,7 @@ public abstract class Player {
         }
 
         if (card.isShip()) {
-            shipsPlayedThisTurn++;
+            shipsPlayedThisTurn.add(card);
             if (allShipsAddOneCombat) {
                 addCombat(1);
             }
@@ -1283,7 +1313,7 @@ public abstract class Player {
         return authorityGainedThisTurn;
     }
 
-    public int getShipsPlayedThisTurn() {
+    public List<Card> getShipsPlayedThisTurn() {
         return shipsPlayedThisTurn;
     }
 
@@ -1297,5 +1327,51 @@ public abstract class Player {
 
     public Set<Faction> getFactionsWithAllyAbilitiesUsedThisTurn() {
         return factionsWithAllyAbilitiesUsedThisTurn;
+    }
+
+    public List<Card> revealTopCardsOfDeck(int cards) {
+        List<Card> revealedCards = new ArrayList<>();
+
+        if (deck.size() < cards) {
+            //todo account for cards in hand before shuffle list
+            shuffleDiscardIntoDeck();
+        }
+
+        if (deck.isEmpty()) {
+            addGameLog(playerName + " had no cards to reveal");
+        } else {
+            for (int i = 0; i < cards; i++) {
+                if (deck.size() < i+1) {
+                    addGameLog("No more cards to reveal");
+                } else {
+                    Card card = deck.get(i);
+                    addGameLog(playerName + " revealed " + card.getName() + " from top of deck");
+                    revealedCards.add(card);
+                }
+            }
+        }
+
+        return revealedCards;
+    }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setMissions(List<Mission> missions) {
+        this.missions = missions;
+    }
+
+    public List<Mission> getClaimedMissions() {
+        return missions.stream().filter(Mission::isMissionClaimed).collect(toList());
+    }
+
+    public List<Mission> getUnClaimedMissions() {
+        return missions.stream().filter(m -> !m.isMissionClaimed()).collect(toList());
+    }
+
+    public void claimMission(Mission mission) {
+        mission.setMissionClaimed(true);
+        mission.onMissionClaimed(this);
     }
 }

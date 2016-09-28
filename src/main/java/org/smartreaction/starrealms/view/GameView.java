@@ -13,6 +13,7 @@ import org.smartreaction.starrealms.model.cards.actions.SelectFromDiscardAction;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
+import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
 
@@ -42,6 +43,8 @@ public class GameView implements Serializable {
     GameService gameService;
 
     Card cardToView;
+
+    Mission missionToView;
 
     String chatMessage = "";
 
@@ -220,7 +223,15 @@ public class GameView implements Serializable {
     public void updateCardView() {
         Map<String, String> paramValues = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String cardName = paramValues.get("cardName");
+        missionToView = null;
         cardToView = gameService.getCardByName(cardName);
+    }
+
+    public void updateCardViewWithMission() {
+        Map<String, String> paramValues = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String missionName = paramValues.get("missionName");
+        cardToView = null;
+        missionToView = gameService.getMissionByName(missionName);
     }
 
     public void cardClicked() {
@@ -499,5 +510,18 @@ public class GameView implements Serializable {
         }
 
         return null;
+    }
+
+    public Mission getMissionToView() {
+        return missionToView;
+    }
+
+    public boolean isShowClaimLink(Mission mission) {
+        return getPlayer().isYourTurn() && !mission.isMissionClaimed() && mission.isMissionCompleted(getPlayer());
+    }
+
+    public void claimMission(Mission mission) {
+        getPlayer().claimMission(mission);
+        refreshGamePageForAll();
     }
 }

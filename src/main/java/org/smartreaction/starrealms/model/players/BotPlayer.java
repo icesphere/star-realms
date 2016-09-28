@@ -23,6 +23,9 @@ import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.*;
 import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
+import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.missions.united.Convert;
+import org.smartreaction.starrealms.model.cards.missions.united.Diversify;
 import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
@@ -156,6 +159,12 @@ public abstract class BotPlayer extends Player {
                     if (sortedBase.useBase(this)) {
                         endTurn = false;
                     }
+                }
+            }
+
+            for (Mission mission : getUnClaimedMissions()) {
+                if (mission.isMissionCompleted(this)) {
+                    claimMission(mission);
                 }
             }
 
@@ -351,6 +360,11 @@ public abstract class BotPlayer extends Player {
     public void makeChoice(ChoiceActionCard card, Choice... choices) {
         int choice = getChoice(card, choices);
         card.actionChoiceMade(this, choice);
+    }
+
+    @Override
+    public void makeChoice(ChoiceActionCard card, String text, Choice... choices) {
+        makeChoice(card, choices);
     }
 
     @Override
@@ -843,13 +857,40 @@ public abstract class BotPlayer extends Player {
     }
 
     public int getChoice(ChoiceActionCard card, Choice[] choices) {
-        //todo add in new cards
-
         int deck = getCurrentDeckNumber();
         int opponentAuthority = getOpponent().getAuthority();
 
-        if (card instanceof BarterWorld) {
-            if (deck < 3) {
+        if (card instanceof Convert) {
+            Convert convert = (Convert) card;
+
+            int bestChoice = 1;
+            int bestBuyScore = 0;
+
+            for (int i = 0; i < convert.getCardsRevealed().size(); i++) {
+                Card c = convert.getCardsRevealed().get(i);
+                int buyCardScore = getBuyCardScore(c);
+                if (buyCardScore > bestBuyScore) {
+                    bestBuyScore = buyCardScore;
+                    bestChoice = i + 1;
+                }
+            }
+
+            return bestChoice;
+        } else if (card instanceof Diversify) {
+            if (this.canOnlyDestroyBaseWithExtraCombat(2)) {
+                return 2;
+            }
+            if (opponentAuthority <= 2) {
+                return 2;
+            }
+            if (opponentAuthority < 10 && getAuthority() > 10) {
+                return 2;
+            }
+            if (deck < 3 && getAuthority() > 10) {
+                return 1;
+            }
+        } else if (card instanceof BarterWorld) {
+            if (deck < 3 && getAuthority() > 10) {
                 return 2;
             }
         } else if (card instanceof BlobWorld) {

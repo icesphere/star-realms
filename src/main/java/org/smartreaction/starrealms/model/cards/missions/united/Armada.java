@@ -13,7 +13,7 @@ public class Armada extends Mission {
 
     @Override
     public boolean isMissionCompleted(Player player) {
-        return player.getShipsPlayedThisTurn() >= 7;
+        return player.getShipsPlayedThisTurn().size() >= 7;
     }
 
     @Override

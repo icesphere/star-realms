@@ -26,6 +26,8 @@ public class GameOptions {
 
     private boolean includeUnitedHeroes = false;
 
+    private boolean includeUnitedMissions = false;
+
     private boolean includeGambits = false;
 
     private String startingTradeRowCards = "";
@@ -120,6 +122,14 @@ public class GameOptions {
         this.includeUnitedHeroes = includeUnitedHeroes;
     }
 
+    public boolean isIncludeUnitedMissions() {
+        return includeUnitedMissions;
+    }
+
+    public void setIncludeUnitedMissions(boolean includeUnitedMissions) {
+        this.includeUnitedMissions = includeUnitedMissions;
+    }
+
     public boolean isIncludeGambits() {
         return includeGambits;
     }
@@ -148,7 +158,7 @@ public class GameOptions {
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
                 includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedAssault,
-                includeUnitedCommand, includeUnitedHeroes, includeGambits, startingTradeRowCards);
+                includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, startingTradeRowCards);
     }
 
     @Override
@@ -170,6 +180,7 @@ public class GameOptions {
                 && Objects.equals(this.includeUnitedAssault, other.includeUnitedAssault)
                 && Objects.equals(this.includeUnitedCommand, other.includeUnitedCommand)
                 && Objects.equals(this.includeUnitedHeroes, other.includeUnitedHeroes)
+                && Objects.equals(this.includeUnitedMissions, other.includeUnitedMissions)
                 && Objects.equals(this.includeGambits, other.includeGambits)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);
     }

@@ -2,6 +2,7 @@ package org.smartreaction.starrealms.model.cards.missions.united;
 
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.missions.PlayShipWhileBaseInPlay;
 import org.smartreaction.starrealms.model.players.Player;
 
 public class Exterminate extends Mission {

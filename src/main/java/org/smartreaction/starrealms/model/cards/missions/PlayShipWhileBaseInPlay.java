@@ -1,4 +1,4 @@
-package org.smartreaction.starrealms.model.cards.missions.united;
+package org.smartreaction.starrealms.model.cards.missions;
 
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;

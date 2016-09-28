@@ -1371,6 +1371,7 @@ public abstract class Player {
     }
 
     public void claimMission(Mission mission) {
+        addGameLog(getPlayerName() + " completed the " + mission.getName() + " mission");
         mission.setMissionClaimed(true);
         mission.onMissionClaimed(this);
     }

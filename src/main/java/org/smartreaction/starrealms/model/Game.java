@@ -199,7 +199,8 @@ public class Game
         }
 
         for (Player player : players) {
-            if (player.getAuthority() <= 0) {
+            boolean completedAllMissions = cardSets.contains(CardSet.UNITED_MISSIONS) && player.getUnClaimedMissions().isEmpty();
+            if (player.getAuthority() <= 0 || completedAllMissions) {
                 gameOver();
                 return;
             }

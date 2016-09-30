@@ -18,9 +18,9 @@ public class StrategyBot extends BotPlayer {
     public StrategyBot(BotStrategy strategy, GameService gameService, Player player, Game game, boolean opponent) {
         this(strategy, gameService);
 
-        copyFromPlayerForSimulation(player, opponent);
-
         setGame(game);
+
+        copyFromPlayerForSimulation(player, opponent);
     }
 
     @Override

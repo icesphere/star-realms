@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.model.players;
 
+import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.TurnSummary;
@@ -151,28 +152,40 @@ public abstract class Player {
 
             drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
 
-            List<Mission> missionsToCopy = getClaimedMissions();
+            if (getGame().getCardSets().contains(CardSet.UNITED_MISSIONS)) {
+                List<Mission> missionsToCopy = getClaimedMissions();
 
-            if (missionsToCopy.size() < 3) {
-                List<Mission> availableMissions = new ArrayList<>(getGame().getAllMissions());
-                availableMissions.removeAll(player.getOpponent().getMissions());
-                availableMissions.removeAll(missionsToCopy);
+                if (missionsToCopy.size() < 3) {
+                    List<Mission> availableMissions = new ArrayList<>(getGame().getAllMissions());
+                    availableMissions.removeAll(player.getOpponent().getMissions());
+                    availableMissions.removeAll(missionsToCopy);
 
-                Collections.shuffle(availableMissions);
+                    Collections.shuffle(availableMissions);
 
-                missionsToCopy.addAll(availableMissions.subList(0, 3 - missionsToCopy.size()));
+                    missionsToCopy.addAll(availableMissions.subList(0, 3 - missionsToCopy.size()));
+                }
+
+                getMissions().addAll(copyMissions(missionsToCopy));
             }
-
-            getMissions().addAll(copyMissions(missionsToCopy));
         } else {
             getHand().addAll(copyCards(player.getHand()));
             getDeck().addAll(copyCards(player.getDeck()));
             Collections.shuffle(getDeck());
-            getMissions().addAll(copyMissions(player.getMissions()));
+            if (getGame().getCardSets().contains(CardSet.UNITED_MISSIONS)) {
+                getMissions().addAll(copyMissions(player.getMissions()));
+            }
         }
 
-        getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
         getInPlay().addAll(copyCards(player.getInPlay()));
+
+        List<Base> copyOfBases = new ArrayList<>();
+        for (Card card : getInPlay()) {
+            if (card instanceof Base) {
+                copyOfBases.add((Base) card);
+            }
+        }
+        getBases().addAll(copyOfBases);
+
         getPlayed().addAll(copyCards(player.getPlayed()));
         getHeroes().addAll((Collection<? extends Hero>) copyCards(player.getHeroes()));
         getGambits().addAll((Collection<? extends Gambit>) copyCards(player.getGambits()));

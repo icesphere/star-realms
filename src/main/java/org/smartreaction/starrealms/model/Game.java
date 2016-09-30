@@ -66,6 +66,7 @@ public class Game
         game.setCreateGameLog(false);
         game.setTrackAuthority(false);
         game.setSimulation(true);
+        game.setCardSets(new HashSet<>(cardSets));
         return game;
     }
 
@@ -330,6 +331,10 @@ public class Game
 
     public Set<CardSet> getCardSets() {
         return cardSets;
+    }
+
+    public void setCardSets(Set<CardSet> cardSets) {
+        this.cardSets = cardSets;
     }
 
     public String getGameId() {

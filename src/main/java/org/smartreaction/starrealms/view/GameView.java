@@ -26,7 +26,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -430,9 +429,9 @@ public class GameView implements Serializable {
 
     public List<Card> getCardsToShow() {
         if (shuffleCardsToShow) {
-            ArrayList<Card> shuffledCards = new ArrayList<>(cardsToShow);
-            Collections.shuffle(shuffledCards);
-            return shuffledCards;
+            ArrayList<Card> cards = new ArrayList<>(cardsToShow);
+            cards.stream().sorted((c1, c2) -> Integer.compare(c2.getCost(), c1.getCost()));
+            return cards;
         }
         return cardsToShow;
     }

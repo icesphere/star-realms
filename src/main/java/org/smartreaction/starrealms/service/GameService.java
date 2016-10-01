@@ -1757,7 +1757,9 @@ public class GameService {
     }
 
     public BotStrategy determineStrategyBasedOnCards(List<Card> cards) {
-        List<Card> nonStarterCards = cards.stream().filter(c -> !(c instanceof Scout) && !(c instanceof Viper)).collect(toList());
+        List<Card> nonStarterCards = cards.stream()
+                .filter(c -> !(c instanceof Scout) && !(c instanceof Viper) && !(c instanceof Explorer))
+                .collect(toList());
 
         double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards,
                 c -> c.hasFaction(Faction.BLOB)

@@ -381,10 +381,17 @@
                                                         linkText="PLAY ALL" actionMethod="#{gameView.playAll}"/>
                                 </h:panelGroup>
 
-                                <h:panelGroup layout="block" styleClass="turnButtonWrapper">
+                                <h:panelGroup layout="block" styleClass="turnButtonWrapper" rendered="#{gameView.showConfirmEndTurn}">
+                                    <p:commandLink process="@this" styleClass="turnButton" value="END TURN"
+                                                   onclick="if (!confirm('Are you sure you want to end your turn?')) return false"
+                                                   action="#{gameView.endTurn}"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="turnButtonWrapper" rendered="#{!gameView.showConfirmEndTurn}">
                                     <sr:linkWithSpinner process="@this" update=":gameForm:gamePage" styleClass="turnButton"
                                                         linkText="END TURN" actionMethod="#{gameView.endTurn}"/>
                                 </h:panelGroup>
+
                             </h:panelGroup>
 
                             <h:panelGroup layout="block" styleClass="turnButtonWrapper">

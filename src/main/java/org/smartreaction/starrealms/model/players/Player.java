@@ -1126,6 +1126,7 @@ public abstract class Player {
         turn++;
         addGameLog("");
         addGameLog("*** " + playerName + "'s Turn " + turn + " ***");
+        addGameLog("Deck: " + getCurrentDeckNumber());
 
         currentTurnSummary = new TurnSummary();
         currentTurnSummary.setGameTurn(getGame().getTurn());

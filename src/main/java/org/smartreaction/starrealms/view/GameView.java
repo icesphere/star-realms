@@ -14,6 +14,7 @@ import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
 
@@ -28,6 +29,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.smartreaction.starrealms.model.cards.Faction.*;
@@ -430,8 +432,9 @@ public class GameView implements Serializable {
     public List<Card> getCardsToShow() {
         if (shuffleCardsToShow) {
             ArrayList<Card> cards = new ArrayList<>(cardsToShow);
-            cards.stream().sorted((c1, c2) -> Integer.compare(c2.getCost(), c1.getCost()));
-            return cards;
+            return cards.stream()
+                    .sorted((c1, c2) -> Integer.compare(c2.getCost(), c1.getCost()))
+                    .collect(Collectors.toList());
         }
         return cardsToShow;
     }
@@ -522,5 +525,17 @@ public class GameView implements Serializable {
     public void claimMission(Mission mission) {
         getPlayer().claimMission(mission);
         refreshGamePageForAll();
+    }
+
+    public boolean isShowConfirmEndTurn() {
+        List<Card> availableCardsToBuy = new ArrayList<>(getPlayer().getGame().getTradeRow());
+        availableCardsToBuy.add(new Explorer());
+
+        Optional<Card> cheapestCard = availableCardsToBuy.stream()
+                .min((c1, c2) -> Integer.compare(c1.getCost(), c2.getCost()));
+
+        return (cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade())
+                || !getPlayer().getHand().isEmpty()
+                || getPlayer().getCombat() > 0;
     }
 }

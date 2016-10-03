@@ -303,8 +303,7 @@ public class GameView implements Serializable {
                         handleCardClickedForAction(card, source);
                     } else {
                         ((Base) card).useBase(player);
-                        sendGameMessageToAll("refresh_middle_section");
-                        sendGameMessageToAll("refresh_right_section");
+                        refreshGamePageForAll();
                     }
                 }
             }
@@ -407,7 +406,7 @@ public class GameView implements Serializable {
 
     public void attackOpponent() {
         getPlayer().attackOpponentWithRemainingCombat();
-        sendGameMessageToAll("refresh_middle_section");
+        refreshGamePageForAll();
     }
 
     public void showCards(List<Card> cards, String title, String source, boolean shuffle) {

@@ -33,7 +33,6 @@
             <p:remoteCommand name="refreshLeftSection" process="@this" update="leftSection"/>
             <p:remoteCommand name="refreshMiddleSection" process="@this" update="middleSection"/>
             <p:remoteCommand name="refreshRightSection" process="@this" update="rightSection"/>
-            <p:remoteCommand name="refreshGameLog" process="@this" update="gameLogSection"/>
             <p:remoteCommand name="refreshHand" process="@this" update="handSection"/>
             <p:remoteCommand name="refreshPlayArea" process="@this" update="playAreaSection"/>
             <p:remoteCommand name="refreshPlayerInfo" process="@this" update="playerInfoSection"/>
@@ -456,11 +455,20 @@
                             </div>
                         </h:panelGroup>
 
-                        <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection" style="#{gameView.opponent.bot ? '' : 'clear: both; float: left; margin-top: 15px;'}">
+                        <h:panelGroup layout="block" styleClass="gameLogSection" style="#{gameView.opponent.bot ? '' : 'clear: both; float: left; margin-top: 15px;'}">
                             <div style="padding-bottom: 5px;">
-                                <h:outputText value="Game Log" styleClass="sectionHeader"/>
+                                <h:outputText value="Recent Turns Log" styleClass="sectionHeader"/>
                             </div>
-                            <div class="gameLog" style="#{gameView.opponent.bot ? 'height: 530px;' : ''}">
+                            <div class="gameLog" style="#{gameView.opponent.bot ? 'height: 315px;' : ''}">
+                                <h:outputText value="#{gameView.game.recentTurnsLog}" escape="false"/>
+                            </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block" styleClass="gameLogSection" style="clear: both; float: left; margin-top: 15px;">
+                            <div style="padding-bottom: 5px;">
+                                <h:outputText value="Full Game Log" styleClass="sectionHeader"/>
+                            </div>
+                            <div class="gameLog" style="#{gameView.opponent.bot ? 'height: 200px;' : ''}">
                                 <h:outputText value="#{gameView.game.gameLog.toString()}" escape="false"/>
                             </div>
                         </h:panelGroup>
@@ -494,8 +502,6 @@
                     refreshHand();
                 } else if (message == 'refresh_play_area') {
                     refreshPlayArea();
-                } else if (message == 'refresh_game_log') {
-                    refreshGameLog();
                 } else if (message == 'refresh_player_info') {
                     refreshPlayerInfo();
                 } else if (message == 'refresh_turn_info') {

@@ -1,6 +1,7 @@
 package org.smartreaction.starrealms.model;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
@@ -38,6 +39,8 @@ public class Game
 
     private StringBuilder gameLog = new StringBuilder();
 
+    private StringBuilder currentTurnLog = new StringBuilder();
+
     private Map<String, TreeMap<Integer, Integer>> authorityByPlayerByTurn = new HashMap<>();
 
     private boolean trackAuthority = true;
@@ -51,6 +54,8 @@ public class Game
     private boolean simulation;
 
     private List<Mission> allMissions = new ArrayList<>();
+
+    private List<String> recentTurnLogs = new ArrayList<>();
 
     public Game() {
         gameId = UUID.randomUUID().toString();
@@ -215,6 +220,14 @@ public class Game
 
         turn++;
 
+        recentTurnLogs.add(currentTurnLog.toString());
+
+        currentTurnLog.setLength(0);
+
+        if (recentTurnLogs.size() > 1) {
+            recentTurnLogs.remove(0);
+        }
+
         if (!isGameOver() && !simulation) {
             startTurnInNewThreadIfComputerVsHuman();
         }
@@ -272,6 +285,7 @@ public class Game
         }
         if (createGameLog) {
             gameLog.append(log).append("<br/>");
+            currentTurnLog.append(log).append("<br/>");
         }
     }
 
@@ -372,5 +386,9 @@ public class Game
 
     public void setAllMissions(List<Mission> allMissions) {
         this.allMissions = allMissions;
+    }
+
+    public String getRecentTurnsLog() {
+        return currentTurnLog + StringUtils.join(recentTurnLogs, "");
     }
 }

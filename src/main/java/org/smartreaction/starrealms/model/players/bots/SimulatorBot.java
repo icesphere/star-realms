@@ -53,7 +53,7 @@ public class SimulatorBot extends BotPlayer {
             addGameLog("Best strategy was not found, using Velocity Strategy");
             bestStrategy = new VelocityStrategy();
         } else {
-            addGameLog("Best strategy: " + bestStrategy.getClass().getSimpleName());
+            addGameLog("<b>Best strategy: " + bestStrategy.getClass().getSimpleName() + "</b>");
         }
 
         this.strategy = bestStrategy;
@@ -92,7 +92,7 @@ public class SimulatorBot extends BotPlayer {
             addGameLog("Best card to buy was not found, using default buy score");
             return super.getCardsToBuy();
         } else {
-            addGameLog("Best card to buy: " + bestCardToBuy.getName());
+            addGameLog("<b>Best card to buy: " + bestCardToBuy.getName() + "</b>");
         }
 
         if (!(bestCardToBuy instanceof DoNotBuyCard)) {
@@ -135,8 +135,8 @@ public class SimulatorBot extends BotPlayer {
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
         Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
 
-        addGameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
-        addGameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
+        addGameLog("<b>Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage + "</b>");
+        addGameLog("<b>Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage + "</b>");
 
         return scrappingWinPercentage >= notScrappingWinPercentage;
     }
@@ -149,8 +149,8 @@ public class SimulatorBot extends BotPlayer {
         Float notUseHeroWinPercentage = useHeroResults.get(false);
         Float useHeroWinPercentage = useHeroResults.get(true);
 
-        addGameLog("Win percentage when not using hero" + hero.getName() + ": " + notUseHeroWinPercentage);
-        addGameLog("Win percentage when using hero " + hero.getName() + ": " + useHeroWinPercentage);
+        addGameLog("<b>Win percentage when not using hero" + hero.getName() + ": " + notUseHeroWinPercentage + "</b>");
+        addGameLog("<b>Win percentage when using hero " + hero.getName() + ": " + useHeroWinPercentage + "</b>");
 
         return useHeroWinPercentage >= notUseHeroWinPercentage;
     }
@@ -180,7 +180,7 @@ public class SimulatorBot extends BotPlayer {
             addGameLog("Best choice was not found, using default choice for strategy");
             return super.getChoice(choiceActionCard, choices);
         } else {
-            addGameLog("Best choice: " + bestChoice.getText());
+            addGameLog("<b>Best choice: " + bestChoice.getText() + "</b>");
         }
 
         return bestChoice.getChoiceNumber();

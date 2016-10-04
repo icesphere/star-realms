@@ -136,7 +136,7 @@
 }
 
 .gameLog {
-    height: 180px;
+    height: 150px;
     overflow: auto;
     padding-right: 5px;
 }
@@ -150,7 +150,7 @@
 }
 
 .chats {
-    height: 266px;
+    height: 200px;
     overflow: auto;
     padding-right: 5px;
 }

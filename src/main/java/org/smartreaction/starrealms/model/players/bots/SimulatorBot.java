@@ -32,7 +32,7 @@ public class SimulatorBot extends BotPlayer {
     private void useBestStrategy() {
         addGameLog("Simulator Bot determining best strategy");
 
-        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 100);
+        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 150);
 
         float bestWinPercentage = 0;
 
@@ -63,7 +63,7 @@ public class SimulatorBot extends BotPlayer {
     public List<Card> getCardsToBuy() {
         ArrayList<Card> cardsToBuy = new ArrayList<>();
 
-        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 500);
+        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 600);
 
         if (results.isEmpty()) {
             return cardsToBuy;
@@ -130,7 +130,7 @@ public class SimulatorBot extends BotPlayer {
             card = ((StealthTower) card).getCardBeingCopied();
         }
 
-        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 200, card);
+        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 300, card);
 
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
         Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
@@ -138,13 +138,13 @@ public class SimulatorBot extends BotPlayer {
         addGameLog("Win percentage when not scrapping " + card.getName() + ": " + notScrappingWinPercentage);
         addGameLog("Win percentage when scrapping " + card.getName() + ": " + scrappingWinPercentage);
 
-        return scrappingWinPercentage > notScrappingWinPercentage || scrappingWinPercentage >= 100;
+        return scrappingWinPercentage >= notScrappingWinPercentage;
     }
 
     @Override
     protected boolean shouldUseHero(Hero hero) {
         addGameLog("Simulator Bot determining whether or not to use hero " + hero.getName());
-        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 200, hero);
+        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 300, hero);
 
         Float notUseHeroWinPercentage = useHeroResults.get(false);
         Float useHeroWinPercentage = useHeroResults.get(true);
@@ -152,7 +152,7 @@ public class SimulatorBot extends BotPlayer {
         addGameLog("Win percentage when not using hero" + hero.getName() + ": " + notUseHeroWinPercentage);
         addGameLog("Win percentage when using hero " + hero.getName() + ": " + useHeroWinPercentage);
 
-        return useHeroWinPercentage > notUseHeroWinPercentage;
+        return useHeroWinPercentage >= notUseHeroWinPercentage;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class SimulatorBot extends BotPlayer {
 
         addGameLog("Simulator Bot determining best choice for " + card.getName());
 
-        Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 100, choiceActionCard, choices);
+        Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 300, choiceActionCard, choices);
 
         float bestWinPercentage = 0;
         

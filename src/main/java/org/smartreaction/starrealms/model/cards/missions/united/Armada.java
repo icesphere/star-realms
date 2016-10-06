@@ -19,7 +19,6 @@ public class Armada extends Mission {
     @Override
     public void onMissionClaimed(Player player) {
         player.drawCard();
-        player.setAddShipToHandForMission(true);
-        player.cardAcquired(new Explorer());
+        player.acquireCardToHand(new Explorer());
     }
 }

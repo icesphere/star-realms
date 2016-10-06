@@ -1978,7 +1978,7 @@ public class GameService {
         Game copiedGame = originalGame.copyGameForSimulation();
 
         BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
-        originalGame.gameLog("Opponent determined to be using " + opponentStrategy.getClass().getSimpleName());
+        originalGame.gameLog("<b>Opponent determined to be using " + opponentStrategy.getClass().getSimpleName() + "</b>");
 
         Map<BotStrategy, Float> strategyResults = new LinkedHashMap<>();
 

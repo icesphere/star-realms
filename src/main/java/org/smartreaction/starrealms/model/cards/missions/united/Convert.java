@@ -45,7 +45,7 @@ public class Convert extends Mission implements ChoiceActionCard {
         Card card = cardsRevealed.remove(choice - 1);
         if (cardsRevealed.size() == 2) {
             player.addGameLog(player.getPlayerName() + " chose to add " + card.getName() + " to their hand");
-            player.addCardToHand(card);
+            player.addCardToHand(card, false);
 
             player.makeChoice(this, "Choose one to put on top of your deck (the other card will go in your discard pile)",
                     new Choice(1, cardsRevealed.get(0).getName()),
@@ -53,7 +53,7 @@ public class Convert extends Mission implements ChoiceActionCard {
             );
         } else {
             player.addGameLog(player.getPlayerName() + " chose to put " + card.getName() + " on top of their deck");
-            player.addCardToTopOfDeck(card);
+            player.addCardToTopOfDeck(card, false);
 
             player.addGameLog(player.getPlayerName() + " chose to put " + card.getName() + " in their discard pile");
             player.addCardToDiscard(cardsRevealed.get(0));

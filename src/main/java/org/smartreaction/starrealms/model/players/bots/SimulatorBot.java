@@ -149,7 +149,7 @@ public class SimulatorBot extends BotPlayer {
         Float notUseHeroWinPercentage = useHeroResults.get(false);
         Float useHeroWinPercentage = useHeroResults.get(true);
 
-        addGameLog("<b>Win percentage when not using hero" + hero.getName() + ": " + notUseHeroWinPercentage + "</b>");
+        addGameLog("<b>Win percentage when not using hero " + hero.getName() + ": " + notUseHeroWinPercentage + "</b>");
         addGameLog("<b>Win percentage when using hero " + hero.getName() + ": " + useHeroWinPercentage + "</b>");
 
         return useHeroWinPercentage >= notUseHeroWinPercentage;

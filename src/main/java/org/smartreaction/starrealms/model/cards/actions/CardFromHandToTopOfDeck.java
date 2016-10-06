@@ -22,7 +22,7 @@ public class CardFromHandToTopOfDeck extends Action {
     public boolean processActionResult(Player player, ActionResult result) {
         Card card = result.getSelectedCard();
         player.getHand().remove(card);
-        player.addCardToTopOfDeck(card);
+        player.addCardToTopOfDeck(card, false);
         return true;
     }
 

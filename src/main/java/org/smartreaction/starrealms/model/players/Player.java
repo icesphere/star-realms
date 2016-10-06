@@ -119,7 +119,9 @@ public abstract class Player {
 
     private boolean waitingForComputer;
 
-    private boolean addShipToHandForMission;
+    private boolean acquireCardToTopOfDeck;
+
+    private boolean acquireCardToHand;
 
     protected Player() {
     }
@@ -351,7 +353,7 @@ public abstract class Player {
             if (!deck.isEmpty()) {
                 Card cardToDraw = deck.remove(0);
                 cardsDrawn.add(cardToDraw);
-                addCardToHand(cardToDraw);
+                addCardToHand(cardToDraw, false);
             }
         }
 
@@ -598,16 +600,43 @@ public abstract class Player {
 
     public abstract void optionallyScrapCardsInTradeRow(int cards);
 
+    public void acquireCardToTopOfDeck(Card card) {
+        acquireCardToTopOfDeck = true;
+        cardAcquired(card);
+    }
+
+    public void acquireCardToHand(Card card) {
+        acquireCardToHand = true;
+        cardAcquired(card);
+    }
+
     public void addCardToTopOfDeck(Card card) {
+        addCardToTopOfDeck(card, true);
+    }
+
+    public void addCardToTopOfDeck(Card card, boolean addGameLog) {
         if (card instanceof Hero) {
             heroes.add((Hero) card);
+            if (addGameLog) {
+                addGameLog("Added " + card.getName() + " to heroes");
+            }
         } else {
             deck.add(0, card);
+            if (addGameLog) {
+                addGameLog("Added " + card.getName() + " to top of deck");
+            }
         }
     }
 
     public void addCardToHand(Card card) {
+        addCardToHand(card, true);
+    }
+
+    public void addCardToHand(Card card, boolean addToGameLog) {
         hand.add(card);
+        if (addToGameLog) {
+            addGameLog("Added " + card.getName() + " to hand");
+        }
     }
 
     public void cardAcquired(Card card) {
@@ -618,12 +647,17 @@ public abstract class Player {
         cardsAcquiredInCurrentDeck.add(card);
         cardsAcquiredByDeck.put(getCurrentDeckNumber(), cardsAcquiredInCurrentDeck);
 
-        if ((card instanceof ColonySeedShip && factionPlayedThisTurn(Faction.TRADE_FEDERATION)) ||
+        if (acquireCardToHand) {
+            acquireCardToHand = false;
+            addCardToHand(card);
+        } else if (acquireCardToTopOfDeck) {
+            acquireCardToTopOfDeck = false;
+            addCardToTopOfDeck(card);
+        } else if ((card instanceof ColonySeedShip && factionPlayedThisTurn(Faction.TRADE_FEDERATION)) ||
                 (card instanceof EmperorsDreadnaught && factionPlayedThisTurn(Faction.STAR_EMPIRE)) ||
                 (card instanceof PlasmaVent && blobCardPlayedThisTurn()) ||
                 (card instanceof WarningBeacon && machineCultCardPlayedThisTurn())) {
             addCardToHand(card);
-            addGameLog("Added " + card.getName() + " to hand");
         } else if (card instanceof Hero) {
             Hero hero = (Hero) card;
             heroes.add(hero);
@@ -632,19 +666,13 @@ public abstract class Player {
             nextShipToTopOfDeck = false;
             nextShipOrBaseToTopOfDeck = false;
             addCardToTopOfDeck(card);
-        } else if (card.isShip() && (addShipToHandForMission || nextShipOrBaseToHand)) {
-            if (addShipToHandForMission) {
-                addShipToHandForMission = false;
-            } else {
-                nextShipOrBaseToHand = false;
-            }
+        } else if (card.isShip() && nextShipOrBaseToHand) {
+            nextShipOrBaseToHand = false;
             addCardToHand(card);
-            addGameLog("Added " + card.getName() + " to hand");
         } else if (card.isBase() && (nextBaseToHand || nextShipOrBaseToHand)) {
             nextBaseToHand = false;
             nextShipOrBaseToHand = false;
             addCardToHand(card);
-            addGameLog("Added " + card.getName() + " to hand");
         } else if (card.isBase() && nextShipOrBaseToTopOfDeck) {
             nextShipOrBaseToTopOfDeck = false;
             addCardToTopOfDeck(card);
@@ -1329,10 +1357,6 @@ public abstract class Player {
 
     public List<Card> getShipsPlayedThisTurn() {
         return shipsPlayedThisTurn;
-    }
-
-    public void setAddShipToHandForMission(boolean addShipToHandForMission) {
-        this.addShipToHandForMission = addShipToHandForMission;
     }
 
     public Set<Faction> getFactionsPlayedThisTurn() {

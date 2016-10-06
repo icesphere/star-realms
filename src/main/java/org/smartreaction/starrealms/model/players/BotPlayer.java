@@ -34,6 +34,7 @@ import org.smartreaction.starrealms.model.cards.ships.starempire.Falcon;
 import org.smartreaction.starrealms.model.cards.ships.starempire.ImperialFrigate;
 import org.smartreaction.starrealms.model.cards.ships.starempire.SurveyShip;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.CustomsFrigate;
+import org.smartreaction.starrealms.model.cards.ships.tradefederation.EmbassyYacht;
 import org.smartreaction.starrealms.model.cards.ships.united.UnityFighter;
 import org.smartreaction.starrealms.service.GameService;
 
@@ -420,6 +421,7 @@ public abstract class BotPlayer extends Player {
             }
 
             addCardToTopOfDeck(card);
+            cardAcquired(card);
         }
     }
 
@@ -432,7 +434,7 @@ public abstract class BotPlayer extends Player {
                 getGame().addCardToTradeRow();
             }
 
-            addCardToHand(card);
+            acquireCardToHand(card);
         }
     }
 
@@ -448,6 +450,7 @@ public abstract class BotPlayer extends Player {
             addGameLog(getPlayerName() + " acquired free " + card.getName() + " to top of deck");
 
             addCardToTopOfDeck(card);
+            cardAcquired(card);
         }
     }
 
@@ -610,8 +613,12 @@ public abstract class BotPlayer extends Player {
             return 10;
         } else if (card instanceof StealthNeedle) {
             return 8;
-        } else if (card instanceof Scout) {
+        } else if (card instanceof DefenseBot) {
+            return 7;
+        } else if (card instanceof EmbassyYacht) {
             return 6;
+        } else if (card instanceof Scout) {
+            return 5;
         } else if (card instanceof Viper) {
             return 4;
         } else {
@@ -1374,7 +1381,7 @@ public abstract class BotPlayer extends Player {
             for (Card card : sortedCards) {
                 if (cardsPutBack <= cardsToPutBack) {
                     getHand().remove(card);
-                    addCardToTopOfDeck(card);
+                    addCardToTopOfDeck(card, false);
                     cardsToPutBack++;
                 }
             }

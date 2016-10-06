@@ -30,7 +30,7 @@ public class DrawCardsAndPutSomeBackOnTopOfDeck extends Action {
     public boolean processAction(Player player) {
         cardsDrawn = player.drawCards(numCardsToDraw);
         if (cardsDrawn.size() < 3) {
-            cardsDrawn.forEach(player::addCardToTopOfDeck);
+            cardsDrawn.forEach(c -> player.addCardToTopOfDeck(c, false));
             return false;
         } else {
             return true;
@@ -40,7 +40,7 @@ public class DrawCardsAndPutSomeBackOnTopOfDeck extends Action {
     @Override
     public boolean processActionResult(Player player, ActionResult result) {
         if (result.isDoneWithAction()) {
-            selectedCards.forEach(player::addCardToTopOfDeck);
+            selectedCards.forEach(c -> player.addCardToTopOfDeck(c, false));
             return true;
         } else {
             Card selectedCard = result.getSelectedCard();

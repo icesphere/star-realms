@@ -265,7 +265,9 @@ public class Game
         try {
             File gameLogFile = getGameLogFile();
             gameLog.append("Game log file: ").append(gameLogFile.getAbsolutePath());
-            FileUtils.writeStringToFile(gameLogFile, gameLog.toString().replaceAll("<br/>", "\n"), "UTF-8");
+            FileUtils.writeStringToFile(gameLogFile,
+                    gameLog.toString().replaceAll("<br/>", "\n").replaceAll("<b>", "").replaceAll("</b>", ""),
+                    "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }

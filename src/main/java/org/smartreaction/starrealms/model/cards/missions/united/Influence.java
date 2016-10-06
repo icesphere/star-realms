@@ -37,9 +37,7 @@ public class Influence extends Mission {
 
     @Override
     public void onMissionClaimed(Player player) {
-        player.setAddShipToHandForMission(true);
-        player.cardAcquired(new Explorer());
-        player.setAddShipToHandForMission(true);
-        player.cardAcquired(new Explorer());
+        player.acquireCardToHand(new Explorer());
+        player.acquireCardToHand(new Explorer());
     }
 }

@@ -63,16 +63,17 @@ public class FreeCardFromTradeRow extends Action {
             player.getGame().getTradeRow().remove(card);
             player.getGame().addCardToTradeRow();
         }
+
+        player.addGameLog(player.getPlayerName() + " acquired a free card from the trade row: " + card.getName());
+
         if (destination.equals(Card.CARD_LOCATION_HAND)) {
-            player.addGameLog(player.getPlayerName() + " gained free card from trade row and put it in their hand: " + card.getName());
-            player.addCardToHand(card);
+            player.acquireCardToHand(card);
         } else if (destination.equals(Card.CARD_LOCATION_DECK)) {
-            player.addGameLog(player.getPlayerName() + " gained free card from trade row and put it on top of deck: " + card.getName());
-            player.addCardToTopOfDeck(card);
+            player.acquireCardToTopOfDeck(card);
         } else {
-            player.addGameLog(player.getPlayerName() + " acquired a free card from the trade row: " + card.getName());
             player.cardAcquired(card);
         }
+
         return true;
     }
 

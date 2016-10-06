@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.missions.united.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
@@ -53,7 +54,7 @@ public class Game
 
     private boolean simulation;
 
-    private List<Mission> allMissions = new ArrayList<>();
+    private List<Mission> allMissions = null;
 
     private List<String> recentTurnLogs = new ArrayList<>();
 
@@ -383,11 +384,24 @@ public class Game
     }
 
     public List<Mission> getAllMissions() {
-        return allMissions;
-    }
+        if (allMissions == null) {
+            allMissions = new ArrayList<>();
+            
+            allMissions.add(new Ally());
+            allMissions.add(new Armada());
+            allMissions.add(new Colonize());
+            allMissions.add(new Convert());
+            allMissions.add(new Defend());
+            allMissions.add(new Diversify());
+            allMissions.add(new Dominate());
+            allMissions.add(new Exterminate());
+            allMissions.add(new Influence());
+            allMissions.add(new Monopolize());
+            allMissions.add(new Rule());
+            allMissions.add(new Unite());
+        }
 
-    public void setAllMissions(List<Mission> allMissions) {
-        this.allMissions = allMissions;
+        return allMissions;
     }
 
     public String getRecentTurnsLog() {

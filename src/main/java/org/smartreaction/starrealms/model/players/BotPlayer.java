@@ -1089,7 +1089,7 @@ public abstract class BotPlayer extends Player {
 
     public Card getCardToScrapFromDiscard(boolean optional) {
         if (!getDiscard().isEmpty()) {
-            List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
+            List<Card> sortedCards = getDiscard().stream().sorted(scrapScoreDescending).collect(toList());
             Card card = sortedCards.get(0);
             if (optional && getScrapCardScore(card) < 20) {
                 return null;
@@ -1279,6 +1279,10 @@ public abstract class BotPlayer extends Player {
     }
 
     public Card chooseCardFromDiscardToAddToTopOfDeck() {
+        if (getDiscard().isEmpty()) {
+            return null;
+        }
+
         List<Card> sortedCards = getDiscard().stream().sorted(cardToBuyScoreDescending).collect(toList());
 
         Card card = sortedCards.get(0);

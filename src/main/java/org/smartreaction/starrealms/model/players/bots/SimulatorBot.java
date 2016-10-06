@@ -186,6 +186,12 @@ public class SimulatorBot extends BotPlayer {
         return bestChoice.getChoiceNumber();
     }
 
+    @Override
+    public List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards) {
+        //todo
+        return super.getCardsToOptionallyScrapFromDiscardOrHand(cards);
+    }
+
     public BotStrategy getStrategy() {
         return strategy;
     }

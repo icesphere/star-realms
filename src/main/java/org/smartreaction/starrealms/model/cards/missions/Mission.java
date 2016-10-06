@@ -2,6 +2,8 @@ package org.smartreaction.starrealms.model.cards.missions;
 
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.Objects;
+
 public abstract class Mission {
     protected String name;
 
@@ -61,5 +63,18 @@ public abstract class Mission {
 
     public void setMissionClaimed(boolean missionClaimed) {
         this.missionClaimed = missionClaimed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mission mission = (Mission) o;
+        return Objects.equals(name, mission.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

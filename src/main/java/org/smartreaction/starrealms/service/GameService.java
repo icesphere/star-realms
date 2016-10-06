@@ -718,8 +718,6 @@ public class GameService {
     private void addMissions(Game game) {
         List<Mission> missions = getUnitedMissions();
 
-        game.setAllMissions(missions);
-
         Collections.shuffle(missions);
 
         List<Mission> missionsForFirstPlayer = missions.subList(0, 3);

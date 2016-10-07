@@ -586,7 +586,16 @@ public abstract class Player {
                 gambits.remove(card);
             }
             playerCardScrapped(card);
-            ((ScrappableCard) card).cardScrapped(this);
+
+            if (card instanceof StealthNeedle) {
+                StealthNeedle stealthNeedle = (StealthNeedle) card;
+                ((ScrappableCard) stealthNeedle.getCardBeingCopied()).cardScrapped(this);
+            } else if (card instanceof StealthTower) {
+                StealthTower stealthTower = (StealthTower) card;
+                ((ScrappableCard) stealthTower.getCardBeingCopied()).cardScrapped(this);
+            } else {
+                ((ScrappableCard) card).cardScrapped(this);
+            }
 
             for (Card c : inPlay) {
                 allyCardIfAvailable(c);

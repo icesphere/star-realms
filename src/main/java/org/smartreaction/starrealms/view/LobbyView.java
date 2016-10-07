@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.view;
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.smartreaction.starrealms.model.ChatMessage;
+import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.service.GameService;
 import org.smartreaction.starrealms.service.LoggedInUsers;
@@ -29,18 +30,32 @@ public class LobbyView implements Serializable {
 
     String chatMessage = "";
 
+    private String gameOptionsError;
+
     public List<User> getUsers() {
         return loggedInUsers.getActiveUsers();
     }
 
     public String startAutoMatch() {
-        //todo figure out why game options are getting cleared out
-        gameService.autoMatchUser(userSession.getUser());
-        gameService.refreshLobby(userSession.getUser().getUsername());
-        if (userSession.getUser().getCurrentGame() != null) {
-            return "game.xhtml?faces-redirect=true";
+        if (validGameOptions(userSession.getUser().getGameOptions())) {
+            gameService.autoMatchUser(userSession.getUser());
+            gameService.refreshLobby(userSession.getUser().getUsername());
+            if (userSession.getUser().getCurrentGame() != null) {
+                return "game.xhtml?faces-redirect=true";
+            }
         }
+
         return null;
+    }
+
+    private boolean validGameOptions(GameOptions gameOptions) {
+        gameOptionsError = null;
+
+        if (!gameOptions.isIncludeBaseSet() && !gameOptions.isIncludeColonyWars()) {
+            gameOptionsError = "You need to select Base Set or Colony Wars";
+        }
+
+        return gameOptionsError == null;
     }
 
     public String playAgainstComputer() {
@@ -86,5 +101,9 @@ public class LobbyView implements Serializable {
     @SuppressWarnings("UnusedDeclaration")
     public void setUserSession(UserSession userSession) {
         this.userSession = userSession;
+    }
+
+    public String getGameOptionsError() {
+        return gameOptionsError;
     }
 }

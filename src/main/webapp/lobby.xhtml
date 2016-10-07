@@ -105,6 +105,10 @@
                         </h:panelGroup>
                     </h:panelGroup>
 
+                    <h:panelGroup layout="block" rendered="#{!empty lobbyView.gameOptionsError}" style="padding-top: 15px;">
+                        <h:outputText value="#{lobbyView.gameOptionsError}" styleClass="errorText"/>
+                    </h:panelGroup>
+
                     <h:panelGroup layout="block" id="lobbyButtons" style="padding-top: 15px;">
                         <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}"
                                        rendered="#{!userSession.user.autoMatch and !userSession.user.gameOptions.playAgainstComputer}"

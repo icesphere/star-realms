@@ -10,8 +10,8 @@ import java.util.Set;
 public class Rule extends Mission {
     public Rule() {
         name = "Rule";
-        objectiveText = "Have bases from two or more factions in play";
-        rewardText = "Acquire a card of cost 3 or less for free and put it into your hand";
+        objectiveText = "Have bases from two or more factions in play.";
+        rewardText = "Acquire a card of cost 3 or less for free and put it into your hand.";
     }
 
     @Override
@@ -20,8 +20,7 @@ public class Rule extends Mission {
         Set<Faction> factionsWithBaseInPlay = new HashSet<>();
 
         player.getBases().forEach(c -> {
-            Set<Faction> factions = c.getFactions();
-            factions.forEach(factionsWithBaseInPlay::add);
+            c.getFactions().forEach(factionsWithBaseInPlay::add);
         });
 
         return player.getBases().size() >=2 && factionsWithBaseInPlay.size() >= 2;

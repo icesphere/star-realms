@@ -8,8 +8,8 @@ import org.smartreaction.starrealms.model.players.Player;
 public class Diversify extends Mission implements ChoiceActionCard {
     public Diversify() {
         name = "Diversify";
-        objectiveText = "In a single turn, gain: 4 Trade and 5 Combat and 3 Authority";
-        rewardText = "4 Trade or 5 Combat or 6 Authority";
+        objectiveText = "In a single turn, gain: 4 Trade and 5 Combat and 3 Authority.";
+        rewardText = "4 Trade or 5 Combat or 6 Authority.";
     }
 
     @Override

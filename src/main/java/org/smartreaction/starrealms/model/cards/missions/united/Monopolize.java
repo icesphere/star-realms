@@ -9,7 +9,7 @@ public class Monopolize extends Mission {
     public Monopolize() {
         name = "Monopolize";
         objectiveText = "Play a Trade Federation ship while you have a Trade Federation base in play.";
-        rewardText = "Add 10 Authority";
+        rewardText = "Add 10 Authority.";
     }
 
     @Override

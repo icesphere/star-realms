@@ -40,6 +40,7 @@ public class LoggedInUsers {
     }
 
     public boolean isUsernameInUse(String username) {
+        clearOutInactiveUsers();
         return users.stream().anyMatch(u -> u.getUsername().equalsIgnoreCase(username));
     }
 

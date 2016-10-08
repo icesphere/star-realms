@@ -123,6 +123,8 @@ public abstract class Player {
 
     private boolean acquireCardToHand;
 
+    private boolean missionClaimedThisTurn;
+
     protected Player() {
     }
 
@@ -415,6 +417,8 @@ public abstract class Player {
         turns++;
 
         firstTurn = false;
+
+        missionClaimedThisTurn = false;
 
         if (cardToBuyThisTurn != null && cardToBuyThisTurn instanceof DoNotBuyCard) {
             boughtSpecifiedCardOnFirstTurn = true;
@@ -1419,7 +1423,12 @@ public abstract class Player {
 
     public void claimMission(Mission mission) {
         addGameLog(getPlayerName() + " completed the " + mission.getName() + " mission");
+        missionClaimedThisTurn = true;
         mission.setMissionClaimed(true);
         mission.onMissionClaimed(this);
+    }
+
+    public boolean isMissionClaimedThisTurn() {
+        return missionClaimedThisTurn;
     }
 }

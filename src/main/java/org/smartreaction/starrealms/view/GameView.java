@@ -518,7 +518,10 @@ public class GameView implements Serializable {
     }
 
     public boolean isShowClaimLink(Mission mission) {
-        return getPlayer().isYourTurn() && !mission.isMissionClaimed() && mission.isMissionCompleted(getPlayer());
+        return getPlayer().isYourTurn()
+                && !getPlayer().isMissionClaimedThisTurn()
+                && !mission.isMissionClaimed()
+                && mission.isMissionCompleted(getPlayer());
     }
 
     public void claimMission(Mission mission) {
@@ -533,8 +536,9 @@ public class GameView implements Serializable {
         Optional<Card> cheapestCard = availableCardsToBuy.stream()
                 .min((c1, c2) -> Integer.compare(c1.getCost(), c2.getCost()));
 
-        return (cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade())
-                || !getPlayer().getHand().isEmpty()
-                || getPlayer().getCombat() > 0;
+        boolean gameOver = getOpponent().getAuthority() <= 0 || getGame().allMissionsCompleted(getPlayer());
+
+        return !gameOver && ((cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade()) || !getPlayer().getHand().isEmpty() || getPlayer().getCombat() > 0);
+
     }
 }

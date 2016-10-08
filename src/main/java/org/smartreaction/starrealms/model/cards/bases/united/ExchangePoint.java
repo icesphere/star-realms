@@ -17,6 +17,7 @@ public class ExchangePoint extends Base implements AlliableCard {
         text = "Add 2 Combat; Ally: Scrap a card in your hand, your discard pile, or the trade row";
         allFactionsAlliedTogether = true;
         autoAlly = false;
+        autoUse = true;
     }
 
     @Override

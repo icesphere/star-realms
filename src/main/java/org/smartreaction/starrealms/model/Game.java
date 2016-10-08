@@ -206,7 +206,7 @@ public class Game
         }
 
         for (Player player : players) {
-            boolean completedAllMissions = cardSets.contains(CardSet.UNITED_MISSIONS) && player.getUnClaimedMissions().isEmpty();
+            boolean completedAllMissions = allMissionsCompleted(player);
             if (player.getAuthority() <= 0 || completedAllMissions) {
                 gameOver();
                 return;
@@ -234,6 +234,10 @@ public class Game
         }
     }
 
+    public boolean allMissionsCompleted(Player player) {
+        return cardSets.contains(CardSet.UNITED_MISSIONS) && player.getUnClaimedMissions().isEmpty();
+    }
+
     private void gameOver() {
         gameOver = true;
         gameLog("-----------------------------");
@@ -249,6 +253,10 @@ public class Game
             String playerName = player.getPlayerName();
             gameLog(playerName + "'s cards: ");
             player.getAllCards().forEach(c -> gameLog(c.getName()));
+            if (cardSets.contains(CardSet.UNITED_MISSIONS)) {
+                gameLog(playerName + "'s missions:");
+                player.getMissions().forEach(m -> gameLog(m.getName()));
+            }
         }
 
         if (!simulation) {

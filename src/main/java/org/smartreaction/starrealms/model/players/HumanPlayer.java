@@ -111,12 +111,12 @@ public class HumanPlayer extends Player {
         } else {
             text = "Choose a free ship from the trade row to put on top of your deck";
         }
-        addAction(new FreeCardFromTradeRow(maxCost, text, Card.CARD_LOCATION_DECK, true));
+        addAction(new FreeCardFromTradeRow(maxCost, text, Card.CARD_LOCATION_DECK, true, false));
     }
 
     @Override
-    public void acquireFreeCardToHand(int maxCost) {
-        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost, Card.CARD_LOCATION_HAND));
+    public void acquireFreeCardToHand(int maxCost, boolean includeHeroes) {
+        addAction(new FreeCardFromTradeRow(maxCost, "Acquire a free card from the trade row to your hand costing up to " + maxCost, Card.CARD_LOCATION_HAND, false, includeHeroes));
     }
 
     @Override

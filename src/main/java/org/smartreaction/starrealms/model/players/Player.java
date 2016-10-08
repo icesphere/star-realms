@@ -939,7 +939,7 @@ public abstract class Player {
 
     public abstract void acquireFreeShipToTopOfDeck(Integer maxCost);
 
-    public abstract void acquireFreeCardToHand(int maxCost);
+    public abstract void acquireFreeCardToHand(int maxCost, boolean includeHeroes);
 
     public List<Gambit> getGambits() {
         return gambits;

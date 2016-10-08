@@ -27,6 +27,6 @@ public class Leviathan extends Ship implements AlliableCard
 
     @Override
     public void cardAllied(Player player, Faction faction) {
-        player.acquireFreeCardToHand(3);
+        player.acquireFreeCardToHand(3, false);
     }
 }

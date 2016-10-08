@@ -26,6 +26,6 @@ public class Moonwurm extends Ship implements AlliableCard
 
     @Override
     public void cardAllied(Player player, Faction faction) {
-        player.acquireFreeCardToHand(2);
+        player.acquireFreeCardToHand(2, false);
     }
 }

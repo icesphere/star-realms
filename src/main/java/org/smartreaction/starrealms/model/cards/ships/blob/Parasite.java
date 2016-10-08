@@ -37,8 +37,8 @@ public class Parasite extends Ship implements AlliableCard, ChoiceActionCard
 
     @Override
     public void actionChoiceMade(Player player, int choice) {
-        player.getGame().gameLog("Chose Add 6 Combat");
         if (choice == 1) {
+            player.getGame().gameLog("Chose Add 6 Combat");
             player.addCombat(6);
         } else if (choice == 2) {
             player.getGame().gameLog("Chose Acquire a card of six or less for free");

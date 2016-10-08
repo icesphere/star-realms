@@ -23,7 +23,7 @@ public class FrontierStation extends Outpost implements ChoiceActionCard
     public void baseUsed(Player player)
     {
         Choice choice1 = new Choice(1, "Add 2 Trade");
-        Choice choice2 = new Choice(1, "Add 3 Combat");
+        Choice choice2 = new Choice(2, "Add 3 Combat");
 
         player.makeChoice(this, choice1, choice2);
     }

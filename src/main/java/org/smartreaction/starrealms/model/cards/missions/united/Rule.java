@@ -28,6 +28,6 @@ public class Rule extends Mission {
 
     @Override
     public void onMissionClaimed(Player player) {
-        player.acquireFreeCardToHand(3);
+        player.acquireFreeCardToHand(3, false);
     }
 }

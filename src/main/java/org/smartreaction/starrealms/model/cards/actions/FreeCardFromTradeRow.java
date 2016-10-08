@@ -12,6 +12,8 @@ public class FreeCardFromTradeRow extends Action {
 
     private boolean onlyShips;
 
+    private boolean includeHeroes;
+
     public FreeCardFromTradeRow(Integer maxCost, String text) {
         this.maxCost = maxCost;
         this.text = text;
@@ -24,18 +26,19 @@ public class FreeCardFromTradeRow extends Action {
         this.destination = destination;
     }
 
-    public FreeCardFromTradeRow(Integer maxCost, String text, String destination, boolean onlyShips) {
+    public FreeCardFromTradeRow(Integer maxCost, String text, String destination, boolean onlyShips, boolean includeHeroes) {
         this.maxCost = maxCost;
         this.text = text;
         this.destination = destination;
         this.onlyShips = onlyShips;
+        this.includeHeroes = includeHeroes;
     }
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
         return (cardLocation.equals(Card.CARD_LOCATION_EXPLORERS) || cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW))
                 && (maxCost == null || (card.getCost() <= maxCost))
-                && (card.isShip() || card.isBase())
+                && (includeHeroes || card.isShip() || card.isBase())
                 && (!onlyShips || card.isShip());
     }
 

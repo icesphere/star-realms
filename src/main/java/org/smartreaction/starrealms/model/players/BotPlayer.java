@@ -400,7 +400,7 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void acquireFreeCard(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost, false);
+        Card card = chooseFreeCardToAcquire(maxCost, false, false);
         if (card != null) {
             if (!(card instanceof Explorer)) {
                 getGame().getTradeRow().remove(card);
@@ -413,7 +413,7 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void acquireFreeCardToTopOfDeck(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost, false);
+        Card card = chooseFreeCardToAcquire(maxCost, false, false);
         if (card != null) {
             if (!(card instanceof Explorer)) {
                 getGame().getTradeRow().remove(card);
@@ -426,8 +426,8 @@ public abstract class BotPlayer extends Player {
     }
 
     @Override
-    public void acquireFreeCardToHand(int maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost, false);
+    public void acquireFreeCardToHand(int maxCost, boolean includeHeroes) {
+        Card card = chooseFreeCardToAcquire(maxCost, false, includeHeroes);
         if (card != null) {
             if (!(card instanceof Explorer)) {
                 getGame().getTradeRow().remove(card);
@@ -440,7 +440,7 @@ public abstract class BotPlayer extends Player {
 
     @Override
     public void acquireFreeShipToTopOfDeck(Integer maxCost) {
-        Card card = chooseFreeCardToAcquire(maxCost, true);
+        Card card = chooseFreeCardToAcquire(maxCost, true, false);
         if (card != null) {
             if (!(card instanceof Explorer)) {
                 getGame().getTradeRow().remove(card);
@@ -1293,14 +1293,14 @@ public abstract class BotPlayer extends Player {
         return null;
     }
 
-    public Card chooseFreeCardToAcquire(Integer maxCost, boolean onlyShips) {
+    public Card chooseFreeCardToAcquire(Integer maxCost, boolean onlyShips, boolean includeHeroes) {
         if (!getGame().getTradeRow().isEmpty()) {
             List<Card> cardsToChooseFrom = new ArrayList<>(getGame().getTradeRow());
             cardsToChooseFrom.add(getGame().getExplorer());
 
             List<Card> sortedCards = cardsToChooseFrom.stream()
                     .filter(c -> (maxCost == null || c.getCost() <= maxCost)
-                            && (c.isShip() || c.isBase())
+                            && (includeHeroes || c.isShip() || c.isBase())
                             && (!onlyShips || c.isShip()))
                     .sorted(cardToBuyScoreDescending).collect(toList());
 

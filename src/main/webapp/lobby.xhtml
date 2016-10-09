@@ -7,14 +7,14 @@
 <ui:composition template="/templates/commonLayout.xhtml">
 
     <ui:define name="head">
-        <h:outputStylesheet name="lobby.css" library="css" />
+        <h:outputStylesheet name="lobby.css" library="css"/>
 
         <script>
-            $( document ).ready(function() {
+            $(document).ready(function () {
                 setTimeout(scrollChat, 500);
             });
 
-            function scrollChat () {
+            function scrollChat() {
                 var chats = $('#chats');
                 chats.scrollTop(chats.prop('scrollHeight'));
             }
@@ -24,82 +24,183 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="lobbyForm">
+        <h:form id="lobbyForm" styleClass="lobby">
 
             <p:remoteCommand name="refreshLobby" process="@form" update="@form"/>
             <p:remoteCommand name="refreshChat" process="@form" update="@form" oncomplete="scrollChat()"/>
 
             <h:messages styleClass="errorText"/>
 
-            <div class="lobbyPage">
-                <div class="lobbyHeader">
-                    <h:outputText value="Logged in Users"/>
-                </div>
-                <h:dataTable value="#{lobbyView.users}" var="user">
-                    <h:column>
-                        <h:outputText value="#{user.username}" style="padding-right: 10px;"/>
-                        <p:commandLink process="@this" update="lobbyForm" value="Logout" action="#{userSession.logout}"
-                                       rendered="#{user.username eq userSession.user.username}"/>
-                        <h:outputText value="#{lobbyView.getUserStatus(user)}"
-                                      rendered="#{user.username ne userSession.user.username}"/>
-                    </h:column>
-                </h:dataTable>
+            <h:panelGroup layout="block" styleClass="lobbyPage">
+
+                <h:panelGroup id="lobbyAndChatSection" layout="block" styleClass="lobbyUserAndChatSection">
+
+                    <h:panelGroup layout="block" styleClass="lobbyUserSection">
+                        <h:outputText value="Online Users" styleClass="lobbyHeader"/>
+                        <h:dataTable value="#{lobbyView.users}" var="user" styleClass="lobbyUserSectionUsers">
+                            <h:column>
+                                <h:outputText
+                                        value="#{user.username} #{user.username eq userSession.user.username ? '(You)' : ''}"
+                                        styleClass="lobbyUserSectionUsersUser"/>
+                                <p:commandLink value="Invite to game" styleClass="smallButton"
+                                               rendered="#{user.username ne userSession.user.username
+                                                             and !user.autoMatch and user.currentGame eq null
+                                                             and user.invitee eq null and user.inviteeRequested eq null
+                                                             and userSession.user.invitee eq null
+                                                             and userSession.user.inviteeRequested eq null}"
+                                               action="#{lobbyView.inviteMatch(user)}"/>
+                                <h:outputText value="#{lobbyView.getUserStatus(user)}"
+                                              styleClass="lobbyUserSectionUsersUserStatus"
+                                              rendered="#{user.username ne userSession.user.username}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" styleClass="lobbyChatSection">
+                        <h:panelGroup id="chatSection" layout="block" styleClass="chatSection">
+                            <h:outputText value="Lobby Chat" styleClass="lobbyHeader"/>
+                            <h:panelGroup layout="block" id="chats" class="chats">
+                                <ui:repeat value="#{lobbyView.chatMessages}" var="chatMessage">
+                                    <h:panelGroup layout="block" style="padding-top: 5px;">
+                                        <h:outputText value="("/>
+                                        <h:outputText value="#{chatMessage.messageDate}">
+                                            <f:convertDateTime pattern="HH:mm:ss"/>
+                                        </h:outputText>
+                                        <h:outputText value=")" style="padding-right: 5px;"/>
+                                        <h:outputText value="#{chatMessage.username}:" style="font-weight: bold"/>
+                                        <h:outputText value="#{chatMessage.message}" style="padding-left: 10px;"/>
+                                    </h:panelGroup>
+                                </ui:repeat>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" style="padding-top: 10px;">
+                                <p:inputText value="#{lobbyView.chatMessage}" style="margin-right: 5px; width: 300px;"/>
+                                <p:commandButton value="Send" process="chatSection" update="chatSection"
+                                                 actionListener="#{lobbyView.sendChatMessage}"
+                                                 oncomplete="scrollChat()"/>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                </h:panelGroup>
 
                 <h:panelGroup rendered="#{!userSession.user.autoMatch}">
 
-                    <div style="padding-top: 20px;">
-                        <p:outputLabel value="Use Custom Game Options:" style="padding-right: 10px;"/>
-                        <p:selectBooleanButton value="#{userSession.user.gameOptions.customGameOptions}" onLabel="Yes" offLabel="No">
-                            <p:ajax process="@form" update="@form"/>
-                        </p:selectBooleanButton>
-                    </div>
+                    <p:commandLink value="Game Options" oncomplete="PF('gameOptionsDialog').show()"
+                                   styleClass="lobbyButton" style="position: absolute; bottom: 70px; border-radius: 10px;"/>
 
-                    <h:panelGroup rendered="#{userSession.user.gameOptions.customGameOptions}" layout="block" style="padding-top: 5px;">
-                        <h:panelGroup id="gameOptions" layout="block">
-                            <h:panelGrid columns="2" columnClasses="boldText smallRightPadding smallBottomPadding alignMiddle, smallBottomPadding alignMiddle">
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="lobbyLogoutAndAutoMatch">
+                    <h:panelGroup layout="block" id="buttonsSection">
+                        <p:commandLink styleClass="lobbyButton"
+                                       style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px;"
+                                       rendered="#{!userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null}"
+                                       action="#{lobbyView.startAutoMatch}"
+                                       process="@form" update="@form" value="Auto Match"/>
+                        <p:commandLink styleClass="lobbyButton"
+                                       style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px; animation:transparencyAnimation 1s linear infinite"
+                                       rendered="#{userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null}"
+                                       value="Waiting for Auto Match, press here to cancel"
+                                       action="#{lobbyView.cancelAutoMatch}"
+                                       process="@form" update="@form"/>
+
+                        <p:commandLink styleClass="lobbyButton"
+                                       style="width: calc(70% - 35px); border-bottom-left-radius: 20px;height:100%;margin-right: 2px; padding: 15px; animation:transparencyAnimation 1s linear infinite"
+                                       rendered="#{userSession.user.invitee ne null}"
+                                       value="Accept game invite from #{userSession.user.invitee.username}"
+                                       process="@form"
+                                       action="#{lobbyView.startInviteMatch()}"/>
+
+                        <p:commandLink value="Cancel game invite to #{userSession.user.inviteeRequested.username}"
+                                       styleClass="lobbyLogoutButton"
+                                       style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px;"
+                                       rendered="#{userSession.user.inviteeRequested ne null}"
+                                       action="#{lobbyView.cancelInviteMatch()}"/>
+
+                        <p:commandLink styleClass="lobbyLogoutButton"
+                                       style="width: calc(30% - 35px); height:100%; padding: 15px; animation:transparencyAnimation 1s linear infinite"
+                                       rendered="#{userSession.user.invitee ne null}"
+                                       value="Decline game invite from #{userSession.user.invitee.username}"
+                                       action="#{lobbyView.cancelInviteMatch()}"/>
+
+                        <p:commandLink process="@this" styleClass="lobbyLogoutButton"
+                                       style="width: calc(30% - 35px); border-bottom-right-radius: 20px; height:100%; float: right; padding: 15px;"
+                                       update="lobbyForm" value="Logout" action="#{userSession.logout}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+            </h:panelGroup>
+
+            <p:dialog header="Game Options" widgetVar="gameOptionsDialog" styleClass="gameOptionsDialog"
+                      modal="true" closable="true" resizable="true">
+
+                <h:panelGroup id="gameOptions" layout="block" style="padding: 10px;">
+
+                    <h:panelGroup layout="block">
+                        <h:panelGroup layout="block">
+                            <h:panelGrid columns="2"
+                                         columnClasses="boldText smallRightPadding smallBottomPadding alignMiddle, smallBottomPadding alignMiddle">
                                 <p:outputLabel value="Base Set: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeBaseSet}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeBaseSet}">
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"/>
+                                </p:selectBooleanButton>
 
                                 <p:outputLabel value="Colony Wars: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeColonyWars}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeColonyWars}">
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"/>
+                                </p:selectBooleanButton>
 
                                 <p:outputLabel value="Year One Promos: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeYearOnePromos}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeYearOnePromos}"/>
 
                                 <p:outputLabel value="Crisis - Bases &amp; Battleships: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisBasesAndBattleships}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeCrisisBasesAndBattleships}"/>
 
                                 <p:outputLabel value="Crisis - Events: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisEvents}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeCrisisEvents}"/>
 
                                 <p:outputLabel value="Crisis - Heroes: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisHeroes}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeCrisisHeroes}"/>
 
                                 <p:outputLabel value="Crisis - Fleets &amp; Fortresses: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeCrisisFleetsAndFortresses}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeCrisisFleetsAndFortresses}"/>
 
                                 <p:outputLabel value="United - Assault: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeUnitedAssault}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeUnitedAssault}"/>
 
                                 <p:outputLabel value="United - Command: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeUnitedCommand}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeUnitedCommand}"/>
 
                                 <p:outputLabel value="United - Heroes: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeUnitedHeroes}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeUnitedHeroes}"/>
 
                                 <p:outputLabel value="United - Missions: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeUnitedMissions}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeUnitedMissions}"/>
 
                                 <p:outputLabel value="Gambits: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.includeGambits}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.includeGambits}"/>
 
                                 <p:outputLabel value="Play Against Computer: "/>
-                                <p:selectBooleanButton onLabel="Yes" offLabel="No" value="#{userSession.user.gameOptions.playAgainstComputer}">
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                                       value="#{userSession.user.gameOptions.playAgainstComputer}">
                                     <p:ajax process="@form" update="@form"/>
                                 </p:selectBooleanButton>
                             </h:panelGrid>
                             <div style="padding-top: 15px;">
-                                <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):" style="padding-right: 10px;"/>
+                                <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):"
+                                              style="padding-right: 10px;"/>
                                 <h:inputText value="#{userSession.user.gameOptions.startingTradeRowCards}"/>
                             </div>
                         </h:panelGroup>
@@ -109,60 +210,21 @@
                         <h:outputText value="#{lobbyView.gameOptionsError}" styleClass="errorText"/>
                     </h:panelGroup>
 
-                    <h:panelGroup layout="block" id="lobbyButtons" style="padding-top: 15px;">
-                        <p:commandLink styleClass="lobbyButton" action="#{lobbyView.startAutoMatch}"
-                                       rendered="#{!userSession.user.autoMatch and !userSession.user.gameOptions.playAgainstComputer}"
-                                       process="@form" update="@form" value="Auto Match"/>
-
-                        <sr:linkWithSpinner styleClass="lobbyButton" actionMethod="#{lobbyView.playAgainstComputer}"
-                                       rendered="#{!userSession.user.autoMatch and userSession.user.gameOptions.playAgainstComputer}"
-                                       process="@form" update="@form" linkText="Play Against Computer"/>
-                    </h:panelGroup>
-                </h:panelGroup>
-
-                <h:panelGroup rendered="#{userSession.user.autoMatch}">
-                    <div style="padding-top: 20px;">
-                        <h:outputText value="Waiting for Auto Match..." rendered="#{userSession.user.autoMatch}"/>
-                        <p:commandLink value="Cancel" process="@form" update="@form" style="margin-left: 15px;"
-                                       actionListener="#{userSession.user.setAutoMatch(false)}"/>
-                    </div>
-                </h:panelGroup>
-
-                <div style="padding-top: 20px; clear:both;">
-
-                    <div class="lobbyHeader">
-                        <h:outputText value="Lobby Chat"/>
-                    </div>
-
-                    <h:panelGroup id="chatSection" layout="block" styleClass="chatSection">
-
-                        <div id="chats" class="chats">
-                            <ui:repeat value="#{lobbyView.chatMessages}" var="chatMessage">
-                                <div style="padding-top: 10px;">
-                                    <h:outputText value="#{chatMessage.username}:"/>
-                                    <h:outputText value="#{chatMessage.message}" style="padding-left: 10px;"/>
-                                    <h:outputText value="(" style="padding-left: 10px;"/>
-                                    <h:outputText value="#{chatMessage.messageDate}">
-                                        <f:convertDateTime pattern="HH:mm:ss" />
-                                    </h:outputText>
-                                    <h:outputText value=")"/>
-                                </div>
-                            </ui:repeat>
-                        </div>
-                        <div style="padding-top: 10px;">
-                            <p:inputText value="#{lobbyView.chatMessage}" style="margin-right: 10px;"/>
-                            <p:commandButton value="Send" process="chatSection" update="chatSection"
-                                             actionListener="#{lobbyView.sendChatMessage}" oncomplete="scrollChat()"/>
-                        </div>
-
+                    <h:panelGroup layout="block" style="padding-top: 15px;" rendered="#{empty lobbyView.gameOptionsError}">
+                        <p:commandLink process="gameOptions" update="gameOptions" value="Save"
+                                       listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"
+                                       styleClass="lobbyButton" style="border-radius: 10px; color: white"
+                                       oncomplete="PF('gameOptionsDialog').hide()"/>
                     </h:panelGroup>
 
-                </div>
+                </h:panelGroup>
 
-            </div>
+            </p:dialog>
+
         </h:form>
 
-        <p:socket onMessage="handleLobbyMessage" channel="/game/lobby/#{userSession.user.username}" autoConnect="true" widgetVar='lobbyMessageSubscriber' />
+        <p:socket onMessage="handleLobbyMessage" channel="/game/lobby/#{userSession.user.username}" autoConnect="true"
+                  widgetVar='lobbyMessageSubscriber'/>
 
         <script type="text/javascript">
             function handleLobbyMessage(response) {
@@ -178,6 +240,8 @@
                         refreshLobby();
                     } else if (response.message == 'refresh_chat') {
                         refreshChat();
+                    } else if (response.message == 'refresh_buttons') {
+                        refreshButtons();
                     }
                 }
             }

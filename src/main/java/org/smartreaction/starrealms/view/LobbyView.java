@@ -37,7 +37,7 @@ public class LobbyView implements Serializable {
     }
 
     public String startAutoMatch() {
-        if (validGameOptions(userSession.getUser().getGameOptions())) {
+        if (validateGameOptions(userSession.getUser().getGameOptions())) {
             gameService.autoMatchUser(userSession.getUser());
             gameService.refreshLobby(userSession.getUser().getUsername());
             if (userSession.getUser().getCurrentGame() != null) {
@@ -48,7 +48,12 @@ public class LobbyView implements Serializable {
         return null;
     }
 
-    private boolean validGameOptions(GameOptions gameOptions) {
+    public void cancelAutoMatch() {
+        gameService.cancelAutoMatch(userSession.getUser());
+        gameService.refreshLobby(userSession.getUser().getUsername());
+    }
+
+    public boolean validateGameOptions(GameOptions gameOptions) {
         gameOptionsError = null;
 
         if (!gameOptions.isIncludeBaseSet() && !gameOptions.isIncludeColonyWars()) {
@@ -66,6 +71,14 @@ public class LobbyView implements Serializable {
     public String getUserStatus(User user) {
         if (user.getCurrentGame() != null) {
             return "(playing game with " + user.getCurrentPlayer().getOpponent().getPlayerName() + ")";
+        }
+
+        if(user.getInvitee() != null) {
+            return "(was invited by "+user.getInvitee().getUsername()+")";
+        }
+
+        if(user.getInviteeRequested() != null) {
+            return "(invited "+user.getInviteeRequested().getUsername()+" to play)";
         }
 
         PrettyTime p = new PrettyTime();
@@ -105,5 +118,20 @@ public class LobbyView implements Serializable {
 
     public String getGameOptionsError() {
         return gameOptionsError;
+    }
+
+    public String startInviteMatch() {
+        gameService.startInviteMatch(userSession.getUser());
+        return "game.xhtml?faces-redirect=true";
+    }
+
+    public void cancelInviteMatch() {
+        gameService.cancelInviteMatch(userSession.getUser());
+        gameService.refreshLobby(userSession.getUser().getUsername());
+    }
+
+    public void inviteMatch(User opponent) {
+        gameService.inviteMatchUser(userSession.getUser(), opponent);
+        gameService.refreshLobby(userSession.getUser().getUsername());
     }
 }

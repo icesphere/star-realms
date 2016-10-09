@@ -12,6 +12,9 @@ public class User {
 
     private Player currentPlayer;
 
+    private User invitee;
+    private User inviteeRequested;
+
     private boolean autoMatch;
 
     private Instant lastActivity = Instant.now();
@@ -40,6 +43,22 @@ public class User {
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public User getInvitee() {
+        return invitee;
+    }
+
+    public User getInviteeRequested() {
+        return inviteeRequested;
+    }
+
+    public void setInviteeRequested(User inviteeRequested) {
+        this.inviteeRequested = inviteeRequested;
+    }
+
+    public void setInvitee(User invitee) {
+        this.invitee = invitee;
     }
 
     public boolean isAutoMatch() {

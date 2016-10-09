@@ -2426,4 +2426,46 @@ public class GameService {
 
         return result;
     }
+
+    public void startInviteMatch(User user) {
+        synchronized(matchUserLock) {
+            createGame(user, user.getInvitee(), user.getGameOptions());
+            sendLobbyMessage(user.getUsername(), user.getInvitee().getUsername(), "game_started");
+            user.getInvitee().setInvitee(null);
+            user.getInvitee().setInviteeRequested(null);
+            user.setInvitee(null);
+            user.setInviteeRequested(null);
+        }
+    }
+
+    public void inviteMatchUser(User user, User opponent) {
+        synchronized(matchUserLock) {
+            user.setAutoMatch(false);
+            opponent.setAutoMatch(false);
+
+            opponent.setInvitee(user);
+            user.setInviteeRequested(opponent);
+        }
+    }
+
+    public void cancelInviteMatch(User user) {
+        try {
+            user.getInviteeRequested().setInvitee(null);
+            user.getInviteeRequested().setInviteeRequested(null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            user.getInvitee().setInvitee(null);
+            user.getInvitee().setInviteeRequested(null);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        user.setInvitee(null);
+        user.setInviteeRequested(null);
+    }
+
+    public void cancelAutoMatch(User user) {
+        user.setAutoMatch(false);
+    }
 }

@@ -16,6 +16,7 @@ public class FighterBase extends Outpost implements AlliableCard
         set = CardSet.CRISIS_BASES_AND_BATTLESHIPS;
         shield = 5;
         text = "Ally: Target opponent discards a card";
+        autoUse = true;
     }
 
     @Override

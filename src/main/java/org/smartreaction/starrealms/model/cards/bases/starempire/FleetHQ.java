@@ -15,6 +15,7 @@ public class FleetHQ extends Base
         set = CardSet.CORE;
         shield = 8;
         text = "All of your ships get \"Add 1 Combat\"";
+        autoUse = true;
     }
 
     @Override

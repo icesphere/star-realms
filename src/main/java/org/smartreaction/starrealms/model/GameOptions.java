@@ -1,5 +1,9 @@
 package org.smartreaction.starrealms.model;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GameOptions {
@@ -183,5 +187,64 @@ public class GameOptions {
                 && Objects.equals(this.includeUnitedMissions, other.includeUnitedMissions)
                 && Objects.equals(this.includeGambits, other.includeGambits)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);
+    }
+
+    @Override
+    public String toString() {
+        List<String> selected = new ArrayList<>();
+
+        if (includeBaseSet) {
+            selected.add("Base Set");
+        }
+
+        if (includeColonyWars) {
+            selected.add("Colony Wars");
+        }
+
+        if (includeYearOnePromos) {
+            selected.add("Year One Promos");
+        }
+
+        if (includeCrisisBasesAndBattleships) {
+            selected.add("Crisis: Bases & Battleships");
+        }
+
+        if (includeCrisisEvents) {
+            selected.add("Crisis: Events");
+        }
+
+        if (includeCrisisFleetsAndFortresses) {
+            selected.add("Crisis: Fleets & Fortresses");
+        }
+
+        if (includeCrisisHeroes) {
+            selected.add("Crisis: Heroes");
+        }
+
+        if (includeUnitedAssault) {
+            selected.add("United: Assault");
+        }
+
+        if (includeUnitedCommand) {
+            selected.add("United: Command");
+        }
+
+        if (includeUnitedHeroes) {
+            selected.add("United: Heroes");
+        }
+
+        if (includeUnitedMissions) {
+            selected.add("United: Missions");
+        }
+
+        if (includeGambits) {
+            selected.add("Gambits");
+        }
+
+        if (!StringUtils.isBlank(startingTradeRowCards)) {
+            selected.add("Starting Trade Row Cards: " + startingTradeRowCards);
+        }
+
+        return StringUtils.join(selected, ";");
     }
 }

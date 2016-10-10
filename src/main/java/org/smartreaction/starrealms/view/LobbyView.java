@@ -37,7 +37,7 @@ public class LobbyView implements Serializable {
     }
 
     public String startAutoMatch() {
-        if (validateGameOptions(userSession.getUser().getGameOptions())) {
+        if (validateGameOptions()) {
             gameService.autoMatchUser(userSession.getUser());
             gameService.refreshLobby(userSession.getUser().getUsername());
             if (userSession.getUser().getCurrentGame() != null) {
@@ -53,7 +53,9 @@ public class LobbyView implements Serializable {
         gameService.refreshLobby(userSession.getUser().getUsername());
     }
 
-    public boolean validateGameOptions(GameOptions gameOptions) {
+    public boolean validateGameOptions() {
+        GameOptions gameOptions = userSession.getUser().getGameOptions();
+
         gameOptionsError = null;
 
         if (!gameOptions.isIncludeBaseSet() && !gameOptions.isIncludeColonyWars()) {
@@ -85,7 +87,11 @@ public class LobbyView implements Serializable {
         String lastActivity = p.format(Date.from(user.getLastActivity()));
 
         if (user.isAutoMatch()) {
-            return "(waiting for auto match: " + lastActivity + ")";
+            String autoMatchInfo = "(waiting for auto match: " + lastActivity + ")";
+            if (user.getGameOptions().isCustomGameOptions()) {
+                autoMatchInfo += " - options: " + user.getGameOptions().toString();
+            }
+            return autoMatchInfo;
         }
 
         return "(last activty: " + lastActivity + ")";

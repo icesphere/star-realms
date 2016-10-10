@@ -94,9 +94,14 @@
                     <h:panelGroup layout="block" id="buttonsSection">
                         <p:commandLink styleClass="lobbyButton"
                                        style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px;"
-                                       rendered="#{!userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null}"
+                                       rendered="#{!userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null and !userSession.user.gameOptions.playAgainstComputer}"
                                        action="#{lobbyView.startAutoMatch}"
                                        process="@form" update="@form" value="Auto Match"/>
+                        <p:commandLink styleClass="lobbyButton"
+                                       style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px;"
+                                       rendered="#{!userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null and userSession.user.gameOptions.playAgainstComputer}"
+                                       action="#{lobbyView.playAgainstComputer}"
+                                       process="@form" update="@form" value="Play Computer"/>
                         <p:commandLink styleClass="lobbyButton"
                                        style="width: calc(70% - 35px); border-bottom-left-radius: 20px; height:100%; padding: 15px; animation:transparencyAnimation 1s linear infinite"
                                        rendered="#{userSession.user.autoMatch and userSession.user.invitee eq null and userSession.user.inviteeRequested eq null}"
@@ -132,24 +137,38 @@
             </h:panelGroup>
 
             <p:dialog header="Game Options" widgetVar="gameOptionsDialog" styleClass="gameOptionsDialog"
-                      modal="true" closable="true" resizable="true">
+                      modal="true" closable="false" resizable="true">
 
                 <h:panelGroup id="gameOptions" layout="block" style="padding: 10px;">
 
-                    <h:panelGroup layout="block">
+                    <div style="text-align: left; padding-bottom: 20px;">
+                        <p:outputLabel value="Use Custom Game Options:"
+                                       style="padding-right: 10px;"
+                                       styleClass="boldText smallRightPadding smallBottomPadding alignMiddle"/>
+                        <p:selectBooleanButton value="#{userSession.user.gameOptions.customGameOptions}" onLabel="Yes" offLabel="No"
+                                               styleClass="smallBottomPadding alignMiddle">
+                            <p:ajax process="gameOptions" update="gameOptions"/>
+                        </p:selectBooleanButton>
+                    </div>
+
+                    <h:panelGroup layout="block" rendered="#{!empty lobbyView.gameOptionsError}" style="padding-bottom: 15px;">
+                        <h:outputText value="#{lobbyView.gameOptionsError}" styleClass="errorText"/>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" rendered="#{userSession.user.gameOptions.customGameOptions}">
                         <h:panelGroup layout="block">
                             <h:panelGrid columns="2"
                                          columnClasses="boldText smallRightPadding smallBottomPadding alignMiddle, smallBottomPadding alignMiddle">
                                 <p:outputLabel value="Base Set: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
                                                        value="#{userSession.user.gameOptions.includeBaseSet}">
-                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"/>
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions}"/>
                                 </p:selectBooleanButton>
 
                                 <p:outputLabel value="Colony Wars: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
                                                        value="#{userSession.user.gameOptions.includeColonyWars}">
-                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"/>
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions}"/>
                                 </p:selectBooleanButton>
 
                                 <p:outputLabel value="Year One Promos: "/>
@@ -194,9 +213,7 @@
 
                                 <p:outputLabel value="Play Against Computer: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
-                                                       value="#{userSession.user.gameOptions.playAgainstComputer}">
-                                    <p:ajax process="@form" update="@form"/>
-                                </p:selectBooleanButton>
+                                                       value="#{userSession.user.gameOptions.playAgainstComputer}"/>
                             </h:panelGrid>
                             <div style="padding-top: 15px;">
                                 <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):"
@@ -211,8 +228,7 @@
                     </h:panelGroup>
 
                     <h:panelGroup layout="block" style="padding-top: 15px;" rendered="#{empty lobbyView.gameOptionsError}">
-                        <p:commandLink process="gameOptions" update="gameOptions" value="Save"
-                                       listener="#{lobbyView.validateGameOptions(userSession.user.gameOptions)}"
+                        <p:commandLink process="@form" update="@form" value="Done"
                                        styleClass="lobbyButton" style="border-radius: 10px; color: white"
                                        oncomplete="PF('gameOptionsDialog').hide()"/>
                     </h:panelGroup>

@@ -488,7 +488,7 @@ public class GameView implements Serializable {
     }
 
     public boolean isShowScrapLink(Card card, String cardLocation) {
-        return getPlayer().isYourTurn() && card.isScrappable() &&
+        return getPlayer().isYourTurn() && card.isScrappable() && getAction() == null &&
                 (cardLocation.equals(Card.CARD_LOCATION_PLAY_AREA) ||
                         cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES) ||
                         cardLocation.equals(Card.CARD_LOCATION_PLAYER_HEROES) ||

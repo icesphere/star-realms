@@ -29,10 +29,7 @@ import org.smartreaction.starrealms.model.cards.missions.united.Diversify;
 import org.smartreaction.starrealms.model.cards.ships.*;
 import org.smartreaction.starrealms.model.cards.ships.blob.Parasite;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.*;
-import org.smartreaction.starrealms.model.cards.ships.starempire.AgingBattleship;
-import org.smartreaction.starrealms.model.cards.ships.starempire.Falcon;
-import org.smartreaction.starrealms.model.cards.ships.starempire.ImperialFrigate;
-import org.smartreaction.starrealms.model.cards.ships.starempire.SurveyShip;
+import org.smartreaction.starrealms.model.cards.ships.starempire.*;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.CustomsFrigate;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.EmbassyYacht;
 import org.smartreaction.starrealms.model.cards.ships.united.UnityFighter;
@@ -351,6 +348,7 @@ public abstract class BotPlayer extends Player {
         List<Card> cardsToDiscard = getCardsToDiscard(numCardsToDiscard, false);
 
         if (!cardsToDiscard.isEmpty()) {
+            cardsToDiscard.forEach(this::discardCardFromHand);
             card.cardsDiscarded(this, cardsToDiscard);
         } else {
             card.onChoseDoNotUse(this);
@@ -488,7 +486,7 @@ public abstract class BotPlayer extends Player {
             attackOpponentWithRemainingCombat();
         }
 
-        if (getCombat() > 0 && !getOpponent().getBases().isEmpty()) {
+        if (getCombat() > 0 && getOpponent().getOutposts().isEmpty() && !getOpponent().getBases().isEmpty()) {
             List<Base> sortedBases = getOpponent().getBases().stream().sorted(attackBaseScoreDescending).collect(toList());
             for (Base base : sortedBases) {
                 if (getAttackBaseScore(base) > 0 && getCombat() >= base.getShield()) {
@@ -613,14 +611,18 @@ public abstract class BotPlayer extends Player {
             return 10;
         } else if (card instanceof StealthNeedle) {
             return 8;
-        } else if (card instanceof DefenseBot) {
+        } else if (card instanceof MegaMech) {
+            return 7;
+        } else if (card instanceof BattleBarge) {
             return 7;
         } else if (card instanceof EmbassyYacht) {
             return 6;
-        } else if (card instanceof Scout) {
+        } else if (card instanceof DefenseBot) {
             return 5;
-        } else if (card instanceof Viper) {
+        } else if (card instanceof Scout) {
             return 4;
+        } else if (card instanceof Viper) {
+            return 3;
         } else {
             return 20;
         }
@@ -746,7 +748,7 @@ public abstract class BotPlayer extends Player {
 
         int deck = getCurrentDeckNumber();
 
-        if (numOpponentOutposts == 0 && card.getCombatWhenScrapped() >= opponentAuthority) {
+        if (numOpponentOutposts == 0 && getTotalCombatIfAllCardsInPlayScrapped() >= opponentAuthority) {
             return 10;
         }
 
@@ -809,7 +811,7 @@ public abstract class BotPlayer extends Player {
             return 5;
         }
 
-        if (getHand().isEmpty() && card.getCombatWhenScrapped() > 0 && canOnlyDestroyBaseWithExtraCombat(card.getCombatWhenScrapped())) {
+        if (getHand().isEmpty() && getTotalCombatIfAllCardsInPlayScrapped() > 0 && canOnlyDestroyBaseWithExtraCombat(card.getCombatWhenScrapped())) {
             return 5;
         }
 
@@ -832,9 +834,9 @@ public abstract class BotPlayer extends Player {
 
         int numOpponentOutposts = getOpponent().getOutposts().size();
 
-        if (numOpponentOutposts == 0 && hero.getCombatWhenScrapped() >= opponentAuthority) {
+        if (numOpponentOutposts == 0 && getTotalCombatIfAllCardsInPlayScrapped() >= opponentAuthority) {
             return 10;
-        } else if (getUnusedBasesAndOutposts().isEmpty() && getCombat() < getSmallestOutpostShield() && (getCombat() + hero.getCombatWhenScrapped()) >= getSmallestOutpostShield()) {
+        } else if (getUnusedBasesAndOutposts().isEmpty() && getCombat() < getSmallestOutpostShield() && (getCombat() + getTotalCombatIfAllCardsInPlayScrapped()) >= getSmallestOutpostShield()) {
             return 10;
         }
 

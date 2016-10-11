@@ -80,8 +80,15 @@ public class GameService {
         }
 
         List<Player> players = new ArrayList<>(2);
-        players.add(player1);
-        players.add(player2);
+
+        if (user1.getGameOptions().getPlayerOrder().equals("second")
+                || user2.getGameOptions().getPlayerOrder().equals("first")) {
+            players.add(player2);
+            players.add(player1);
+        } else {
+            players.add(player1);
+            players.add(player2);
+        }
 
         user1.setCurrentPlayer(player1);
         user1.setCurrentGame(game);
@@ -94,7 +101,10 @@ public class GameService {
 
         players.forEach(p -> p.setGame(game));
 
-        Collections.shuffle(players);
+        if (user1.getGameOptions().getPlayerOrder().equals("random")
+                && user2.getGameOptions().getPlayerOrder().equals("random")) {
+            Collections.shuffle(players);
+        }
 
         game.setPlayers(players);
 

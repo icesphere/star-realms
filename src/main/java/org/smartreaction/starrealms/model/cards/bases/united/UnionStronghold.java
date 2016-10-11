@@ -17,6 +17,7 @@ public class UnionStronghold extends Base implements AlliableCard {
         text = "Add 3 Combat; Ally Blob: Scrap a card in the trade row; Ally Star Empire: Target opponent discards a card";
         autoAlly = true;
         addAutoAllyExcludedFaction(Faction.BLOB);
+        autoUse = true;
     }
 
     @Override

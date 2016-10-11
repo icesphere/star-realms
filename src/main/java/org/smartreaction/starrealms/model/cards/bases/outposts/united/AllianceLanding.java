@@ -17,6 +17,7 @@ public class AllianceLanding extends Outpost implements AlliableCard {
         text = "Add 2 Trade; Ally: Add 2 Combat";
         allFactionsAlliedTogether = true;
         autoAlly = true;
+        autoUse = true;
     }
 
     @Override

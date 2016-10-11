@@ -17,6 +17,7 @@ public class UnionCluster extends Base implements AlliableCard {
         text = "Add 4 Combat; Ally: Draw a card";
         allFactionsAlliedTogether = true;
         autoAlly = false;
+        autoUse = true;
     }
 
     @Override

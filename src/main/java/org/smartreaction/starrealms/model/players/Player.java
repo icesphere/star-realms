@@ -1431,4 +1431,17 @@ public abstract class Player {
     public boolean isMissionClaimedThisTurn() {
         return missionClaimedThisTurn;
     }
+
+    public int getTotalCombatIfAllCardsInPlayScrapped() {
+        return getInPlayAndHeroes().stream()
+                .filter(c -> c.getCombatWhenScrapped() > 0)
+                .mapToInt(Card::getCombatWhenScrapped)
+                .sum();
+    }
+
+    public List<Card> getInPlayAndHeroes() {
+        List<Card> cards = new ArrayList<>(inPlay);
+        cards.addAll(heroes);
+        return cards;
+    }
 }

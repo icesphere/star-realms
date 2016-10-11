@@ -16,6 +16,7 @@ public class BattleStation extends Outpost implements ScrappableCard
         set = CardSet.CORE;
         shield = 5;
         text = "Scrap: Add 5 Combat";
+        autoUse = true;
     }
 
     @Override

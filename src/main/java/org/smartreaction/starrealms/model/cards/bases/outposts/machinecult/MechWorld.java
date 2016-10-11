@@ -15,6 +15,7 @@ public class MechWorld extends Outpost
         set = CardSet.CORE;
         shield = 6;
         text = "Mech World counts as an ally for all factions";
+        autoUse = true;
     }
 
     @Override

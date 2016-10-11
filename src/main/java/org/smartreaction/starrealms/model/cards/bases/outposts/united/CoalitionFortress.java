@@ -19,6 +19,7 @@ public class CoalitionFortress extends Outpost implements AlliableCard, ChoiceAc
         text = "Add 2 Trade; Ally: Add 2 Combat or Add 3 Authority";
         allFactionsAlliedTogether = true;
         autoAlly = false;
+        autoUse = true;
     }
 
     @Override

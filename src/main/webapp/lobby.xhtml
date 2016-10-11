@@ -214,6 +214,12 @@
                                 <p:outputLabel value="Play Against Computer: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
                                                        value="#{userSession.user.gameOptions.playAgainstComputer}"/>
+
+                                <p:selectOneRadio value="#{userSession.user.gameOptions.playerOrder}" styleClass="radioSpacing">
+                                    <f:selectItem itemLabel="Random" itemValue="random"/>
+                                    <f:selectItem itemLabel="1st Player" itemValue="first"/>
+                                    <f:selectItem itemLabel="2nd Player" itemValue="second"/>
+                                </p:selectOneRadio>
                             </h:panelGrid>
                             <div style="padding-top: 15px;">
                                 <h:outputText value="Cards in starting trade row (separate multiple cards with a comma):"

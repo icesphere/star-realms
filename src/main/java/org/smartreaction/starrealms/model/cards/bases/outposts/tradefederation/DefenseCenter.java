@@ -25,7 +25,7 @@ public class DefenseCenter extends Outpost implements AlliableCard, ChoiceAction
     public void baseUsed(Player player)
     {
         Choice choice1 = new Choice(1, "Add 3 Authority");
-        Choice choice2 = new Choice(1, "Add 2 Combat");
+        Choice choice2 = new Choice(2, "Add 2 Combat");
 
         player.makeChoice(this, choice1, choice2);
     }

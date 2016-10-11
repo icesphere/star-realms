@@ -38,6 +38,8 @@ public class GameOptions {
 
     private boolean playAgainstComputer;
 
+    private String playerOrder = "random";
+
     public boolean isCustomGameOptions() {
         return customGameOptions;
     }
@@ -158,6 +160,14 @@ public class GameOptions {
         this.playAgainstComputer = playAgainstComputer;
     }
 
+    public String getPlayerOrder() {
+        return playerOrder;
+    }
+
+    public void setPlayerOrder(String playerOrder) {
+        this.playerOrder = playerOrder;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
@@ -186,7 +196,9 @@ public class GameOptions {
                 && Objects.equals(this.includeUnitedHeroes, other.includeUnitedHeroes)
                 && Objects.equals(this.includeUnitedMissions, other.includeUnitedMissions)
                 && Objects.equals(this.includeGambits, other.includeGambits)
-                && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards);
+                && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards)
+                && !(this.playerOrder.equals("first") && other.playerOrder.equals("first"))
+                && !(this.playerOrder.equals("second") && other.playerOrder.equals("second"));
     }
 
     @Override
@@ -239,6 +251,14 @@ public class GameOptions {
 
         if (includeGambits) {
             selected.add("Gambits");
+        }
+
+        if ("random".equals(playerOrder)) {
+            if ("first".equals(playerOrder)) {
+                selected.add("1st Player");
+            } else {
+                selected.add("2nd Player");
+            }
         }
 
         if (!StringUtils.isBlank(startingTradeRowCards)) {

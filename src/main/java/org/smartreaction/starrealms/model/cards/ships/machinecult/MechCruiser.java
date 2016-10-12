@@ -35,4 +35,13 @@ public class MechCruiser extends Ship implements AlliableCard
     public boolean isScrapper() {
         return true;
     }
+
+    @Override
+    public boolean isActionable(Player player, String cardLocation) {
+        //noinspection SimplifiableIfStatement
+        if (cardLocation.equals(CARD_LOCATION_PLAY_AREA) && player.getOpponent().getBases().size() == 0) {
+            return false;
+        }
+        return super.isActionable(player, cardLocation);
+    }
 }

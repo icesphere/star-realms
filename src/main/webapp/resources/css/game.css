@@ -1,36 +1,96 @@
-.gamePagePlusChat {
-    float: left;
-    width: 1450px;
-    overflow: auto;
-    padding: 15px;
-    font-size: 16px;
-    font-family: serif;
+/* general forms and sections */
+.gameForm {
+    width: 100%;
+    background-size: cover !important;
+    background-image: url("#{resource['images/space_background.jpg']}");
 }
 
 .gamePage {
-    float: left;
+    width: 1350px;
+    overflow: hidden;
+    font-size: 16px;
+    font-family: serif;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gamePageContent {
+    position: relative;
+    width: 1340px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    background-color: rgba(240,240,238,0.8);
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px #222222;
 }
 
 .leftSection {
-    float: left;
-    margin-right: 20px;
-}
-
-.middleSection {
-    float: left;
-    margin-right: 20px;
+    width: 1310px;
 }
 
 .rightSection {
-    float: left;
-    margin-right: 20px;
+    /*background-color:#EEEEF0;*/
+    position:absolute;
+    width:310px;
+    height:100%;
+    right: 0px;
+    top: 0px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+/* end of general forms and sections */
+
+/* gamepage overlay section */
+.gamePageOverlay {
+    position: absolute;
+    top: 10px;
+    border-radius: 25px;
+    width: 1340px;
+    height: 880px;
+    background: rgba(0,0,0,0.8);
+    clear: both;
+    text-align: center;
+    z-index: 110;
+    color: white;
+    padding-top: auto;
+    padding-bottom: auto;
+    font-variant: small-caps;
 }
 
-.tradeRowSection {
-    float: left;
+.gamePageOverlayHeader {
+    padding-top: 300px;
+    font-size: 30pt;
+    text-shadow: 5px 5px 5px #000000;
+}
+
+.gamePageOverlayText {
+    font-size: 15pt;
+    display: block;
+    margin-top: 20px;
+    text-shadow: 5px 5px 5px #000000;
+}
+
+.gamePageOverlay .turnButton {
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 50px;
+}
+
+.gamePageOverlay .quitButton {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+/* end gamepage overlay section */
+
+/* supply section */
+.supplySection {
     padding: 15px;
-    background-color: #EEEEF0;
-    border: 1px solid #DDDDE0;
+    width:990px;
+    height: 115px;
+    clear: both;
 }
 
 .tradeRow {
@@ -38,77 +98,382 @@
     float: left;
 }
 
-.cardViewSection {
-    clear: both;
+.supplyGrid {
+    float: right;
+}
+
+.supplyLeftBox {
+    border: 2px solid transparent;
+    font-size: 20pt;
     float: left;
-    padding-top: 10px;
-    width: 288px;
+    color: white;
+    position: relative;
+    display:block;
+    border-radius: 7px;
+    margin-left: 55px;
+    box-shadow: 2px 2px 5px #222222;
+}
+
+.supplyLeftCard {
+    height:110px;
+    width:76px;
+    float: left;
+}
+
+.supplyLeftBoxText {
+    color: #FFFFFF !important;
+    font-variant: small-caps;
+    position: absolute;
+    width: 76px;
+    left: 0px;
+    top: 5px;
+    float: left;
+    font-size: 16pt;
+    font-family: sans-serif;
     text-align: center;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.supplyLeftBoxValue {
+    position: absolute;
+    width: 76px;
+    left: 0px;
+    bottom: 10px;
+    font-size: 40pt;
+    text-align: center;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.supplyLeftOver20, .supplyLeftOver10, .supplyLeftOver5, .supplyLeftUnder5 {
+    background-color: #66AA66;
+    color: #66AA66;
+}
+
+.supplyLeftOver10 {
+    background-color: #EECC00;
+    color: #EECC00;
+}
+
+.supplyLeftOver5, .supplyLeftUnder5 {
+    font-weight: bold;
+    background-color: #DD5555;
+    color: #DD5555;
+}
+
+.supplyLeftUnder5 {
+    animation: transparencyAnimation 2s linear infinite;
+}
+/* end of supply section */
+
+/* card view section and wrapper */
+.cardViewSection {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 6px;
+    text-align: center;
+    width:262px;
 }
 
 .cardView {
-    float: left;
-    width: 222px;
-    height: 300px;
-    padding: 15px;
+    width: 250px;
+    height: 375px;
+    margin-left: 6px;
     background-color: #EEEEF0;
-    border: 1px solid #DDDDE0;
     text-align: center;
-    border-radius: 20px;
-    margin-left: 16px;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px #222222;
+}
+/* end of card view section and wrapper */
+
+/* player info and content section, lots of stuff here */
+.playerInfo {
+    float: left;
+    clear: both;
 }
 
-.emptyCardView {
+.playerContentSection {
+    margin-left: 66px;
+}
+
+.playerContentCardAreaSection {
+    clear:both;
+    float: left;
+    padding: 10px;
+    min-height: 121px;
+    margin-top: -66px;
+    width: 950px;
+}
+
+.playerContentCardAreaDeckAndDiscardSection {
+    float: right;
+    position: relative;
+    top: 0px;
+    display: block;
+    margin-top: 5px;
+    width: 170px;
+    height: 110px;
+    z-index: 105;
+    font-variant: small-caps;
+    right: 10px;
+}
+
+.playerContentCardAreaDeckAndDiscardSection a {
+    text-decoration: none !important;
+}
+
+.playerContentCardAreaDeckAndDiscardDeckText {
+    text-shadow: 2px 2px 2px #000000;
+    font-size: 14pt;
+    font-family: sans-serif;
+    display: block;
+    position: absolute;
+    left: 0px;
+    text-align: center;
+    width: 76px;
+}
+
+.playerContentCardAreaDeckAndDiscardDeckValue {
+    text-shadow: 2px 2px 2px #000000;
+    font-size: 40pt;
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    left: 0px;
+    width: 76px;
+    text-align:center;
+}
+
+.playerContentCardAreaDeckAndDiscardDeck {
+    box-shadow: 2px 2px 5px #222222;
+    display:inline-block;
+    position: relative;
+    text-align: center;
+    background-size: 76px 110px;
+    width: 66px;
+    height: 100px;
+    color: #ffffff;
+    margin-right: 5px;
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 7px;
+}
+
+.playerContentCardAreaPlayAreaSection {
+    margin-top: 0px;
     padding-top: 20px;
+    border: 0;
+    position: relative;
+}
+
+.playerContentCardAreaText {
+    z-index: 0;
+    line-height: 114px;
+    width: 950px;
+    position: absolute;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
     font-style: italic;
+    font-size: 30pt;
+    text-align: center;
+    font-variant: small-caps;
+    color: rgba(0,0,0,0.3);
+}
+
+.playerInfoSection, .opponentInfoSection {
+    min-height: 150px;
+    width: 1030px;
+    border-bottom-right-radius: 25px;
 }
 
 .playerInfoSection {
+    border-top-right-radius: 25px;
+}
+
+.opponentInfoSection {
+    border-top-left-radius: 25px;
+}
+
+.playerInfoSectionLeftSide {
+    padding: 10px;
+    width: 150px;
+    display: block;
+    min-height: 20px;
+    border-radius:10px;
+    font-weight: bold;
+    font-size: 16pt;
+    text-align: right;
     float: left;
+    transform: rotate(-90deg) translateX(-100%);
+    -ms-transform: rotate(-90deg) translateX(-100%);
+    -webkit-transform: rotate(-90deg) translateX(-100%);
+    transform-origin: top left;
+    font-variant: small-caps;
+    text-shadow: 2px 2px 2px #000000;
+    color: #ffffff;
 }
 
-.deployedSection {
-    clear: left;
+.playerInfoSectionInfoValues {
+    width: 140px;
+    padding-top: 5px;
+    height: 20px;
+    font-size: 14pt;
+    font-weight: normal;
+    position: relative;
+}
+
+.playerInfoSectionInfoValuesIcon {
+    text-align: center;
     float: left;
-    padding-top: 20px;
+    margin-left: 25px;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    transform: rotate(90deg) translateX(-100%);
+    transform-origin: bottom left;
 }
 
-.playerDeployedSection {
+.playerInfoSectionInfoValuesIconText {
+    position: absolute;
+    z-index: 100;
+    left: 10px;
+    color: #eeeeee;
+}
+
+.playerInfoSectionInfoValuesIconImage {
+    z-index: 10;
+    left: 0px;
+    position: absolute;
+    height: 19px;
+    min-width: 19px;
+    width: 19px;
+}
+
+.playerPlayAreaSection {
     float: left;
-    margin-right: 10px;
-    padding: 12px;
-    min-width: 210px;
+    padding: 10px;
+    min-height: 114px;
 }
 
-.opponentDeployedSection {
+.playerContentCardAreaPlayArea {
+    padding-top: 5px;
+    position: relative;
+}
+
+.playerContentCardAreaPlayAreaUnits {
+    width: 750px;
+}
+
+.playerContentCardAreaBuffer {
+    clear: both;
+    display:block;
+}
+
+.playerContentCardAreaShowCardsSection {
+    clear: both;
     float: left;
-    padding: 12px;
-    min-width: 210px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    padding: 10px;
+    padding-left: 20px;
+    width: 915px;
+    background: #EEEEF0;
+    margin-top: 10px;
 }
 
-.playAreaSection {
-    float: left;
-    min-width: 245px;
+/* player play area buy section (industry, lostech, actions) */
+.playerContentCardAreaPlayAreaBuySection {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 80px;
+    height: 0px;
 }
 
-.playArea {
-    padding-left: 10px;
-    padding-top: 10px;
+.playerContentCardAreaPlayAreaBuySectionValues
+{
+    position: relative;
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    z-index: 100;
+    left: 10px;
 }
 
+.playerContentCardAreaPlayAreaBuySectionValuesText
+{
+    font-size: 30pt;
+    color: #eeeeee;
+    text-shadow: 2px 2px 2px #000000;
+    position: absolute;
+    width: 40%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 100;
+    display: block;
+}
+
+.playerContentCardAreaPlayAreaBuySectionValuesIcon
+{
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    min-width: 30px;
+    max-width: 50px;
+    height: 50px;
+}
+/* end of play area buy section (industry, lostech, actions) */
+/* end of player info section */
+
+/* hand section */
 .handSection {
     float: left;
-    min-width: 245px;
+    width: 990px;
+    padding:15px;
+    /*background-color: rgba(238, 238, 240, 0.8);*/
+    position: relative;
 }
 
-.hand {
-    padding-left: 10px;
-    padding-top: 10px;
+.handCards {
+    min-height: 114px;
 }
+/* end of hand section */
 
-.farRightSection {
+/* player action section */
+.actionSection {
+    clear: both;
     float: left;
+    border-top: 2px solid red;
+    border-bottom: 2px solid red;
+    border-right: 2px solid red;
+    padding: 0px 0px 10px 10px;
+    width: 1008px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    background-color: rgba(255,255,255,0.5);
 }
+
+.currentActionLabel {
+    color: white;
+    background-color: #ff0000;
+    text-shadow: 2px 2px 2px #000000;
+    width: 998px;
+    display: block;
+    padding: 10px;
+    margin-left:-10px;
+    border-top-right-radius: 21px;
+    border-bottom-right-radius: 8px;
+    animation: blinkingAnimation 2s linear infinite;
+}
+/* player action section end */
 
 .lastTurnSummarySection {
     font-size: 14px;
@@ -128,85 +493,107 @@
     padding-top: 10px;
 }
 
+/* game log and chat section */
 .gameLogSection {
-    width: 265px;
-    padding: 5px;
-    border: 2px solid black;
-    background-color: #EEEEF0;
+    clear: both;
+    width: 1005px;
+    padding: 7px;
+    height: 130px;
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+   /* background-color: #EEEEF0; */
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
 }
 
 .gameLog {
-    height: 150px;
+    height: 130px;
     overflow: auto;
-    padding-right: 5px;
+    padding-right: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    display: block;
+    border-top-right-radius: 25px;
 }
 
 .chatSection {
-    float: left;
-    width: 265px;
+    width: 270px;
+    position: absolute;
+    bottom: 0px;
     padding: 5px;
-    border: 2px solid black;
-    background-color: white;
+    max-height: 250px;
 }
 
 .chats {
-    height: 200px;
+    height: 190px;
     overflow: auto;
     padding-right: 5px;
 }
+/* end of game log and chat section */
 
-.turnInfoSection {
-    clear: both;
-    float: left;
-    padding-top: 15px;
-}
-
-.turnInfoBox {
-    border: 1px solid #333;
-    background-color: #EEEEF0;
-    float: left;
-    width: 320px;
-    padding: 7px;
-}
-
-.turnButtonsSection {
-    clear:both;
-}
-
-.turnButtonWrapper {
-    padding-top: 15px;
-    clear: both;
-    float: left;
-    margin-left: 10px;
-}
-
-.turnButton {
-    float: left;
-    min-width: 130px;
+/* button section */
+.turnButton, .quitButton, .playAllButton {
+    width: 146px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    display:block;
     text-align: center;
     background: #3498db;
+    font-variant: small-caps;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
     background-image: -moz-linear-gradient(top, #3498db, #2980b9);
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
     background-image: -o-linear-gradient(top, #3498db, #2980b9);
     background-image: linear-gradient(to bottom, #3498db, #2980b9);
-    border-radius: 20px;
-    text-shadow: 1px 1px 3px #666666;
+    text-shadow: 2px 2px 2px #000000;
     font-family: Arial, sans-serif;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 13pt;
     padding: 20px 60px 20px 60px;
     border: solid #1f628d 2px;
     text-decoration: none;
+    animation: transparencyAnimation infinite linear 1.5s;
 }
 
-.turnButton:hover {
+.quitButton {
+    animation: none;
+    background: #FF3333;
+    background-image: -webkit-linear-gradient(top, #FF3333, #ff6633);
+    background-image: -moz-linear-gradient(top, #FF3333, #ff6633);
+    background-image: -ms-linear-gradient(top, #FF3333, #ff6633);
+    background-image: -o-linear-gradient(top, #FF3333, #ff6633);
+    background-image: linear-gradient(to bottom, #FF3333, #ff6633);
+}
+
+.quitButton:hover {
+    background: #ff6633;
+    background-image: -webkit-linear-gradient(top, #ff6633, #FF3333);
+    background-image: -moz-linear-gradient(top, #ff6633, #FF3333);
+    background-image: -ms-linear-gradient(top, #ff6633, #FF3333);
+    background-image: -o-linear-gradient(top, #ff6633, #FF3333);
+    background-image: linear-gradient(to bottom, #ff6633, #FF3333);
+    text-decoration: none;
+}
+
+.turnButton:hover, .playAllButton:hover {
     background: #3cb0fd;
     background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
     background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+
+.playAllButton {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 90px;
+    height: 90px;
+    padding: 20px;
+    line-height: 90px;
     text-decoration: none;
 }
 
@@ -217,7 +604,7 @@
 
 .smallButton {
     float: left;
-    min-width: 80px;
+    min-width: 105px;
     text-align: center;
     background: #3498db;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -234,7 +621,7 @@
     border: solid #1f628d 1px;
 }
 
-.smallButton:hover {
+.smallButton:hover, .tinyButton:hover {
     background: #3cb0fd;
     background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
     background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
@@ -251,7 +638,6 @@
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
     background-image: -o-linear-gradient(top, #3498db, #2980b9);
     background-image: linear-gradient(to bottom, #3498db, #2980b9);
-    border-radius: 9px;
     font-family: Arial, sans-serif;
     color: #ffffff;
     font-size: 11px;
@@ -259,16 +645,7 @@
     text-decoration: none;
     border: solid #1f628d 2px;
 }
-
-.tinyButton:hover {
-    background: #3cb0fd;
-    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-    text-decoration: none;
-}
+/* end of button section */
 
 .tradeRowCard {
     clear: both;
@@ -390,9 +767,12 @@
     background-color: #CCAA77;
 }
 
+/* card section for everything about a single card */
 .card {
-    clear: both;
-    float: left;
+    display:block;
+    float:left;
+    width: 85px;
+    height: 114px;
     margin-bottom: 2px;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -400,86 +780,134 @@
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;
+
+    font-variant: small-caps;
+    font-size: 10pt;
+    font-family: sans-serif;
 }
 
-.cardInfo {
-    float: left;
-    padding: 5px 10px;
-    min-width: 190px;
+.cardWrapper {
+    border: 2px transparent solid;
+    box-shadow: 2px 2px 5px #222222;
+    vertical-align: middle;
+    display:block;
+    border-radius: 8px;
+    position: relative;
+    color: #ffffff;
+    float:left;
 }
 
-.playerInfo {
-    padding-bottom: 5px;
-    float: left;
-    min-width: 245px;
+.cardHeader {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 62px;
+    padding: 3px;
+    min-height: 22px;
+    text-align: center;
+    vertical-align: middle;
+    text-shadow: 2px 2px 2px #000000;
+    border-radius: 3px;
+    font-size: 8pt;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 
-.playerInfoName {
-    padding: 10px;
-    min-height: 17px;
-    min-width: 215px;
+.cardAttrs, .cardCost {
+    position: absolute;
+    border-radius: 3px;
+    left: 4px;
+    padding: 3px;
+    text-align: center;
+    width: 62px;
+    text-shadow: 2px 2px 2px #000000;
+    text-align: center;
+    height: 16px;
 }
 
-.turnPhaseText {
-    font-size: 16px;
-    font-weight: bold;
+.cardAttrs {
+    bottom: 28px;
 }
 
-.currentPlayerTurnText {
-    padding: 5px 15px;
-    font-size: 18px;
+.cardCost {
+    bottom: 5px;
+}
+
+.cardCostIndustry, .cardCostLostech, .cardAttrsValueOffense, .cardAttrsValueDefense {
+    position: absolute;
+    width: 34px;
+    height: 16px;
+    padding: 0;
+    text-align: center;
+}
+
+.cardCostIndustryText, .cardAttrsValueText {
+    position: absolute;
+    top: 3px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    left: 0;
+}
+
+.cardCostLostech, .cardAttrsValueDefense {
+    right: 0;
+}
+
+.cardCostIndustry, .cardAttrsValueOffense {
+    left: 0;
+}
+
+.cardIcons {
+    height: 16px;
+    margin-bottom:-3px;
+    -webkit-filter: drop-shadow(2px 2px 2px #000000);
+    filter: drop-shadow(2px 2px 2px #000000);
+}
+
+.cardImage {
+    width: 76px;
+    height: 110px;
 }
 
 .actionableCard {
-    border: 3px solid #0055FF;
-    padding: 2px 7px;
+    border: 2px solid #0055FF;
     cursor: pointer;
+    animation: transparencyAnimation 1.5s linear infinite;
 }
 
 .buyableCard {
-    border: 3px solid #0055FF;
+    border: 2px solid #0055FF;
     cursor: pointer;
+    animation: transparencyAnimation 1s linear infinite;
 }
 
 .selected {
     border: 3px solid #cc00ff !important;
 }
 
-.buyableCard .tradeRowCardCost {
-    padding-left: 8px;
-    padding-right: 9px;
+.middleSection .card {
+    margin-bottom: -30px;
 }
 
-.buyableCard .tradeRowCardInfo {
-    padding-right: 7px;
+.playerContentCardAreaCardsSection .card {
+    margin-bottom: 0px;
 }
 
-.gameOverSection {
-    clear: both;
-    padding-top: 15px;
-    text-align: center;
+.supplySection .card {
+    margin-left:0px;
 }
+/* end card section */
 
 .sectionHeader {
-    font-size: 16px;
     font-weight:bold;
-}
-
-.showCardsSection {
-    clear: both;
-    float: left;
-    padding-top: 10px;
-}
-
-.actionSection {
-    clear: both;
-    float: left;
-    border: 2px solid red;
-    margin-top: 25px;
-    padding: 10px;
-    padding-top: 15px;
-    width: 456px;
-    background-color: white;
+    font-variant: small-caps;
 }
 
 .red {
@@ -490,6 +918,16 @@
     color: white;
     background-color: #ff0000;
     padding: 5px 20px;
+}
+
+@keyframes blinkingAnimation
+{
+    50% { background-color: #EEEEF0; }
+}
+
+@keyframes transparencyAnimation
+{
+    50% { opacity: 0.6; }
 }
 
 .attackButton {

@@ -85,7 +85,8 @@
 
                 <h:panelGroup rendered="#{!userSession.user.autoMatch}">
 
-                    <p:commandLink value="Game Options" oncomplete="PF('gameOptionsDialog').show()"
+                    <p:commandLink value="Game Options" process="@form" update="@form"
+                                   actionListener="#{userSession.user.gameOptions.setCustomGameOptions(true)}" oncomplete="PF('gameOptionsDialog').show()"
                                    styleClass="lobbyButton" style="position: absolute; bottom: 70px; border-radius: 10px;"/>
 
                 </h:panelGroup>

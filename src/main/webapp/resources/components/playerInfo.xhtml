@@ -11,54 +11,173 @@
     <composite:attribute name="player" required="true" type="org.smartreaction.starrealms.model.players.Player"/>
     <composite:attribute name="playerClass" required="true"/>
     <composite:attribute name="isOpponent" required="true"/>
+    <composite:attribute name="isTheirTurn" required="true"/>
 </composite:interface>
 
 <composite:implementation>
 
-    <h:panelGroup layout="block" styleClass="playerInfo">
+    <h:panelGroup layout="block" id="playerInfoSection" styleClass="#{cc.attrs.playerClass}InfoSection #{cc.attrs.playerClass}">
 
-        <div style="float: left;" class="playerInfoName #{cc.attrs.playerClass}">
+        <h:panelGroup layout="block" class="playerInfoSectionLeftSide">
             <h:outputText value="#{cc.attrs.player.playerName}"/>
-        </div>
+        </h:panelGroup>
 
-        <div style="clear: both; float: left; padding-top: 10px;">
-            <h:outputText value="Authority: #{cc.attrs.player.authority}"/>
+        <h:panelGroup layout="block" class="playerInfoSectionInfoValues">
+            <h:panelGroup layout="block" class="playerInfoSectionInfoValuesIcon">
+                <h:outputText styleClass="playerInfoSectionInfoValuesIconText" value="Authority: #{cc.attrs.player.authority}"/>
             <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton"
                            actionListener="#{gameView.attackOpponent}" process="@this"
                            rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
-        </div>
+            </h:panelGroup>
+        </h:panelGroup>
 
-        <div style="clear: both; padding-top: 5px;">
+        <h:panelGroup layout="block" class="playerContentSection">
 
-            <h:panelGroup rendered="#{!cc.attrs.isOpponent}">
+            <h:panelGroup layout="block" styleClass="playerContentCardAreaSection">
+                <h:outputText value="#{cc.attrs.player.playerName}'s Deployment Zone" styleClass="playerContentCardAreaText"/>
+                <h:panelGroup layout="block" class="playerContentCardAreaPlayArea playerContentCardAreaPlayAreaUnits">
 
-                <div class="smallButtonWrapper" style="margin-right: 5px;">
-                    <p:commandLink value="Deck (#{cc.attrs.player.deck.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.deck, 'Cards in your deck', 'deck', true)}"/>
-                </div>
+                    <h:panelGroup rendered="#{!empty cc.attrs.player.bases}">
+                        <div style="clear: both; float: left; padding-top: 10px;">
+                            <div>
+                                <h:outputText value="Bases"/>
+                            </div>
+                            <div style="clear: both; float:left; padding-top: 5px;">
+                                <ui:repeat value="#{cc.attrs.player.bases}" var="card">
+                                    <sr:card card="#{card}" source="#{cc.attrs.playerClass}Bases"/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </h:panelGroup>
 
-                <div class="smallButtonWrapper">
-                    <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton #{gameView.highlightDiscardButton ? 'selected' : ''}"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your discard pile', 'discard', false)}"/>
-                </div>
+                    <h:panelGroup rendered="#{!empty cc.attrs.player.heroes}">
+                        <div style="clear: both; float: left; padding-top: 10px;">
+                            <div>
+                                <h:outputText value="Heroes"/>
+                            </div>
+                            <div style="clear: both; float:left; padding-top: 5px;">
+                                <ui:repeat value="#{cc.attrs.player.heroes}" var="card">
+                                    <sr:card card="#{card}" source="#{cc.attrs.playerClass}Heroes"/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{!empty cc.attrs.player.gambits}">
+                        <div style="clear: both; float: left; padding-top: 10px;">
+                            <div>
+                                <h:outputText value="Gambits"/>
+                            </div>
+                            <div style="clear: both; float:left; padding-top: 5px;">
+                                <ui:repeat value="#{cc.attrs.player.gambits}" var="card">
+                                    <sr:card card="#{card}" source="#{cc.attrs.playerClass}Gambits"/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{!cc.attrs.isOpponent and !empty cc.attrs.player.unClaimedMissions}">
+                        <div style="clear: both; float: left; padding-top: 10px;">
+                            <div>
+                                <h:outputText value="Unclaimed Missions"/>
+                            </div>
+                            <div style="clear: both; float:left; padding-top: 5px;">
+                                <ui:repeat value="#{cc.attrs.player.unClaimedMissions}" var="mission">
+                                    <sr:mission mission="#{mission}" opponentMission="false"/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{!empty cc.attrs.player.claimedMissions}">
+                        <div style="clear: both; float: left; padding-top: 10px;">
+                            <div>
+                                <h:outputText value="Claimed Missions"/>
+                            </div>
+                            <div style="clear: both; float:left; padding-top: 5px;">
+                                <ui:repeat value="#{cc.attrs.player.claimedMissions}" var="mission">
+                                    <sr:mission mission="#{mission}" opponentMission="#{cc.attrs.isOpponent}"/>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" styleClass="playerContentCardAreaDeckAndDiscardSection">
+
+                    <p:commandLink process="@this"
+                                   styleClass="playerContentCardAreaDeckAndDiscardDeck"
+                                   style="background-image: url('#{cc.attrs.player.deck.size() > 0 ? resource['images:cardback.png'] : ''}')"
+                                   actionListener="#{gameView.showCards(
+                                                     cc.attrs.isOpponent ? cc.attrs.player.handAndDeck : cc.attrs.player.deck,
+                                                     cc.attrs.isOpponent ? 'Cards in your opponents hand and deck' : 'Cards in your deck',
+                                                     cc.attrs.isOpponent ? 'opponentDeckAndHand' : 'deck', true)}">
+                        <h:outputText value="Deck" styleClass="playerContentCardAreaDeckAndDiscardDeckText" />
+                        <h:outputText value="#{cc.attrs.player.deck.size()}" styleClass="playerContentCardAreaDeckAndDiscardDeckValue" />
+                    </p:commandLink>
+
+                    <p:commandLink process="@this"
+                                   style="background-image: url('#{cc.attrs.player.discard.size() > 0 ?
+                                                                   resource['images:cards/' += cc.attrs.player.discard[cc.attrs.player.discard.size()-1].imageFile] : ''}')"
+                                   styleClass="playerContentCardAreaDeckAndDiscardDeck"
+                                   actionListener="#{gameView.showCards(
+                                                     cc.attrs.player.discard,
+                                                     cc.attrs.isOpponent ? 'Cards in your opponents discard pile' : 'Cards in your discard pile',
+                                                     cc.attrs.isOpponent ? 'opponentDiscard' : 'discard', false)}">
+                        <h:outputText value="Discard" styleClass="playerContentCardAreaDeckAndDiscardDeckText" />
+                        <h:outputText value="#{cc.attrs.player.discard.size()}" styleClass="playerContentCardAreaDeckAndDiscardDeckValue" />
+                    </p:commandLink>
+
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"
+                              styleClass="playerContentCardAreaShowCardsSection"
+                              rendered="#{gameView.showingCards and
+                                          ((gameView.showingCardsTitle.contains('opponents') and cc.attrs.isOpponent)
+                                              or (!gameView.showingCardsTitle.contains('opponents') and !cc.attrs.isOpponent))}">
+
+                              <h:outputText value="#{gameView.showingCardsTitle}" style="font-weight: bold;display:block;"/>
+
+                              <h:panelGroup layout="block" style="float: left; padding-top: 10px;">
+                                  <ui:repeat value="#{gameView.cardsToShow}" var="card">
+                                      <sr:card card="#{card}" source="#{gameView.cardsToShowSource}"/>
+                                  </ui:repeat>
+                              </h:panelGroup>
+
+                              <h:panelGroup layout="block" style="clear: both; padding-top: 10px;">
+                                  <p:commandLink value="Hide" process="@this" styleClass="smallButton"
+                                                 update="playerInfoSection"
+                                                 actionListener="#{gameView.hideCardsToShow}"/>
+                              </h:panelGroup>
+
+                </h:panelGroup>
 
             </h:panelGroup>
 
-            <h:panelGroup rendered="#{cc.attrs.isOpponent}">
-
-                <div class="smallButtonWrapper" style="margin-right: 5px;">
-                    <p:commandLink value="Hand &amp; Deck (#{cc.attrs.player.handAndDeck.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.handAndDeck, 'Cards in your opponent\'s hand and deck', 'opponentDeckAndHand', true)}"/>
-                </div>
-
-                <div class="smallButtonWrapper">
-                    <p:commandLink value="Discard (#{cc.attrs.player.discard.size()})" process="@this" styleClass="smallButton"
-                                   actionListener="#{gameView.showCards(cc.attrs.player.discard, 'Cards in your opponent\'s discard pile', 'opponentDiscard', false)}"/>
-                </div>
-
+            <h:panelGroup rendered="#{cc.attrs.isTheirTurn}" layout="block"
+                          id="playerPlayAreaSection"
+                          styleClass="playerContentCardAreaSection playerContentCardAreaPlayAreaSection">
+                <h:outputText value="Play Area" styleClass="playerContentCardAreaText"  />
+                <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayArea">
+                    <ui:repeat value="#{gameView.cardsForPlayArea}" var="card">
+                        <sr:card card="#{card}" source="playArea"/>
+                    </ui:repeat>
+                    <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySection">
+                        <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySectionValues">
+                            <h:outputText styleClass="playerContentCardAreaPlayAreaBuySectionValuesText"
+                                          value="Trade: #{gameView.game.currentPlayer.trade}"/>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySectionValues">
+                            <h:outputText styleClass="playerContentCardAreaPlayAreaBuySectionValuesText"
+                                          value="Combat: #{gameView.game.currentPlayer.combat}"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:panelGroup>
             </h:panelGroup>
 
-        </div>
+            <h:outputText class="playerContentCardAreaBuffer"> </h:outputText>
+        </h:panelGroup>
 
     </h:panelGroup>
 

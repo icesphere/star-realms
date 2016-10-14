@@ -22,14 +22,19 @@
 
             <h:outputText value="#{cc.attrs.card.name}" styleClass="cardHeader #{gameView.getCardClass(cc.attrs.card)}"/>
 
-            <div style="float: right;">
-                <p:commandLink value="Scrap" style="position: relative; top: 3px;" styleClass="tinyButton"
-                               rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}"
-                               actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
-                <p:commandLink value="Attack" styleClass="attackButton" style="position: relative; top: 2px;"
-                               rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
-                               actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"/>
-            </div>
+            <h:panelGroup layout="block" styleClass="cardCost #{gameView.getCardClass(cc.attrs.card)}">
+                <h:panelGroup layout="block" styleClass="cardCostIndustry">
+                    <h:outputText value="#{cc.attrs.card.cost}" styleClass="cardCostIndustryText"/>
+                    <h:graphicImage library="images" name="icons/trade.png" styleClass="cardIcons" />
+                </h:panelGroup>
+            </h:panelGroup>
+
+            <p:commandLink value="Scrap" styleClass="tinyButton"
+                           rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}"
+                           actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
+            <p:commandLink value="Attack" styleClass="attackButton"
+                           rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}"
+                           actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"/>
         </div>
 
     </h:panelGroup>

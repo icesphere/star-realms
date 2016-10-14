@@ -23,12 +23,15 @@
         </h:panelGroup>
 
         <h:panelGroup layout="block" class="playerInfoSectionInfoValues">
+
             <h:panelGroup layout="block" class="playerInfoSectionInfoValuesIcon">
-                <h:outputText styleClass="playerInfoSectionInfoValuesIconText" value="Authority: #{cc.attrs.player.authority}"/>
-            <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton"
-                           actionListener="#{gameView.attackOpponent}" process="@this"
-                           rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
+                <h:outputText styleClass="playerInfoSectionInfoValuesIconText" value="#{cc.attrs.player.authority}"/>
+                <h:graphicImage library="images" name="icons/authority.png" styleClass="playerInfoSectionInfoValuesIconImage"/>
+                <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton"
+                               actionListener="#{gameView.attackOpponent}" process="@this"
+                               rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
             </h:panelGroup>
+
         </h:panelGroup>
 
         <h:panelGroup layout="block" class="playerContentSection">
@@ -108,7 +111,7 @@
 
                     <p:commandLink process="@this"
                                    styleClass="playerContentCardAreaDeckAndDiscardDeck"
-                                   style="background-image: url('#{cc.attrs.player.deck.size() > 0 ? resource['images:cardback.png'] : ''}')"
+                                   style="background-image: url('#{cc.attrs.player.deck.size() > 0 ? resource['images:space_background.jpg'] : ''}')"
                                    actionListener="#{gameView.showCards(
                                                      cc.attrs.isOpponent ? cc.attrs.player.handAndDeck : cc.attrs.player.deck,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents hand and deck' : 'Cards in your deck',
@@ -118,8 +121,6 @@
                     </p:commandLink>
 
                     <p:commandLink process="@this"
-                                   style="background-image: url('#{cc.attrs.player.discard.size() > 0 ?
-                                                                   resource['images:cards/' += cc.attrs.player.discard[cc.attrs.player.discard.size()-1].imageFile] : ''}')"
                                    styleClass="playerContentCardAreaDeckAndDiscardDeck"
                                    actionListener="#{gameView.showCards(
                                                      cc.attrs.player.discard,
@@ -158,22 +159,35 @@
             <h:panelGroup rendered="#{cc.attrs.isTheirTurn}" layout="block"
                           id="playerPlayAreaSection"
                           styleClass="playerContentCardAreaSection playerContentCardAreaPlayAreaSection">
+
                 <h:outputText value="Play Area" styleClass="playerContentCardAreaText"  />
+
                 <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayArea">
+
                     <ui:repeat value="#{gameView.cardsForPlayArea}" var="card">
                         <sr:card card="#{card}" source="playArea"/>
                     </ui:repeat>
+
                     <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySection">
+
                         <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySectionValues">
                             <h:outputText styleClass="playerContentCardAreaPlayAreaBuySectionValuesText"
-                                          value="Trade: #{gameView.game.currentPlayer.trade}"/>
+                                          value="#{gameView.game.currentPlayer.trade}"/>
+                            <h:graphicImage styleClass="playerContentCardAreaPlayAreaBuySectionValuesIcon"
+                                            library="images" name="icons/trade.png"/>
                         </h:panelGroup>
+
                         <h:panelGroup layout="block" styleClass="playerContentCardAreaPlayAreaBuySectionValues">
                             <h:outputText styleClass="playerContentCardAreaPlayAreaBuySectionValuesText"
-                                          value="Combat: #{gameView.game.currentPlayer.combat}"/>
+                                          value="#{gameView.game.currentPlayer.combat}"/>
+                            <h:graphicImage styleClass="playerContentCardAreaPlayAreaBuySectionValuesIcon"
+                                            library="images" name="icons/combat.png" style="height: 35px; width: 35px;"/>
                         </h:panelGroup>
+
                     </h:panelGroup>
+
                 </h:panelGroup>
+
             </h:panelGroup>
 
             <h:outputText class="playerContentCardAreaBuffer"> </h:outputText>

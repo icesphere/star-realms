@@ -27,7 +27,7 @@
             <h:panelGroup layout="block" class="playerInfoSectionInfoValuesIcon">
                 <h:outputText styleClass="playerInfoSectionInfoValuesIconText" value="#{cc.attrs.player.authority}"/>
                 <h:graphicImage library="images" name="icons/authority.png" styleClass="playerInfoSectionInfoValuesIconImage"/>
-                <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton"
+                <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton playerAttackButton"
                                actionListener="#{gameView.attackOpponent}" process="@this"
                                rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
             </h:panelGroup>
@@ -110,8 +110,7 @@
                 <h:panelGroup layout="block" styleClass="playerContentCardAreaDeckAndDiscardSection">
 
                     <p:commandLink process="@this"
-                                   styleClass="playerContentCardAreaDeckAndDiscardDeck"
-                                   style="background-image: url('#{cc.attrs.player.deck.size() > 0 ? resource['images:space_background.jpg'] : ''}')"
+                                   styleClass="playerContentCardAreaDeckAndDiscardDeck deckHolder"
                                    actionListener="#{gameView.showCards(
                                                      cc.attrs.isOpponent ? cc.attrs.player.handAndDeck : cc.attrs.player.deck,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents hand and deck' : 'Cards in your deck',

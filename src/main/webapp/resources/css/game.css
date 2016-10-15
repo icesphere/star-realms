@@ -91,11 +91,6 @@
 }
 
 .tradeRow {
-    clear: both;
-    float: left;
-}
-
-.supplyGrid {
     float: right;
 }
 
@@ -248,7 +243,7 @@
     font-family: sans-serif;
     display: block;
     position: absolute;
-    left: 0px;
+    left: 0;
     text-align: center;
     width: 76px;
 }
@@ -259,7 +254,7 @@
     display: block;
     position: absolute;
     bottom: 5px;
-    left: 0px;
+    left: 0;
     width: 76px;
     text-align:center;
 }
@@ -358,7 +353,7 @@
 .playerInfoSectionInfoValuesIconText {
     position: absolute;
     z-index: 100;
-    left: 7px;
+    left: 15px;
     top: 6px;
     font-size: 15px;
     font-weight: bold;
@@ -367,7 +362,7 @@
 
 .playerInfoSectionInfoValuesIconImage {
     z-index: 10;
-    left: 0;
+    left: 8px;
     position: absolute;
     height: 30px;
     width: 30px;
@@ -404,7 +399,7 @@
     padding-left: 20px;
     width: 915px;
     background: #EEEEF0;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 
 /* player play area buy section (industry, actions) */
@@ -474,6 +469,7 @@
 .actionSection {
     clear: both;
     float: left;
+    margin-top: 15px;
     border-top: 2px solid red;
     border-bottom: 2px solid red;
     border-right: 2px solid red;
@@ -521,18 +517,16 @@
 /* game log and chat section */
 .gameLogSection {
     clear: both;
-    width: 1005px;
+    margin-left: 15px;
+    width: 990px;
     padding: 7px;
-    height: 130px;
-    border-top: 1px solid #000000;
-    border-right: 1px solid #000000;
-   /* background-color: #EEEEF0; */
-    border-bottom-left-radius: 25px;
-    border-top-right-radius: 25px;
+    height: 350px;
+    border: 1px solid #000000;
+    border-radius: 25px;
 }
 
 .gameLog {
-    height: 130px;
+    height: 350px;
     overflow: auto;
     padding-right: 10px;
     margin-right: 10px;
@@ -552,7 +546,7 @@
 }
 
 .chats {
-    height: 130px;
+    height: 125px;
     overflow: auto;
     padding-right: 5px;
 }
@@ -672,6 +666,7 @@
     padding: 1px 10px 1px 10px;
     text-decoration: none;
     border: solid #1f628d 2px;
+    border-radius: 4px;
 }
 /* end of button section */
 
@@ -917,6 +912,15 @@
     color: black;
 }
 
+.cardBottomButton {
+    position: absolute;
+    bottom: 4px;
+    height: 16px;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
 .cardIcons {
     height: 16px;
     margin-bottom:-3px;
@@ -945,10 +949,6 @@
     border: 3px solid #cc00ff !important;
 }
 
-.middleSection .card {
-    margin-bottom: -30px;
-}
-
 .playerContentCardAreaCardsSection .card {
     margin-bottom: 0;
 }
@@ -964,12 +964,6 @@
     color: #ff0000;
 }
 
-.currentActionLabel {
-    color: white;
-    background-color: #ff0000;
-    padding: 5px 20px;
-}
-
 @keyframes blinkingAnimation
 {
     50% { background-color: #EEEEF0; }
@@ -980,6 +974,12 @@
     50% { opacity: 0.6; }
 }
 
+.playerAttackButton {
+    position: absolute;
+    top: 35px;
+    left: -12px;
+}
+
 .attackButton {
     background: #df0e0e;
     background-image: -webkit-linear-gradient(top, #df0e0e, #a80b0b);
@@ -987,7 +987,7 @@
     background-image: -ms-linear-gradient(top, #df0e0e, #a80b0b);
     background-image: -o-linear-gradient(top, #df0e0e, #a80b0b);
     background-image: linear-gradient(to bottom, #df0e0e, #a80b0b);
-    border-radius: 10px;
+    border-radius: 8px;
     font-family: Arial;
     color: #ffffff;
     font-size: 12px;
@@ -1019,5 +1019,9 @@
     margin-left: 15px;
     background-color: #ff3333;
     padding: 8px 12px;
+}
+
+.deckHolder {
+    background-image: url("#{resource['images/space_background.jpg']}");
 }
 

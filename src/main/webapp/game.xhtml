@@ -90,7 +90,9 @@
 
                             <h:panelGroup layout="block" id="supplySection" styleClass="supplySection">
 
-                                <h:panelGroup layout="block" class="supplyGrid">
+                                <h:outputText value="Trade Row" styleClass="playerContentCardAreaText" style="left: -200px;" />
+
+                                <h:panelGroup layout="block" class="tradeRow">
                                     <sr:card card="#{gameView.game.explorer}" source="explorers" tradeRow="true"/>
                                     <ui:repeat value="#{gameView.game.tradeRow}" var="card">
                                         <sr:card card="#{card}" source="tradeRow" tradeRow="true"/>
@@ -173,11 +175,13 @@
                                 <h:panelGroup styleClass="playerContentCardAreaBuffer"/>
                             </h:panelGroup>
 
-                            <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection">
-                                <h:outputText value="Game Log" styleClass="playerContentCardAreaText"/>
-                                <h:outputText styleClass="gameLog" value="#{gameView.game.gameLog.toString()}"
-                                              escape="false"/>
-                            </h:panelGroup>
+                            <div style="padding-bottom: 20px;">
+                                <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection">
+                                    <h:outputText value="Game Log" styleClass="playerContentCardAreaText"/>
+                                    <h:outputText styleClass="gameLog" value="#{gameView.game.gameLog.toString()}"
+                                                  escape="false"/>
+                                </h:panelGroup>
+                            </div>
 
                             <h:panelGroup layout="block" styleClass="rightSection">
 

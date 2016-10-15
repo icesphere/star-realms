@@ -416,7 +416,7 @@ public class GameView implements Serializable {
         shuffleCardsToShow = shuffle;
         cardsToShowSource = source;
 
-        sendGameMessageToPlayer("refresh_middle_section");
+        sendGameMessageToPlayer("refresh_game_page");
     }
 
     public void hideCardsToShow() {

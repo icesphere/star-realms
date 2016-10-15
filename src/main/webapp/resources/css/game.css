@@ -1,5 +1,5 @@
 /* general forms and sections */
-.gameForm {
+.gamePagePlusChat {
     width: 100%;
     background-size: cover !important;
     background-image: url("#{resource['images/space_background.jpg']}");
@@ -31,14 +31,11 @@
 }
 
 .rightSection {
-    /*background-color:#EEEEF0;*/
-    position:absolute;
-    width:310px;
-    height:100%;
-    right: 0px;
-    top: 0px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
+    position: absolute;
+    width: 295px;
+    height: 100%;
+    right: 0;
+    top: 0;
 }
 /* end of general forms and sections */
 
@@ -167,22 +164,46 @@
 
 /* card view section and wrapper */
 .cardViewSection {
-    padding-top: 10px;
+    padding-top: 5px;
     padding-bottom: 10px;
-    margin-left: 6px;
+    margin-left: 4px;
     text-align: center;
-    width:262px;
+    width: 275px;
 }
 
 .cardView {
-    width: 250px;
-    height: 375px;
-    margin-left: 6px;
+    padding: 10px;
+    width: 240px;
+    height: 320px;
+    margin-left: 4px;
     background-color: #EEEEF0;
     text-align: center;
-    border-radius: 25px;
-    box-shadow: 5px 5px 5px #222222;
+    border: 2px solid black;
+    border-radius: 15px;
+    box-shadow: 1px 1px 1px #222222;
 }
+
+.cardViewHeader {
+    font-variant: small-caps;
+    font-family: sans-serif;
+    color: white;
+    width: 240px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    text-shadow: 2px 2px 2px #000000;
+    border-radius: 3px;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+
+.emptyCardView {
+    padding-top: 150px;
+}
+
 /* end of card view section and wrapper */
 
 /* player info and content section, lots of stuff here */
@@ -337,9 +358,10 @@
 .playerInfoSectionInfoValuesIconText {
     position: absolute;
     z-index: 100;
-    left: 2px;
-    top: 2px;
+    left: 7px;
+    top: 6px;
     font-size: 15px;
+    font-weight: bold;
     color: #333;
 }
 
@@ -347,8 +369,10 @@
     z-index: 10;
     left: 0;
     position: absolute;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
+    -webkit-filter: drop-shadow(1px 1px 1px #000000);
+    filter: drop-shadow(1px 1px 1px #000000);
 }
 
 .playerPlayAreaSection {
@@ -426,6 +450,8 @@
     position: absolute;
     width: 30px;
     height: 30px;
+    -webkit-filter: drop-shadow(1px 1px 1px #000000);
+    filter: drop-shadow(1px 1px 1px #000000);
 }
 /* end of play area buy section (industry, actions) */
 /* end of player info section */
@@ -476,8 +502,10 @@
     font-size: 14px;
     width: 265px;
     padding: 5px;
-    border: 2px solid black;
+    border: 2px solid #222222;
     background-color: #EEEEF0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #222222;
 }
 
 .lastTurnSummary {
@@ -514,18 +542,21 @@
 }
 
 .chatSection {
-    width: 270px;
-    position: absolute;
-    bottom: 0px;
+    font-size: 14px;
+    width: 265px;
     padding: 5px;
-    max-height: 250px;
+    border: 2px solid #222222;
+    background-color: #EEEEF0;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #222222;
 }
 
 .chats {
-    height: 190px;
+    height: 130px;
     overflow: auto;
     padding-right: 5px;
 }
+
 /* end of game log and chat section */
 
 /* button section */
@@ -863,7 +894,7 @@
     width: 100%;
 }
 
-.cardCostTradeText, .cardAttrsValueText {
+.cardCostTradeText {
     position: absolute;
     top: 1px;
     width: 17px;
@@ -875,11 +906,22 @@
     color: black;
 }
 
+.cardCostShieldText {
+    position: relative;
+    top: -2px;
+    left: 10px;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    color: black;
+}
+
 .cardIcons {
     height: 16px;
     margin-bottom:-3px;
-    -webkit-filter: drop-shadow(2px 2px 2px #000000);
-    filter: drop-shadow(2px 2px 2px #000000);
+    -webkit-filter: drop-shadow(1px 1px 1px #000000);
+    filter: drop-shadow(1px 1px 1px #000000);
 }
 
 .cardImage {

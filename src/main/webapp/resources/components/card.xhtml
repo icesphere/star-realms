@@ -24,6 +24,11 @@
 
             <div class="cardType">
                 <h:outputText value="#{gameView.getCardTypeString(cc.attrs.card)}"/>
+
+                <h:panelGroup rendered="#{cc.attrs.card.base}">
+                    <h:outputText value="#{cc.attrs.card.shield}" styleClass="cardCostShieldText"/>
+                    <h:graphicImage library="images" name="icons/shield.png" styleClass="cardIcons" />
+                </h:panelGroup>
             </div>
 
             <div class="cardText">

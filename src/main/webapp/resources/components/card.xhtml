@@ -22,11 +22,17 @@
 
             <h:outputText value="#{cc.attrs.card.name}" styleClass="cardHeader #{gameView.getCardClass(cc.attrs.card)}"/>
 
-            <h:panelGroup layout="block" styleClass="cardCost #{gameView.getCardClass(cc.attrs.card)}">
-                <h:panelGroup layout="block" styleClass="cardCostIndustry">
-                    <h:outputText value="#{cc.attrs.card.cost}" styleClass="cardCostIndustryText"/>
-                    <h:graphicImage library="images" name="icons/trade.png" styleClass="cardIcons" />
-                </h:panelGroup>
+            <div class="cardType">
+                <h:outputText value="#{gameView.getCardTypeString(cc.attrs.card)}"/>
+            </div>
+
+            <div class="cardText">
+                <h:outputText value="#{cc.attrs.card.text}"/>
+            </div>
+
+            <h:panelGroup layout="block" styleClass="cardCostTrade" rendered="#{cc.attrs.tradeRow}">
+                <h:outputText value="#{cc.attrs.card.cost}" styleClass="cardCostTradeText"/>
+                <h:graphicImage library="images" name="icons/trade.png" styleClass="cardIcons" />
             </h:panelGroup>
 
             <p:commandLink value="Scrap" styleClass="tinyButton"

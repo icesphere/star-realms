@@ -546,4 +546,20 @@ public class GameView implements Serializable {
 
         return !gameOver && (hasUnusedTrade || !getPlayer().getHand().isEmpty() || hasUnusedCombat || hasUnusedAlly);
     }
+
+    public String getCardTypeString(Card card) {
+        if (card.isShip()) {
+            return "Ship";
+        } else if (card.isOutpost()) {
+            return "Outpost";
+        } else if (card.isBase()) {
+            return "Base";
+        } else if (card.isHero()) {
+            return "Hero";
+        } else if (card instanceof Event) {
+            return "Event";
+        }
+
+        return "";
+    }
 }

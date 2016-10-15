@@ -593,10 +593,14 @@ public abstract class Player {
 
             if (card instanceof StealthNeedle) {
                 StealthNeedle stealthNeedle = (StealthNeedle) card;
-                ((ScrappableCard) stealthNeedle.getCardBeingCopied()).cardScrapped(this);
+                if (stealthNeedle.getCardBeingCopied() != null) {
+                    ((ScrappableCard) stealthNeedle.getCardBeingCopied()).cardScrapped(this);
+                }
             } else if (card instanceof StealthTower) {
                 StealthTower stealthTower = (StealthTower) card;
-                ((ScrappableCard) stealthTower.getCardBeingCopied()).cardScrapped(this);
+                if (stealthTower.getCardBeingCopied() != null) {
+                    ((ScrappableCard) stealthTower.getCardBeingCopied()).cardScrapped(this);
+                }
             } else {
                 ((ScrappableCard) card).cardScrapped(this);
             }

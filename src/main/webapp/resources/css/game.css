@@ -88,8 +88,8 @@
 /* supply section */
 .supplySection {
     padding: 15px;
-    width:990px;
-    height: 115px;
+    width: 990px;
+    height: 120px;
     clear: both;
 }
 
@@ -207,7 +207,7 @@
 .playerContentCardAreaDeckAndDiscardSection {
     float: right;
     position: relative;
-    top: 0px;
+    top: 20px;
     display: block;
     margin-top: 5px;
     width: 170px;
@@ -383,7 +383,7 @@
     margin-top: 10px;
 }
 
-/* player play area buy section (industry, lostech, actions) */
+/* player play area buy section (industry, actions) */
 .playerContentCardAreaPlayAreaBuySection {
     position: absolute;
     right: 15px;
@@ -427,7 +427,7 @@
     width: 30px;
     height: 30px;
 }
-/* end of play area buy section (industry, lostech, actions) */
+/* end of play area buy section (industry, actions) */
 /* end of player info section */
 
 /* hand section */
@@ -769,49 +769,70 @@
     display:block;
     float:left;
     width: 85px;
-    height: 114px;
+    height: 120px;
     margin-bottom: 2px;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;
-
-    font-variant: small-caps;
-    font-size: 10pt;
-    font-family: sans-serif;
+    margin-right: 6px;
 }
 
 .cardWrapper {
-    border: 2px transparent solid;
+    border: 2px solid #e5e5e5;
     box-shadow: 2px 2px 5px #222222;
+    background: #e5e5e5;
     vertical-align: middle;
     display:block;
     border-radius: 8px;
     position: relative;
     color: #ffffff;
     float:left;
+    height: 100%;
+    width: 100%;
 }
 
 .cardHeader {
     position: absolute;
     top: 4px;
     left: 4px;
-    width: 62px;
+    width: 70px;
     padding: 3px;
     min-height: 22px;
     text-align: center;
     vertical-align: middle;
     text-shadow: 2px 2px 2px #000000;
     border-radius: 3px;
-    font-size: 8pt;
-    -ms-word-break: break-all;
-    word-break: break-all;
+    word-break: break-word;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+
+    font-variant: small-caps;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+
+.cardType {
+    width: 100%;
+    color: black;
+    position: absolute;
+    top: 35px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.cardText {
+    position: absolute;
+    width: 80px;
+    top: 52px;
+    color: black;
+    font-size: 9px;
+    overflow: hidden;
+    text-align: center;
+    height: 46px;
 }
 
 .cardAttrs, .cardCost {
@@ -822,7 +843,6 @@
     text-align: center;
     width: 62px;
     text-shadow: 2px 2px 2px #000000;
-    text-align: center;
     height: 16px;
 }
 
@@ -834,31 +854,25 @@
     bottom: 5px;
 }
 
-.cardCostIndustry, .cardCostLostech, .cardAttrsValueOffense, .cardAttrsValueDefense {
+.cardCostTrade {
     position: absolute;
-    width: 34px;
+    bottom: 4px;
     height: 16px;
     padding: 0;
     text-align: center;
+    width: 100%;
 }
 
-.cardCostIndustryText, .cardAttrsValueText {
+.cardCostTradeText, .cardAttrsValueText {
     position: absolute;
-    top: 3px;
-    width: 100%;
+    top: 1px;
+    width: 17px;
     text-align: center;
     z-index: 10;
     padding: 0;
     margin: 0;
-    left: 0;
-}
-
-.cardCostLostech, .cardAttrsValueDefense {
-    right: 0;
-}
-
-.cardCostIndustry, .cardAttrsValueOffense {
-    left: 0;
+    font-weight: bold;
+    color: black;
 }
 
 .cardIcons {
@@ -894,12 +908,9 @@
 }
 
 .playerContentCardAreaCardsSection .card {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
-.supplySection .card {
-    margin-left:0px;
-}
 /* end card section */
 
 .sectionHeader {

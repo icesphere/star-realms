@@ -126,7 +126,20 @@ public class HumanPlayer extends Player {
 
     @Override
     public void discardCardsFromHand(int cards) {
-        addAction(new DiscardCardsFromHand(cards));
+        Action lastAction = getLastAction();
+        if (lastAction != null && lastAction instanceof DiscardCardsFromHand) {
+            DiscardCardsFromHand discardCardsFromHand = (DiscardCardsFromHand) lastAction;
+            discardCardsFromHand.setNumCardsToDiscard(discardCardsFromHand.getNumCardsToDiscard() + cards);
+        } else {
+            addAction(new DiscardCardsFromHand(cards));
+        }
+    }
+
+    private Action getLastAction() {
+        if (!actionsQueue.isEmpty()) {
+            return actionsQueue.get(actionsQueue.size() - 1);
+        }
+        return null;
     }
 
     @Override

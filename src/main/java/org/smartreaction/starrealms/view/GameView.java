@@ -530,15 +530,20 @@ public class GameView implements Serializable {
     }
 
     public boolean isShowConfirmEndTurn() {
+        boolean gameOver = getOpponent().getAuthority() <= 0 || getGame().allMissionsCompleted(getPlayer());
+
         List<Card> availableCardsToBuy = new ArrayList<>(getPlayer().getGame().getTradeRow());
         availableCardsToBuy.add(new Explorer());
 
         Optional<Card> cheapestCard = availableCardsToBuy.stream()
                 .min((c1, c2) -> Integer.compare(c1.getCost(), c2.getCost()));
 
-        boolean gameOver = getOpponent().getAuthority() <= 0 || getGame().allMissionsCompleted(getPlayer());
+        boolean hasUnusedTrade = cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade();
 
-        return !gameOver && ((cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade()) || !getPlayer().getHand().isEmpty() || getPlayer().getCombat() > 0);
+        boolean hasUnusedAlly = getPlayer().getInPlay().stream().anyMatch(c -> c.isAlliableCard() && getPlayer().cardHasAnyUnusedAlly(c));
 
+        boolean hasUnusedCombat = getPlayer().getCombat() > 0 && getOpponent().getSmallestOutpostShield() <= getPlayer().getCombat();
+
+        return !gameOver && (hasUnusedTrade || !getPlayer().getHand().isEmpty() || hasUnusedCombat || hasUnusedAlly);
     }
 }

@@ -86,4 +86,12 @@ public class DiscardCardsFromHand extends Action {
     public boolean isCardSelected(Card card) {
         return selectedCards.contains(card);
     }
+
+    public int getNumCardsToDiscard() {
+        return numCardsToDiscard;
+    }
+
+    public void setNumCardsToDiscard(int numCardsToDiscard) {
+        this.numCardsToDiscard = numCardsToDiscard;
+    }
 }

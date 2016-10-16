@@ -11,7 +11,7 @@ public class AgingBattleship extends Ship implements ScrappableCard, AlliableCar
 {
     public AgingBattleship()
     {
-        name = "AgingBattleship";
+        name = "Aging Battleship";
         addFaction(Faction.STAR_EMPIRE);
         cost = 5;
         set = CardSet.COLONY_WARS;

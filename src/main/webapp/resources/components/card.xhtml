@@ -23,11 +23,11 @@
             <h:outputText value="#{cc.attrs.card.name}" styleClass="cardHeader #{gameView.getCardClass(cc.attrs.card)}"/>
 
             <div class="cardType">
-                <h:outputText value="#{gameView.getCardTypeString(cc.attrs.card)}"/>
+                <h:outputText value="#{gameView.getCardTypeString(cc.attrs.card)}" style="vertical-align: top;"/>
 
                 <h:panelGroup rendered="#{cc.attrs.card.base}">
-                    <h:outputText value="#{cc.attrs.card.shield}" styleClass="cardCostShieldText"/>
-                    <h:graphicImage library="images" name="icons/shield.png" styleClass="cardIcons" />
+                    <h:outputText value="#{cc.attrs.card.shield}" styleClass="cardShieldText"/>
+                    <h:graphicImage library="images" name="icons/shield.png" styleClass="cardIcons cardShieldIcon" />
                 </h:panelGroup>
             </div>
 

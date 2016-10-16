@@ -130,7 +130,7 @@
                     </p:commandLink>
 
                     <p:commandLink process="@this"
-                                   styleClass="playerContentCardAreaDeckAndDiscardDeck #{gameView.highlightDiscardButton ? 'selected' : ''}"
+                                   styleClass="playerContentCardAreaDeckAndDiscardDeck #{!cc.attrs.isOpponent and gameView.highlightDiscardButton ? 'selected' : ''}"
                                    actionListener="#{gameView.showCards(
                                                      cc.attrs.player.discard,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents discard pile' : 'Cards in your discard pile',

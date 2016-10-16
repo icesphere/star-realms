@@ -217,6 +217,7 @@
     padding: 10px;
     min-height: 121px;
     margin-top: -66px;
+    margin-left: 8px;
     width: 950px;
 }
 
@@ -358,6 +359,18 @@
     font-size: 15px;
     font-weight: bold;
     color: #333;
+}
+
+.playerAuthorityBig {
+    left: 12px;
+}
+
+.playerAuthorityMedium {
+    left: 15px;
+}
+
+.playerAuthoritySmall {
+    left: 19px;
 }
 
 .playerInfoSectionInfoValuesIconImage {

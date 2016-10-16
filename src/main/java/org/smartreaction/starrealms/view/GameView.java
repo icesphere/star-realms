@@ -562,4 +562,14 @@ public class GameView implements Serializable {
 
         return "";
     }
+
+    public String getAuthorityStyleClass(int authority) {
+         if (authority < 10 && authority > -10) {
+             return "playerAuthoritySmall";
+         } else if (authority > 99 || authority < -99) {
+             return "playerAuthorityBig";
+         } else {
+             return "playerAuthorityMedium";
+         }
+    }
 }

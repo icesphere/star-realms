@@ -25,7 +25,8 @@
         <h:panelGroup layout="block" class="playerInfoSectionInfoValues">
 
             <h:panelGroup layout="block" class="playerInfoSectionInfoValuesIcon">
-                <h:outputText styleClass="playerInfoSectionInfoValuesIconText" value="#{cc.attrs.player.authority}"/>
+                <h:outputText styleClass="playerInfoSectionInfoValuesIconText #{gameView.getAuthorityStyleClass(cc.attrs.player.authority)}"
+                              value="#{cc.attrs.player.authority}"/>
                 <h:graphicImage library="images" name="icons/authority.png" styleClass="playerInfoSectionInfoValuesIconImage"/>
                 <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton playerAttackButton"
                                actionListener="#{gameView.attackOpponent}" process="@this"

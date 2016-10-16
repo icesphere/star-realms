@@ -55,14 +55,6 @@
                                     <h:outputText style="display:block;text-decoration:underline;"
                                                   value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
                                                            'Victory Achieved!' : 'Hideous defeat!'}"/>
-                                    <h:outputText style="display:block"
-                                                  rendered="#{!gameView.player.firstPlayer}"
-                                                  value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
-                                                           'You have survived the onslaught' : 'You have lost this planet'}"/>
-                                    <h:outputText style="display:block"
-                                                  rendered="#{gameView.player.firstPlayer}"
-                                                  value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
-                                                           'The invasion was successful' : 'The invasion failed'}"/>
                                 </h:panelGroup>
                             </h:panelGroup>
 
@@ -71,6 +63,12 @@
                                 <h:outputText value="#{gameView.game.quitGamePlayer.playerName} quit the game."/>
                             </h:panelGroup>
 
+                            <h:panelGroup layout="block" styleClass="turnButtonWrapper"
+                                          rendered="#{gameView.game.gameOver}">
+                                <p:commandLink ajax="false" styleClass="turnButton" value="GAME LOG">
+                                    <p:fileDownload value="#{gameView.gameLog}"/>
+                                </p:commandLink>
+                            </h:panelGroup>
 
                             <h:panelGroup layout="block" styleClass="turnButtonWrapper">
                                 <p:commandLink process="@this" styleClass="quitButton"
@@ -166,7 +164,7 @@
                                     </ui:repeat>
                                 </h:panelGroup>
 
-                                <h:panelGroup rendered="#{gameView.player.yourTurn and !empty gameView.player.hand}">
+                                <h:panelGroup rendered="#{gameView.player.yourTurn and !empty gameView.player.hand and empty gameView.action}">
                                     <sr:linkWithSpinner process="@this" update=":gameForm:gamePage"
                                                         styleClass="playAllButton"
                                                         linkText="Play All" actionMethod="#{gameView.playAll}"/>
@@ -197,13 +195,6 @@
                                     <h:panelGroup rendered="#{gameView.player.yourTurn and empty gameView.action}">
 
                                         <h:panelGroup layout="block" styleClass="turnButtonWrapper"
-                                                      rendered="#{!empty gameView.player.hand}">
-                                            <sr:linkWithSpinner process="@this" update=":gameForm:gamePage"
-                                                                styleClass="turnButton"
-                                                                linkText="Play All" actionMethod="#{gameView.playAll}"/>
-                                        </h:panelGroup>
-
-                                        <h:panelGroup layout="block" styleClass="turnButtonWrapper"
                                                       rendered="#{gameView.showConfirmEndTurn}">
                                             <p:commandLink process="@this" update=":gameForm:gamePage"
                                                            styleClass="turnButton" value="End Turn"
@@ -224,13 +215,6 @@
                                         <p:commandLink process="@this" styleClass="quitButton" value="Quit Game"
                                                        onclick="if (!confirm('Are you sure you want to quit the game?')) return false"
                                                        action="#{gameView.quitGame}"/>
-                                    </h:panelGroup>
-
-                                    <h:panelGroup layout="block" styleClass="turnButtonWrapper"
-                                                  rendered="#{gameView.game.gameOver}">
-                                        <p:commandLink ajax="false" styleClass="turnButton" value="GAME LOG">
-                                            <p:fileDownload value="#{gameView.gameLog}"/>
-                                        </p:commandLink>
                                     </h:panelGroup>
 
                                 </h:panelGroup>
@@ -254,33 +238,43 @@
                                                     <h:outputText
                                                             value="#{gameView.getFactionDisplayName(gameView.cardToView)}"/>
                                                 </div>
+
                                                 <h:panelGroup rendered="#{!gameView.cardToView.gambit}">
                                                     <div style="padding-top: 15px;">
                                                         <h:outputText value="Cost:" style="padding-right: 10px;"/>
                                                         <h:outputText value="$#{gameView.cardToView.cost}"/>
                                                     </div>
                                                 </h:panelGroup>
+
                                                 <h:panelGroup layout="block" rendered="#{gameView.cardToView.base}"
                                                               style="padding-top: 15px;">
                                                     <h:outputText value="#{gameView.cardToView.shield} Defense"/>
                                                 </h:panelGroup>
+
                                                 <div style="padding-top: 15px;">
                                                     <h:outputText value="#{gameView.cardToView.text}"/>
                                                 </div>
                                             </h:panelGroup>
 
                                             <h:panelGroup layout="block" rendered="#{!empty gameView.missionToView}">
-                                                <h:outputText value="#{gameView.missionToView.name}"
-                                                              style="font-weight: bold; font-size: 20px;"/>
+                                                <div style="padding-top: 10px;"
+                                                     class="cardViewHeader mission">
+                                                    <h:outputText value="#{gameView.missionToView.name}"
+                                                                  style="font-weight: bold; font-size: 20px;"/>
+                                                </div>
+
                                                 <div style="padding-top: 15px; font-weight: bold; font-size: 16px;">
                                                     <h:outputText value="Objective:"/>
                                                 </div>
+
                                                 <div>
                                                     <h:outputText value="#{gameView.missionToView.objectiveText}"/>
                                                 </div>
+
                                                 <div style="padding-top: 15px; font-weight: bold; font-size: 16px;">
                                                     <h:outputText value="Reward:"/>
                                                 </div>
+
                                                 <div>
                                                     <h:outputText value="#{gameView.missionToView.rewardText}"/>
                                                 </div>
@@ -295,7 +289,7 @@
                                     </h:panelGroup>
                                 </h:panelGroup>
 
-                                <h:panelGroup layout="block" id="chatSection" styleClass="chatSection">
+                                <h:panelGroup layout="block" id="chatSection" styleClass="chatSection" rendered="#{!gameView.opponent.bot}">
                                     <h:panelGroup layout="block" style="padding-bottom: 5px;">
                                         <h:outputText value="Chat" styleClass="sectionHeader"/>
                                     </h:panelGroup>
@@ -341,9 +335,7 @@
                 var message = response.message;
 
                 if (message == 'refresh_game_page') {
-                    refreshLeftSection();
-                    refreshTurnButtonsSection();
-                    refreshFloatingTurnInfoSection();
+                    refreshGamePage();
                 } else if (message == 'refresh_chat') {
                     refreshChat();
                 } else if (message == 'refresh_player_player_info') {

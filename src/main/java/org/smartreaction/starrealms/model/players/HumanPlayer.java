@@ -130,6 +130,7 @@ public class HumanPlayer extends Player {
         if (lastAction != null && lastAction instanceof DiscardCardsFromHand) {
             DiscardCardsFromHand discardCardsFromHand = (DiscardCardsFromHand) lastAction;
             discardCardsFromHand.setNumCardsToDiscard(discardCardsFromHand.getNumCardsToDiscard() + cards);
+            discardCardsFromHand.setTextFromNumberOfCardsToDiscard();
         } else {
             addAction(new DiscardCardsFromHand(cards));
         }

@@ -45,7 +45,7 @@
     top: 10px;
     border-radius: 25px;
     width: 1340px;
-    height: 880px;
+    height: 100%;
     background: rgba(0,0,0,0.8);
     clear: both;
     text-align: center;
@@ -1023,5 +1023,27 @@
 
 .deckHolder {
     background-image: url("#{resource['images/space_background.jpg']}");
+}
+
+.missionObjectiveText {
+    position: absolute;
+    width: 80px;
+    top: 35px;
+    color: black;
+    font-size: 9px;
+    overflow: hidden;
+    text-align: center;
+    height: 40px;
+}
+
+.missionRewardText {
+    position: absolute;
+    width: 80px;
+    top: 80px;
+    color: black;
+    font-size: 9px;
+    overflow: hidden;
+    text-align: center;
+    height: 40px;
 }
 

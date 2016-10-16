@@ -15,15 +15,26 @@
 
     <h:panelGroup layout="block" styleClass="card" onmouseover="updateCardViewWithMission([{name:'missionName', value:'#{cc.attrs.mission.name}'}])">
 
-        <div class="cardInfo mission">
-            <div style="float: left;">
-                <h:outputText value="#{cc.attrs.mission.name}"/>
+        <div class="cardWrapper mission">
+
+            <h:outputText value="#{cc.attrs.mission.name}" styleClass="cardHeader mission"/>
+
+            <div class="missionObjectiveText">
+                <h:outputText value="Objective: " styleClass="boldText"/>
+                <h:outputText value="#{cc.attrs.mission.objectiveText}"/>
             </div>
-            <div style="float: right;">
-                <p:commandLink value="Claim" style="position: relative; top: 3px;" styleClass="tinyButton"
-                               rendered="#{!cc.attrs.opponentMission and gameView.isShowClaimLink(cc.attrs.mission)}"
+
+            <div class="missionRewardText">
+                <h:outputText value="Reward: " styleClass="boldText"/>
+                <h:outputText value="#{cc.attrs.mission.rewardText}"/>
+            </div>
+
+            <h:panelGroup layout="block" styleClass="cardBottomButton"
+                          rendered="#{!cc.attrs.opponentMission and gameView.isShowClaimLink(cc.attrs.mission)}">
+                <p:commandLink value="Claim" styleClass="attackButton"
                                actionListener="#{gameView.claimMission(cc.attrs.mission)}"/>
-            </div>
+            </h:panelGroup>
+
         </div>
 
     </h:panelGroup>

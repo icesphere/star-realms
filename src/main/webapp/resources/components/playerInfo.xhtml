@@ -115,12 +115,21 @@
                                                      cc.attrs.isOpponent ? cc.attrs.player.handAndDeck : cc.attrs.player.deck,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents hand and deck' : 'Cards in your deck',
                                                      cc.attrs.isOpponent ? 'opponentDeckAndHand' : 'deck', true)}">
-                        <h:outputText value="Deck" styleClass="playerContentCardAreaDeckAndDiscardDeckText" />
-                        <h:outputText value="#{cc.attrs.player.deck.size()}" styleClass="playerContentCardAreaDeckAndDiscardDeckValue" />
+
+                        <h:panelGroup layout="block" rendered="#{cc.attrs.isOpponent}" style="padding-bottom: 20px;">
+                            <h:outputText value="Hand &amp;" styleClass="playerContentCardAreaDeckAndDiscardDeckText"/>
+                        </h:panelGroup>
+
+                        <div>
+                            <h:outputText value="Deck" styleClass="playerContentCardAreaDeckAndDiscardDeckText" />
+                        </div>
+
+                        <h:outputText value="#{cc.attrs.isOpponent ? cc.attrs.player.handAndDeck.size() : cc.attrs.player.deck.size()}" styleClass="playerContentCardAreaDeckAndDiscardDeckValue" />
+
                     </p:commandLink>
 
                     <p:commandLink process="@this"
-                                   styleClass="playerContentCardAreaDeckAndDiscardDeck"
+                                   styleClass="playerContentCardAreaDeckAndDiscardDeck #{gameView.highlightDiscardButton ? 'selected' : ''}"
                                    actionListener="#{gameView.showCards(
                                                      cc.attrs.player.discard,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents discard pile' : 'Cards in your discard pile',

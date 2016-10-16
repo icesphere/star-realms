@@ -15,6 +15,10 @@ public class DiscardCardsFromHand extends Action {
 
     public DiscardCardsFromHand(int numCardsToDiscard) {
         this.numCardsToDiscard = numCardsToDiscard;
+        setTextFromNumberOfCardsToDiscard();
+    }
+
+    public void setTextFromNumberOfCardsToDiscard() {
         text = "Discard " + numCardsToDiscard + " card";
         if (numCardsToDiscard != 1) {
             text += "s";

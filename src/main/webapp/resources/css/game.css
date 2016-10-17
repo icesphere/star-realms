@@ -117,7 +117,7 @@
     font-variant: small-caps;
     position: absolute;
     width: 76px;
-    left: 0px;
+    left: 0;
     top: 5px;
     float: left;
     font-size: 16pt;
@@ -129,7 +129,7 @@
 .supplyLeftBoxValue {
     position: absolute;
     width: 76px;
-    left: 0px;
+    left: 0;
     bottom: 10px;
     font-size: 40pt;
     text-align: center;
@@ -217,7 +217,7 @@
     padding: 10px;
     min-height: 121px;
     margin-top: -66px;
-    margin-left: 8px;
+    margin-left: 10px;
     width: 950px;
 }
 
@@ -539,6 +539,7 @@
 }
 
 .gameLog {
+    font-size: 14px;
     height: 350px;
     overflow: auto;
     padding-right: 10px;
@@ -1057,7 +1058,7 @@
 .missionRewardText {
     position: absolute;
     width: 80px;
-    top: 80px;
+    top: 79px;
     color: black;
     font-size: 9px;
     overflow: hidden;

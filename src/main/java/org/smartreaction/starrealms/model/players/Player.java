@@ -1,6 +1,5 @@
 package org.smartreaction.starrealms.model.players;
 
-import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.TurnSummary;
@@ -156,7 +155,7 @@ public abstract class Player {
 
             drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
 
-            if (getGame().getCardSets().contains(CardSet.UNITED_MISSIONS)) {
+            if (getGame().usingMissions()) {
                 List<Mission> missionsToCopy = getClaimedMissions();
 
                 if (missionsToCopy.size() < 3) {
@@ -175,7 +174,7 @@ public abstract class Player {
             getHand().addAll(copyCards(player.getHand()));
             getDeck().addAll(copyCards(player.getDeck()));
             Collections.shuffle(getDeck());
-            if (getGame().getCardSets().contains(CardSet.UNITED_MISSIONS)) {
+            if (getGame().usingMissions()) {
                 getMissions().addAll(copyMissions(player.getMissions()));
             }
         }

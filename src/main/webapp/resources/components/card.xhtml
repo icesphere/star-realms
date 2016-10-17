@@ -47,7 +47,7 @@
             </h:panelGroup>
 
             <h:panelGroup layout="block" styleClass="cardBottomButton"
-                          rendered="#{cc.attrs.source eq 'opponentBases' and gameView.isBaseAttackable(cc.attrs.card)}">
+                          rendered="#{gameView.isShowAttackLink(cc.attrs.card, cc.attrs.source)}">
                 <p:commandLink value="Attack" styleClass="attackButton"
                                actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"/>
             </h:panelGroup>

@@ -495,6 +495,13 @@ public class GameView implements Serializable {
                         cardLocation.equals(Card.CARD_LOCATION_PLAYER_GAMBITS));
     }
 
+    public boolean isShowAttackLink(Card card, String cardLocation) {
+        return getPlayer().isYourTurn()
+                && cardLocation.equals(Card.CARD_LOCATION_OPPONENT_BASES)
+                && isBaseAttackable((Base) card)
+                && getAction() == null;
+    }
+
     public boolean isHighlightDiscardButton() {
         Action action = getAction();
         return action != null && getPlayer().isYourTurn() && !getPlayer().getDiscard().isEmpty()

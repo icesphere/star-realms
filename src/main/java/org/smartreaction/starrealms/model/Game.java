@@ -235,7 +235,7 @@ public class Game
     }
 
     public boolean allMissionsCompleted(Player player) {
-        return cardSets.contains(CardSet.UNITED_MISSIONS) && player.getUnClaimedMissions().isEmpty();
+        return usingMissions() && player.getUnClaimedMissions().isEmpty();
     }
 
     private void gameOver() {
@@ -253,7 +253,7 @@ public class Game
             String playerName = player.getPlayerName();
             gameLog(playerName + "'s cards: ");
             player.getAllCards().forEach(c -> gameLog(c.getName()));
-            if (cardSets.contains(CardSet.UNITED_MISSIONS)) {
+            if (usingMissions()) {
                 gameLog(playerName + "'s missions:");
                 player.getMissions().forEach(m -> gameLog(m.getName()));
             }
@@ -283,10 +283,24 @@ public class Game
     }
 
     public Player getWinner() {
+        if (usingMissions()) {
+            for (Player player : players) {
+                if (allMissionsCompleted(player)) {
+                    return player;
+                }
+            }
+        }
         return players.stream().max((p1, p2) -> Integer.compare(p1.getAuthority(), p2.getAuthority())).get();
     }
 
     public Player getLoser() {
+        if (usingMissions()) {
+            for (Player player : players) {
+                if (allMissionsCompleted(player)) {
+                    return player.getOpponent();
+                }
+            }
+        }
         return players.stream().min((p1, p2) -> Integer.compare(p1.getAuthority(), p2.getAuthority())).get();
     }
 
@@ -414,5 +428,9 @@ public class Game
 
     public String getRecentTurnsLog() {
         return currentTurnLog + StringUtils.join(recentTurnLogs, "");
+    }
+
+    public boolean usingMissions() {
+        return cardSets.contains(CardSet.UNITED_MISSIONS);
     }
 }

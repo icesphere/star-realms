@@ -518,7 +518,7 @@
 }
 
 .lastTurnSummary {
-    height: 130px;
+    height: 160px;
     overflow: auto;
     padding-right: 5px;
 }
@@ -550,6 +550,9 @@
 }
 
 .chatSection {
+    position: absolute;
+    bottom: -395px;
+    right: 80px;
     font-size: 14px;
     width: 265px;
     padding: 5px;

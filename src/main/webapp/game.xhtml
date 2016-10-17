@@ -26,23 +26,19 @@
 
             <p:remoteCommand name="updateCardView" actionListener="#{gameView.updateCardView}"
                              update="cardViewSection"/>
+
             <p:remoteCommand name="updateCardViewWithMission" actionListener="#{gameView.updateCardViewWithMission}"
                              update="cardViewSection"/>
 
             <p:remoteCommand name="cardClicked" actionListener="#{gameView.cardClicked}"/>
 
-            <p:remoteCommand name="refreshGamePage" process="@this" update="gamePagePlusChat"
-                             oncomplete="scrollChat()"/>
-            <p:remoteCommand name="refreshOpponentPlayerInfo" process="@this" update="opponentPlayerInfo"/>
-            <p:remoteCommand name="refreshPlayerPlayerInfo" process="@this" update="playerPlayerInfo"/>
-            <p:remoteCommand name="refreshLeftSection" process="@this" update="leftSection"/>
+            <p:remoteCommand name="refreshGamePage" process="@this" update="gamePagePlusOverlay"/>
+
             <p:remoteCommand name="refreshChat" process="@this" update="chatSection" oncomplete="scrollChat()"/>
-            <p:remoteCommand name="refreshOverlay" process="@this" update="gamePageOverlay"/>
-            <p:remoteCommand name="refreshTurnButtonsSection" process="@this" update="turnButtonsSection"/>
 
-            <div class="gamePagePlusChat">
+            <h:panelGroup id="gamePagePlusChat" layout="block" styleClass="gamePagePlusChat">
 
-                <h:panelGroup id="gamePagePlusChat" layout="block" styleClass="gamePage">
+                <h:panelGroup id="gamePagePlusOverlay" layout="block" styleClass="gamePage">
 
                     <h:panelGroup id="gamePageOverlay">
                         <h:panelGroup layout="block" rendered="#{gameView.game.gameOver}"
@@ -289,29 +285,6 @@
                                     </h:panelGroup>
                                 </h:panelGroup>
 
-                                <h:panelGroup layout="block" id="chatSection" styleClass="chatSection" rendered="#{!gameView.opponent.bot}">
-                                    <h:panelGroup layout="block" style="padding-bottom: 5px;">
-                                        <h:outputText value="Chat" styleClass="sectionHeader"/>
-                                    </h:panelGroup>
-                                    <h:panelGroup layout="block" id="chats" class="chats">
-                                        <ui:repeat value="#{gameView.game.chatMessages}" var="chatMessage">
-                                            <h:panelGroup layout="block" style="padding-top: 10px;">
-                                                <h:outputText value="#{chatMessage.username}:"
-                                                              styleClass="#{gameView.player.playerName eq chatMessage.username ? 'player' : 'opponent'}"/>
-                                                <h:outputText value="#{chatMessage.message}"
-                                                              style="padding-left: 10px;"/>
-                                            </h:panelGroup>
-                                        </ui:repeat>
-                                    </h:panelGroup>
-                                    <h:panelGroup layout="block" style="padding-top: 10px;">
-                                        <p:inputText value="#{gameView.chatMessage}"
-                                                     style="margin-right: 10px;width: 190px"/>
-                                        <p:commandButton value="Send" process="chatSection" update="chatSection"
-                                                         actionListener="#{gameView.sendChatMessage}"
-                                                         oncomplete="scrollChat()"/>
-                                    </h:panelGroup>
-                                </h:panelGroup>
-
                             </h:panelGroup>
 
                         </h:panelGroup>
@@ -320,7 +293,30 @@
 
                 </h:panelGroup>
 
-            </div>
+                <h:panelGroup layout="block" id="chatSection" styleClass="chatSection" rendered="#{!gameView.opponent.bot}">
+                    <h:panelGroup layout="block" style="padding-bottom: 5px;">
+                        <h:outputText value="Chat" styleClass="sectionHeader"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" id="chats" class="chats">
+                        <ui:repeat value="#{gameView.game.chatMessages}" var="chatMessage">
+                            <h:panelGroup layout="block" style="padding-top: 10px;">
+                                <h:outputText value="#{chatMessage.username}:"
+                                              styleClass="#{gameView.player.playerName eq chatMessage.username ? 'player' : 'opponent'}"/>
+                                <h:outputText value="#{chatMessage.message}"
+                                              style="padding-left: 10px;"/>
+                            </h:panelGroup>
+                        </ui:repeat>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" style="padding-top: 10px;">
+                        <p:inputText value="#{gameView.chatMessage}"
+                                     style="margin-right: 10px;width: 190px"/>
+                        <p:commandButton value="Send" process="chatSection" update="chatSection"
+                                         actionListener="#{gameView.sendChatMessage}"
+                                         oncomplete="scrollChat()"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+            </h:panelGroup>
 
         </h:form>
 
@@ -338,14 +334,6 @@
                     refreshGamePage();
                 } else if (message == 'refresh_chat') {
                     refreshChat();
-                } else if (message == 'refresh_player_player_info') {
-                    refreshPlayerPlayerInfo();
-                } else if (message == 'refresh_opponent_player_info') {
-                    refreshOpponentPlayerInfo();
-                } else if (message == 'refresh_left_section') {
-                    refreshLeftSection();
-                } else if (message == 'refresh_overlay') {
-                    refreshOverlay();
                 }
             }
         </script>

@@ -82,6 +82,8 @@
                             <sr:playerInfo player="#{gameView.opponent}" id="opponentPlayerInfo" playerClass="opponent"
                                            isOpponent="true" isTheirTurn="#{!gameView.player.yourTurn}"/>
 
+                            <sr:action/>
+
                             <h:panelGroup layout="block" id="supplySection" styleClass="supplySection">
 
                                 <h:outputText value="Trade Row" styleClass="playerContentCardAreaText" style="left: -200px;" />
@@ -98,59 +100,7 @@
                             <sr:playerInfo player="#{gameView.player}" id="playerPlayerInfo" playerClass="player"
                                            isOpponent="false" isTheirTurn="#{gameView.player.yourTurn}"/>
 
-                            <h:panelGroup layout="block" styleClass="actionSection"
-                                          rendered="#{gameView.player.waitingForComputer}">
-
-                                <div style="float: left;">
-                                    <h:outputText value="Computer's Turn" styleClass="currentActionLabel"/>
-                                </div>
-
-                                <div style="clear: both; float: left; padding-top: 10px;">
-                                    <h:outputText value="Waiting for computer..." style="padding-right: 10px;"/>
-
-                                    <h:graphicImage id="loadingImage" library="images" name="loadingSmall.gif"/>
-                                </div>
-
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" id="actionSection" styleClass="actionSection"
-                                          rendered="#{gameView.player.yourTurn and !empty gameView.action}">
-
-                                <div style="float: left;">
-                                    <h:outputText value="Current Action" styleClass="currentActionLabel"/>
-                                </div>
-
-                                <div style="clear: both; float: left; padding-top: 10px;">
-                                    <h:outputText value="#{gameView.action.text}"/>
-                                </div>
-
-                                <h:panelGroup rendered="#{!empty gameView.action.choices}">
-                                    <div style="clear: both; float: left; padding-top: 10px;">
-                                        <ui:repeat value="#{gameView.action.choices}" var="choice">
-                                            <p:commandLink value="#{choice.text}" style="margin-right: 10px;"
-                                                           styleClass="smallButton"
-                                                           actionListener="#{gameView.choiceMade(choice.choiceNumber)}"/>
-                                        </ui:repeat>
-                                    </div>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{gameView.action.showDone or gameView.action.showDoNotUse}">
-
-                                    <div style="clear: both; float: left; padding-top: 10px;">
-
-                                        <p:commandLink value="Do not use" style="margin-right: 15px;"
-                                                       styleClass="smallButton"
-                                                       rendered="#{gameView.action.showDoNotUse}"
-                                                       actionListener="#{gameView.doNotUseAction}"/>
-
-                                        <p:commandLink value="#{gameView.action.doneText}" styleClass="smallButton"
-                                                       rendered="#{gameView.action.showDone}"
-                                                       actionListener="#{gameView.doneWithAction}"/>
-                                    </div>
-
-                                </h:panelGroup>
-
-                            </h:panelGroup>
+                            <sr:action/>
 
                             <h:panelGroup layout="block" id="handSection" styleClass="handSection">
                                 <h:outputText value="Your Hand" styleClass="playerContentCardAreaText"/>

@@ -39,14 +39,14 @@
 
             <h:panelGroup layout="block" styleClass="playerContentCardAreaSection">
                 <h:outputText value="#{cc.attrs.player.playerName}'s Bases, Heroes, Etc." styleClass="playerContentCardAreaText"/>
-                <h:panelGroup layout="block" class="playerContentCardAreaPlayArea playerContentCardAreaPlayAreaUnits">
+                <h:panelGroup layout="block" class="playerContentCardAreaPlayArea playerContentCardAreaPlayAreaOtherCards">
 
                     <h:panelGroup rendered="#{!empty cc.attrs.player.bases}">
-                        <div style="clear: both; float: left; padding-top: 10px;">
+                        <div class="otherCardsSection">
                             <div>
                                 <h:outputText value="Bases"/>
                             </div>
-                            <div style="clear: both; float:left; padding-top: 5px;">
+                            <div class="otherCardsSectionCards">
                                 <ui:repeat value="#{cc.attrs.player.bases}" var="card">
                                     <sr:card card="#{card}" source="#{cc.attrs.playerClass}Bases"/>
                                 </ui:repeat>
@@ -55,11 +55,11 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!empty cc.attrs.player.heroes}">
-                        <div style="clear: both; float: left; padding-top: 10px;">
+                        <div class="otherCardsSection">
                             <div>
                                 <h:outputText value="Heroes"/>
                             </div>
-                            <div style="clear: both; float:left; padding-top: 5px;">
+                            <div class="otherCardsSectionCards">
                                 <ui:repeat value="#{cc.attrs.player.heroes}" var="card">
                                     <sr:card card="#{card}" source="#{cc.attrs.playerClass}Heroes"/>
                                 </ui:repeat>
@@ -68,11 +68,11 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!empty cc.attrs.player.gambits}">
-                        <div style="clear: both; float: left; padding-top: 10px;">
+                        <div class="otherCardsSection">
                             <div>
                                 <h:outputText value="Gambits"/>
                             </div>
-                            <div style="clear: both; float:left; padding-top: 5px;">
+                            <div class="otherCardsSectionCards">
                                 <ui:repeat value="#{cc.attrs.player.gambits}" var="card">
                                     <sr:card card="#{card}" source="#{cc.attrs.playerClass}Gambits"/>
                                 </ui:repeat>
@@ -81,11 +81,11 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!cc.attrs.isOpponent and !empty cc.attrs.player.unClaimedMissions}">
-                        <div style="clear: both; float: left; padding-top: 10px;">
+                        <div class="otherCardsSection">
                             <div>
                                 <h:outputText value="Unclaimed Missions"/>
                             </div>
-                            <div style="clear: both; float:left; padding-top: 5px;">
+                            <div class="otherCardsSectionCards">
                                 <ui:repeat value="#{cc.attrs.player.unClaimedMissions}" var="mission">
                                     <sr:mission mission="#{mission}" opponentMission="false"/>
                                 </ui:repeat>
@@ -94,11 +94,11 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!empty cc.attrs.player.claimedMissions}">
-                        <div style="clear: both; float: left; padding-top: 10px;">
+                        <div class="otherCardsSection">
                             <div>
                                 <h:outputText value="Claimed Missions"/>
                             </div>
-                            <div style="clear: both; float:left; padding-top: 5px;">
+                            <div class="otherCardsSectionCards">
                                 <ui:repeat value="#{cc.attrs.player.claimedMissions}" var="mission">
                                     <sr:mission mission="#{mission}" opponentMission="#{cc.attrs.isOpponent}"/>
                                 </ui:repeat>

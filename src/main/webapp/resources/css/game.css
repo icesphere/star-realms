@@ -394,8 +394,19 @@
     position: relative;
 }
 
-.playerContentCardAreaPlayAreaUnits {
+.playerContentCardAreaPlayAreaOtherCards {
     width: 750px;
+}
+
+.otherCardsSection {
+    float: left;
+    padding-top: 12px;
+}
+
+.otherCardsSectionCards {
+    clear: both;
+    float:left;
+    padding-top: 2px;
 }
 
 .playerContentCardAreaBuffer {

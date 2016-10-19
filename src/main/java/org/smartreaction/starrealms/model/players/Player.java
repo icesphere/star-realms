@@ -588,20 +588,27 @@ public abstract class Player {
             } else if (card instanceof Gambit) {
                 gambits.remove(card);
             }
-            playerCardScrapped(card);
+
+            ScrappableCard scrappableCard = null;
 
             if (card instanceof StealthNeedle) {
                 StealthNeedle stealthNeedle = (StealthNeedle) card;
                 if (stealthNeedle.getCardBeingCopied() != null) {
-                    ((ScrappableCard) stealthNeedle.getCardBeingCopied()).cardScrapped(this);
+                    scrappableCard = ((ScrappableCard) stealthNeedle.getCardBeingCopied());
                 }
             } else if (card instanceof StealthTower) {
                 StealthTower stealthTower = (StealthTower) card;
                 if (stealthTower.getCardBeingCopied() != null) {
-                    ((ScrappableCard) stealthTower.getCardBeingCopied()).cardScrapped(this);
+                    scrappableCard = ((ScrappableCard) stealthTower.getCardBeingCopied());
                 }
             } else {
-                ((ScrappableCard) card).cardScrapped(this);
+                scrappableCard = ((ScrappableCard) card);
+            }
+
+            playerCardScrapped(card);
+
+            if (scrappableCard != null) {
+                scrappableCard.cardScrapped(this);
             }
 
             for (Card c : inPlay) {

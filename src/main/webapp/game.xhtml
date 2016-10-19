@@ -50,7 +50,7 @@
                                     <h:outputText value="#{gameView.game.winner.playerName} wins!"/>
                                     <h:outputText style="display:block;text-decoration:underline;"
                                                   value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
-                                                           'Victory Achieved!' : 'Hideous defeat!'}"/>
+                                                           'You Won' : 'You Lost'}"/>
                                 </h:panelGroup>
                             </h:panelGroup>
 
@@ -84,7 +84,7 @@
 
                             <sr:action/>
 
-                            <h:panelGroup layout="block" id="supplySection" styleClass="supplySection">
+                            <h:panelGroup layout="block" id="tradeRowSection" styleClass="tradeRowSection">
 
                                 <h:outputText value="Trade Row" styleClass="playerContentCardAreaText" style="left: -200px;" />
 
@@ -237,6 +237,12 @@
 
                             </h:panelGroup>
 
+                            <h:panelGroup layout="block" id="floatingTurnInfoSection" styleClass="floatingTurnInfoSection #{gameView.player.yourTurn ? 'player' : 'opponent'}">
+                                <h:panelGroup layout="block" styleClass="floatingTurnInfoSectionText">
+                                    <h:outputText styleClass="floatingTurnInfoSectionPlayerText" value="#{gameView.game.currentPlayer.playerName}'s Turn"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
                         </h:panelGroup>
 
                     </h:panelGroup>
@@ -258,8 +264,7 @@
                         </ui:repeat>
                     </h:panelGroup>
                     <h:panelGroup layout="block" style="padding-top: 10px;">
-                        <p:inputText value="#{gameView.chatMessage}"
-                                     style="margin-right: 10px;width: 190px"/>
+                        <p:inputText value="#{gameView.chatMessage}" styleClass="chatTextBox"/>
                         <p:commandButton value="Send" process="chatSection" update="chatSection"
                                          actionListener="#{gameView.sendChatMessage}"
                                          oncomplete="scrollChat()"/>

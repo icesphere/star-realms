@@ -1,6 +1,6 @@
 /* general forms and sections */
 .gamePagePlusChat {
-    width: 1350px;
+    width: 1390px;
     background-size: cover !important;
     background-image: url("#{resource['images/space_background.jpg']}");
 }
@@ -18,9 +18,8 @@
 .gamePageContent {
     position: relative;
     width: 1340px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     background-color: rgba(240,240,238,0.8);
     border-radius: 25px;
     box-shadow: 5px 5px 5px #222222;
@@ -82,8 +81,53 @@
 }
 /* end gamepage overlay section */
 
-/* supply section */
-.supplySection {
+/* turn info section */
+.floatingTurnInfoSection
+{
+    font-variant: small-caps;
+    position: absolute;
+    height: 100%;
+    width: 30px;
+    display: block;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
+    /*box-shadow: 5px 5px 5px #222222;*/
+}
+
+.floatingTurnInfoSectionText
+{
+    width: 700px;
+    height: 30px;
+    text-align: center;
+    transform: rotate(90deg);
+    transform-origin: bottom left;
+}
+
+.floatingTurnInfoSectionPlayerText
+{
+    display: block;
+    padding-top: 5px;
+    font-size: 16pt;
+    font-style: italic;
+    float: left;
+    margin-right: 30px;
+}
+
+.floatingTurnInfoSectionPhaseText
+{
+    margin-left: 30px;
+    display: block;
+    padding-top: 5px;
+    font-size: 16pt;
+    font-weight: bold;
+}
+/* turn info section end */
+
+/* trade row section */
+.tradeRowSection {
     padding: 15px;
     width: 990px;
     height: 120px;
@@ -163,14 +207,13 @@
     padding-bottom: 10px;
     margin-left: 4px;
     text-align: center;
-    width: 275px;
 }
 
 .cardView {
     padding: 10px;
-    width: 240px;
+    width: 220px;
     height: 320px;
-    margin-left: 4px;
+    margin-left: 1px;
     background-color: #EEEEF0;
     text-align: center;
     border: 2px solid black;
@@ -182,7 +225,7 @@
     font-variant: small-caps;
     font-family: sans-serif;
     color: white;
-    width: 240px;
+    width: 220px;
     height: 30px;
     text-align: center;
     vertical-align: middle;
@@ -526,7 +569,7 @@
 
 .lastTurnSummarySection {
     font-size: 14px;
-    width: 265px;
+    width: 240px;
     padding: 5px;
     border: 2px solid #222222;
     background-color: #EEEEF0;
@@ -568,15 +611,20 @@
 
 .chatSection {
     position: absolute;
-    bottom: -395px;
-    right: 80px;
+    top: 902px;
+    left: 1065px;
     font-size: 14px;
-    width: 265px;
+    width: 235px;
     padding: 5px;
     border: 2px solid #222222;
     background-color: #EEEEF0;
     border-radius: 10px;
     box-shadow: 1px 1px 1px #222222;
+}
+
+.chatTextBox {
+    margin-right: 10px !important;
+    width: 168px;
 }
 
 .chats {
@@ -588,9 +636,14 @@
 /* end of game log and chat section */
 
 /* button section */
+
+.turnButtonWrapper {
+
+}
+
 .turnButton, .quitButton, .playAllButton {
-    width: 146px;
-    margin-left: 5px;
+    width: 125px;
+    margin-left: 3px;
     margin-bottom: 2px;
     border-radius: 5px;
     display:block;

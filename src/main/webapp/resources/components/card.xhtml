@@ -20,7 +20,7 @@
 
         <div class="cardWrapper #{cc.attrs.tradeRow ? gameView.getTradeRowCardClass(cc.attrs.card) : gameView.getActionableCardClass(cc.attrs.card, cc.attrs.source)}">
 
-            <h:outputText value="#{cc.attrs.card.name}" styleClass="cardHeader #{gameView.getCardClass(cc.attrs.card)}"/>
+            <h:outputText value="#{cc.attrs.card.name}" styleClass="cardHeader cardName #{gameView.getCardClass(cc.attrs.card)}"/>
 
             <div class="cardType">
                 <h:outputText value="#{gameView.getCardTypeString(cc.attrs.card)}" style="vertical-align: top;"/>

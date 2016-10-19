@@ -135,8 +135,16 @@
                                                      cc.attrs.player.discard,
                                                      cc.attrs.isOpponent ? 'Cards in your opponents discard pile' : 'Cards in your discard pile',
                                                      cc.attrs.isOpponent ? 'opponentDiscard' : 'discard', false)}">
+
                         <h:outputText value="Discard" styleClass="playerContentCardAreaDeckAndDiscardDeckText" />
+
+                        <h:panelGroup rendered="#{!empty cc.attrs.player.cardOnTopOfDiscard}">
+                            <h:outputText value="#{cc.attrs.player.cardOnTopOfDiscard.name}"
+                                          styleClass="playerContentCardAreaDiscardDeckCardName cardName #{gameView.getCardClass(cc.attrs.player.cardOnTopOfDiscard)}"/>
+                        </h:panelGroup>
+
                         <h:outputText value="#{cc.attrs.player.discard.size()}" styleClass="playerContentCardAreaDeckAndDiscardDeckValue" />
+
                     </p:commandLink>
 
                 </h:panelGroup>

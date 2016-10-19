@@ -152,6 +152,11 @@ public class GameView implements Serializable {
 
     public String getCardClass(Card card) {
         String cardClass = "";
+
+        if (card == null) {
+            return "";
+        }
+
         if (card instanceof Event) {
             cardClass = "event";
         } else if (card instanceof Gambit) {

@@ -240,7 +240,7 @@
 
 .playerContentCardAreaDeckAndDiscardDeckText {
     text-shadow: 2px 2px 2px #000000;
-    font-size: 14pt;
+    font-size: 18px;
     font-family: sans-serif;
     display: block;
     position: absolute;
@@ -249,9 +249,15 @@
     width: 76px;
 }
 
+.playerContentCardAreaDiscardDeckCardName {
+    position: absolute;
+    left: 0;
+    top: 28px;
+}
+
 .playerContentCardAreaDeckAndDiscardDeckValue {
     text-shadow: 2px 2px 2px #000000;
-    font-size: 40pt;
+    font-size: 50px;
     display: block;
     position: absolute;
     bottom: 5px;
@@ -851,6 +857,9 @@
     position: absolute;
     top: 4px;
     left: 4px;
+}
+
+.cardName {
     width: 70px;
     padding: 3px;
     min-height: 22px;

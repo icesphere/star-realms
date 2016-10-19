@@ -1454,4 +1454,11 @@ public abstract class Player {
         cards.addAll(heroes);
         return cards;
     }
+
+    public Card getCardOnTopOfDiscard() {
+        if (!discard.isEmpty()) {
+            return discard.get(discard.size() - 1);
+        }
+        return null;
+    }
 }

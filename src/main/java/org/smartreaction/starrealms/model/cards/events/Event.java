@@ -14,6 +14,7 @@ public abstract class Event extends Card {
 
     public void eventTriggered(Player player) {
         player.showTriggeredEvent(this);
+        player.getOpponent().showTriggeredEvent(this);
         player.getGame().gameLog(name + " event triggered");
         handleEvent(player);
         player.getGame().scrapCardFromTradeRow(this);

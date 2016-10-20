@@ -50,8 +50,7 @@
                                                              and userSession.user.inviteeRequested eq null}"
                                                action="#{lobbyView.inviteMatch(user)}"/>
                                 <h:outputText value="#{lobbyView.getUserStatus(user)}"
-                                              styleClass="lobbyUserSectionUsersUserStatus"
-                                              rendered="#{user.username ne userSession.user.username}"/>
+                                              styleClass="lobbyUserSectionUsersUserStatus"/>
                             </h:column>
                         </h:dataTable>
                     </h:panelGroup>
@@ -87,7 +86,7 @@
 
                     <p:commandLink value="Game Options" process="@form" update="@form"
                                    actionListener="#{userSession.user.gameOptions.setCustomGameOptions(true)}" oncomplete="PF('gameOptionsDialog').show()"
-                                   styleClass="lobbyButton" style="position: absolute; bottom: 70px; border-radius: 10px;"/>
+                                   styleClass="lobbyButton" style="position: absolute; bottom: #{userSession.user.invitee ne null ? '120' : '70'}px; border-radius: 10px;"/>
 
                 </h:panelGroup>
 
@@ -235,7 +234,7 @@
                     </h:panelGroup>
 
                     <h:panelGroup layout="block" style="padding-top: 15px;" rendered="#{empty lobbyView.gameOptionsError}">
-                        <p:commandLink process="@form" update="@form" value="Done"
+                        <p:commandLink process="@form" update="@form" value="Done" actionListener="#{lobbyView.gameOptionsSaved}"
                                        styleClass="lobbyButton" style="border-radius: 10px; color: white"
                                        oncomplete="PF('gameOptionsDialog').hide()"/>
                     </h:panelGroup>

@@ -3,15 +3,11 @@ package org.smartreaction.starrealms.model.players;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.TurnSummary;
-import org.smartreaction.starrealms.model.cards.AlliableCard;
-import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.Faction;
-import org.smartreaction.starrealms.model.cards.ScrappableCard;
+import org.smartreaction.starrealms.model.cards.*;
 import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.PlasmaVent;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
-import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.StealthTower;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.WarningBeacon;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
@@ -21,7 +17,6 @@ import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
-import org.smartreaction.starrealms.model.cards.ships.machinecult.StealthNeedle;
 import org.smartreaction.starrealms.model.cards.ships.starempire.EmperorsDreadnaught;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.ColonySeedShip;
 
@@ -591,15 +586,10 @@ public abstract class Player {
 
             ScrappableCard scrappableCard = null;
 
-            if (card instanceof StealthNeedle) {
-                StealthNeedle stealthNeedle = (StealthNeedle) card;
-                if (stealthNeedle.getCardBeingCopied() != null) {
-                    scrappableCard = ((ScrappableCard) stealthNeedle.getCardBeingCopied());
-                }
-            } else if (card instanceof StealthTower) {
-                StealthTower stealthTower = (StealthTower) card;
-                if (stealthTower.getCardBeingCopied() != null) {
-                    scrappableCard = ((ScrappableCard) stealthTower.getCardBeingCopied());
+            if (card instanceof CardCopier) {
+                CardCopier cardCopier = (CardCopier) card;
+                if (cardCopier.getCardBeingCopied() != null) {
+                    scrappableCard = ((ScrappableCard) cardCopier.getCardBeingCopied());
                 }
             } else {
                 scrappableCard = ((ScrappableCard) card);
@@ -803,11 +793,8 @@ public abstract class Player {
     public boolean useAlliedAbilities(Card card) {
         Card cardToUse = card;
 
-        if (card instanceof StealthNeedle && ((StealthNeedle) card).getCardBeingCopied() != null) {
-            cardToUse = ((StealthNeedle) card).getCardBeingCopied();
-        }
-        if (card instanceof StealthTower && ((StealthTower) card).getCardBeingCopied() != null) {
-            cardToUse = ((StealthTower) card).getCardBeingCopied();
+        if (card instanceof CardCopier && ((CardCopier) card).getCardBeingCopied() != null) {
+            cardToUse = ((CardCopier) card).getCardBeingCopied();
         }
 
         boolean allyAbilityUsed = false;

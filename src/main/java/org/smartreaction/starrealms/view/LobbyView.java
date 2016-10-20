@@ -89,7 +89,7 @@ public class LobbyView implements Serializable {
         if (user.isAutoMatch()) {
             String autoMatchInfo = "(waiting for auto match: " + lastActivity + ")";
             if (user.getGameOptions().isCustomGameOptions()) {
-                autoMatchInfo += " - options: " + user.getGameOptions().toString();
+                autoMatchInfo += " - only match on: " + user.getGameOptions().toString();
             }
             return autoMatchInfo;
         }
@@ -138,6 +138,10 @@ public class LobbyView implements Serializable {
 
     public void inviteMatch(User opponent) {
         gameService.inviteMatchUser(userSession.getUser(), opponent);
+        gameService.refreshLobby(userSession.getUser().getUsername());
+    }
+
+    public void gameOptionsSaved() {
         gameService.refreshLobby(userSession.getUser().getUsername());
     }
 }

@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model.cards.ships.machinecult;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.CardCopier;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ActionResult;
 import org.smartreaction.starrealms.model.cards.actions.CardAction;
@@ -15,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class StealthNeedle extends Ship implements CardActionCard
+public class StealthNeedle extends Ship implements CardActionCard, CardCopier
 {
     private Card cardBeingCopied;
 
@@ -42,6 +43,7 @@ public class StealthNeedle extends Ship implements CardActionCard
         player.addCardAction(this, "Copy another ship you've played this turn. Stealth Needle has that ship's faction in addition to Machine Cult.");
     }
 
+    @Override
     public Card getCardBeingCopied() {
         return cardBeingCopied;
     }
@@ -194,6 +196,15 @@ public class StealthNeedle extends Ship implements CardActionCard
             return cardBeingCopied.isScrapper();
         } else {
             return super.isScrapper();
+        }
+    }
+
+    @Override
+    public String getText() {
+        if (cardBeingCopied != null) {
+            return "Copying " + cardBeingCopied.getName();
+        } else {
+            return text;
         }
     }
 }

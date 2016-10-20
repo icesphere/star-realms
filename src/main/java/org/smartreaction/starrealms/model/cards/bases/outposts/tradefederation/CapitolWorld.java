@@ -19,7 +19,7 @@ public class CapitolWorld extends Outpost
 
     @Override
     public void cardPlayed(Player player) {
-        this.useBase(player);
+        //do nothing
     }
 
     @Override

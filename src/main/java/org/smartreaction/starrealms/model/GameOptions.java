@@ -153,7 +153,7 @@ public class GameOptions {
     }
 
     public boolean isPlayAgainstComputer() {
-        return playAgainstComputer;
+        return customGameOptions && playAgainstComputer;
     }
 
     public void setPlayAgainstComputer(boolean playAgainstComputer) {
@@ -253,7 +253,7 @@ public class GameOptions {
             selected.add("Gambits");
         }
 
-        if ("random".equals(playerOrder)) {
+        if (!"random".equals(playerOrder)) {
             if ("first".equals(playerOrder)) {
                 selected.add("1st Player");
             } else {

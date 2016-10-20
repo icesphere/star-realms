@@ -3,6 +3,7 @@ package org.smartreaction.starrealms.model.cards.bases.outposts.machinecult;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.AlliableCard;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.CardCopier;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ActionResult;
 import org.smartreaction.starrealms.model.cards.actions.CardAction;
@@ -13,7 +14,7 @@ import org.smartreaction.starrealms.model.players.Player;
 
 import java.util.*;
 
-public class StealthTower extends Outpost implements CardActionCard
+public class StealthTower extends Outpost implements CardActionCard, CardCopier
 {
     private Base cardBeingCopied;
 
@@ -45,6 +46,7 @@ public class StealthTower extends Outpost implements CardActionCard
         }
     }
 
+    @Override
     public Base getCardBeingCopied() {
         return cardBeingCopied;
     }
@@ -247,6 +249,15 @@ public class StealthTower extends Outpost implements CardActionCard
             return cardBeingCopied.isScrapper();
         } else {
             return super.isScrapper();
+        }
+    }
+
+    @Override
+    public String getText() {
+        if (cardBeingCopied != null) {
+            return "Copying " + cardBeingCopied.getName();
+        } else {
+            return text;
         }
     }
 }

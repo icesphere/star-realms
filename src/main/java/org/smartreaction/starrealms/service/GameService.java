@@ -1727,6 +1727,8 @@ public class GameService {
         }
 
         createGame(user, null, user.getGameOptions());
+
+        refreshLobby(user.getUsername());
     }
 
     private User getMatchingUser(User user) {

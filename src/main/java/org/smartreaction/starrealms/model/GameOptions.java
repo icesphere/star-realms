@@ -38,6 +38,8 @@ public class GameOptions {
 
     private boolean playAgainstComputer;
 
+    private boolean includeSimulationInfo;
+
     private String playerOrder = "random";
 
     public boolean isCustomGameOptions() {
@@ -168,11 +170,20 @@ public class GameOptions {
         this.playerOrder = playerOrder;
     }
 
+    public boolean isIncludeSimulationInfo() {
+        return includeSimulationInfo;
+    }
+
+    public void setIncludeSimulationInfo(boolean includeSimulationInfo) {
+        this.includeSimulationInfo = includeSimulationInfo;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
                 includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedAssault,
-                includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, startingTradeRowCards);
+                includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, startingTradeRowCards,
+                includeSimulationInfo);
     }
 
     @Override

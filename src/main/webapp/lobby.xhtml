@@ -213,7 +213,13 @@
 
                                 <p:outputLabel value="Play Against Computer: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
-                                                       value="#{userSession.user.gameOptions.playAgainstComputer}"/>
+                                                       value="#{userSession.user.gameOptions.playAgainstComputer}">
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions}"/>
+                                </p:selectBooleanButton>
+
+                                <p:outputLabel value="Show Simulation Info: " rendered="#{userSession.user.gameOptions.playAgainstComputer}"/>
+                                <p:selectBooleanButton onLabel="Yes" offLabel="No" rendered="#{userSession.user.gameOptions.playAgainstComputer}"
+                                                       value="#{userSession.user.gameOptions.includeSimulationInfo}"/>
 
                                 <p:selectOneRadio value="#{userSession.user.gameOptions.playerOrder}" styleClass="radioSpacing">
                                     <f:selectItem itemLabel="Random" itemValue="random"/>

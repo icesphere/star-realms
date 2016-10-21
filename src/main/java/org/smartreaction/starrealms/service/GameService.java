@@ -71,10 +71,10 @@ public class GameService {
         Player player2;
 
         if (gameOptions.isPlayAgainstComputer()) {
-            //player2 = new StrategyBot(new VelocityStrategy(), this);
             player2 = new SimulatorBot(this);
             user2 = new User();
             user2.setUsername(player2.getPlayerName());
+            game.setIncludeSimulationInfo(gameOptions.isIncludeSimulationInfo());
         } else {
             player2 = new HumanPlayer(user2);
         }
@@ -1988,7 +1988,7 @@ public class GameService {
         Game copiedGame = originalGame.copyGameForSimulation();
 
         BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
-        originalGame.gameLog("<b>Opponent determined to be using " + opponentStrategy.getClass().getSimpleName() + "</b>");
+        originalGame.addSimulationLog("<b>Opponent determined to be using " + opponentStrategy.getClass().getSimpleName() + "</b>");
 
         Map<BotStrategy, Float> strategyResults = new LinkedHashMap<>();
 

@@ -112,7 +112,7 @@ public class GameView implements Serializable {
     }
 
     public boolean highlightTradeRowCard(Card card) {
-        if (!getPlayer().isYourTurn()) {
+        if (!getPlayer().isYourTurn() || card == null) {
             return false;
         } else if (getAction() != null) {
             return getAction().isCardActionable(card, Card.CARD_LOCATION_TRADE_ROW, getPlayer());

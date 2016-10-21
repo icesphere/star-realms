@@ -58,6 +58,11 @@ public class Game
 
     private List<String> recentTurnLogs = new ArrayList<>();
 
+    private boolean includeSimulationInfo;
+
+    StringBuilder lastTurnSimulationInfoLog = new StringBuilder();
+    StringBuilder currentTurnSimulationInfoLog = new StringBuilder();
+
     public Game() {
         gameId = UUID.randomUUID().toString();
     }
@@ -225,6 +230,11 @@ public class Game
 
         currentTurnLog.setLength(0);
 
+        if (includeSimulationInfo) {
+            lastTurnSimulationInfoLog = new StringBuilder(currentTurnSimulationInfoLog.toString());
+            currentTurnSimulationInfoLog.setLength(0);
+        }
+
         if (recentTurnLogs.size() > 1) {
             recentTurnLogs.remove(0);
         }
@@ -305,11 +315,20 @@ public class Game
     }
 
     public void gameLog(String log) {
+        gameLog(log, false);
+    }
+
+    private void gameLog(String log, boolean simulationInfo) {
         if (SHOW_GAME_LOG) {
             System.out.println(log);
         }
         if (createGameLog) {
-            gameLog.append(log).append("<br/>");
+            if (!simulationInfo || includeSimulationInfo) {
+                gameLog.append(log).append("<br/>");
+            }
+            if (simulationInfo && includeSimulationInfo) {
+                currentTurnSimulationInfoLog.append(log).append("<br/>");
+            }
             currentTurnLog.append(log).append("<br/>");
         }
     }
@@ -432,5 +451,17 @@ public class Game
 
     public boolean usingMissions() {
         return cardSets.contains(CardSet.UNITED_MISSIONS);
+    }
+
+    public void setIncludeSimulationInfo(boolean includeSimulationInfo) {
+        this.includeSimulationInfo = includeSimulationInfo;
+    }
+
+    public String getLastTurnSimulationInfoLog() {
+        return lastTurnSimulationInfoLog.toString();
+    }
+
+    public void addSimulationLog(String log) {
+        gameLog(log, true);
     }
 }

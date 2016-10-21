@@ -119,6 +119,14 @@
                                 <h:panelGroup styleClass="playerContentCardAreaBuffer"/>
                             </h:panelGroup>
 
+                            <h:panelGroup layout="block" style="padding-bottom: 20px;" rendered="#{gameView.opponent.bot and !empty gameView.game.lastTurnSimulationInfoLog}">
+                                <h:panelGroup layout="block" styleClass="gameLogSection">
+                                    <h:outputText value="Bot's Last Turn Simulation Info" styleClass="playerContentCardAreaText"/>
+                                    <h:outputText styleClass="gameLog" value="#{gameView.game.lastTurnSimulationInfoLog}"
+                                                  escape="false"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
                             <div style="padding-bottom: 20px;">
                                 <h:panelGroup layout="block" id="gameLogSection" styleClass="gameLogSection">
                                     <h:outputText value="Game Log" styleClass="playerContentCardAreaText"/>

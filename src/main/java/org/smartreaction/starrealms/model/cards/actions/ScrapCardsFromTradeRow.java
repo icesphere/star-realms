@@ -13,8 +13,7 @@ public class ScrapCardsFromTradeRow extends Action {
 
     protected boolean optional;
 
-    public ScrapCardsFromTradeRow(int numCardsToScrap) {
-        this.numCardsToScrap = numCardsToScrap;
+    private void setTextFromNumCards() {
         text = "Scrap ";
         if (optional) {
             text += "up to";
@@ -27,8 +26,9 @@ public class ScrapCardsFromTradeRow extends Action {
     }
 
     public ScrapCardsFromTradeRow(int numCardsToScrap, boolean optional) {
-        this(numCardsToScrap);
+        this.numCardsToScrap = numCardsToScrap;
         this.optional = optional;
+        setTextFromNumCards();
     }
 
     @Override

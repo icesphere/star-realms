@@ -12,8 +12,10 @@ import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrate
 import org.smartreaction.starrealms.service.GameService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SimulatorBot extends BotPlayer {
     BotStrategy strategy = null;
@@ -42,8 +44,13 @@ public class SimulatorBot extends BotPlayer {
 
         BotStrategy bestStrategy = null;
 
-        for (BotStrategy strategy : results.keySet()) {
-            Float winPercentage = results.get(strategy);
+        Map<BotStrategy,Float> sortedResults =
+                results.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        for (BotStrategy strategy : sortedResults.keySet()) {
+            Float winPercentage = sortedResults.get(strategy);
 
             logSimulationInfo("Win percentage for " + strategy.getClass().getSimpleName() + ": " + winPercentage);
 
@@ -73,14 +80,19 @@ public class SimulatorBot extends BotPlayer {
             return cardsToBuy;
         }
 
+        Map<Card,Float> sortedResults =
+                results.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
         float bestWinPercentage = 0;
 
         Card bestCardToBuy = null;
 
         logSimulationInfo("Simulator Bot determining best card to buy");
 
-        for (Card cardToBuy : results.keySet()) {
-            Float winPercentage = results.get(cardToBuy);
+        for (Card cardToBuy : sortedResults.keySet()) {
+            Float winPercentage = sortedResults.get(cardToBuy);
 
             if (winPercentage > 0) {
                 logSimulationInfo("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);

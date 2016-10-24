@@ -2441,7 +2441,7 @@ public class GameService {
 
     public void startInviteMatch(User user) {
         synchronized(matchUserLock) {
-            createGame(user, user.getInvitee(), user.getGameOptions());
+            createGame(user, user.getInvitee(), user.getInvitee().getGameOptions());
             sendLobbyMessage(user.getUsername(), user.getInvitee().getUsername(), "game_started");
             user.getInvitee().setInvitee(null);
             user.getInvitee().setInviteeRequested(null);

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class SimulatorBot extends BotPlayer {
     BotStrategy strategy = null;
 
@@ -44,13 +46,14 @@ public class SimulatorBot extends BotPlayer {
 
         BotStrategy bestStrategy = null;
 
-        Map<BotStrategy,Float> sortedResults =
-                results.entrySet().stream()
-                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        List<BotStrategy> strategies = new ArrayList<>(results.keySet());
 
-        for (BotStrategy strategy : sortedResults.keySet()) {
-            Float winPercentage = sortedResults.get(strategy);
+        List<BotStrategy> sortedStrategies = strategies.stream()
+                .sorted((s1, s2) -> results.get(s2).compareTo(results.get(s1)))
+                .collect(toList());
+
+        for (BotStrategy strategy : sortedStrategies) {
+            Float winPercentage = results.get(strategy);
 
             logSimulationInfo("Win percentage for " + strategy.getClass().getSimpleName() + ": " + winPercentage);
 
@@ -80,10 +83,11 @@ public class SimulatorBot extends BotPlayer {
             return cardsToBuy;
         }
 
-        Map<Card,Float> sortedResults =
-                results.entrySet().stream()
-                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        List<Card> cards = new ArrayList<>(results.keySet());
+
+        List<Card> sortedCards = cards.stream()
+                .sorted((c1, c2) -> results.get(c2).compareTo(results.get(c1)))
+                .collect(toList());
 
         float bestWinPercentage = 0;
 
@@ -91,8 +95,8 @@ public class SimulatorBot extends BotPlayer {
 
         logSimulationInfo("Simulator Bot determining best card to buy");
 
-        for (Card cardToBuy : sortedResults.keySet()) {
-            Float winPercentage = sortedResults.get(cardToBuy);
+        for (Card cardToBuy : sortedCards) {
+            Float winPercentage = results.get(cardToBuy);
 
             if (winPercentage > 0) {
                 logSimulationInfo("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);

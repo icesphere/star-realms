@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.stream.Collectors.toList;
 
 @Singleton
@@ -18,7 +18,7 @@ public class LoggedInUsers {
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
     public void clearOutInactiveUsers() {
-        List<User> inactiveUsers = users.stream().filter(u -> HOURS.between(u.getLastActivity(), Instant.now()) > 4).collect(toList());
+        List<User> inactiveUsers = users.stream().filter(u -> MINUTES.between(u.getLastActivity(), Instant.now()) > 90).collect(toList());
         users.removeAll(inactiveUsers);
     }
 

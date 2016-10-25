@@ -62,6 +62,14 @@ public class LobbyView implements Serializable {
             gameOptionsError = "You need to select Base Set or Colony Wars";
         }
 
+        long numPlayersPlayingAgainstComputer = loggedInUsers.getActiveUsers().stream()
+                .filter(p -> p.getCurrentGame() != null && p.getGameOptions().isPlayAgainstComputer())
+                .count();
+
+        if (numPlayersPlayingAgainstComputer >= 3) {
+            gameOptionsError = "Only 3 people can be playing against the computer at the same time. Try again later.";
+        }
+
         return gameOptionsError == null;
     }
 

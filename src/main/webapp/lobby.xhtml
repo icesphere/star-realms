@@ -26,12 +26,12 @@
     <ui:define name="content">
         <h:form id="lobbyForm" styleClass="lobby">
 
-            <p:remoteCommand name="refreshLobby" process="@form" update="@form"/>
-            <p:remoteCommand name="refreshChat" process="@form" update="@form" oncomplete="scrollChat()"/>
+            <p:remoteCommand name="refreshLobby" process="lobbyPage" update="lobbyPage"/>
+            <p:remoteCommand name="refreshChat" process="lobbyPage" update="lobbyPage" oncomplete="scrollChat()"/>
 
             <h:messages styleClass="errorText"/>
 
-            <h:panelGroup layout="block" styleClass="lobbyPage">
+            <h:panelGroup id="lobbyPage" layout="block" styleClass="lobbyPage">
 
                 <h:panelGroup id="lobbyAndChatSection" layout="block" styleClass="lobbyUserAndChatSection">
 

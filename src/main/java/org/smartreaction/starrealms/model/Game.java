@@ -283,7 +283,7 @@ public class Game
     private void writeGameLog() {
         try {
             File gameLogFile = getGameLogFile();
-            gameLog.append("Game log file: ").append(gameLogFile.getAbsolutePath());
+            //gameLog.append("Game log file: ").append(gameLogFile.getAbsolutePath());
             FileUtils.writeStringToFile(gameLogFile,
                     gameLog.toString().replaceAll("<br/>", "\n").replaceAll("<b>", "").replaceAll("</b>", ""),
                     "UTF-8");

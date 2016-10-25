@@ -13,9 +13,18 @@
                     <h:outputText value="Username is already in use."/>
                 </h:panelGroup>
 
+                <h:panelGroup layout="block" rendered="#{loginView.showBetaCodeError}" styleClass="errorText">
+                    <h:outputText value="Invalid beta code."/>
+                </h:panelGroup>
+
                 <h:outputText value="Select your username, Commander" styleClass="loginInputText"/>
 
                 <p:inputText value="#{loginView.username}" styleClass="loginInput"/>
+
+                <div style="padding-top: 15px;">
+                    <h:outputText value="Beta Code: "/>
+                    <p:inputText value="#{loginView.betaCode}"/>
+                </div>
 
                 <p:commandButton process="@form" update="@form" value="Login" action="#{loginView.loginAsGuest}" styleClass="loginButton"/>
 

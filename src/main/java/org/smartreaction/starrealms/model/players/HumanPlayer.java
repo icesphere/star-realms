@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.model.players;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.model.cards.Card;
@@ -9,9 +10,12 @@ import org.smartreaction.starrealms.model.cards.events.Event;
 public class HumanPlayer extends Player {
     private User user;
 
+    private String betaCode;
+
     public HumanPlayer(User user) {
         this.user = user;
         playerName = user.getUsername();
+        betaCode = user.getBetaCode();
     }
 
     public User getUser() {
@@ -161,5 +165,16 @@ public class HumanPlayer extends Player {
     @Override
     public void addCardFromDiscardToTopOfDeck(Integer maxCost) {
         addAction(new CardFromDiscardToTopOfDeck(maxCost));
+    }
+
+    @Override
+    public String getInfoForGameLogName() {
+        String info = super.getInfoForGameLogName();
+
+        if (!StringUtils.isBlank(betaCode)) {
+            info += "_" + betaCode;
+        }
+
+        return info;
     }
 }

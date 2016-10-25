@@ -43,7 +43,7 @@ public class LoginView implements Serializable {
         if (!validBetaCode()) {
             showBetaCodeError = true;
             return null;
-        } else if (userSession.loginAsGuest(username)) {
+        } else if (userSession.loginAsGuest(username, betaCode)) {
             showUsernameError = false;
             return "lobby.xhtml?faces-redirect=true";
         } else {

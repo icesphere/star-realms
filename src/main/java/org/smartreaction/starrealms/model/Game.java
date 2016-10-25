@@ -277,7 +277,16 @@ public class Game
     public File getGameLogFile() {
         File userDirectory = FileUtils.getUserDirectory();
         File gameLogDirectory = new File(userDirectory, "starrealmsgamelogs");
-        return new File(gameLogDirectory, "game_" + getWinner().getPlayerName() + "_over_" + getLoser().getPlayerName() + "_" + gameId);
+
+        String gameLogFileName = "game_";
+
+        if (quitGamePlayer != null) {
+            gameLogFileName += quitGamePlayer.getPlayerName() + "_quit_";
+        }
+
+        gameLogFileName += getWinner().getInfoForGameLogName() + "_over_" + getLoser().getInfoForGameLogName() + "_" + gameId;
+
+        return new File(gameLogDirectory, gameLogFileName);
     }
 
     private void writeGameLog() {
@@ -405,7 +414,8 @@ public class Game
 
     public void quitGame(Player player) {
         quitGamePlayer = player;
-        gameOver = true;
+        gameLog(player.getPlayerName() + " quit the game");
+        gameOver();
     }
 
     public Player getQuitGamePlayer() {

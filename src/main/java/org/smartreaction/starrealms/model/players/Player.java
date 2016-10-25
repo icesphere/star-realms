@@ -1448,4 +1448,8 @@ public abstract class Player {
         }
         return null;
     }
+
+    public String getInfoForGameLogName() {
+        return playerName.replaceAll("\\s", "_") + "_score_" + authority;
+    }
 }

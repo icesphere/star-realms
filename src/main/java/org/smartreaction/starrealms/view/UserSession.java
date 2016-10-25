@@ -30,10 +30,11 @@ public class UserSession implements Serializable {
         this.user = user;
     }
 
-    public boolean loginAsGuest(String username) {
+    public boolean loginAsGuest(String username, String betaCode) {
         if (!loggedInUsers.isUsernameInUse(username)) {
             user = new User();
             user.setUsername(username);
+            user.setBetaCode(betaCode);
             loggedIn = true;
             loggedInUsers.getUsers().add(user);
             gameService.refreshLobby(username);

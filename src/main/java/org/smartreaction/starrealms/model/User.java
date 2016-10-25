@@ -8,6 +8,8 @@ import java.util.Objects;
 public class User {
     private String username;
 
+    private String betaCode;
+
     private Game currentGame;
 
     private Player currentPlayer;
@@ -27,6 +29,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getBetaCode() {
+        return betaCode;
+    }
+
+    public void setBetaCode(String betaCode) {
+        this.betaCode = betaCode;
     }
 
     public Game getCurrentGame() {

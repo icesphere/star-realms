@@ -821,6 +821,10 @@ public abstract class BotPlayer extends Player {
             }
         }
 
+        if (card instanceof StealthTower && ((StealthTower) card).getCardBeingCopied() != null) {
+            return getScrapForBenefitScore(((StealthTower) card).getCardBeingCopied());
+        }
+
         return 0;
     }
 
@@ -1061,7 +1065,7 @@ public abstract class BotPlayer extends Player {
     }
 
     public Base getBaseToCopy() {
-        List<Base> bases = getBases();
+        List<Base> bases = new ArrayList<>(getBases());
         bases.addAll(getOpponent().getBases());
 
         if (!bases.isEmpty()) {

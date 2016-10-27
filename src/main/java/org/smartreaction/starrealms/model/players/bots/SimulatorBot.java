@@ -32,11 +32,6 @@ public class SimulatorBot extends BotPlayer {
         super.takeTurn();
     }
 
-    @Override
-    public void endTurn() {
-        super.endTurn();
-    }
-
     private void useBestStrategy() {
         logSimulationInfo("Simulator Bot determining best strategy");
 
@@ -143,10 +138,6 @@ public class SimulatorBot extends BotPlayer {
     @Override
     protected boolean shouldScrapCard(Card card) {
         logSimulationInfo("Simulator Bot determining whether or not to scrap " + card.getName());
-
-        if (card instanceof CardCopier && ((CardCopier) card).getCardBeingCopied() != null) {
-            card = ((CardCopier) card).getCardBeingCopied();
-        }
 
         Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 300, card);
 

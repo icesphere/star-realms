@@ -111,6 +111,7 @@ public class GameService {
         game.getCurrentPlayer().setFirstPlayer(true);
 
         game.gameLog("<br/>** Starting Game **");
+        game.gameLog("Game options: " + gameOptions.toString());
         game.gameLog("Player 1: " + players.get(0).getPlayerName() + " - Player 2: " + players.get(1).getPlayerName());
 
         setupCards(game, gameOptions);

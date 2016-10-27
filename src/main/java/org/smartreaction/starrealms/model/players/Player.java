@@ -165,6 +165,8 @@ public abstract class Player {
 
                 getMissions().addAll(copyMissions(missionsToCopy));
             }
+
+            getBases().addAll((Collection<? extends Base>) copyCards(player.getBases()));
         } else {
             getHand().addAll(copyCards(player.getHand()));
             getDeck().addAll(copyCards(player.getDeck()));
@@ -172,17 +174,16 @@ public abstract class Player {
             if (getGame().usingMissions()) {
                 getMissions().addAll(copyMissions(player.getMissions()));
             }
-        }
+            getInPlay().addAll(copyCards(player.getInPlay()));
 
-        getInPlay().addAll(copyCards(player.getInPlay()));
-
-        List<Base> copyOfBases = new ArrayList<>();
-        for (Card card : getInPlay()) {
-            if (card instanceof Base) {
-                copyOfBases.add((Base) card);
+            List<Base> copyOfBases = new ArrayList<>();
+            for (Card card : getInPlay()) {
+                if (card instanceof Base) {
+                    copyOfBases.add((Base) card);
+                }
             }
+            getBases().addAll(copyOfBases);
         }
-        getBases().addAll(copyOfBases);
 
         getPlayed().addAll(copyCards(player.getPlayed()));
         getHeroes().addAll((Collection<? extends Hero>) copyCards(player.getHeroes()));
@@ -744,6 +745,12 @@ public abstract class Player {
             if (card instanceof Explorer) {
                 cardAcquired(card);
             } else {
+                //todo figure out why base sometimes already marked as used, for now just always set to not used
+                if (card.isBase() && ((Base) card).isUsed()) {
+                    addGameLog(card.getName() + " was marked as already used, so setting it to not used");
+                    ((Base) card).setUsed(false);
+                }
+
                 game.getTradeRow().remove(card);
                 game.addCardToTradeRow();
                 cardAcquired(card);

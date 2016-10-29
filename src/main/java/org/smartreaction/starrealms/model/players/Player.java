@@ -745,7 +745,6 @@ public abstract class Player {
             if (card instanceof Explorer) {
                 cardAcquired(card);
             } else {
-                //todo figure out why base sometimes already marked as used, for now just always set to not used
                 if (card.isBase() && ((Base) card).isUsed()) {
                     addGameLog(card.getName() + " was marked as already used, so setting it to not used");
                     ((Base) card).setUsed(false);

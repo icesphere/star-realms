@@ -554,9 +554,11 @@ public class GameView implements Serializable {
 
         boolean hasActionableCardInPlayArea = getPlayer().getInPlay().stream().anyMatch(c -> c.isActionable(getPlayer(), Card.CARD_LOCATION_PLAY_AREA));
 
+        boolean hasActionableBase = getPlayer().getInPlay().stream().anyMatch(c -> c.isActionable(getPlayer(), Card.CARD_LOCATION_PLAYER_BASES));
+
         boolean hasUnusedCombat = getPlayer().getCombat() > 0 && getOpponent().getSmallestOutpostShield() <= getPlayer().getCombat();
 
-        return !gameOver && (hasUnusedTrade || !getPlayer().getHand().isEmpty() || hasUnusedCombat || hasActionableCardInPlayArea);
+        return !gameOver && (hasUnusedTrade || !getPlayer().getHand().isEmpty() || hasUnusedCombat || hasActionableCardInPlayArea || hasActionableBase);
     }
 
     public String getCardTypeString(Card card) {

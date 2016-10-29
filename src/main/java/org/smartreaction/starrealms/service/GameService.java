@@ -1954,7 +1954,7 @@ public class GameService {
         for (Card cardToBuy : cardsToBuy) {
             setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
 
-            copiedGame.getCurrentPlayer().setCardToBuyThisTurn(cardToBuy);
+            copiedGame.getCurrentPlayer().setCardToBuyThisTurn(cardToBuy.copyCardForSimulation());
 
             SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
 

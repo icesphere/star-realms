@@ -4,6 +4,7 @@
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:sr="http://java.sun.com/jsf/composite/components"
         >
 
 <composite:interface>
@@ -42,14 +43,14 @@
 
             <h:panelGroup layout="block" styleClass="cardBottomButton"
                           rendered="#{gameView.isShowScrapLink(cc.attrs.card, cc.attrs.source)}">
-                <p:commandLink value="Scrap" styleClass="attackButton"
-                               actionListener="#{gameView.scrapCard(cc.attrs.card)}"/>
+                <sr:linkWithSpinner linkText="Scrap" actionMethod="#{gameView.scrapCard(cc.attrs.card)}"
+                                    styleClass="attackButton" process="@this"/>
             </h:panelGroup>
 
             <h:panelGroup layout="block" styleClass="cardBottomButton"
                           rendered="#{gameView.isShowAttackLink(cc.attrs.card, cc.attrs.source)}">
-                <p:commandLink value="Attack" styleClass="attackButton"
-                               actionListener="#{gameView.attackOpponentBase(cc.attrs.card)}"/>
+                <sr:linkWithSpinner linkText="Attack" actionMethod="#{gameView.attackOpponentBase(cc.attrs.card)}"
+                                    styleClass="attackButton" process="@this"/>
             </h:panelGroup>
 
         </div>

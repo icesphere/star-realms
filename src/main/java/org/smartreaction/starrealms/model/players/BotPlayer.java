@@ -405,6 +405,8 @@ public abstract class BotPlayer extends Player {
                 getGame().addCardToTradeRow();
             }
 
+            addGameLog(getPlayerName() + " acquired a free card from the trade row: " + card.getName());
+
             cardAcquired(card);
         }
     }

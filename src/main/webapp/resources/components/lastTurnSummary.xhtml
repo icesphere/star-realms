@@ -61,6 +61,12 @@
                 <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.cardsPlayed)}"/>
             </h:panelGroup>
 
+            <h:panelGroup layout="block" class="lastTurnSummaryInfo"
+                          rendered="#{!empty cc.attrs.player.lastTurnSummary.cardsAddedToTradeRow}">
+                <h:outputText value="Cards Added to Trade Row: " styleClass="boldText"/>
+                <h:outputText value="#{gameView.game.getCardsAsString(cc.attrs.player.lastTurnSummary.cardsAddedToTradeRow)}"/>
+            </h:panelGroup>
+
         </h:panelGroup>
 
     </h:panelGroup>

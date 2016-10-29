@@ -21,6 +21,8 @@ public class TurnSummary {
 
     private List<Card> cardsPlayed = new ArrayList<>();
 
+    private List<Card> cardsAddedToTradeRow = new ArrayList<>();
+
     public List<Card> getCardsAcquired() {
         return cardsAcquired;
     }
@@ -75,5 +77,13 @@ public class TurnSummary {
 
     public void setCardsPlayed(List<Card> cardsPlayed) {
         this.cardsPlayed = cardsPlayed;
+    }
+
+    public List<Card> getCardsAddedToTradeRow() {
+        return cardsAddedToTradeRow;
+    }
+
+    public void setCardsAddedToTradeRow(List<Card> cardsAddedToTradeRow) {
+        this.cardsAddedToTradeRow = cardsAddedToTradeRow;
     }
 }

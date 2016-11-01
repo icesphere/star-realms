@@ -33,7 +33,7 @@ public class ScrapCardsFromTradeRow extends Action {
 
     @Override
     public boolean isCardActionable(Card card, String cardLocation, Player player) {
-        return cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW);
+        return cardLocation.equals(Card.CARD_LOCATION_TRADE_ROW) && !card.getName().equals("Explorer");
     }
 
     @Override

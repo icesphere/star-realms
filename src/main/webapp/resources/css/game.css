@@ -563,8 +563,12 @@
     margin-left:-10px;
     border-top-right-radius: 21px;
     border-bottom-right-radius: 8px;
+}
+
+.blinkingCurrentActionLabel {
     animation: blinkingAnimation 2s linear infinite;
 }
+
 /* player action section end */
 
 .lastTurnSummarySection {

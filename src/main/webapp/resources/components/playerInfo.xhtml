@@ -28,9 +28,12 @@
                 <h:outputText styleClass="playerInfoSectionInfoValuesIconText #{gameView.getAuthorityStyleClass(cc.attrs.player.authority)}"
                               value="#{cc.attrs.player.authority}"/>
                 <h:graphicImage library="images" name="icons/authority.png" styleClass="playerInfoSectionInfoValuesIconImage"/>
-                <p:commandLink value="Attack" style="margin-left: 10px; vertical-align: top;" styleClass="attackButton playerAttackButton"
-                               actionListener="#{gameView.attackOpponent}" process="@this"
-                               rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}"/>
+                <h:panelGroup rendered="#{cc.attrs.isOpponent and gameView.opponentAttackable}">
+                    <sr:linkWithSpinner process="@this" linkText="Attack"
+                                        actionMethod="#{gameView.attackOpponent}"
+                                        linkStyle="margin-left: 10px; vertical-align: top;"
+                                        styleClass="attackButton playerAttackButton"/>
+                </h:panelGroup>
             </h:panelGroup>
 
         </h:panelGroup>

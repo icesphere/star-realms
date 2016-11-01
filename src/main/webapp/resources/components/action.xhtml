@@ -19,7 +19,7 @@
         </div>
 
         <div style="clear: both; float: left; padding-top: 10px;">
-            <h:outputText value="Waiting for computer..." style="padding-right: 10px;"/>
+            <h:outputText value="Waiting for computer to finish turn..." style="padding-right: 10px;"/>
 
             <h:graphicImage library="images" name="loadingSmall.gif"/>
         </div>
@@ -30,7 +30,7 @@
                   rendered="#{gameView.player.yourTurn and !empty gameView.action}">
 
         <div style="float: left;">
-            <h:outputText value="Current Action" styleClass="currentActionLabel"/>
+            <h:outputText value="Current Action" styleClass="currentActionLabel blinkingCurrentActionLabel"/>
         </div>
 
         <div style="clear: both; float: left; padding-top: 10px;">
@@ -62,6 +62,39 @@
             </div>
 
         </h:panelGroup>
+
+    </h:panelGroup>
+
+    <h:panelGroup layout="block" rendered="#{gameView.game.gameOver}" styleClass="actionSection">
+
+        <div style="float: left;">
+            <h:outputText value="Game Over" styleClass="currentActionLabel"/>
+        </div>
+
+        <div style="clear: both; float: left; padding-top: 10px;">
+            <h:panelGroup layout="block" rendered="#{empty gameView.game.quitGamePlayer}">
+                <h:outputText value="#{gameView.game.winner.playerName} wins!"/>
+                <h:outputText style="display:block;text-decoration:underline;"
+                              value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
+                                                           'You Won' : 'You Lost'}"/>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block"
+                          rendered="#{!empty gameView.game.quitGamePlayer}">
+                <h:outputText value="#{gameView.game.quitGamePlayer.playerName} quit the game."/>
+            </h:panelGroup>
+        </div>
+
+        <div style="clear: both; float: left; padding-top: 10px;">
+
+            <p:commandLink ajax="false" styleClass="smallButton" style="margin-right: 20px;" value="Game Log">
+                <p:fileDownload value="#{gameView.gameLog}"/>
+            </p:commandLink>
+
+            <p:commandLink process="@this" styleClass="smallButton"
+                           value="Exit Game" action="#{gameView.exitGame}"/>
+
+        </div>
 
     </h:panelGroup>
 

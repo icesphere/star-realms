@@ -40,41 +40,6 @@
 
                 <h:panelGroup id="gamePagePlusOverlay" layout="block" styleClass="gamePage">
 
-                    <h:panelGroup id="gamePageOverlay">
-                        <h:panelGroup layout="block" rendered="#{gameView.game.gameOver}"
-                                      styleClass="gamePageOverlay">
-
-                            <h:panelGroup layout="block" styleClass="gamePageOverlayHeader">
-                                <h:outputText style="display:block" value="GAME OVER"/>
-                                <h:panelGroup layout="block" rendered="#{empty gameView.game.quitGamePlayer}">
-                                    <h:outputText value="#{gameView.game.winner.playerName} wins!"/>
-                                    <h:outputText style="display:block;text-decoration:underline;"
-                                                  value="#{gameView.game.winner.playerName eq gameView.player.playerName ?
-                                                           'You Won' : 'You Lost'}"/>
-                                </h:panelGroup>
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" styleClass="gamePageOverlayText"
-                                          rendered="#{!empty gameView.game.quitGamePlayer}">
-                                <h:outputText value="#{gameView.game.quitGamePlayer.playerName} quit the game."/>
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" styleClass="turnButtonWrapper"
-                                          rendered="#{gameView.game.gameOver}">
-                                <p:commandLink ajax="false" styleClass="turnButton" value="GAME LOG">
-                                    <p:fileDownload value="#{gameView.gameLog}"/>
-                                </p:commandLink>
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block" styleClass="turnButtonWrapper">
-                                <p:commandLink process="@this" styleClass="quitButton"
-                                               value="Quit Game" action="#{gameView.exitGame}"/>
-                            </h:panelGroup>
-
-                        </h:panelGroup>
-
-                    </h:panelGroup>
-
                     <h:panelGroup layout="block" id="gamePage" styleClass="gamePageContent">
 
                         <h:panelGroup layout="block" id="leftSection" styleClass="leftSection">
@@ -143,32 +108,36 @@
                                 <sr:lastTurnSummary player="#{gameView.player}" playerClass="player"
                                                     isOpponent="false"/>
 
-                                <h:panelGroup layout="block" rendered="#{!gameView.game.gameOver}" style="margin-top: 10px;"
+                                <h:panelGroup layout="block" style="margin-top: 10px;"
                                               id="turnButtonsSection" styleClass="turnButtonsSection">
 
-                                    <h:panelGroup rendered="#{gameView.player.yourTurn and empty gameView.action}">
+                                    <h:panelGroup layout="block" rendered="#{!gameView.game.gameOver}">
 
-                                        <h:panelGroup layout="block" styleClass="turnButtonWrapper"
-                                                      rendered="#{gameView.showConfirmEndTurn}">
-                                            <p:commandLink process="@this" update=":gameForm:gamePage"
-                                                           styleClass="turnButton" value="End Turn"
-                                                           onclick="if (!confirm('Are you sure you want to end your turn?')) return false"
-                                                           action="#{gameView.endTurn}"/>
+                                        <h:panelGroup rendered="#{gameView.player.yourTurn and empty gameView.action}">
+
+                                            <h:panelGroup layout="block" styleClass="turnButtonWrapper"
+                                                          rendered="#{gameView.showConfirmEndTurn}">
+                                                <p:commandLink process="@this" update=":gameForm:gamePage"
+                                                               styleClass="turnButton" value="End Turn"
+                                                               onclick="if (!confirm('Are you sure you want to end your turn?')) return false"
+                                                               action="#{gameView.endTurn}"/>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup layout="block" styleClass="turnButtonWrapper"
+                                                          rendered="#{!gameView.showConfirmEndTurn}">
+                                                <sr:linkWithSpinner process="@this" update=":gameForm:gamePage"
+                                                                    styleClass="turnButton"
+                                                                    linkText="End Turn" actionMethod="#{gameView.endTurn}"/>
+                                            </h:panelGroup>
+
                                         </h:panelGroup>
 
-                                        <h:panelGroup layout="block" styleClass="turnButtonWrapper"
-                                                      rendered="#{!gameView.showConfirmEndTurn}">
-                                            <sr:linkWithSpinner process="@this" update=":gameForm:gamePage"
-                                                                styleClass="turnButton"
-                                                                linkText="End Turn" actionMethod="#{gameView.endTurn}"/>
+                                        <h:panelGroup layout="block" styleClass="turnButtonWrapper">
+                                            <p:commandLink process="@this" styleClass="quitButton" value="Quit Game"
+                                                           onclick="if (!confirm('Are you sure you want to quit the game?')) return false"
+                                                           action="#{gameView.quitGame}"/>
                                         </h:panelGroup>
 
-                                    </h:panelGroup>
-
-                                    <h:panelGroup layout="block" styleClass="turnButtonWrapper">
-                                        <p:commandLink process="@this" styleClass="quitButton" value="Quit Game"
-                                                       onclick="if (!confirm('Are you sure you want to quit the game?')) return false"
-                                                       action="#{gameView.quitGame}"/>
                                     </h:panelGroup>
 
                                 </h:panelGroup>

@@ -240,7 +240,7 @@
                     </h:panelGroup>
 
                     <h:panelGroup layout="block" style="padding-top: 15px;" rendered="#{empty lobbyView.gameOptionsError}">
-                        <p:commandLink process="@form" update="@form" value="Done" actionListener="#{lobbyView.gameOptionsSaved}"
+                        <p:commandLink process="@form" update="@form" value="Done" actionListener="#{lobbyView.saveGameOptions}"
                                        styleClass="lobbyButton" style="border-radius: 10px; color: white"
                                        oncomplete="PF('gameOptionsDialog').hide()"/>
                     </h:panelGroup>
@@ -270,6 +270,8 @@
                         refreshChat();
                     } else if (response.message == 'refresh_buttons') {
                         refreshButtons();
+                    } else if (response.message == 'save_game_options') {
+                        localStorage.setItem('gameOptions', response.data);
                     }
                 }
             }

@@ -276,6 +276,6 @@ public class GameOptions {
             selected.add("Starting Trade Row Cards: " + startingTradeRowCards);
         }
 
-        return StringUtils.join(selected, ";");
+        return StringUtils.join(selected, "; ");
     }
 }

@@ -149,7 +149,7 @@ public class LobbyView implements Serializable {
         gameService.refreshLobby(userSession.getUser().getUsername());
     }
 
-    public void gameOptionsSaved() {
-        gameService.refreshLobby(userSession.getUser().getUsername());
+    public void saveGameOptions() {
+        gameService.saveGameOptions(userSession.getUser());
     }
 }

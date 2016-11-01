@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.view;
 
+import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.User;
 import org.smartreaction.starrealms.service.GameService;
 import org.smartreaction.starrealms.service.LoggedInUsers;
@@ -30,11 +31,15 @@ public class UserSession implements Serializable {
         this.user = user;
     }
 
-    public boolean loginAsGuest(String username, String betaCode) {
+    public boolean loginAsGuest(String username, String betaCode, GameOptions savedGameOptions) {
+        username = username.replaceAll("[^A-Za-z0-9_ ]", "");
         if (!loggedInUsers.isUsernameInUse(username)) {
             user = new User();
             user.setUsername(username);
             user.setBetaCode(betaCode);
+            if (savedGameOptions != null) {
+                user.setGameOptions(savedGameOptions);
+            }
             loggedIn = true;
             loggedInUsers.getUsers().add(user);
             gameService.refreshLobby(username);

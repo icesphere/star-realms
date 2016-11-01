@@ -5,8 +5,10 @@ import org.primefaces.push.Decoder;
 public class GameMessageDecoder implements Decoder<String, GameMessage> {
     @Override
     public GameMessage decode(String s) {
-        String[] userAndMessage = s.split(":");
-        if (userAndMessage.length >= 2) {
+        String[] userAndMessage = s.split(";");
+        if (userAndMessage.length >= 3) {
+            return new GameMessage().setUser(userAndMessage[0]).setMessage(userAndMessage[1]).setData(userAndMessage[2]);
+        } else if (userAndMessage.length >= 2) {
             return new GameMessage().setUser(userAndMessage[0]).setMessage(userAndMessage[1]);
         }
         else {

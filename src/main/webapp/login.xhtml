@@ -5,9 +5,14 @@
 <ui:composition template="/templates/commonLayout.xhtml">
     <ui:define name="head">
         <h:outputStylesheet name="lobby.css" library="css"/>
+        <script>
+            $(document).ready(function() {
+                $('#loginForm\\:savedGameOptions').val(localStorage.gameOptions);
+            });
+        </script>
     </ui:define>
     <ui:define name="content">
-        <h:form styleClass="login">
+        <h:form styleClass="login" id="loginForm">
             <h:panelGroup layout="block" styleClass="loginSection">
                 <h:panelGroup layout="block" rendered="#{loginView.showUsernameError}" styleClass="errorText">
                     <h:outputText value="Username is already in use."/>
@@ -20,6 +25,8 @@
                 <h:outputText value="Select your username, Commander" styleClass="loginInputText"/>
 
                 <p:inputText value="#{loginView.username}" styleClass="loginInput"/>
+
+                <h:inputHidden id="savedGameOptions" value="#{loginView.savedGameOptionsString}"/>
 
                 <div style="padding-top: 15px;">
                     <h:outputText value="Beta Tester Code: "/>

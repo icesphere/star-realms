@@ -1,6 +1,9 @@
 package org.smartreaction.starrealms.view;
 
+import com.google.gson.Gson;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.service.LoggedInUsers;
 
 import javax.ejb.EJB;
@@ -24,9 +27,13 @@ public class LoginView implements Serializable {
 
     private String betaCode;
 
+    private String savedGameOptionsString;
+
     private boolean showUsernameError;
 
     private boolean showBetaCodeError;
+
+    private Gson gson = new Gson();
 
     public String getUsername() {
         return username;
@@ -40,10 +47,16 @@ public class LoginView implements Serializable {
         showBetaCodeError = false;
         showUsernameError = false;
 
+        GameOptions savedGameOptions = null;
+
+        if (!StringUtils.isBlank(savedGameOptionsString)) {
+            savedGameOptions = gson.fromJson(savedGameOptionsString, GameOptions.class);
+        }
+
         if (!validBetaCode()) {
             showBetaCodeError = true;
             return null;
-        } else if (userSession.loginAsGuest(username, betaCode)) {
+        } else if (userSession.loginAsGuest(username, betaCode, savedGameOptions)) {
             showUsernameError = false;
             return "lobby.xhtml?faces-redirect=true";
         } else {
@@ -92,5 +105,13 @@ public class LoginView implements Serializable {
 
     public void setBetaCode(String betaCode) {
         this.betaCode = betaCode;
+    }
+
+    public String getSavedGameOptionsString() {
+        return savedGameOptionsString;
+    }
+
+    public void setSavedGameOptionsString(String savedGameOptionsString) {
+        this.savedGameOptionsString = savedGameOptionsString;
     }
 }

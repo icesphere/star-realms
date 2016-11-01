@@ -17,6 +17,8 @@ public class GameMessage {
 
     private String message;
 
+    private String data;
+
     public String getUser() {
         return user;
     }
@@ -32,6 +34,15 @@ public class GameMessage {
 
     public GameMessage setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public GameMessage setData(String data) {
+        this.data = data;
         return this;
     }
 }

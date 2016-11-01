@@ -1,5 +1,6 @@
 package org.smartreaction.starrealms.service;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -59,6 +60,8 @@ public class GameService {
     private final static String GAME_CHANNEL = "/game/";
 
     private final Object matchUserLock = new Object();
+
+    Gson gson = new Gson();
 
     @EJB
     LoggedInUsers loggedInUsers;
@@ -1756,8 +1759,13 @@ public class GameService {
         sendLobbyMessageToAll(sender, "refresh_lobby");
     }
 
+    public void saveGameOptions(User user) {
+        sendLobbyMessage(user.getUsername(), user.getUsername(), "save_game_options;" + gson.toJson(user.getGameOptions()));
+        refreshLobby(user.getUsername());
+    }
+
     public void sendGameMessage(String sender, String recipient, String channel, String message) {
-        getEventBus().publish(GAME_CHANNEL + channel + "/" + recipient, sender + ":" + message);
+        getEventBus().publish(GAME_CHANNEL + channel + "/" + recipient, sender + ";" + message);
     }
 
     EventBus getEventBus() {

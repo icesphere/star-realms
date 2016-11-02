@@ -6,4 +6,6 @@ public interface ChoiceActionCard {
 
     void actionChoiceMade(Player player, int choice);
 
+    String getName();
+
 }

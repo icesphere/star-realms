@@ -163,6 +163,7 @@ public abstract class BotPlayer extends Player {
             for (Mission mission : getUnClaimedMissions()) {
                 if (mission.isMissionCompleted(this)) {
                     claimMission(mission);
+                    endTurn = false;
                 }
             }
 

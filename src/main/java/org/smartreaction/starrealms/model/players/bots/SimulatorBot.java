@@ -166,9 +166,7 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public int getChoice(ChoiceActionCard choiceActionCard, Choice[] choices) {
-        Card card = (Card) choiceActionCard;
-
-        logSimulationInfo("Simulator Bot determining best choice for " + card.getName());
+        logSimulationInfo("Simulator Bot determining best choice for " + choiceActionCard.getName());
 
         Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 300, choiceActionCard, choices);
 

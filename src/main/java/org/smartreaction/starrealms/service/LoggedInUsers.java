@@ -19,6 +19,11 @@ public class LoggedInUsers {
 
     public void clearOutInactiveUsers() {
         List<User> inactiveUsers = users.stream().filter(u -> MINUTES.between(u.getLastActivity(), Instant.now()) > 90).collect(toList());
+        for (User inactiveUser : inactiveUsers) {
+            if (inactiveUser.getCurrentGame() != null) {
+                inactiveUser.getCurrentGame().gameTimedOut();
+            }
+        }
         users.removeAll(inactiveUsers);
     }
 

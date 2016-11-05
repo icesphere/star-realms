@@ -60,6 +60,8 @@ public class Game
 
     private boolean includeSimulationInfo;
 
+    private boolean timedOut;
+
     StringBuilder lastTurnSimulationInfoLog = new StringBuilder();
     StringBuilder currentTurnSimulationInfoLog = new StringBuilder();
 
@@ -285,6 +287,10 @@ public class Game
             gameLogFileName += quitGamePlayer.getPlayerName() + "_quit_";
         }
 
+        if (timedOut) {
+            gameLogFileName += "timeout_";
+        }
+
         gameLogFileName += getWinner().getInfoForGameLogName() + "_over_" + getLoser().getInfoForGameLogName() + "_" + gameId;
 
         return new File(gameLogDirectory, gameLogFileName);
@@ -474,5 +480,11 @@ public class Game
 
     public void addSimulationLog(String log) {
         gameLog(log, true);
+    }
+
+    public void gameTimedOut() {
+        gameLog("Game timed out");
+        timedOut = true;
+        writeGameLog();
     }
 }

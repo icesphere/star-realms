@@ -22,16 +22,16 @@
                     <h:outputText value="Invalid beta code."/>
                 </h:panelGroup>
 
-                <h:outputText value="Select your username, Commander" styleClass="loginInputText"/>
+                <h:outputText value="Select your username" styleClass="loginInputText"/>
 
                 <p:inputText value="#{loginView.username}" styleClass="loginInput"/>
 
                 <h:inputHidden id="savedGameOptions" value="#{loginView.savedGameOptionsString}"/>
 
-                <div style="padding-top: 15px;">
+                <h:panelGroup layout="block" rendered="#{loginView.usingBetaCode}" style="padding-top: 15px;">
                     <h:outputText value="Beta Tester Code: "/>
                     <p:inputText value="#{loginView.betaCode}"/>
-                </div>
+                </h:panelGroup>
 
                 <p:commandButton process="@form" update="@form" value="Login" action="#{loginView.loginAsGuest}" styleClass="loginButton"/>
 

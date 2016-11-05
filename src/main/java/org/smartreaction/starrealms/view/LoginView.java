@@ -33,6 +33,8 @@ public class LoginView implements Serializable {
 
     private boolean showBetaCodeError;
 
+    private boolean usingBetaCode = false;
+
     private Gson gson = new Gson();
 
     public String getUsername() {
@@ -53,7 +55,7 @@ public class LoginView implements Serializable {
             savedGameOptions = gson.fromJson(savedGameOptionsString, GameOptions.class);
         }
 
-        if (!validBetaCode()) {
+        if (usingBetaCode && !validBetaCode()) {
             showBetaCodeError = true;
             return null;
         } else if (userSession.loginAsGuest(username, betaCode, savedGameOptions)) {
@@ -113,5 +115,9 @@ public class LoginView implements Serializable {
 
     public void setSavedGameOptionsString(String savedGameOptionsString) {
         this.savedGameOptionsString = savedGameOptionsString;
+    }
+
+    public boolean isUsingBetaCode() {
+        return usingBetaCode;
     }
 }

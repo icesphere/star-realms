@@ -16,7 +16,7 @@ public class ScrapCardsFromTradeRow extends Action {
     private void setTextFromNumCards() {
         text = "Scrap ";
         if (optional) {
-            text += "up to";
+            text += "up to ";
         }
         text += numCardsToScrap + " card";
         if (numCardsToScrap != 1) {

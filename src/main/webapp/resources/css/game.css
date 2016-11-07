@@ -450,6 +450,7 @@
 .otherCardsSection {
     float: left;
     padding-top: 12px;
+    margin-right: 5px;
 }
 
 .otherCardsSectionCards {
@@ -643,7 +644,7 @@
 /* button section */
 
 .turnButtonWrapper {
-
+    padding-bottom: 5px;
 }
 
 .turnButton, .quitButton, .playAllButton {

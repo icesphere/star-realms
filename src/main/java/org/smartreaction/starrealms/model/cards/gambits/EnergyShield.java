@@ -6,7 +6,7 @@ import org.smartreaction.starrealms.model.players.Player;
 public class EnergyShield extends Gambit implements EveryTurnGambit, ScrappableCard {
     public EnergyShield() {
         name = "Energy Shield";
-        text = "Whenever you (not your bases) are attacked, reduce the damage by 1";
+        text = "Whenever you (not your bases) are attacked, reduce the damage by 1; Scrap: Draw a card";
     }
 
     @Override

@@ -485,7 +485,7 @@ public abstract class BotPlayer extends Player {
             }
         }
 
-        if (getCombat() >= getOpponent().getAuthority()) {
+        if (getCombat() >= getOpponent().getAuthority() && getOpponent().getOutposts().isEmpty()) {
             attackOpponentWithRemainingCombat();
         }
 

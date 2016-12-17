@@ -44,6 +44,8 @@ public class MercCruiser extends Ship implements ChoiceActionCard
             case 4:
                 factionChoice = Faction.MACHINE_CULT;
         }
+
+        player.allyInPlayCards();
     }
 
     @Override

@@ -602,9 +602,7 @@ public abstract class Player {
                 scrappableCard.cardScrapped(this);
             }
 
-            for (Card c : inPlay) {
-                allyCardIfAvailable(c);
-            }
+            allyInPlayCards();
         }
     }
 
@@ -888,6 +886,10 @@ public abstract class Player {
 
         card.cardPlayed(this);
 
+        allyInPlayCards();
+    }
+
+    public void allyInPlayCards() {
         for (Card c : inPlay) {
             allyCardIfAvailable(c);
         }

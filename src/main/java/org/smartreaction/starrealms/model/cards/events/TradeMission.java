@@ -12,7 +12,7 @@ public class TradeMission extends Event {
 
     @Override
     public void handleEvent(Player player) {
-        player.addAuthority(4);
+        player.addTrade(4);
         player.nextShipToTopOfDeck();
         player.getOpponent().drawCards(2);
     }

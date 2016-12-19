@@ -37,12 +37,16 @@ public class MercCruiser extends Ship implements ChoiceActionCard
         switch (choice) {
             case 1:
                 factionChoice = Faction.TRADE_FEDERATION;
+                break;
             case 2:
                 factionChoice = Faction.BLOB;
+                break;
             case 3:
                 factionChoice = Faction.STAR_EMPIRE;
+                break;
             case 4:
                 factionChoice = Faction.MACHINE_CULT;
+                break;
         }
 
         player.allyInPlayCards();

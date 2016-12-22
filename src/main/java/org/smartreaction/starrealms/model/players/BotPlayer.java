@@ -443,15 +443,14 @@ public abstract class BotPlayer extends Player {
     public void acquireFreeShipToTopOfDeck(Integer maxCost) {
         Card card = chooseFreeCardToAcquire(maxCost, true, false);
         if (card != null) {
+            addGameLog(getPlayerName() + " acquired free " + card.getName() + " to top of deck");
+
             if (!(card instanceof Explorer)) {
                 getGame().getTradeRow().remove(card);
                 getGame().addCardToTradeRow();
             }
 
-            addGameLog(getPlayerName() + " acquired free " + card.getName() + " to top of deck");
-
-            addCardToTopOfDeck(card);
-            cardAcquired(card);
+            acquireCardToTopOfDeck(card);
         }
     }
 

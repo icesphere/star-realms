@@ -92,7 +92,10 @@ public class StealthTower extends Outpost implements CardActionCard, CardCopier
 
     @Override
     public boolean processCardAction(Player player) {
-        return player.getInPlay().stream().filter(c -> c.isBase() && !(c instanceof StealthTower)).count() > 0;
+        List<Card> cards = new ArrayList<>();
+        cards.addAll(player.getBases());
+        cards.addAll(player.getOpponent().getBases());
+        return !cards.isEmpty() && cards.stream().anyMatch(c -> !(c instanceof StealthTower));
     }
 
     @Override

@@ -2,10 +2,11 @@ package org.smartreaction.starrealms.model.cards.bases.blob;
 
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.cards.Faction;
+import org.smartreaction.starrealms.model.cards.ScrappableCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class PlasmaVent extends Base
+public class PlasmaVent extends Base implements ScrappableCard
 {
     public PlasmaVent()
     {
@@ -14,7 +15,7 @@ public class PlasmaVent extends Base
         cost = 6;
         set = CardSet.COLONY_WARS;
         shield = 5;
-        text = "Add 4 Combat. When you acquire this card, if you've played a Blob card this turn, you may put this card directly into your hand.";
+        text = "Add 4 Combat. When you acquire this card, if you've played a Blob card this turn, you may put this card directly into your hand. Scrap: Destroy target base.";
         autoUse = true;
     }
 
@@ -27,5 +28,10 @@ public class PlasmaVent extends Base
     @Override
     public void baseUsed(Player player) {
         player.addCombat(4);
+    }
+
+    @Override
+    public void cardScrapped(Player player) {
+        player.destroyTargetBase();
     }
 }

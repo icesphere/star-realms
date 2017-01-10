@@ -14,7 +14,7 @@ public class AssaultPod extends Ship implements AlliableCard {
         cost = 2;
         set = CardSet.UNITED_COMMAND;
         text = "Add 3 Combat; Ally: Draw a card";
-        autoAlly = true;
+        autoAlly = false;
         allFactionsAlliedTogether = true;
     }
 

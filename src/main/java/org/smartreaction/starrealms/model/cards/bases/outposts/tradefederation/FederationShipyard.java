@@ -30,13 +30,12 @@ public class FederationShipyard extends Outpost implements AlliableCard
     public void baseUsed(Player player)
     {
         player.addTrade(2);
-        player.nextShipOrBaseToTopOfDeck();
     }
 
     @Override
     public void cardAllied(Player player, Faction faction)
     {
-        player.addCombat(2);
+        player.nextShipOrBaseToTopOfDeck();
     }
 
     @Override

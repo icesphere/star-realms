@@ -587,6 +587,8 @@ public abstract class BotPlayer extends Player {
             return 80;
         } else if (card instanceof BrainWorld) {
             return 70;
+        } else if (card instanceof FortressOblivion) {
+            return 60;
         } else if (card instanceof BlobWorld) {
             return 10;
         } else {
@@ -611,8 +613,6 @@ public abstract class BotPlayer extends Player {
             return 40;
         } else if (card instanceof Explorer) {
             return 10;
-        } else if (card instanceof StealthNeedle) {
-            return 8;
         } else if (card instanceof MegaMech) {
             return 7;
         } else if (card instanceof BattleBarge) {
@@ -621,10 +621,19 @@ public abstract class BotPlayer extends Player {
             return 6;
         } else if (card instanceof DefenseBot) {
             return 5;
+        } else if (card instanceof StealthNeedle) {
+            List<Card> cardsToCopy = new ArrayList<>(getPlayed());
+            List<Card> otherCardsInHand = getHand().stream().filter(c -> !(c instanceof StealthNeedle)).collect(toList());
+            cardsToCopy.addAll(otherCardsInHand);
+            if (cardsToCopy.stream().allMatch(c -> c instanceof Scout || c instanceof Viper)) {
+                return 1;
+            } else {
+                return 4;
+            }
         } else if (card instanceof Scout) {
-            return 4;
-        } else if (card instanceof Viper) {
             return 3;
+        } else if (card instanceof Viper) {
+            return 2;
         } else {
             return 20;
         }

@@ -377,10 +377,6 @@ public abstract class Player {
     private void cardRemovedFromPlay(Card card) {
         card.setAllAlliedAbilitiesToNotUsed();
 
-        if (card instanceof Base) {
-            ((Base) card).setUsed(false);
-        }
-
         card.removedFromPlay(this);
     }
 

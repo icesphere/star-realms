@@ -79,4 +79,10 @@ public abstract class Base extends Card {
     public void onEndTurn() {
         //do nothing
     }
+
+    @Override
+    public void removedFromPlay(Player player) {
+        super.removedFromPlay(player);
+        setUsed(false);
+    }
 }

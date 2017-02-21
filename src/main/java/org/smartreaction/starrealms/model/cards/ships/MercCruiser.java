@@ -2,6 +2,7 @@ package org.smartreaction.starrealms.model.cards.ships;
 
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.Choice;
+import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.players.Player;
@@ -55,7 +56,7 @@ public class MercCruiser extends Ship implements ChoiceActionCard
     @Override
     public Set<Faction> getFactions() {
         Set<Faction> factions = super.getFactions();
-        if (factionChoice != null) {
+        if (factionChoice != null && !factions.contains(factionChoice)) {
             factions.add(factionChoice);
         }
         return factions;
@@ -64,5 +65,12 @@ public class MercCruiser extends Ship implements ChoiceActionCard
     @Override
     public void removedFromPlay(Player player) {
         factionChoice = null;
+    }
+
+    @Override
+    public Card copyCardForSimulation() {
+        MercCruiser card = (MercCruiser) super.copyCardForSimulation();
+        card.factionChoice = factionChoice;
+        return card;
     }
 }

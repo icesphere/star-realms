@@ -9,6 +9,7 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
+import org.smartreaction.starrealms.model.cards.bases.DoNotDestroyBase;
 import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
@@ -1967,6 +1968,42 @@ public class GameService {
             SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
 
             cardResults.put(cardToBuy, results.getWinPercentage());
+        }
+
+        return cardResults;
+    }
+
+    public Map<Base, Float> simulateBestBaseToDestroy(Game originalGame, int timesToSimulate) {
+        Game copiedGame = originalGame.copyGameForSimulation();
+
+        Player opponent = originalGame.getCurrentPlayer().getOpponent();
+
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(opponent.getAllCards());
+
+        Map<Base, Float> cardResults = new LinkedHashMap<>();
+
+        List<Base> bases = new ArrayList<>();
+
+        if (!opponent.getOutposts().isEmpty()) {
+            bases.addAll(opponent.getOutposts());
+        } else if (!opponent.getBases().isEmpty()) {
+            bases.addAll(opponent.getBases());
+        }
+
+        if (bases.isEmpty()) {
+            return null;
+        }
+
+        bases.add(new DoNotDestroyBase());
+
+        for (Base base : bases) {
+            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
+            copiedGame.getCurrentPlayer().setBaseToDestroyThisTurn((Base) base.copyCardForSimulation());
+
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+
+            cardResults.put(base, results.getWinPercentage());
         }
 
         return cardResults;

@@ -268,7 +268,7 @@ public abstract class BotPlayer extends Player {
     public void destroyTargetBase() {
         Base base = chooseOpponentBaseToDestroy();
         if (base != null) {
-            destroyOpponentBase(base);
+            getOpponent().baseDestroyed(base);
         }
     }
 
@@ -479,7 +479,7 @@ public abstract class BotPlayer extends Player {
             List<Outpost> sortedOutposts = getOpponent().getOutposts().stream().sorted(attackBaseScoreDescending).collect(toList());
             for (Outpost outpost : sortedOutposts) {
                 if (getAttackBaseScore(outpost) > 0 && getCombat() >= outpost.getShield()) {
-                    destroyOpponentBase(outpost);
+                    attackOpponentBase(outpost);
                 }
             }
         }
@@ -492,7 +492,7 @@ public abstract class BotPlayer extends Player {
             List<Base> sortedBases = getOpponent().getBases().stream().sorted(attackBaseScoreDescending).collect(toList());
             for (Base base : sortedBases) {
                 if (getAttackBaseScore(base) > 0 && getCombat() >= base.getShield()) {
-                    destroyOpponentBase(base);
+                    attackOpponentBase(base);
                 }
             }
         }
@@ -1198,6 +1198,16 @@ public abstract class BotPlayer extends Player {
     }
 
     public Base chooseOpponentBaseToDestroy() {
+
+        if (baseToDestroyThisTurn != null) {
+            for (Base base : getOpponent().getBases()) {
+                if (base.getName().equals(baseToDestroyThisTurn.getName())) {
+                    baseToDestroyThisTurn = null;
+                    return base;
+                }
+            }
+        }
+
         if (!getOpponent().getOutposts().isEmpty()) {
             List<Base> sortedOutposts = getOpponent().getOutposts().stream().sorted(destroyBaseScoreDescending).collect(toList());
             Base baseToDestroy = sortedOutposts.get(0);

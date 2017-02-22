@@ -2,8 +2,9 @@ package org.smartreaction.starrealms.model.players.bots;
 
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
-import org.smartreaction.starrealms.model.cards.CardCopier;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
+import org.smartreaction.starrealms.model.cards.bases.Base;
+import org.smartreaction.starrealms.model.cards.bases.DoNotDestroyBase;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.players.BotPlayer;
@@ -12,10 +13,8 @@ import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrate
 import org.smartreaction.starrealms.service.GameService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -195,7 +194,7 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards) {
-        //todo
+        //todo simulate best card to scrap
         return super.getCardsToOptionallyScrapFromDiscardOrHand(cards);
     }
 
@@ -205,5 +204,52 @@ public class SimulatorBot extends BotPlayer {
     
     private void logSimulationInfo(String log) {
         getGame().addSimulationLog(log);
+    }
+
+    @Override
+    public Base chooseOpponentBaseToDestroy() {
+        Map<Base, Float> results = gameService.simulateBestBaseToDestroy(getGame(), 600);
+
+        if (results.isEmpty()) {
+            return null;
+        }
+
+        List<Base> bases = new ArrayList<>(results.keySet());
+
+        List<Base> sortedBases = bases.stream()
+                .sorted((b1, b2) -> results.get(b2).compareTo(results.get(b1)))
+                .collect(toList());
+
+        float bestWinPercentage = 0;
+
+        Base bestBaseToDestroy = null;
+
+        logSimulationInfo("Simulator Bot determining best base to destroy");
+
+        for (Base base : sortedBases) {
+            Float winPercentage = results.get(base);
+
+            if (winPercentage > 0) {
+                logSimulationInfo("Win percentage for destroying " + base.getName() + ": " + winPercentage);
+            }
+
+            if (winPercentage > bestWinPercentage) {
+                bestBaseToDestroy = base;
+                bestWinPercentage = winPercentage;
+            }
+        }
+
+        if (bestBaseToDestroy == null) {
+            logSimulationInfo("Best base to destroy was not found, using default destroy base score");
+            return super.chooseOpponentBaseToDestroy();
+        } else {
+            logSimulationInfo("<b>Best base to destroy: " + bestBaseToDestroy.getName() + "</b>");
+        }
+
+        if (!(bestBaseToDestroy instanceof DoNotDestroyBase)) {
+            return bestBaseToDestroy;
+        }
+
+        return null;
     }
 }

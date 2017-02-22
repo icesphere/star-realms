@@ -105,6 +105,9 @@ public abstract class Player {
     private long scoutsInSecondHand;
     private Map<Integer, Set<Card>> cardsAcquiredByDeck = new HashMap<>();
 
+    //this is for simulating which base is best to destroy
+    protected Base baseToDestroyThisTurn;
+
     private TurnSummary lastTurnSummary;
 
     private TurnSummary currentTurnSummary = new TurnSummary();
@@ -214,6 +217,8 @@ public abstract class Player {
         cardToBuyThisTurn = player.getCardToBuyThisTurn();
         cardToNotScrapThisTurn = player.getCardToNotScrapThisTurn();
         heroToNotPlayThisTurn = player.getHeroToNotPlayThisTurn();
+
+        baseToDestroyThisTurn = player.getBaseToDestroyThisTurn();
 
         numCardsScrappedThisTurn = player.getNumCardsScrappedThisTurn();
         tradeGainedThisTurn = player.getTradeGainedThisTurn();
@@ -417,6 +422,8 @@ public abstract class Player {
 
         cardToBuyThisTurn = null;
         cardToNotScrapThisTurn = null;
+
+        baseToDestroyThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -751,7 +758,7 @@ public abstract class Player {
         }
     }
 
-    public void destroyOpponentBase(Base base) {
+    public void attackOpponentBase(Base base) {
         combat -= base.getShield();
 
         opponent.baseDestroyed(base);
@@ -1250,6 +1257,14 @@ public abstract class Player {
 
     public void setHeroToNotPlayThisTurn(Hero heroToNotPlayThisTurn) {
         this.heroToNotPlayThisTurn = heroToNotPlayThisTurn;
+    }
+
+    public Base getBaseToDestroyThisTurn() {
+        return baseToDestroyThisTurn;
+    }
+
+    public void setBaseToDestroyThisTurn(Base baseToDestroyThisTurn) {
+        this.baseToDestroyThisTurn = baseToDestroyThisTurn;
     }
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {

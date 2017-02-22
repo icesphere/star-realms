@@ -471,7 +471,7 @@ public class GameView implements Serializable {
     }
 
     public void attackOpponentBase(Base base) {
-        getPlayer().destroyOpponentBase(base);
+        getPlayer().attackOpponentBase(base);
         refreshGamePageForAll();
     }
     

@@ -3,14 +3,14 @@ package org.smartreaction.starrealms.model.cards.bases;
 import org.smartreaction.starrealms.model.CardSet;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class DoNotDestroyBase extends Base
+public class DoNotAttackBase extends Base
 {
-    public DoNotDestroyBase()
+    public DoNotAttackBase()
     {
-        name = "Do Not Destroy Base";
+        name = "Do Not Attack Base";
         cost = 0;
         set = CardSet.CORE;
-        text = "This is a placeholder to show simulation results of not destroying a base";
+        text = "This is a placeholder to show simulation results of not attacking a base";
     }
 
     @Override

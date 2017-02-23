@@ -108,6 +108,9 @@ public abstract class Player {
     //this is for simulating which base is best to destroy
     protected Base baseToDestroyThisTurn;
 
+    //this is for simulating which base is best to attack
+    protected Base baseToAttackThisTurn;
+
     private TurnSummary lastTurnSummary;
 
     private TurnSummary currentTurnSummary = new TurnSummary();
@@ -219,6 +222,8 @@ public abstract class Player {
         heroToNotPlayThisTurn = player.getHeroToNotPlayThisTurn();
 
         baseToDestroyThisTurn = player.getBaseToDestroyThisTurn();
+
+        baseToAttackThisTurn = player.getBaseToAttackThisTurn();
 
         numCardsScrappedThisTurn = player.getNumCardsScrappedThisTurn();
         tradeGainedThisTurn = player.getTradeGainedThisTurn();
@@ -424,6 +429,7 @@ public abstract class Player {
         cardToNotScrapThisTurn = null;
 
         baseToDestroyThisTurn = null;
+        baseToAttackThisTurn = null;
 
         combat = 0;
         trade = 0;
@@ -1265,6 +1271,14 @@ public abstract class Player {
 
     public void setBaseToDestroyThisTurn(Base baseToDestroyThisTurn) {
         this.baseToDestroyThisTurn = baseToDestroyThisTurn;
+    }
+
+    public Base getBaseToAttackThisTurn() {
+        return baseToAttackThisTurn;
+    }
+
+    public void setBaseToAttackThisTurn(Base baseToAttackThisTurn) {
+        this.baseToAttackThisTurn = baseToAttackThisTurn;
     }
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {

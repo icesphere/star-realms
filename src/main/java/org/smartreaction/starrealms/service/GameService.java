@@ -9,7 +9,7 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
-import org.smartreaction.starrealms.model.cards.bases.DoNotDestroyBase;
+import org.smartreaction.starrealms.model.cards.bases.DoNotAttackBase;
 import org.smartreaction.starrealms.model.cards.bases.blob.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.*;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.*;
@@ -1784,20 +1784,20 @@ public class GameService {
         double blobOrStarEmpirePercentage = getPercentageByType(nonStarterCards,
                 c -> c.hasFaction(Faction.BLOB)
                         || c.hasFaction(Faction.STAR_EMPIRE)
-                        || (c.isHero() && (((Hero)c).getAlliedFaction() == Faction.BLOB
-                            || ((Hero)c).getAlliedFaction() == Faction.STAR_EMPIRE)));
+                        || (c.isHero() && (((Hero) c).getAlliedFaction() == Faction.BLOB
+                        || ((Hero) c).getAlliedFaction() == Faction.STAR_EMPIRE)));
 
         double economyPercentage = getPercentageByType(nonStarterCards, c -> c.getTradeWhenPlayed() >= 2);
         double scrapPercentage = getPercentageByType(nonStarterCards, Card::isScrapper);
         double basesPercentage = getPercentageByType(nonStarterCards, Card::isBase);
 
-        boolean attackStrategy = (blobOrStarEmpirePercentage >= 60 && nonStarterCards.size() > 2) || blobOrStarEmpirePercentage == 100;
+        boolean attackStrategy = (blobOrStarEmpirePercentage >= 60 && nonStarterCards.size() > 2) || (blobOrStarEmpirePercentage == 100 && nonStarterCards.size() > 1);
 
         boolean scrapStrategy = scrapPercentage >= 10;
 
         boolean economyStrategy = economyPercentage >= 75 && nonStarterCards.size() > 2;
 
-        boolean defenseStrategy = (basesPercentage >= 60 && nonStarterCards.size() > 2) || basesPercentage == 100;
+        boolean defenseStrategy = (basesPercentage >= 60 && nonStarterCards.size() > 2) || (basesPercentage == 100 && nonStarterCards.size() > 1);
 
         if (scrapStrategy) {
             if (blobOrStarEmpirePercentage >= 50) {
@@ -1974,6 +1974,14 @@ public class GameService {
     }
 
     public Map<Base, Float> simulateBestBaseToDestroy(Game originalGame, int timesToSimulate) {
+        return simulateBestBase(originalGame, timesToSimulate, false);
+    }
+
+    public Map<Base, Float> simulateBestBaseToAttack(Game originalGame, int timesToSimulate) {
+        return simulateBestBase(originalGame, timesToSimulate, true);
+    }
+
+    public Map<Base, Float> simulateBestBase(Game originalGame, int timesToSimulate, boolean attack) {
         Game copiedGame = originalGame.copyGameForSimulation();
 
         Player opponent = originalGame.getCurrentPlayer().getOpponent();
@@ -1990,16 +1998,26 @@ public class GameService {
             bases.addAll(opponent.getBases());
         }
 
+        if (attack) {
+            bases = bases
+                    .stream()
+                    .filter(b -> originalGame.getCurrentPlayer().getCombat() >= b.getShield()).collect(toList());
+        }
+
         if (bases.isEmpty()) {
             return null;
         }
 
-        bases.add(new DoNotDestroyBase());
+        bases.add(new DoNotAttackBase());
 
         for (Base base : bases) {
             setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
 
-            copiedGame.getCurrentPlayer().setBaseToDestroyThisTurn((Base) base.copyCardForSimulation());
+            if (attack) {
+                copiedGame.getCurrentPlayer().setBaseToAttackThisTurn((Base) base.copyCardForSimulation());
+            } else {
+                copiedGame.getCurrentPlayer().setBaseToDestroyThisTurn((Base) base.copyCardForSimulation());
+            }
 
             SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
 
@@ -2486,7 +2504,7 @@ public class GameService {
     }
 
     public void startInviteMatch(User user) {
-        synchronized(matchUserLock) {
+        synchronized (matchUserLock) {
             user.getGameOptions().setPlayAgainstComputer(false);
             user.getInvitee().getGameOptions().setPlayAgainstComputer(false);
             createGame(user, user.getInvitee(), user.getInvitee().getGameOptions());
@@ -2499,7 +2517,7 @@ public class GameService {
     }
 
     public void inviteMatchUser(User user, User opponent) {
-        synchronized(matchUserLock) {
+        synchronized (matchUserLock) {
             user.setAutoMatch(false);
             opponent.setAutoMatch(false);
 
@@ -2512,13 +2530,13 @@ public class GameService {
         try {
             user.getInviteeRequested().setInvitee(null);
             user.getInviteeRequested().setInviteeRequested(null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             user.getInvitee().setInvitee(null);
             user.getInvitee().setInviteeRequested(null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         user.setInvitee(null);

@@ -4,7 +4,7 @@ import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.cards.bases.Base;
-import org.smartreaction.starrealms.model.cards.bases.DoNotDestroyBase;
+import org.smartreaction.starrealms.model.cards.bases.DoNotAttackBase;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.players.BotPlayer;
@@ -210,7 +210,11 @@ public class SimulatorBot extends BotPlayer {
     public Base chooseOpponentBaseToDestroy() {
         Map<Base, Float> results = gameService.simulateBestBaseToDestroy(getGame(), 600);
 
-        if (results.isEmpty()) {
+        return getBestBaseFromResults(results, "destroy");
+    }
+
+    private Base getBestBaseFromResults(Map<Base, Float> results, String actionType) {
+        if (results == null || results.isEmpty()) {
             return null;
         }
 
@@ -222,34 +226,65 @@ public class SimulatorBot extends BotPlayer {
 
         float bestWinPercentage = 0;
 
-        Base bestBaseToDestroy = null;
+        Base bestBase = null;
 
-        logSimulationInfo("Simulator Bot determining best base to destroy");
+        logSimulationInfo("Simulator Bot determining best base to " + actionType);
 
         for (Base base : sortedBases) {
             Float winPercentage = results.get(base);
 
             if (winPercentage > 0) {
-                logSimulationInfo("Win percentage for destroying " + base.getName() + ": " + winPercentage);
+                logSimulationInfo("Win percentage for " + actionType + "ing " + base.getName() + ": " + winPercentage);
             }
 
             if (winPercentage > bestWinPercentage) {
-                bestBaseToDestroy = base;
+                bestBase = base;
                 bestWinPercentage = winPercentage;
             }
         }
 
-        if (bestBaseToDestroy == null) {
-            logSimulationInfo("Best base to destroy was not found, using default destroy base score");
+        if (bestBase == null) {
+            logSimulationInfo("Best base to " + actionType + " was not found, using default " + actionType + " call");
             return super.chooseOpponentBaseToDestroy();
         } else {
-            logSimulationInfo("<b>Best base to destroy: " + bestBaseToDestroy.getName() + "</b>");
+            logSimulationInfo("<b>Best base to " + actionType + ": " + bestBase.getName() + "</b>");
         }
 
-        if (!(bestBaseToDestroy instanceof DoNotDestroyBase)) {
-            return bestBaseToDestroy;
+        if (!(bestBase instanceof DoNotAttackBase)) {
+            return bestBase;
         }
 
         return null;
+    }
+
+    @Override
+    protected void attackOpponentAndBases() {
+        Base bestBaseToAttack = getBestBaseToAttack();
+
+        while (bestBaseToAttack != null && getCombat() > 0 && !getOpponent().getOutposts().isEmpty()) {
+            attackOpponentBase(bestBaseToAttack);
+            bestBaseToAttack = getBestBaseToAttack();
+        }
+
+        if (getCombat() >= getOpponent().getAuthority() && getOpponent().getOutposts().isEmpty()) {
+            attackOpponentWithRemainingCombat();
+        }
+
+        bestBaseToAttack = getBestBaseToAttack();
+
+        while (bestBaseToAttack != null && getCombat() > 0 && getOpponent().getOutposts().isEmpty() && !getOpponent().getBases().isEmpty()) {
+            attackOpponentBase(bestBaseToAttack);
+            bestBaseToAttack = getBestBaseToAttack();
+        }
+
+        if (getCombat() > 0 && getOpponent().getOutposts().isEmpty()) {
+            attackOpponentWithRemainingCombat();
+        }
+    }
+
+    private Base getBestBaseToAttack() {
+        Map<Base, Float> results = gameService.simulateBestBaseToAttack(getGame(), 400);
+
+        return getBestBaseFromResults(results, "attack");
     }
 }

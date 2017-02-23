@@ -5,6 +5,7 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.*;
 import org.smartreaction.starrealms.model.cards.bases.Base;
+import org.smartreaction.starrealms.model.cards.bases.DoNotAttackBase;
 import org.smartreaction.starrealms.model.cards.bases.blob.BlobWorld;
 import org.smartreaction.starrealms.model.cards.bases.blob.DeathWorld;
 import org.smartreaction.starrealms.model.cards.bases.outposts.Outpost;
@@ -475,6 +476,33 @@ public abstract class BotPlayer extends Player {
     }
 
     public void applyCombatAndEndTurn() {
+        attackOpponentAndBases();
+
+        endTurn();
+
+        refreshGamePageForOpponent();
+    }
+
+    protected void attackOpponentAndBases() {
+
+        if (baseToAttackThisTurn != null) {
+            for (Base base : getOpponent().getBases()) {
+                if (getCombat() >= base.getShield() && base.getName().equals(baseToAttackThisTurn.getName())) {
+                    attackOpponentBase(base);
+                    baseToAttackThisTurn = null;
+                    break;
+                }
+            }
+
+            if (baseToAttackThisTurn instanceof DoNotAttackBase) {
+                if (getCombat() > 0 && getOpponent().getOutposts().isEmpty()) {
+                    attackOpponentWithRemainingCombat();
+                }
+
+                return;
+            }
+        }
+
         if (getCombat() > 0 && !getOpponent().getOutposts().isEmpty()) {
             List<Outpost> sortedOutposts = getOpponent().getOutposts().stream().sorted(attackBaseScoreDescending).collect(toList());
             for (Outpost outpost : sortedOutposts) {
@@ -500,10 +528,6 @@ public abstract class BotPlayer extends Player {
         if (getCombat() > 0 && getOpponent().getOutposts().isEmpty()) {
             attackOpponentWithRemainingCombat();
         }
-
-        endTurn();
-
-        refreshGamePageForOpponent();
     }
 
     public List<Card> getCardsToBuy() {

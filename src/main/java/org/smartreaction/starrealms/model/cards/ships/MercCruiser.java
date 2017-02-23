@@ -7,6 +7,7 @@ import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
 import org.smartreaction.starrealms.model.players.Player;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class MercCruiser extends Ship implements ChoiceActionCard
@@ -55,7 +56,7 @@ public class MercCruiser extends Ship implements ChoiceActionCard
 
     @Override
     public Set<Faction> getFactions() {
-        Set<Faction> factions = super.getFactions();
+        Set<Faction> factions = new HashSet<>();
         if (factionChoice != null && !factions.contains(factionChoice)) {
             factions.add(factionChoice);
         }

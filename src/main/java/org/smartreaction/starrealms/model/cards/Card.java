@@ -85,11 +85,11 @@ public abstract class Card {
     }
 
     public void addFaction(Faction faction) {
-        factions.add(faction);
+        getFactions().add(faction);
     }
 
     public boolean hasFaction(Faction faction) {
-        return factions.contains(faction);
+        return getFactions().contains(faction);
     }
 
     public Set<Faction> getFactions() {
@@ -164,7 +164,7 @@ public abstract class Card {
 
     public void setAlliedAbilityUsed(boolean used, Faction faction) {
         if (used && isAllFactionsAlliedTogether()) {
-            for (Faction f : factions) {
+            for (Faction f : getFactions()) {
                 alliedAbilityUsed.put(f, true);
             }
         } else {
@@ -207,7 +207,7 @@ public abstract class Card {
     public List<Faction> getAlliedFactions(Card card) {
         List<Faction> alliedFactions = new ArrayList<>();
         for (Faction faction : card.getFactions()) {
-            if (factions.contains(faction)) {
+            if (getFactions().contains(faction)) {
                 alliedFactions.add(faction);
             }
         }
@@ -257,7 +257,7 @@ public abstract class Card {
     }
 
     public boolean hasUnusedAllyAbility() {
-        for (Faction faction : factions) {
+        for (Faction faction : getFactions()) {
             if (!alliedAbilityUsed.get(faction)) {
                 return true;
             }

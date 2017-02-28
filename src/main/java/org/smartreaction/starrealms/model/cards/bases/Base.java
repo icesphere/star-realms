@@ -59,7 +59,7 @@ public abstract class Base extends Card {
             return true;
         }
 
-        if (cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES)) {
+        if (cardLocation.equals(Card.CARD_LOCATION_PLAYER_BASES) && baseCanBeUsed(player)) {
             if (!isUsed() || (this.isAlliableCard() && player.cardHasAnyUnusedAlly(this))) {
                 return true;
             }

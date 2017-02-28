@@ -111,9 +111,21 @@ public abstract class BotPlayer extends Player {
 
             if (!getHand().isEmpty()) {
                 endTurn = false;
+
+                boolean doNotPlayVipers = getHand().stream().anyMatch(c -> !(c instanceof Viper));
+
                 while (!getHand().isEmpty()) {
                     List<Card> sortedCards = getHand().stream()
                             .sorted(playCardScoreDescending).collect(toList());
+
+                    if (doNotPlayVipers) {
+                        sortedCards = sortedCards.stream().filter(c -> !(c instanceof Viper)).collect(toList());
+                    }
+
+                    if (sortedCards.isEmpty()) {
+                        break;
+                    }
+
                     Card card = sortedCards.get(0);
                     playCard(card);
                     if (card.isAlliableCard() && useAllyAfterPlay(card)) {
@@ -464,11 +476,7 @@ public abstract class BotPlayer extends Player {
     }
 
     public boolean useBaseAfterPlay(Base base) {
-        if (base instanceof BrainWorld) {
-            return true;
-        }
-
-        return false;
+        return base.isScrapper();
     }
 
     protected boolean shouldScrapCard(Card card) {

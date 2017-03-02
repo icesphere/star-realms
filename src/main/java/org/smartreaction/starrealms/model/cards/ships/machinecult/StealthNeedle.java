@@ -63,7 +63,8 @@ public class StealthNeedle extends Ship implements CardActionCard, CardCopier
 
     @Override
     public Set<Faction> getFactions() {
-        Set<Faction> factions = new HashSet<>(super.getFactions());
+        Set<Faction> factions = new HashSet<>();
+        factions.add(Faction.MACHINE_CULT);
         if (cardBeingCopied != null) {
             factions.addAll(cardBeingCopied.getFactions());
         }

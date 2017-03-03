@@ -1391,21 +1391,19 @@ public abstract class BotPlayer extends Player {
     }
 
     public Card chooseFreeCardToAcquire(Integer maxCost, boolean onlyShips, boolean includeHeroes) {
-        if (!getGame().getTradeRow().isEmpty()) {
-            List<Card> cardsToChooseFrom = new ArrayList<>(getGame().getTradeRow());
-            cardsToChooseFrom.add(getGame().getExplorer());
+        List<Card> cardsToChooseFrom = new ArrayList<>(getGame().getTradeRow());
+        cardsToChooseFrom.add(getGame().getExplorer());
 
-            List<Card> sortedCards = cardsToChooseFrom.stream()
-                    .filter(c -> (maxCost == null || c.getCost() <= maxCost)
-                            && (includeHeroes || c.isShip() || c.isBase())
-                            && (!onlyShips || c.isShip()))
-                    .sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> sortedCards = cardsToChooseFrom.stream()
+                .filter(c -> (maxCost == null || c.getCost() <= maxCost)
+                        && (includeHeroes || c.isShip() || c.isBase())
+                        && (!onlyShips || c.isShip()))
+                .sorted(cardToBuyScoreDescending).collect(toList());
 
-            if (!sortedCards.isEmpty()) {
-                Card card = sortedCards.get(0);
-                if (getBuyCardScore(card) > 0) {
-                    return card;
-                }
+        if (!sortedCards.isEmpty()) {
+            Card card = sortedCards.get(0);
+            if (getBuyCardScore(card) > 0) {
+                return card;
             }
         }
 

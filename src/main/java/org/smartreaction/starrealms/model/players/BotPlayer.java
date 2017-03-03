@@ -1126,6 +1126,18 @@ public abstract class BotPlayer extends Player {
 
     public Card getCardToScrapFromHand(boolean optional) {
         if (!getHand().isEmpty()) {
+
+            if (optional && cardToScrapFromHand != null) {
+                for (Card card : getHand()) {
+                    if (card.getName().equals(cardToScrapFromHand.getName())) {
+                        cardToScrapFromHand = null;
+                        return card;
+                    }
+                }
+
+                cardToScrapFromHand = null;
+            }
+
             List<Card> sortedCards = getHand().stream().sorted(scrapScoreDescending).collect(toList());
             Card card = sortedCards.get(0);
             if (optional && getScrapCardScore(card) < 20) {
@@ -1183,6 +1195,35 @@ public abstract class BotPlayer extends Player {
         List<Card> cardsToScrapFromDiscard = new ArrayList<>();
         List<Card> cardsToScrapFromHand = new ArrayList<>();
 
+        cardsToScrap.add(cardsToScrapFromDiscard);
+        cardsToScrap.add(cardsToScrapFromHand);
+
+        if (cardToScrapFromDiscard != null) {
+            for (Card card : getDiscard()) {
+                if (card.getName().equals(cardToScrapFromDiscard.getName())) {
+                    cardsToScrapFromDiscard.add(card);
+                    break;
+                }
+            }
+
+            cardToScrapFromDiscard = null;
+
+            return cardsToScrap;
+        }
+
+        if (cardToScrapFromHand != null) {
+            for (Card card : getHand()) {
+                if (card.getName().equals(cardToScrapFromHand.getName())) {
+                    cardsToScrapFromHand.add(card);
+                    break;
+                }
+            }
+
+            cardToScrapFromHand = null;
+
+            return cardsToScrap;
+        }
+
         if (!getDiscard().isEmpty()) {
             List<Card> sortedDiscardCards = getDiscard().stream().sorted(scrapScoreDescending).collect(toList());
 
@@ -1222,9 +1263,6 @@ public abstract class BotPlayer extends Player {
                 }
             }
         }
-
-        cardsToScrap.add(cardsToScrapFromDiscard);
-        cardsToScrap.add(cardsToScrapFromHand);
 
         return cardsToScrap;
     }

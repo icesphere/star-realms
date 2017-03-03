@@ -83,24 +83,9 @@ public class SimulatorBot extends BotPlayer {
                 .sorted((c1, c2) -> results.get(c2).compareTo(results.get(c1)))
                 .collect(toList());
 
-        float bestWinPercentage = 0;
-
-        Card bestCardToBuy = null;
-
         logSimulationInfo("Simulator Bot determining best card to buy");
 
-        for (Card cardToBuy : sortedCards) {
-            Float winPercentage = results.get(cardToBuy);
-
-            if (winPercentage > 0) {
-                logSimulationInfo("Win percentage for " + cardToBuy.getName() + ": " + winPercentage);
-            }
-
-            if (winPercentage > bestWinPercentage) {
-                bestCardToBuy = cardToBuy;
-                bestWinPercentage = winPercentage;
-            }
-        }
+        Card bestCardToBuy = displayWinPercentagesAndGetBestCard(results, sortedCards);
 
         if (bestCardToBuy == null) {
             logSimulationInfo("Best card to buy was not found, using default buy score");
@@ -170,7 +155,7 @@ public class SimulatorBot extends BotPlayer {
         Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 300, choiceActionCard, choices);
 
         float bestWinPercentage = 0;
-        
+
         Choice bestChoice = null;
 
         for (Choice choice : choices) {
@@ -193,15 +178,97 @@ public class SimulatorBot extends BotPlayer {
     }
 
     @Override
-    public List<List<Card>> getCardsToOptionallyScrapFromDiscardOrHand(int cards) {
-        //todo simulate best card to scrap
-        return super.getCardsToOptionallyScrapFromDiscardOrHand(cards);
+    public void optionallyScrapCardsFromHandOrDiscard(int maxCardsToScrap) {
+        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, true, true);
+        processOptionalScrapResults(maxCardsToScrap, results, true, true);
+    }
+
+    @Override
+    public void optionallyScrapCardsFromDiscard(int maxCardsToScrap) {
+        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, true, false);
+        processOptionalScrapResults(maxCardsToScrap, results, true, false);
+    }
+
+    @Override
+    public void scrapCardFromHand(boolean optional) {
+        if (optional) {
+            Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, false, true);
+            processOptionalScrapResults(1, results, false, true);
+        } else {
+            super.scrapCardFromHand(false);
+        }
+    }
+
+    private void processOptionalScrapResults(int maxCardsToScrap, Map<Card, Float> results, boolean includeDiscard, boolean includeHand) {
+        List<Card> cards = new ArrayList<>(results.keySet());
+
+        List<Card> sortedCards = cards.stream()
+                .sorted((c1, c2) -> results.get(c2).compareTo(results.get(c1)))
+                .collect(toList());
+
+        logSimulationInfo("Simulator Bot determining best card to scrap");
+
+        Card bestCardToScrap = displayWinPercentagesAndGetBestCard(results, sortedCards);
+
+        if (bestCardToScrap == null) {
+            logSimulationInfo("Best card to scrap was not found, using default scrap logic");
+            super.optionallyScrapCardsFromHandOrDiscard(maxCardsToScrap);
+        } else {
+            logSimulationInfo("<b>Best card to scrap: " + bestCardToScrap.getName() + "</b>");
+        }
+
+        if (bestCardToScrap != null && !(bestCardToScrap instanceof DoNotBuyCard)) {
+            if (includeDiscard) {
+                for (Card card : getDiscard()) {
+                    if (bestCardToScrap.getName().equals(card.getName())) {
+                        scrapCardFromDiscard(bestCardToScrap);
+                        if (maxCardsToScrap > 1) {
+                            optionallyScrapCardsFromHandOrDiscard(maxCardsToScrap - 1);
+                        } else {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            if (includeHand) {
+                for (Card card : getHand()) {
+                    if (bestCardToScrap.getName().equals(card.getName())) {
+                        scrapCardFromHand(bestCardToScrap);
+                        if (maxCardsToScrap > 1) {
+                            optionallyScrapCardsFromHandOrDiscard(maxCardsToScrap - 1);
+                        } else {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private Card displayWinPercentagesAndGetBestCard(Map<Card, Float> results, List<Card> sortedCards) {
+        float bestWinPercentage = 0;
+        Card bestCard = null;
+
+        for (Card cardToScrap : sortedCards) {
+            Float winPercentage = results.get(cardToScrap);
+
+            if (winPercentage > 0) {
+                logSimulationInfo("Win percentage for " + cardToScrap.getName() + ": " + winPercentage);
+            }
+
+            if (winPercentage > bestWinPercentage) {
+                bestCard = cardToScrap;
+                bestWinPercentage = winPercentage;
+            }
+        }
+        return bestCard;
     }
 
     public BotStrategy getStrategy() {
         return strategy;
     }
-    
+
     private void logSimulationInfo(String log) {
         getGame().addSimulationLog(log);
     }
@@ -269,8 +336,6 @@ public class SimulatorBot extends BotPlayer {
         if (getCombat() >= getOpponent().getAuthority() && getOpponent().getOutposts().isEmpty()) {
             attackOpponentWithRemainingCombat();
         }
-
-        bestBaseToAttack = getBestBaseToAttack();
 
         while (bestBaseToAttack != null && getCombat() > 0 && getOpponent().getOutposts().isEmpty() && !getOpponent().getBases().isEmpty()) {
             attackOpponentBase(bestBaseToAttack);

@@ -1580,30 +1580,37 @@ public class GameService {
         heroName = heroName.replaceAll("\\s", "").toLowerCase();
 
         switch (heroName) {
-            case "ar":
+
+            case "admras":
             case "admiralrasmussen":
                 return new AdmiralRasmussen();
-            case "bo":
-            case "boverlord":
+
+            case "bloove":
             case "bloboverlord":
                 return new BlobOverlord();
-            case "ct":
+
+            case "ceotor":
             case "ceotorres":
                 return new CeoTorres();
-            case "cc":
+
+            case "cuncap":
             case "cunningcaptain":
                 return new CunningCaptain();
-            case "hpl":
+
+            case "higprilyl":
             case "highpriestlyle":
                 return new HighPriestLyle();
-            case "rp":
+
+            case "rampil":
             case "rampilot":
                 return new RamPilot();
-            case "sod":
+
+            case "speopsdir":
             case "specialopsdirector":
                 return new SpecialOpsDirector();
-            case "we":
+
             case "warelder":
+            case "wareld":
                 return new WarElder();
 
             case "commanderklik":
@@ -1971,6 +1978,72 @@ public class GameService {
         }
 
         return cardResults;
+    }
+
+    public Map<Card, Float> simulateBestCardToScrap(Game originalGame, int timesToSimulate, boolean includeDiscard, boolean includeHand) {
+        Game copiedGame = originalGame.copyGameForSimulation();
+
+        BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
+
+        Map<Card, Float> cardResults = new LinkedHashMap<>();
+
+        Integer minCostInDiscard = getMinCost(originalGame.getCurrentPlayer().getDiscard());
+
+        Integer minCostInHand = getMinCost(originalGame.getCurrentPlayer().getHand());
+
+        Set<String> cardNamesToSimulate = new HashSet<>();
+        List<Card> cardsToSimulate = new ArrayList<>();
+
+        boolean scrapCardFromDiscard = includeDiscard && minCostInDiscard != null && (minCostInHand == null || minCostInDiscard <= minCostInHand);
+
+        if (scrapCardFromDiscard) {
+            List<Card> cards = originalGame.getCurrentPlayer().getDiscard().stream().filter(c -> c.getCost() == minCostInDiscard).collect(toList());
+            for (Card card : cards) {
+                if (!cardNamesToSimulate.contains(card.getName())) {
+                    cardsToSimulate.add(card);
+                    cardNamesToSimulate.add(card.getName());
+                }
+            }
+        } else if (includeHand && minCostInHand != null) {
+            List<Card> cards = originalGame.getCurrentPlayer().getHand().stream().filter(c -> c.getCost() == minCostInHand).collect(toList());
+            for (Card card : cards) {
+                if (!cardNamesToSimulate.contains(card.getName())) {
+                    cardsToSimulate.add(card);
+                    cardNamesToSimulate.add(card.getName());
+                }
+            }
+        }
+
+        if (!cardsToSimulate.isEmpty()) {
+            cardsToSimulate.add(new DoNotScrapCard());
+
+            for (Card card : cardsToSimulate) {
+                setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
+                if (scrapCardFromDiscard) {
+                    copiedGame.getCurrentPlayer().setCardToScrapFromDiscard(card);
+                } else {
+                    copiedGame.getCurrentPlayer().setCardToScrapFromHand(card);
+                }
+
+                SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+
+                cardResults.put(card, results.getWinPercentage());
+            }
+        }
+
+        return cardResults;
+    }
+
+    private Integer getMinCost(List<Card> cards) {
+        Integer minCost = null;
+
+        if (!cards.isEmpty()) {
+            Card minCostCard = Collections.min(cards, Comparator.comparingInt(Card::getCost));
+            minCost = minCostCard.getCost();
+        }
+
+        return minCost;
     }
 
     public Map<Base, Float> simulateBestBaseToDestroy(Game originalGame, int timesToSimulate) {

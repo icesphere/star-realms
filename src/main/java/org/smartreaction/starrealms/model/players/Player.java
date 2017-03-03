@@ -111,6 +111,10 @@ public abstract class Player {
     //this is for simulating which base is best to attack
     protected Base baseToAttackThisTurn;
 
+    //this is for simluating best card to scrap
+    protected Card cardToScrapFromDiscard;
+    protected Card cardToScrapFromHand;
+
     private TurnSummary lastTurnSummary;
 
     private TurnSummary currentTurnSummary = new TurnSummary();
@@ -224,6 +228,9 @@ public abstract class Player {
         baseToDestroyThisTurn = player.getBaseToDestroyThisTurn();
 
         baseToAttackThisTurn = player.getBaseToAttackThisTurn();
+
+        cardToScrapFromDiscard = player.getCardToScrapFromDiscard();
+        cardToScrapFromHand = player.getCardToScrapFromHand();
 
         numCardsScrappedThisTurn = player.getNumCardsScrappedThisTurn();
         tradeGainedThisTurn = player.getTradeGainedThisTurn();
@@ -430,6 +437,9 @@ public abstract class Player {
 
         baseToDestroyThisTurn = null;
         baseToAttackThisTurn = null;
+
+        cardToScrapFromDiscard = null;
+        cardToScrapFromHand = null;
 
         combat = 0;
         trade = 0;
@@ -1279,6 +1289,22 @@ public abstract class Player {
 
     public void setBaseToAttackThisTurn(Base baseToAttackThisTurn) {
         this.baseToAttackThisTurn = baseToAttackThisTurn;
+    }
+
+    public Card getCardToScrapFromDiscard() {
+        return cardToScrapFromDiscard;
+    }
+
+    public void setCardToScrapFromDiscard(Card cardToScrapFromDiscard) {
+        this.cardToScrapFromDiscard = cardToScrapFromDiscard;
+    }
+
+    public Card getCardToScrapFromHand() {
+        return cardToScrapFromHand;
+    }
+
+    public void setCardToScrapFromHand(Card cardToScrapFromHand) {
+        this.cardToScrapFromHand = cardToScrapFromHand;
     }
 
     public boolean isBoughtSpecifiedCardOnFirstTurn() {

@@ -34,7 +34,7 @@ public class SimulatorBot extends BotPlayer {
     private void useBestStrategy() {
         logSimulationInfo("Simulator Bot determining best strategy");
 
-        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 150);
+        Map<BotStrategy, Float> results = gameService.simulateBestStrategy(getGame(), 300);
 
         float bestWinPercentage = 0;
 
@@ -71,7 +71,7 @@ public class SimulatorBot extends BotPlayer {
     public List<Card> getCardsToBuy() {
         ArrayList<Card> cardsToBuy = new ArrayList<>();
 
-        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 600);
+        Map<Card, Float> results = gameService.simulateBestCardToBuy(getGame(), 750);
 
         if (results.isEmpty()) {
             return cardsToBuy;
@@ -123,7 +123,7 @@ public class SimulatorBot extends BotPlayer {
     protected boolean shouldScrapCard(Card card) {
         logSimulationInfo("Simulator Bot determining whether or not to scrap " + card.getName());
 
-        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 300, card);
+        Map<Boolean, Float> scrapCardForBenefitResults = gameService.simulateScrapCardForBeneift(getGame(), 500, card);
 
         Float notScrappingWinPercentage = scrapCardForBenefitResults.get(false);
         Float scrappingWinPercentage = scrapCardForBenefitResults.get(true);
@@ -137,7 +137,7 @@ public class SimulatorBot extends BotPlayer {
     @Override
     protected boolean shouldUseHero(Hero hero) {
         logSimulationInfo("Simulator Bot determining whether or not to use hero " + hero.getName());
-        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 300, hero);
+        Map<Boolean, Float> useHeroResults = gameService.simulateUseHero(getGame(), 500, hero);
 
         Float notUseHeroWinPercentage = useHeroResults.get(false);
         Float useHeroWinPercentage = useHeroResults.get(true);
@@ -152,7 +152,7 @@ public class SimulatorBot extends BotPlayer {
     public int getChoice(ChoiceActionCard choiceActionCard, Choice[] choices) {
         logSimulationInfo("Simulator Bot determining best choice for " + choiceActionCard.getName());
 
-        Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 300, choiceActionCard, choices);
+        Map<Integer, Float> choiceResults = gameService.simulateBestChoice(getGame(), 500, choiceActionCard, choices);
 
         float bestWinPercentage = 0;
 
@@ -179,20 +179,20 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public void optionallyScrapCardsFromHandOrDiscard(int maxCardsToScrap) {
-        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, true, true);
+        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 750, true, true);
         processOptionalScrapResults(maxCardsToScrap, results, true, true);
     }
 
     @Override
     public void optionallyScrapCardsFromDiscard(int maxCardsToScrap) {
-        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, true, false);
+        Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 750, true, false);
         processOptionalScrapResults(maxCardsToScrap, results, true, false);
     }
 
     @Override
     public void scrapCardFromHand(boolean optional) {
         if (optional) {
-            Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 600, false, true);
+            Map<Card, Float> results = gameService.simulateBestCardToScrap(getGame(), 750, false, true);
             processOptionalScrapResults(1, results, false, true);
         } else {
             super.scrapCardFromHand(false);
@@ -275,7 +275,7 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public Base chooseOpponentBaseToDestroy() {
-        Map<Base, Float> results = gameService.simulateBestBaseToDestroy(getGame(), 600);
+        Map<Base, Float> results = gameService.simulateBestBaseToDestroy(getGame(), 750);
 
         return getBestBaseFromResults(results, "destroy");
     }
@@ -348,7 +348,7 @@ public class SimulatorBot extends BotPlayer {
     }
 
     private Base getBestBaseToAttack() {
-        Map<Base, Float> results = gameService.simulateBestBaseToAttack(getGame(), 400);
+        Map<Base, Float> results = gameService.simulateBestBaseToAttack(getGame(), 600);
 
         return getBestBaseFromResults(results, "attack");
     }

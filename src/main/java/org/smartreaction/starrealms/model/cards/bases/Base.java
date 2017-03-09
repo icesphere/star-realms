@@ -17,6 +17,12 @@ public abstract class Base extends Card {
     }
 
     @Override
+    public void resetCard() {
+        super.resetCard();
+        used = false;
+    }
+
+    @Override
     public Card copyCardForSimulation() {
         Base base = (Base) super.copyCardForSimulation();
 

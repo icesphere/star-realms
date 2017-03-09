@@ -47,6 +47,12 @@ public abstract class Card {
         alliedAbilityUsed.put(Faction.STAR_EMPIRE, false);
     }
 
+    public void resetCard() {
+        setAllAlliedAbilitiesToNotUsed();
+        allFactionsAlliedTogether = false;
+        copied = false;
+    }
+
     public Card copyCardForSimulation() {
         Card card;
         try {

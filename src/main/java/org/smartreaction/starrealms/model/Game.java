@@ -84,10 +84,8 @@ public class Game
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
-        return cardsToCopy
-                .stream()
-                .map(Card::copyCardForSimulation)
-                .collect(toList());
+        cardsToCopy.forEach(Card::resetCard);
+        return new ArrayList<>(cardsToCopy);
     }
 
     public int getTurn()

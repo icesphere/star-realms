@@ -2559,8 +2559,6 @@ public class GameService {
             });
         }
 
-        DecimalFormat f = new DecimalFormat("##.00");
-
         float winPercentage;
         if (totalGamesCounted > 0) {
             winPercentage = ((float) wins / totalGamesCounted) * 100;
@@ -2696,12 +2694,12 @@ public class GameService {
 
         GameOptions gameOptions = new GameOptions();
 
-        StrategyBot player1 = new StrategyBot(new AttackStrategy(), service);
-        StrategyBot player2 = new StrategyBot(new ModifiedAttackStrategy(), service);
+        StrategyBot player1 = new StrategyBot(new VelocityStrategy(), service);
+        StrategyBot player2 = new StrategyBot(new ExpensiveStrategy(), service);
 
         Game game = service.createGameForSimulation(gameOptions, player1, player2);
 
-        SimulationResults results = service.simulateGameToEnd(game, 10000, false, true);
+        SimulationResults results = service.simulateGameToEnd(game, 1000, false, true);
 
         System.out.println("examine results");
     }

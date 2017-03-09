@@ -120,7 +120,39 @@ public class GameService {
 
         setupCards(game, gameOptions);
 
+        game.setupGame();
+
         game.startGame();
+
+        return game;
+    }
+
+    public Game createGameForSimulation(GameOptions gameOptions, Player player1, Player player2) {
+        Game game = new Game();
+
+        List<Player> players = new ArrayList<>(2);
+
+        players.add(player1);
+        players.add(player2);
+
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
+
+        players.forEach(p -> p.setGame(game));
+
+        Collections.shuffle(players);
+
+        game.setPlayers(players);
+
+        game.getCurrentPlayer().setFirstPlayer(true);
+
+        game.gameLog("<br/>** Starting Game **");
+        game.gameLog("Game options: " + gameOptions.toString());
+        game.gameLog("Player 1: " + players.get(0).getPlayerName() + " - Player 2: " + players.get(1).getPlayerName());
+
+        setupCards(game, gameOptions);
+
+        game.setupGame();
 
         return game;
     }
@@ -1855,7 +1887,7 @@ public class GameService {
 
         if (cardToNotScrap.isPresent()) {
             copiedGameNoScrap.getCurrentPlayer().setCardToNotScrapThisTurn(cardToNotScrap.get());
-            SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoScrap, timesToSimulate, false);
+            SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoScrap, timesToSimulate);
             results.put(false, resultsForNoChange.getWinPercentage());
         } else {
             System.out.println("Error finding card to not scrap");
@@ -1872,7 +1904,7 @@ public class GameService {
 
         if (cardToScrap.isPresent()) {
             copiedGameWithCardScrapped.getCurrentPlayer().scrapCardInPlayForBenefit(cardToScrap.get());
-            SimulationResults resultsWithCardScrapped = simulateGameToEnd(copiedGameWithCardScrapped, timesToSimulate, false);
+            SimulationResults resultsWithCardScrapped = simulateGameToEnd(copiedGameWithCardScrapped, timesToSimulate);
             results.put(true, resultsWithCardScrapped.getWinPercentage());
         } else {
             System.out.println("Error finding card to scrap for benefit");
@@ -1898,7 +1930,7 @@ public class GameService {
 
         if (heroToNotPlay.isPresent()) {
             copiedGameNoHeroPlayed.getCurrentPlayer().setHeroToNotPlayThisTurn(heroToNotPlay.get());
-            SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoHeroPlayed, timesToSimulate, false);
+            SimulationResults resultsForNoChange = simulateGameToEnd(copiedGameNoHeroPlayed, timesToSimulate);
             results.put(false, resultsForNoChange.getWinPercentage());
         } else {
             System.out.println("Error finding hero to not play");
@@ -1915,7 +1947,7 @@ public class GameService {
 
         if (heroToUse.isPresent()) {
             copiedGameWithHeroUsed.getCurrentPlayer().scrapCardInPlayForBenefit(heroToUse.get());
-            SimulationResults resultsWithUseHero = simulateGameToEnd(copiedGameWithHeroUsed, timesToSimulate, false);
+            SimulationResults resultsWithUseHero = simulateGameToEnd(copiedGameWithHeroUsed, timesToSimulate);
             results.put(true, resultsWithUseHero.getWinPercentage());
         } else {
             System.out.println("Error finding hero to use");
@@ -1937,7 +1969,7 @@ public class GameService {
 
             choiceActionCard.actionChoiceMade(copiedGame.getCurrentPlayer(), choice.getChoiceNumber());
 
-            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate);
 
             choiceResults.put(choice.getChoiceNumber(), results.getWinPercentage());
         }
@@ -1972,7 +2004,7 @@ public class GameService {
 
             copiedGame.getCurrentPlayer().setCardToBuyThisTurn(cardToBuy.copyCardForSimulation());
 
-            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate);
 
             cardResults.put(cardToBuy, results.getWinPercentage());
         }
@@ -2026,7 +2058,7 @@ public class GameService {
                     copiedGame.getCurrentPlayer().setCardToScrapFromHand(card);
                 }
 
-                SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+                SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate);
 
                 cardResults.put(card, results.getWinPercentage());
             }
@@ -2092,7 +2124,7 @@ public class GameService {
                 copiedGame.getCurrentPlayer().setBaseToDestroyThisTurn((Base) base.copyCardForSimulation());
             }
 
-            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate);
 
             cardResults.put(base, results.getWinPercentage());
         }
@@ -2140,7 +2172,7 @@ public class GameService {
         for (BotStrategy strategy : strategies) {
             setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, strategy);
 
-            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false);
+            SimulationResults results = simulateGameToEnd(copiedGame, timesToSimulate, false, false);
 
             strategyResults.put(strategy, results.getWinPercentage());
         }
@@ -2148,7 +2180,11 @@ public class GameService {
         return strategyResults;
     }
 
-    public SimulationResults simulateGameToEnd(Game copiedGame, int timesToSimulate, boolean includeExtraSimulationInfo) {
+    public SimulationResults simulateGameToEnd(Game copiedGame, int timesToSimulate) {
+        return simulateGameToEnd(copiedGame, timesToSimulate, false, false);
+    }
+
+    public SimulationResults simulateGameToEnd(Game copiedGame, int timesToSimulate, boolean includeExtraSimulationInfo, boolean randomizeCardsAndFirstPlayerForSimulation) {
 
         SimulationResults results = new SimulationResults();
 
@@ -2203,10 +2239,45 @@ public class GameService {
         opponent.setSimulationPlayerId(UUID.randomUUID().toString());
         averageAuthorityByPlayerByTurn.put(opponent.getSimulationPlayerId(), new HashMap<>());
 
+        Player copiedPlayerWithOpponentStrategy;
+        Player copiedOpponentWithPlayerStrategy;
+        List<Player> originalPlayers = new ArrayList<>(copiedGame.getPlayers());
+        List<Player> switchedPlayers = new ArrayList<>();
+
+        if (randomizeCardsAndFirstPlayerForSimulation) {
+            copiedPlayerWithOpponentStrategy = new StrategyBot(((StrategyBot) opponent).getStrategy(), this, player, copiedGame, false);
+            copiedPlayerWithOpponentStrategy.setSimulationPlayerId(opponent.getSimulationPlayerId());
+            copiedOpponentWithPlayerStrategy = new StrategyBot(((StrategyBot) player).getStrategy(), this, opponent, copiedGame, true);
+            copiedOpponentWithPlayerStrategy.setSimulationPlayerId(player.getSimulationPlayerId());
+
+            switchedPlayers.add(copiedPlayerWithOpponentStrategy);
+            switchedPlayers.add(copiedOpponentWithPlayerStrategy);
+            copiedPlayerWithOpponentStrategy.setOpponent(copiedOpponentWithPlayerStrategy);
+            copiedOpponentWithPlayerStrategy.setOpponent(copiedPlayerWithOpponentStrategy);
+        }
+
         boolean simulatingBestCardToBuy = player.getCardToBuyThisTurn() != null;
 
         for (int i = 0; i < timesToSimulate; i++) {
             boolean createGameLog = !createdWinGameLog || !createdLossGameLog;
+
+            if (randomizeCardsAndFirstPlayerForSimulation) {
+
+                Random random = new Random();
+                boolean switchPlayers = random.nextBoolean();
+
+                if (switchPlayers) {
+                    copiedGame.setPlayers(switchedPlayers);
+                } else {
+                    copiedGame.setPlayers(originalPlayers);
+                }
+
+                for (Player p : copiedGame.getPlayers()) {
+                    Collections.shuffle(p.getHand());
+                    Collections.shuffle(p.getDeck());
+                }
+            }
+
             Game game = simulateGameToEnd(copiedGame, createGameLog);
             if (game == null || (simulatingBestCardToBuy && !game.getWinner().isBoughtSpecifiedCardOnFirstTurn() && !game.getLoser().isBoughtSpecifiedCardOnFirstTurn())) {
                 continue;
@@ -2618,5 +2689,20 @@ public class GameService {
 
     public void cancelAutoMatch(User user) {
         user.setAutoMatch(false);
+    }
+
+    public static void main(String[] args) {
+        GameService service = new GameService();
+
+        GameOptions gameOptions = new GameOptions();
+
+        StrategyBot player1 = new StrategyBot(new AttackStrategy(), service);
+        StrategyBot player2 = new StrategyBot(new ModifiedAttackStrategy(), service);
+
+        Game game = service.createGameForSimulation(gameOptions, player1, player2);
+
+        SimulationResults results = service.simulateGameToEnd(game, 10000, false, true);
+
+        System.out.println("examine results");
     }
 }

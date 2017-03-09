@@ -29,7 +29,7 @@ import org.smartreaction.starrealms.model.cards.ships.tradefederation.*;
 import org.smartreaction.starrealms.model.cards.ships.united.*;
 import org.smartreaction.starrealms.model.players.Player;
 
-public class AttackStrategy implements BotStrategy {
+public class ModifiedAttackStrategy implements BotStrategy {
     @Override
     public int getBuyCardScore(Card card, Player player) {
         int deck = player.getCurrentDeckNumber();

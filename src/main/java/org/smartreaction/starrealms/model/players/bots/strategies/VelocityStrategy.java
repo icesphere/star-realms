@@ -1022,10 +1022,12 @@ public class VelocityStrategy implements BotStrategy {
         //Other
         else if (card instanceof Explorer) {
             if (deck == 1) {
-                return 15;
+                return 20;
             } else if (deck == 2) {
-                return 5;
+                return 10;
             } else if (deck == 3) {
+                return 5;
+            } else if (deck == 4) {
                 return 2;
             }
         }

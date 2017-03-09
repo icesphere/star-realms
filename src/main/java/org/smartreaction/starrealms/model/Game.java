@@ -159,11 +159,13 @@ public class Game
         }
     }
 
-    public void startGame() {
+    public void setupGame() {
         currentPlayerIndex = 0;
         turn = 1;
         setupPlayerAuthorityMap();
+    }
 
+    public void startGame() {
         startTurnInNewThreadIfComputerVsHuman();
     }
 

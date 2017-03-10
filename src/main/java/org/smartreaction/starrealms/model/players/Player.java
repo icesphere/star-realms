@@ -178,7 +178,7 @@ public abstract class Player {
 
             getBases().addAll((Collection<? extends Base>) copyCards(player.getBases(), true));
         } else {
-            getHand().addAll(copyCards(player.getHand(), true));
+            getHand().addAll(copyCards(player.getHand(), false));
             getDeck().addAll(copyCards(player.getDeck(), true));
             Collections.shuffle(getDeck());
             if (getGame().usingMissions()) {

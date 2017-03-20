@@ -2232,6 +2232,8 @@ public class GameService {
 
         int wins = 0;
 
+        int firstPlayerWins = 0;
+
         Player player = copiedGame.getCurrentPlayer();
         player.setSimulationPlayerId(UUID.randomUUID().toString());
         averageAuthorityByPlayerByTurn.put(player.getSimulationPlayerId(), new HashMap<>());
@@ -2319,6 +2321,10 @@ public class GameService {
             Map<String, Integer> winnerNumScoutsFirstTwoHandsWinsMap;
             Map<String, Integer> winnerNumScoutsFirstTwoHandsTotalGamesMap;
             Map<String, Integer> loserNumScoutsFirstTwoHandsTotalGamesMap;
+
+            if (game.getWinner().isFirstPlayer()) {
+                firstPlayerWins++;
+            }
 
             if (game.getWinner().equals(player)) {
                 winnerWinDifferentialMap = playerWinDifferentialByCardsAtEndOfGame;
@@ -2588,8 +2594,17 @@ public class GameService {
             winPercentage = 0;
         }
 
+
+        float firstPlayerWinPercentage;
+        if (totalGamesCounted > 0) {
+            firstPlayerWinPercentage = ((float) firstPlayerWins / totalGamesCounted) * 100;
+        } else {
+            firstPlayerWinPercentage = 0;
+        }
+
         results.setTotalGamesCounted(totalGamesCounted);
         results.setWinPercentage(winPercentage);
+        results.setFirstPlayerWinPercentage(firstPlayerWinPercentage);
         results.setAverageNumTurns(turnTotal / totalGamesCounted);
 
         for (String playerName : averageAuthorityByPlayerByTurn.keySet()) {

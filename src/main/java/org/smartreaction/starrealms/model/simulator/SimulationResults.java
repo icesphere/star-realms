@@ -6,6 +6,8 @@ import java.util.Map;
 public class SimulationResults {
     private float winPercentage;
 
+    private float firstPlayerWinPercentage;
+
     private float averageNumTurns;
 
     private int totalGamesCounted;
@@ -43,6 +45,14 @@ public class SimulationResults {
 
     public void setWinPercentage(float winPercentage) {
         this.winPercentage = winPercentage;
+    }
+
+    public float getFirstPlayerWinPercentage() {
+        return firstPlayerWinPercentage;
+    }
+
+    public void setFirstPlayerWinPercentage(float firstPlayerWinPercentage) {
+        this.firstPlayerWinPercentage = firstPlayerWinPercentage;
     }
 
     public float getAverageNumTurns() {

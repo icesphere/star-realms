@@ -75,9 +75,19 @@ public class MercCruiser extends Ship implements ChoiceActionCard
     }
 
     @Override
+    public void resetTo(Card card) {
+        super.resetTo(card);
+        factionChoice = ((MercCruiser) card).getFactionChoice();
+    }
+
+    @Override
     public Card copyCardForSimulation() {
         MercCruiser card = (MercCruiser) super.copyCardForSimulation();
         card.factionChoice = factionChoice;
         return card;
+    }
+
+    public Faction getFactionChoice() {
+        return factionChoice;
     }
 }

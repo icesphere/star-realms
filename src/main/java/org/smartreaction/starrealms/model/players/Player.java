@@ -133,29 +133,32 @@ public abstract class Player {
     }
 
     @SuppressWarnings("unchecked")
-    public void copyFromPlayerForSimulation(Player player, boolean opponent) {
+    public void copyFromPlayerForSimulation(Player player, boolean currentPlayer, boolean resetOnly) {
         setSimulationPlayerId(player.getSimulationPlayerId());
 
         setAuthority(player.getAuthority());
         setCombat(player.getCombat());
         setTrade(player.getTrade());
 
-        getDiscard().addAll(copyCards(player.getDiscard(), true));
+        getDiscard().clear();
+        getDiscard().addAll(copyCards(player.getDiscard(), resetOnly));
 
         int handSize = player.getHand().size();
 
-        if (opponent) {
+        if (currentPlayer) {
             List<Card> handAndDeckCopy = new ArrayList<>(player.getHandAndDeck());
 
             handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());
 
-            List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle(), true);
+            List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle(), resetOnly);
 
-            List<? extends Card> deckCopy = copyCards(handAndDeckCopy, true);
+            List<? extends Card> deckCopy = copyCards(handAndDeckCopy, resetOnly);
 
+            getDeck().clear();
             getDeck().addAll(deckCopy);
             Collections.shuffle(getDeck());
 
+            getHand().clear();
             getHand().addAll(cardsInHandBeforeShuffleCopy);
 
             drawCards(handSize - cardsInHandBeforeShuffleCopy.size());
@@ -176,15 +179,19 @@ public abstract class Player {
                 getMissions().addAll(copyMissions(missionsToCopy));
             }
 
-            getBases().addAll((Collection<? extends Base>) copyCards(player.getBases(), true));
+            getBases().clear();
+            getBases().addAll((Collection<? extends Base>) copyCards(player.getBases(), resetOnly));
         } else {
-            getHand().addAll(copyCards(player.getHand(), false));
-            getDeck().addAll(copyCards(player.getDeck(), true));
+            getHand().clear();
+            getHand().addAll(copyCards(player.getHand(), resetOnly));
+            getDeck().clear();
+            getDeck().addAll(copyCards(player.getDeck(), resetOnly));
             Collections.shuffle(getDeck());
             if (getGame().usingMissions()) {
                 getMissions().addAll(copyMissions(player.getMissions()));
             }
-            getInPlay().addAll(copyCards(player.getInPlay(), false));
+            getInPlay().clear();
+            getInPlay().addAll(copyCards(player.getInPlay(), resetOnly));
 
             List<Base> copyOfBases = new ArrayList<>();
             for (Card card : getInPlay()) {
@@ -195,9 +202,12 @@ public abstract class Player {
             getBases().addAll(copyOfBases);
         }
 
-        getPlayed().addAll(copyCards(player.getPlayed(), false));
-        getHeroes().addAll((Collection<? extends Hero>) copyCards(player.getHeroes(), true));
-        getGambits().addAll((Collection<? extends Gambit>) copyCards(player.getGambits(), opponent));
+        getPlayed().clear();
+        getPlayed().addAll(copyCards(player.getPlayed(), resetOnly));
+        getHeroes().clear();
+        getHeroes().addAll((Collection<? extends Hero>) copyCards(player.getHeroes(), resetOnly));
+        getGambits().clear();
+        getGambits().addAll((Collection<? extends Gambit>) copyCards(player.getGambits(), resetOnly));
 
         shuffles = player.getShuffles();
         turn = player.getTurn();
@@ -236,17 +246,18 @@ public abstract class Player {
         tradeGainedThisTurn = player.getTradeGainedThisTurn();
         combatGainedThisTurn = player.getCombatGainedThisTurn();
         authorityGainedThisTurn = player.getAuthorityGainedThisTurn();
-        getShipsPlayedThisTurn().addAll(copyCards(player.getShipsPlayedThisTurn(), true));
+        getShipsPlayedThisTurn().clear();
+        getShipsPlayedThisTurn().addAll(copyCards(player.getShipsPlayedThisTurn(), resetOnly));
 
         factionsPlayedThisTurn = new HashSet<>(player.getFactionsPlayedThisTurn());
         factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>(player.getFactionsWithAllyAbilitiesUsedThisTurn());
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy, boolean resetOnly) {
-        cardsToCopy.forEach(Card::resetCard);
-
         if (resetOnly) {
-            return new ArrayList<>(cardsToCopy);
+            ArrayList<? extends Card> cards = new ArrayList<>(cardsToCopy);
+            cards.forEach(Card::resetCard);
+            return cards;
         } else {
             return cardsToCopy
                     .stream()

@@ -53,6 +53,14 @@ public abstract class Card {
         copied = false;
     }
 
+    public void resetTo(Card card) {
+        for (Faction faction : alliedAbilityUsed.keySet()) {
+            setAlliedAbilityUsed(card.isAlliedAbilityUsed(faction), faction);
+        }
+        allFactionsAlliedTogether = card.isAllFactionsAlliedTogether();
+        copied = card.isCopied();
+    }
+
     public Card copyCardForSimulation() {
         Card card;
         try {

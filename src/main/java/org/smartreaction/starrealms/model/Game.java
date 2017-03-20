@@ -16,8 +16,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
-public class Game
-{
+public class Game {
     private String gameId;
 
     public static final boolean SHOW_GAME_LOG = false;
@@ -73,7 +72,7 @@ public class Game
         Game game = new Game();
         game.setCurrentPlayerIndex(currentPlayerIndex);
         game.getTradeRow().addAll(copyCards(tradeRow));
-        game.setTradeRowCardsScrapped(new ArrayList<>(tradeRowCardsScrapped));
+        game.getTradeRowCardsScrapped().addAll(copyCards(tradeRowCardsScrapped));
         game.getDeck().addAll(copyCards(deck));
         game.setTurn(turn);
         game.setCreateGameLog(false);
@@ -84,22 +83,21 @@ public class Game
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy) {
-        cardsToCopy.forEach(Card::resetCard);
-        return new ArrayList<>(cardsToCopy);
+        return cardsToCopy
+                .stream()
+                .map(Card::copyCardForSimulation)
+                .collect(toList());
     }
 
-    public int getTurn()
-    {
+    public int getTurn() {
         return turn;
     }
 
-    public List<Player> getPlayers()
-    {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players)
-    {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
@@ -444,7 +442,7 @@ public class Game
     public List<Mission> getAllMissions() {
         if (allMissions == null) {
             allMissions = new ArrayList<>();
-            
+
             allMissions.add(new Ally());
             allMissions.add(new Armada());
             allMissions.add(new Colonize());
@@ -486,5 +484,17 @@ public class Game
         gameLog("Game timed out");
         timedOut = true;
         writeGameLog();
+    }
+
+    public void resetTo(Game game) {
+        currentPlayerIndex = game.getCurrentPlayerIndex();
+        tradeRow.forEach(Card::resetCard);
+        tradeRowCardsScrapped.forEach(Card::resetCard);
+        deck.forEach(Card::resetCard);
+        turn = game.getTurn();
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 }

@@ -488,10 +488,20 @@ public class Game {
 
     public void resetTo(Game game) {
         currentPlayerIndex = game.getCurrentPlayerIndex();
-        tradeRow.forEach(Card::resetCard);
-        tradeRowCardsScrapped.forEach(Card::resetCard);
-        deck.forEach(Card::resetCard);
+        tradeRow.clear();
+        tradeRow.addAll(getResetCopyOfCards(game.getTradeRow()));
+        tradeRowCardsScrapped.clear();
+        tradeRowCardsScrapped.addAll(getResetCopyOfCards(game.getTradeRowCardsScrapped()));
+        deck.clear();
+        deck.addAll(getResetCopyOfCards(game.getDeck()));
         turn = game.getTurn();
+        gameOver = false;
+    }
+
+    public List<Card> getResetCopyOfCards(List<Card> cards) {
+        List<Card> copy = new ArrayList<>(cards);
+        copy.forEach(Card::resetCard);
+        return copy;
     }
 
     public int getCurrentPlayerIndex() {

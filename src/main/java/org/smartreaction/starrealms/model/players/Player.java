@@ -251,6 +251,11 @@ public abstract class Player {
 
         factionsPlayedThisTurn = new HashSet<>(player.getFactionsPlayedThisTurn());
         factionsWithAllyAbilitiesUsedThisTurn = new HashSet<>(player.getFactionsWithAllyAbilitiesUsedThisTurn());
+
+        currentTurnSummary = player.getCurrentTurnSummary().copy();
+        if (player.getLastTurnSummary() != null) {
+            lastTurnSummary = player.getLastTurnSummary().copy();
+        }
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy, boolean resetOnly) {
@@ -438,6 +443,8 @@ public abstract class Player {
         currentTurnSummary.getCardsPlayed().addAll(played);
 
         lastTurnSummary = currentTurnSummary;
+
+        currentTurnSummary = new TurnSummary();
 
         turns++;
 

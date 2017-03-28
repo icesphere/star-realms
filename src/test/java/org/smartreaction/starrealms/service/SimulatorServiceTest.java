@@ -25,8 +25,8 @@ public class SimulatorServiceTest {
 
         GameOptions gameOptions = new GameOptions();
 
-        StrategyBot player1 = new StrategyBot(new VelocityStrategy(), gameService);
-        StrategyBot player2 = new StrategyBot(new RandomStrategy(), gameService);
+        StrategyBot player1 = new StrategyBot(new RandomStrategy(), gameService);
+        StrategyBot player2 = new StrategyBot(new VelocityStrategy(), gameService);
 
         Game game = gameService.createGameForSimulation(gameOptions, player1, player2);
 

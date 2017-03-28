@@ -17,6 +17,16 @@ public class TurnSummary {
 
     private int gameTurn;
 
+    public TurnSummary copy() {
+        TurnSummary copy = new TurnSummary();
+        copy.setCardsAcquired(new ArrayList<>(cardsAcquired));
+        copy.setOpponentBasesDestroyed(new ArrayList<>(opponentBasesDestroyed));
+        copy.setDamageToOpponent(damageToOpponent);
+        copy.setAuthorityGained(authorityGained);
+        copy.setGameTurn(gameTurn);
+        return copy;
+    }
+
     private List<Card> cardsScrapped = new ArrayList<>();
 
     private List<Card> cardsPlayed = new ArrayList<>();

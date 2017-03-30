@@ -175,11 +175,11 @@ public class SimulatorService {
 
         BotStrategy opponentStrategy = determineStrategyBasedOnCards(originalGame.getCurrentPlayer().getOpponent().getAllCards());
 
+        Game copiedGame = originalGame.copyGameForSimulation();
+
+        setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
         for (Choice choice : choices) {
-            Game copiedGame = originalGame.copyGameForSimulation();
-
-            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
-
             choiceActionCard.actionChoiceMade(copiedGame.getCurrentPlayer(), choice.getChoiceNumber());
 
             SimulationResults results = simulateGameToEnd(originalGame, copiedGame, timesToSimulate);
@@ -212,8 +212,9 @@ public class SimulatorService {
 
         cardsToBuy.add(new DoNotBuyCard());
 
+        setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
         for (Card cardToBuy : cardsToBuy) {
-            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
 
             copiedGame.getCurrentPlayer().setCardToBuyThisTurn(cardToBuy.copyCardForSimulation());
 
@@ -262,8 +263,9 @@ public class SimulatorService {
         if (!cardsToSimulate.isEmpty()) {
             cardsToSimulate.add(new DoNotScrapCard());
 
+            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+
             for (Card card : cardsToSimulate) {
-                setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
 
                 if (scrapCardFromDiscard) {
                     copiedGame.getCurrentPlayer().setCardToScrapFromDiscard(card);
@@ -328,9 +330,9 @@ public class SimulatorService {
 
         bases.add(new DoNotAttackBase());
 
+        setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
+        
         for (Base base : bases) {
-            setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
-
             if (attack) {
                 copiedGame.getCurrentPlayer().setBaseToAttackThisTurn((Base) base.copyCardForSimulation());
             } else {

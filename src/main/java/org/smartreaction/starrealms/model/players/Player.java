@@ -145,7 +145,7 @@ public abstract class Player {
 
         int handSize = player.getHand().size();
 
-        if (currentPlayer) {
+        if (!currentPlayer) {
             List<Card> handAndDeckCopy = new ArrayList<>(player.getHandAndDeck());
 
             handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());

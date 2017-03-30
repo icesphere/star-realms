@@ -20,7 +20,7 @@ public class StrategyBot extends BotPlayer {
 
         setGame(game);
 
-        copyFromPlayerForSimulation(player, opponent, resetOnly);
+        copyFromPlayerForSimulation(player, !opponent, resetOnly);
     }
 
     @Override

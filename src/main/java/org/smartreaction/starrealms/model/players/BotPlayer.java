@@ -476,7 +476,7 @@ public abstract class BotPlayer extends Player {
     }
 
     public boolean useBaseAfterPlay(Base base) {
-        return base.isScrapper();
+        return base.isScrapper() || base instanceof RecyclingStation;
     }
 
     protected boolean shouldScrapCard(Card card) {

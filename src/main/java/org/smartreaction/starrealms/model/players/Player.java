@@ -151,6 +151,8 @@ public abstract class Player {
             handAndDeckCopy.removeAll(player.getCardsInHandBeforeShuffle());
 
             List<? extends Card> cardsInHandBeforeShuffleCopy = copyCards(player.getCardsInHandBeforeShuffle(), resetOnly);
+            getCardsInHandBeforeShuffle().clear();
+            getCardsInHandBeforeShuffle().addAll(cardsInHandBeforeShuffleCopy);
 
             List<? extends Card> deckCopy = copyCards(handAndDeckCopy, resetOnly);
 
@@ -1120,7 +1122,7 @@ public abstract class Player {
         return countCardsByType(played, c -> c.hasFaction(Faction.BLOB));
     }
 
-    public List getHandAndDeck() {
+    public List<Card> getHandAndDeck() {
         List<Card> cards = new ArrayList<>(hand);
         cards.addAll(deck);
         return cards;

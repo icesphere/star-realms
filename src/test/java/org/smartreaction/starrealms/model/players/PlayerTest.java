@@ -14,10 +14,12 @@ import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.Recycl
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.StarFortress;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.BarterWorld;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
+import org.smartreaction.starrealms.model.cards.ships.blob.BattlePod;
 import org.smartreaction.starrealms.model.cards.ships.blob.BlobDestroyer;
 import org.smartreaction.starrealms.model.cards.ships.blob.BlobFighter;
 import org.smartreaction.starrealms.model.cards.ships.machinecult.TradeBot;
 import org.smartreaction.starrealms.model.cards.ships.tradefederation.Freighter;
+import org.smartreaction.starrealms.model.cards.ships.tradefederation.TradeEscort;
 import org.smartreaction.starrealms.model.players.bots.StrategyBot;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
 import org.smartreaction.starrealms.service.GameService;
@@ -110,6 +112,8 @@ public class PlayerTest {
 
         player1CopyOfCopy.setGame(gameCopyOfCopy);
 
+        player1CopyOfCopy.getCardsInHandBeforeShuffle().add(new BattlePod());
+
         player1CopyOfCopy.copyFromPlayerForSimulation(player1Copy, true, true);
 
         Player player2CopyOfCopy = new StrategyBot(new VelocityStrategy(), gameService);
@@ -117,6 +121,8 @@ public class PlayerTest {
         player2CopyOfCopy.setGame(gameCopyOfCopy);
 
         player2CopyOfCopy.getBases().add(new MachineBase());
+
+        player2CopyOfCopy.getCardsInHandBeforeShuffle().add(new TradeEscort());
 
         player2CopyOfCopy.copyFromPlayerForSimulation(player2Copy, false, true);
 
@@ -156,6 +162,10 @@ public class PlayerTest {
         assertEquals(4, player1CopyOfCopy.getHand().size());
         assertTrue(hasCard(player1Copy.getHand(), TradeBot.class));
         assertTrue(hasCard(player1CopyOfCopy.getHand(), TradeBot.class));
+
+        assertTrue(player1.getCardsInHandBeforeShuffle().isEmpty());
+        assertTrue(player1Copy.getCardsInHandBeforeShuffle().isEmpty());
+        assertTrue(player1CopyOfCopy.getCardsInHandBeforeShuffle().isEmpty());
 
         assertEquals(1, player2Copy.getCardsInHandBeforeShuffle().size());
         assertEquals(1, player2CopyOfCopy.getCardsInHandBeforeShuffle().size());

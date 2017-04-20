@@ -203,6 +203,8 @@ public abstract class Player {
                 }
             }
             getBases().addAll(copyOfBases);
+
+            getCardsInHandBeforeShuffle().clear();
         }
 
         getPlayed().clear();

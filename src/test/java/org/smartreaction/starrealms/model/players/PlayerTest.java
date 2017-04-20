@@ -9,7 +9,9 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.TradeWheel;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.BrainWorld;
+import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.MachineBase;
 import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.RecyclingStation;
+import org.smartreaction.starrealms.model.cards.bases.outposts.starempire.StarFortress;
 import org.smartreaction.starrealms.model.cards.bases.tradefederation.BarterWorld;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.blob.BlobDestroyer;
@@ -104,6 +106,8 @@ public class PlayerTest {
 
         Player player1CopyOfCopy = new StrategyBot(new VelocityStrategy(), gameService);
 
+        player1CopyOfCopy.getBases().add(new StarFortress());
+
         player1CopyOfCopy.setGame(gameCopyOfCopy);
 
         player1CopyOfCopy.copyFromPlayerForSimulation(player1Copy, true, true);
@@ -111,6 +115,8 @@ public class PlayerTest {
         Player player2CopyOfCopy = new StrategyBot(new VelocityStrategy(), gameService);
 
         player2CopyOfCopy.setGame(gameCopyOfCopy);
+
+        player2CopyOfCopy.getBases().add(new MachineBase());
 
         player2CopyOfCopy.copyFromPlayerForSimulation(player2Copy, false, true);
 

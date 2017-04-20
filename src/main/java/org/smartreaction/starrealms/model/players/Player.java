@@ -195,6 +195,7 @@ public abstract class Player {
             getInPlay().clear();
             getInPlay().addAll(copyCards(player.getInPlay(), resetOnly));
 
+            getBases().clear();
             List<Base> copyOfBases = new ArrayList<>();
             for (Card card : getInPlay()) {
                 if (card instanceof Base) {
@@ -513,6 +514,18 @@ public abstract class Player {
         yourTurn = false;
 
         game.turnEnded();
+    }
+
+    private void checkForDuplicates() {
+        Map<String, Card> cardMap = new HashMap<>();
+
+        for (Card card : getAllCardsWithoutInPlay()) {
+            if (cardMap.containsKey(card.getId())) {
+                System.out.println("Found duplicate");
+            } else {
+                cardMap.put(card.getId(), card);
+            }
+        }
     }
 
     public void addBase(Base base) {
@@ -834,6 +847,17 @@ public abstract class Player {
         } else {
             cards.addAll(inPlay);
         }
+        cards.addAll(heroes);
+
+        return cards;
+    }
+
+    public List<Card> getAllCardsWithoutInPlay() {
+        List<Card> cards = new ArrayList<>();
+        cards.addAll(hand);
+        cards.addAll(deck);
+        cards.addAll(discard);
+        cards.addAll(bases);
         cards.addAll(heroes);
 
         return cards;

@@ -75,14 +75,7 @@ public abstract class BotPlayer extends Player {
 
             List<Base> unusedBasesAndOutposts = getUnusedBasesAndOutposts();
 
-            if (!unusedBasesAndOutposts.isEmpty()) {
-                List<Base> sortedBases = unusedBasesAndOutposts.stream().sorted(useBaseScoreDescending).collect(toList());
-                for (Base sortedBase : sortedBases) {
-                    if (sortedBase.useBase(this)) {
-                        endTurn = false;
-                    }
-                }
-            }
+            endTurn = useBases(true, unusedBasesAndOutposts);
 
             List<Gambit> scrappableGambits = getScrappableGambits();
             if (!scrappableGambits.isEmpty()) {
@@ -164,14 +157,7 @@ public abstract class BotPlayer extends Player {
 
             unusedBasesAndOutposts = getUnusedBasesAndOutposts();
 
-            if (!unusedBasesAndOutposts.isEmpty()) {
-                List<Base> sortedBases = unusedBasesAndOutposts.stream().sorted(useBaseScoreDescending).collect(toList());
-                for (Base sortedBase : sortedBases) {
-                    if (sortedBase.useBase(this)) {
-                        endTurn = false;
-                    }
-                }
-            }
+            endTurn = useBases(endTurn, unusedBasesAndOutposts);
 
             for (Mission mission : getUnClaimedMissions()) {
                 if (mission.isMissionCompleted(this)) {
@@ -218,6 +204,20 @@ public abstract class BotPlayer extends Player {
         }
 
         applyCombatAndEndTurn();
+    }
+
+    private boolean useBases(boolean endTurn, List<Base> unusedBasesAndOutposts) {
+        if (!unusedBasesAndOutposts.isEmpty()) {
+            List<Base> sortedBases = unusedBasesAndOutposts.stream().sorted(useBaseScoreDescending).collect(toList());
+            for (Base sortedBase : sortedBases) {
+                if (getUseBaseScore(sortedBase) > 0) {
+                    if (sortedBase.useBase(this)) {
+                        endTurn = false;
+                    }
+                }
+            }
+        }
+        return endTurn;
     }
 
     private boolean usingHeroHasPossibleBenefit(Hero hero) {
@@ -614,7 +614,11 @@ public abstract class BotPlayer extends Player {
         if (card instanceof RecyclingStation) {
             return 100;
         } else if (card instanceof MachineBase) {
-            return 90;
+            if (getAllCards().size() > 8) {
+                return 90;
+            } else {
+                return 0;
+            }
         } else if (card instanceof Junkyard) {
             return 80;
         } else if (card instanceof BrainWorld) {

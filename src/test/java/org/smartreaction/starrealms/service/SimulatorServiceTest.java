@@ -24,6 +24,7 @@ public class SimulatorServiceTest {
     public void testSimulation() {
 
         GameOptions gameOptions = new GameOptions();
+        gameOptions.setIncludeCrisisHeroes(true);
 
         StrategyBot player1 = new StrategyBot(new RandomStrategy(), gameService);
         StrategyBot player2 = new StrategyBot(new VelocityStrategy(), gameService);

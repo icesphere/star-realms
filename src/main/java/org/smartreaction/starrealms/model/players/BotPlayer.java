@@ -726,7 +726,8 @@ public abstract class BotPlayer extends Player {
         if (card instanceof StealthNeedle) {
             return 0;
         }
-        return getBuyCardScore(card);
+
+        return getBuyCardScore(card) + 1;
     }
 
     public int getCopyBaseScore(Base base) {

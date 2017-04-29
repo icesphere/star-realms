@@ -37,7 +37,7 @@ public class SimulatorServiceTest {
 
         simulatorService.setupPlayersForCopiedGame(game, copiedGame, ((StrategyBot) game.getCurrentPlayer().getOpponent()).getStrategy(), ((StrategyBot) game.getCurrentPlayer()).getStrategy());
 
-        SimulationResults results = simulatorService.simulateGameToEnd(game, copiedGame, 10000, true, true);
+        SimulationResults results = simulatorService.simulateGameToEnd(copiedGame, 10000, true, true);
 
         System.out.println("examine results");
     }

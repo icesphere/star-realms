@@ -328,7 +328,9 @@ public class SimulatorService {
             return null;
         }
 
-        bases.add(new DoNotAttackBase());
+        if (attack) {
+            bases.add(new DoNotAttackBase());
+        }
 
         setupPlayersForCopiedGame(originalGame, copiedGame, opponentStrategy, ((SimulatorBot) originalGame.getCurrentPlayer()).getStrategy());
         

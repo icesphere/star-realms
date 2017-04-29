@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.players.bots.StrategyBot;
-import org.smartreaction.starrealms.model.players.bots.strategies.RandomStrategy;
+import org.smartreaction.starrealms.model.players.bots.strategies.AttackVelocityStrategy;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
 import org.smartreaction.starrealms.model.simulator.SimulationResults;
 
@@ -24,9 +24,11 @@ public class SimulatorServiceTest {
     public void testSimulation() {
 
         GameOptions gameOptions = new GameOptions();
+        gameOptions.setIncludeCrisisBasesAndBattleships(true);
+        gameOptions.setIncludeCrisisFleetsAndFortresses(true);
         gameOptions.setIncludeCrisisHeroes(true);
 
-        StrategyBot player1 = new StrategyBot(new RandomStrategy(), gameService);
+        StrategyBot player1 = new StrategyBot(new AttackVelocityStrategy(), gameService);
         StrategyBot player2 = new StrategyBot(new VelocityStrategy(), gameService);
 
         Game game = gameService.createGameForSimulation(gameOptions, player1, player2);
@@ -35,7 +37,7 @@ public class SimulatorServiceTest {
 
         simulatorService.setupPlayersForCopiedGame(game, copiedGame, ((StrategyBot) game.getCurrentPlayer().getOpponent()).getStrategy(), ((StrategyBot) game.getCurrentPlayer()).getStrategy());
 
-        SimulationResults results = simulatorService.simulateGameToEnd(game, copiedGame, 1000, true, true);
+        SimulationResults results = simulatorService.simulateGameToEnd(game, copiedGame, 10000, true, true);
 
         System.out.println("examine results");
     }

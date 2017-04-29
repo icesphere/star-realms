@@ -279,7 +279,11 @@ public class SimulatorBot extends BotPlayer {
 
     @Override
     public Base chooseOpponentBaseToDestroy() {
-        Map<Base, Float> results = simulatorService.simulateBestBaseToDestroy(getGame(), 600);
+        if (getOpponent().getBases().size() == 1) {
+            return getOpponent().getBases().get(0);
+        }
+        
+        Map<Base, Float> results = simulatorService.simulateBestBaseToDestroy(getGame(), 500);
 
         return getBestBaseFromResults(results, "destroy");
     }
@@ -352,7 +356,7 @@ public class SimulatorBot extends BotPlayer {
     }
 
     private Base getBestBaseToAttack() {
-        Map<Base, Float> results = simulatorService.simulateBestBaseToAttack(getGame(), 500);
+        Map<Base, Float> results = simulatorService.simulateBestBaseToAttack(getGame(), 600);
 
         return getBestBaseFromResults(results, "attack");
     }

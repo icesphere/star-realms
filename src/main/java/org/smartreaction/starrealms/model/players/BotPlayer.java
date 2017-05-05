@@ -67,6 +67,8 @@ public abstract class BotPlayer extends Player {
     protected Comparator<Card> returnCardToTopOfDeckScoreDescending = (c1, c2) -> Integer.compare(getReturnCardToTopOfDeckScore(c2), getReturnCardToTopOfDeckScore(c1));
     protected Comparator<Hero> useHeroScoreDescending = (h1, h2) -> Integer.compare(getUseHeroScore(h2), getUseHeroScore(h1));
 
+    private Random random = new Random();
+
     public void takeTurn() {
         boolean endTurn = false;
 
@@ -545,7 +547,11 @@ public abstract class BotPlayer extends Player {
         cards.add(getGame().getExplorer());
         cards.add(getGame().getExplorer());
 
-        List<Card> sortedCards = cards.stream().filter(c -> getTrade() >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> cardsAvailableToBuy = cards.stream().filter(c -> getTrade() >= c.getCost()).collect(toList());
+
+        if (cardsAvailableToBuy.isEmpty()) {
+            return cardsToBuy;
+        }
 
         if (cardToBuyThisTurn != null && getTrade() >= cardToBuyThisTurn.getCost()) {
             if (cardToBuyThisTurn instanceof DoNotBuyCard) {
@@ -553,6 +559,15 @@ public abstract class BotPlayer extends Player {
             }
             cardsToBuy.add(cardToBuyThisTurn);
             return cardsToBuy;
+        }
+
+        List<Card> sortedCards = cardsAvailableToBuy.stream().sorted(cardToBuyScoreDescending).collect(toList());
+
+        if (cardsAvailableToBuy.size() > 1) {
+            Card card = pickCardBasedOnBuyScore(sortedCards);
+            if (card != null && !card.equals(sortedCards.get(0))) {
+                Collections.swap(sortedCards, 0, 1);
+            }
         }
 
         if (!sortedCards.isEmpty() && getBuyCardScore(sortedCards.get(0)) > 0) {
@@ -1381,38 +1396,66 @@ public abstract class BotPlayer extends Player {
     }
 
     public Card chooseCardFromDiscardToAddToTopOfDeck() {
-        if (getDiscard().isEmpty()) {
+        return pickCardBasedOnBuyScore(getDiscard());
+    }
+
+    private Card pickCardBasedOnBuyScore(List<Card> cards) {
+        if (cards == null || cards.isEmpty()) {
             return null;
         }
 
-        List<Card> sortedCards = getDiscard().stream().sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> sortedCards = cards.stream().sorted(cardToBuyScoreDescending).collect(toList());
 
-        Card card = sortedCards.get(0);
-        if (getBuyCardScore(card) > 0) {
-            return card;
+        Card firstCard = sortedCards.get(0);
+
+        int firstBuyScore = getBuyCardScore(firstCard);
+
+        int randomPercent = random.nextInt(100);
+
+        if (sortedCards.size() == 1) {
+            if (firstBuyScore == 0) {
+                if (randomPercent < 5) {
+                    return firstCard;
+                } else {
+                    return null;
+                }
+            } else {
+                return firstCard;
+            }
         }
 
-        return null;
+        Card secondCard = sortedCards.get(1);
+
+        int secondBuyScore = getBuyCardScore(secondCard);
+
+        if (secondBuyScore == 0) {
+            if (firstBuyScore < 20 && randomPercent < 5) {
+                return secondCard;
+            } else {
+                return firstCard;
+            }
+        }
+
+        int percentageForFirstCard = (firstBuyScore / (firstBuyScore + secondBuyScore)) * 100;
+
+        if (randomPercent < percentageForFirstCard) {
+            return firstCard;
+        } else {
+            return secondCard;
+        }
     }
 
     public Card chooseFreeCardToAcquire(Integer maxCost, boolean onlyShips, boolean includeHeroes) {
         List<Card> cardsToChooseFrom = new ArrayList<>(getGame().getTradeRow());
         cardsToChooseFrom.add(getGame().getExplorer());
 
-        List<Card> sortedCards = cardsToChooseFrom.stream()
+        List<Card> cards = cardsToChooseFrom.stream()
                 .filter(c -> (maxCost == null || c.getCost() <= maxCost)
                         && (includeHeroes || c.isShip() || c.isBase())
                         && (!onlyShips || c.isShip()))
-                .sorted(cardToBuyScoreDescending).collect(toList());
-
-        if (!sortedCards.isEmpty()) {
-            Card card = sortedCards.get(0);
-            if (getBuyCardScore(card) > 0) {
-                return card;
-            }
-        }
-
-        return null;
+                .collect(toList());
+        
+        return pickCardBasedOnBuyScore(cards);
     }
 
     public int getUseGambitScore(Gambit gambit) {

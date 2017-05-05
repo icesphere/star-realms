@@ -6,6 +6,7 @@ import org.mockito.MockitoAnnotations;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.bases.blob.TradeWheel;
 import org.smartreaction.starrealms.model.cards.bases.outposts.machinecult.BrainWorld;
@@ -67,6 +68,8 @@ public class PlayerTest {
         player1.getInPlay().add(barterWorld);
 
         player1.getPlayed().add(blobFighter);
+
+        player1.getFactionsPlayedThisTurn().add(Faction.BLOB);
 
         player1.turn = 5;
 
@@ -239,6 +242,10 @@ public class PlayerTest {
         assertEquals(1, player1CopyOfCopy.getPlayed().size());
         assertTrue(hasCard(player1Copy.getPlayed(), BlobFighter.class));
         assertTrue(hasCard(player1CopyOfCopy.getPlayed(), BlobFighter.class));
+
+        assertTrue(player1.factionPlayedThisTurn(Faction.BLOB));
+        assertTrue(player1Copy.factionPlayedThisTurn(Faction.BLOB));
+        assertTrue(player1CopyOfCopy.factionPlayedThisTurn(Faction.BLOB));
 
         assertEquals(0, player2Copy.getPlayed().size());
         assertEquals(0, player2CopyOfCopy.getPlayed().size());

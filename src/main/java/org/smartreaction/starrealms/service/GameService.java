@@ -74,6 +74,9 @@ public class GameService {
         Game game = new Game();
 
         HumanPlayer player1 = new HumanPlayer(user1);
+        player1.getHand().add(new AllianceFrigate());
+        player1.getHeroes().add(new CeoTorres());
+        player1.getHand().add(new BattleBot());
 
         Player player2;
 

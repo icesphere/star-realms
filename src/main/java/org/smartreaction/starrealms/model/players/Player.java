@@ -904,19 +904,19 @@ public abstract class Player {
             return true;
         }
 
-        if (card.hasFaction(Faction.BLOB) && blobAlliedUntilEndOfTurn) {
+        if (faction == Faction.BLOB && card.hasFaction(Faction.BLOB) && blobAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.hasFaction(Faction.STAR_EMPIRE) && starEmpireAlliedUntilEndOfTurn) {
+        if (faction == Faction.STAR_EMPIRE && card.hasFaction(Faction.STAR_EMPIRE) && starEmpireAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.hasFaction(Faction.TRADE_FEDERATION) && tradeFederationAlliedUntilEndOfTurn) {
+        if (faction == Faction.TRADE_FEDERATION && card.hasFaction(Faction.TRADE_FEDERATION) && tradeFederationAlliedUntilEndOfTurn) {
             return true;
         }
 
-        if (card.hasFaction(Faction.MACHINE_CULT) && machineCultAlliedUntilEndOfTurn) {
+        if (faction == Faction.MACHINE_CULT && card.hasFaction(Faction.MACHINE_CULT) && machineCultAlliedUntilEndOfTurn) {
             return true;
         }
 

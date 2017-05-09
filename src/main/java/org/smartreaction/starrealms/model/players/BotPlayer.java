@@ -1414,7 +1414,7 @@ public abstract class BotPlayer extends Player {
 
         if (sortedCards.size() == 1) {
             if (firstBuyScore == 0) {
-                if (randomPercent < 5) {
+                if (randomPercent <= 2) {
                     return firstCard;
                 } else {
                     return null;
@@ -1429,16 +1429,20 @@ public abstract class BotPlayer extends Player {
         int secondBuyScore = getBuyCardScore(secondCard);
 
         if (secondBuyScore == 0) {
-            if (firstBuyScore < 20 && randomPercent < 5) {
+            if (firstBuyScore < 10 && randomPercent <= 3) {
                 return secondCard;
             } else {
                 return firstCard;
             }
         }
 
+        if (firstBuyScore - secondBuyScore > 10) {
+            return firstCard;
+        }
+
         int percentageForFirstCard = (firstBuyScore / (firstBuyScore + secondBuyScore)) * 100;
 
-        if (randomPercent < percentageForFirstCard) {
+        if (randomPercent < percentageForFirstCard + 5) {
             return firstCard;
         } else {
             return secondCard;

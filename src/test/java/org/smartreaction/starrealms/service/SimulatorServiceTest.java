@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.players.bots.StrategyBot;
-import org.smartreaction.starrealms.model.players.bots.strategies.AttackVelocityStrategy;
+import org.smartreaction.starrealms.model.players.bots.strategies.ModifiedVelocityStrategy;
 import org.smartreaction.starrealms.model.players.bots.strategies.VelocityStrategy;
 import org.smartreaction.starrealms.model.simulator.SimulationResults;
 
@@ -28,8 +28,8 @@ public class SimulatorServiceTest {
         gameOptions.setIncludeCrisisFleetsAndFortresses(true);
         gameOptions.setIncludeCrisisHeroes(true);
 
-        StrategyBot player1 = new StrategyBot(new AttackVelocityStrategy(), gameService);
-        StrategyBot player2 = new StrategyBot(new VelocityStrategy(), gameService);
+        StrategyBot player2 = new StrategyBot(new ModifiedVelocityStrategy(), gameService);
+        StrategyBot player1 = new StrategyBot(new VelocityStrategy(), gameService);
 
         Game game = gameService.createGameForSimulation(gameOptions, player1, player2);
 

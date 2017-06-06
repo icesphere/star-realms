@@ -41,6 +41,7 @@ public class VelocityStrategy implements BotStrategy {
         int numBlobCards = player.countCardsByType(player.getAllCards(), c -> c.hasFaction(Faction.BLOB));
         int numStarEmpireCards = player.countCardsByType(player.getAllCards(), c -> c.hasFaction(Faction.STAR_EMPIRE));
         int numStarterCards = player.countCardsByType(player.getAllCards(), Card::isStarterCard);
+        boolean usingHeroes = player.getGame().getCardSets().contains(CardSet.UNITED_HEROES) || player.getGame().getCardSets().contains(CardSet.CRISIS_HEROES);
 
         //Heroes
         if (card instanceof RamPilot) {
@@ -309,7 +310,7 @@ public class VelocityStrategy implements BotStrategy {
                 return 2;
             }
         } else if (card instanceof BlobCarrier) {
-            if (player.getGame().getCardSets().contains(CardSet.UNITED_HEROES) || player.getGame().getCardSets().contains(CardSet.CRISIS_HEROES)) {
+            if (usingHeroes) {
                 if (deck <= 3) {
                     return 70;
                 }

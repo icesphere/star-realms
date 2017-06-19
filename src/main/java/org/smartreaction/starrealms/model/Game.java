@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static java.util.stream.Collectors.summingInt;
 import static java.util.stream.Collectors.toList;
 
 public class Game {
@@ -506,5 +507,10 @@ public class Game {
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
+    }
+
+    public int getAverageTradeRowCost() {
+        Integer totalCost = getTradeRow().stream().collect(summingInt(Card::getCost));
+        return totalCost / getTradeRow().size();
     }
 }

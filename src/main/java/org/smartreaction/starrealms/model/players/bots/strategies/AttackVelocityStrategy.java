@@ -20,4 +20,17 @@ public class AttackVelocityStrategy implements BotStrategy {
 
         return total / 2;
     }
+
+    public int getBuyScoreIncreaseForAverageTradeRowCost(int averageTradeRowCost, Card card, int deckNumber) {
+        int attackStrategyScore = attackStrategy.getBuyScoreIncreaseForAverageTradeRowCost(averageTradeRowCost, card, deckNumber);
+        int velocityStrategyScore = velocityStrategy.getBuyScoreIncreaseForAverageTradeRowCost(averageTradeRowCost, card, deckNumber);
+
+        int total = attackStrategyScore + velocityStrategyScore;
+
+        if (total == 0) {
+            return 0;
+        }
+
+        return total / 2;
+    }
 }

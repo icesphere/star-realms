@@ -2,6 +2,7 @@ package org.smartreaction.starrealms.model.players.bots;
 
 import org.smartreaction.starrealms.model.Game;
 import org.smartreaction.starrealms.model.cards.Card;
+import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.BotPlayer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.model.players.bots.strategies.BotStrategy;
@@ -25,7 +26,23 @@ public class StrategyBot extends BotPlayer {
 
     @Override
     public int getBuyCardScore(Card card) {
-        return strategy.getBuyCardScore(card, this);
+        int buyCardScore = strategy.getBuyCardScore(card, this);
+
+        //todo move to strategy classes
+        if (getOpponent() instanceof StrategyBot) {
+            int opponentBuyCardScore = ((StrategyBot) getOpponent()).getStrategy().getBuyCardScore(card, getOpponent());
+
+            int buyScoreDifference = opponentBuyCardScore - buyCardScore;
+            if (buyScoreDifference >= 10 && !(card instanceof Explorer)) {
+                buyCardScore += (buyScoreDifference / 2);
+            }
+        }
+
+        int averageTradeRowCost = getGame().getAverageTradeRowCost();
+
+        buyCardScore += strategy.getBuyScoreIncreaseForAverageTradeRowCost(averageTradeRowCost, card, getCurrentDeckNumber());
+
+        return buyCardScore;
     }
 
     public BotStrategy getStrategy() {

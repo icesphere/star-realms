@@ -8,4 +8,8 @@ public class RandomStrategy implements BotStrategy {
     public int getBuyCardScore(Card card, Player player) {
         return 1;
     }
+
+    public int getBuyScoreIncreaseForAverageTradeRowCost(int averageTradeRowCost, Card card, int deckNumber) {
+        return 0;
+    }
 }

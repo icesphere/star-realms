@@ -4,7 +4,7 @@ public abstract class Scenario {
 
     private final String name;
 
-    private final String text;
+    private String text;
 
     public Scenario(String name, String text) {
         this.name = name;
@@ -17,5 +17,9 @@ public abstract class Scenario {
 
     public String getText() {
         return text;
+    }
+
+    public void addText(String extraText) {
+        text += extraText;
     }
 }

@@ -539,6 +539,33 @@
 }
 /* end of hand section */
 
+/* scenario section */
+.scenarioSection {
+    clear: both;
+    margin-left: 15px;
+    width: 964px;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.8);
+}
+
+.scenarioTitle {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.scenarioTextSection {
+    clear: both;
+    padding-top: 15px;
+}
+
+.scenarioText {
+    font-size: 14px;
+}
+
+/* end of scenario section */
+
 /* player action section */
 .actionSection {
     clear: both;

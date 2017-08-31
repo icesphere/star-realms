@@ -548,9 +548,9 @@ public class GameView implements Serializable {
         availableCardsToBuy.add(new Explorer());
 
         Optional<Card> cheapestCard = availableCardsToBuy.stream()
-                .min((c1, c2) -> Integer.compare(c1.getCost(), c2.getCost()));
+                .min((c1, c2) -> Integer.compare(getPlayer().getCardCostWithModifiers(c1), getPlayer().getCardCostWithModifiers(c2)));
 
-        boolean hasUnusedTrade = cheapestCard.isPresent() && cheapestCard.get().getCost() <= getPlayer().getTrade();
+        boolean hasUnusedTrade = cheapestCard.isPresent() && getPlayer().getCardCostWithModifiers(cheapestCard.get()) <= getPlayer().getTrade();
 
         boolean hasActionableCardInPlayArea = getPlayer().getInPlay().stream().anyMatch(c -> c.isActionable(getPlayer(), Card.CARD_LOCATION_PLAY_AREA));
 

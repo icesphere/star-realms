@@ -32,6 +32,7 @@ import org.smartreaction.starrealms.model.cards.heroes.*;
 import org.smartreaction.starrealms.model.cards.heroes.united.*;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.cards.missions.united.*;
+import org.smartreaction.starrealms.model.cards.scenarios.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.MercCruiser;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
@@ -47,10 +48,7 @@ import org.smartreaction.starrealms.model.players.bots.SimulatorBot;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class GameService {
@@ -216,6 +214,15 @@ public class GameService {
             game.getCardSets().add(CardSet.GAMBITS);
         }
 
+        if (gameOptions.isIncludeScenarios()) {
+            game.setScenario(getRandomScenario());
+            game.getCardSets().add(CardSet.SCENARIOS);
+
+            if (game.getScenario() instanceof StartOfGameScenario) {
+                ((StartOfGameScenario) game.getScenario()).applyScenarioToGame(game);
+            }
+        }
+
         Collections.shuffle(deck);
 
         game.setDeck(deck);
@@ -230,13 +237,40 @@ public class GameService {
                 }
             });
             game.setTradeRow(tradeRow);
-            if (tradeRow.size() < 5) {
-                game.addCardsToTradeRow(5 - tradeRow.size());
+            if (tradeRow.size() < game.getTradeRowSize()) {
+                game.addCardsToTradeRow(game.getTradeRowSize() - tradeRow.size());
             }
         } else {
-            game.addCardsToTradeRow(5);
+            game.addCardsToTradeRow(game.getTradeRowSize());
         }
 
+    }
+
+    private Scenario getRandomScenario() {
+        List<Scenario> scenarios = getScenarios();
+
+        return scenarios.get(new Random().nextInt(scenarios.size()));
+    }
+
+    private List<Scenario> getScenarios() {
+        List<Scenario> scenarios = new ArrayList<>();
+
+        scenarios.add(new BorderSkirmish());
+        //scenarios.add(new BuyersMarket());
+        //scenarios.add(new CommitmentToTheCause());
+        //scenarios.add(new EarlyRecruitment());
+        //scenarios.add(new EmergencyRepairs());
+        scenarios.add(new EntrenchedLoyalties());
+        //scenarios.add(new FlareMining());
+        scenarios.add(new ProlongedConflict());
+        scenarios.add(new ReadyReserves());
+        scenarios.add(new RecruitingDrive());
+        scenarios.add(new RushedDefenses());
+        //scenarios.add(new RuthlessEfficiency());
+        //scenarios.add(new TotalWar());
+        scenarios.add(new WarpgateNexus());
+
+        return scenarios;
     }
 
     public void setupPlayerCards(Player player) {

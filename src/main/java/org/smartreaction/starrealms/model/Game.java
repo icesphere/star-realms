@@ -6,6 +6,7 @@ import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
 import org.smartreaction.starrealms.model.cards.missions.united.*;
+import org.smartreaction.starrealms.model.cards.scenarios.*;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.HumanPlayer;
 import org.smartreaction.starrealms.model.players.Player;
@@ -62,6 +63,8 @@ public class Game {
 
     private boolean timedOut;
 
+    private Scenario scenario;
+
     StringBuilder lastTurnSimulationInfoLog = new StringBuilder();
     StringBuilder currentTurnSimulationInfoLog = new StringBuilder();
 
@@ -80,6 +83,7 @@ public class Game {
         game.setTrackAuthority(false);
         game.setSimulation(true);
         game.setCardSets(new HashSet<>(cardSets));
+        game.setScenario(scenario);
         return game;
     }
 
@@ -512,5 +516,41 @@ public class Game {
     public int getAverageTradeRowCost() {
         Integer totalCost = getTradeRow().stream().collect(summingInt(Card::getCost));
         return totalCost / getTradeRow().size();
+    }
+
+    public Scenario getScenario() {
+        return scenario;
+    }
+
+    public void setScenario(Scenario scenario) {
+        this.scenario = scenario;
+    }
+
+    public int getTradeRowSize() {
+        if (isWarpgateNexus()) {
+            return 7;
+        } else {
+            return 5;
+        }
+    }
+
+    public boolean isUsingScenario() {
+        return  scenario != null;
+    }
+
+    public boolean isReadyReserves() {
+        return scenario != null && scenario instanceof ReadyReserves;
+    }
+
+    public boolean isRecruitingDrive() {
+        return scenario != null && scenario instanceof RecruitingDrive;
+    }
+
+    public boolean isRushedDefenses() {
+        return scenario != null && scenario instanceof RushedDefenses;
+    }
+
+    public boolean isWarpgateNexus() {
+        return scenario != null && scenario instanceof WarpgateNexus;
     }
 }

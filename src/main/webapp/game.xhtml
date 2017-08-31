@@ -84,6 +84,20 @@
                                 <h:panelGroup styleClass="playerContentCardAreaBuffer"/>
                             </h:panelGroup>
 
+                            <h:panelGroup layout="block" id="scenarioSection" style="padding-top: 10px; padding-bottom: 20px;" rendered="#{gameView.game.usingScenario}">
+
+                                <h:panelGroup layout="block" styleClass="scenarioSection">
+
+                                    <h:outputText value="Scenario: #{gameView.game.scenario.name}" styleClass="scenarioTitle"/>
+
+                                    <h:panelGroup layout="block" styleClass="scenarioTextSection">
+                                        <h:outputText value="#{gameView.game.scenario.text}" styleClass="scenarioText"/>
+                                    </h:panelGroup>
+
+                                </h:panelGroup>
+
+                            </h:panelGroup>
+
                             <h:panelGroup layout="block" style="padding-bottom: 20px;" rendered="#{gameView.opponent.bot and !empty gameView.game.lastTurnSimulationInfoLog}">
                                 <h:panelGroup layout="block" styleClass="gameLogSection">
                                     <h:outputText value="Simulation Info" styleClass="playerContentCardAreaText"/>

@@ -137,7 +137,11 @@ public abstract class BotPlayer extends Player {
                 }
             }
 
-            for (Card card : getInPlay()) {
+            //copy to avoid concurrent modification exception
+            //todo check for cards added
+            List<Card> getInPlayCopy = new ArrayList<>(getInPlay());
+
+            for (Card card : getInPlayCopy) {
                 if (card.isAlliableCard()) {
                     if (useAlliedAbilities((Card) card.getAlliableCard())) {
                         endTurn = false;
@@ -547,13 +551,13 @@ public abstract class BotPlayer extends Player {
         cards.add(getGame().getExplorer());
         cards.add(getGame().getExplorer());
 
-        List<Card> cardsAvailableToBuy = cards.stream().filter(c -> getTrade() >= c.getCost()).collect(toList());
+        List<Card> cardsAvailableToBuy = cards.stream().filter(c -> getTrade() >= this.getCardCostWithModifiers(c)).collect(toList());
 
         if (cardsAvailableToBuy.isEmpty()) {
             return cardsToBuy;
         }
 
-        if (cardToBuyThisTurn != null && getTrade() >= cardToBuyThisTurn.getCost()) {
+        if (cardToBuyThisTurn != null && getTrade() >= this.getCardCostWithModifiers(cardToBuyThisTurn)) {
             if (cardToBuyThisTurn instanceof DoNotBuyCard) {
                 return cardsToBuy;
             }
@@ -611,7 +615,7 @@ public abstract class BotPlayer extends Player {
     }
 
     private boolean addTwoCardListIfEnoughTrade(List<List<Card>> twoCardList, Card card1, Card card2) {
-        if ((card1.getCost() + card2.getCost()) <= getTrade()) {
+        if ((this.getCardCostWithModifiers(card1) + this.getCardCostWithModifiers(card2)) <= getTrade()) {
             List<Card> cards = new ArrayList<>(2);
             cards.add(card1);
             cards.add(card2);
@@ -759,7 +763,7 @@ public abstract class BotPlayer extends Player {
         Faction opponentFactionWithMostCards = getOpponent().getFactionWithMostCards();
 
         if (opponentFactionWithMostCards != null) {
-            if (factionWithMostCards != null && factionWithMostCards == opponentFactionWithMostCards && getTrade() >= card.getCost()) {
+            if (factionWithMostCards != null && factionWithMostCards == opponentFactionWithMostCards && getTrade() >= this.getCardCostWithModifiers(card)) {
                 return 0;
             }
             if (!card.getFactions().isEmpty() && card.getFactions().iterator().next() == opponentFactionWithMostCards) {
@@ -1336,7 +1340,7 @@ public abstract class BotPlayer extends Player {
             }
         }
 
-        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> getTrade() + extraTrade >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> getTrade() + extraTrade >= this.getCardCostWithModifiers(c)).sorted(cardToBuyScoreDescending).collect(toList());
         if (!sortedCards.isEmpty()) {
             int bestCardScore = getBuyCardScore(sortedCards.get(0));
             return bestCardScore - cardToBuyScore;
@@ -1346,7 +1350,7 @@ public abstract class BotPlayer extends Player {
     }
 
     public int getHighestBuyScoreForTrade(int trade) {
-        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> trade >= c.getCost()).sorted(cardToBuyScoreDescending).collect(toList());
+        List<Card> sortedCards = getGame().getTradeRow().stream().filter(c -> trade >= this.getCardCostWithModifiers(c)).sorted(cardToBuyScoreDescending).collect(toList());
         if (!sortedCards.isEmpty()) {
             return getBuyCardScore(sortedCards.get(0));
         }
@@ -1454,7 +1458,7 @@ public abstract class BotPlayer extends Player {
         cardsToChooseFrom.add(getGame().getExplorer());
 
         List<Card> cards = cardsToChooseFrom.stream()
-                .filter(c -> (maxCost == null || c.getCost() <= maxCost)
+                .filter(c -> (maxCost == null || this.getCardCostWithModifiers(c) <= maxCost)
                         && (includeHeroes || c.isShip() || c.isBase())
                         && (!onlyShips || c.isShip()))
                 .collect(toList());

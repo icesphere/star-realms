@@ -14,6 +14,7 @@ import org.smartreaction.starrealms.model.cards.gambits.EveryTurnGambit;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.heroes.Hero;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.modifiers.CardCostModifier;
 import org.smartreaction.starrealms.model.cards.ships.DoNotBuyCard;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.cards.ships.Scout;
@@ -128,6 +129,10 @@ public abstract class Player {
     private boolean acquireCardToHand;
 
     private boolean missionClaimedThisTurn;
+
+    private Faction entrenchedLoyaltyFaction;
+
+    private CardCostModifier cardCostModifier;
 
     protected Player() {
     }
@@ -261,6 +266,10 @@ public abstract class Player {
         if (player.getLastTurnSummary() != null) {
             lastTurnSummary = player.getLastTurnSummary().copy();
         }
+
+        entrenchedLoyaltyFaction = player.getEntrenchedLoyaltyFaction();
+
+        cardCostModifier = player.getCardCostModifier();
     }
 
     private List<? extends Card> copyCards(List<? extends Card> cardsToCopy, boolean resetOnly) {
@@ -507,11 +516,16 @@ public abstract class Player {
 
         inPlay.clear();
 
-        discard.addAll(hand);
-        hand.clear();
         cardsInHandBeforeShuffle.clear();
 
-        drawCards(5);
+        if (game.isReadyReserves()) {
+            drawCards(5 - hand.size());
+        } else {
+            discard.addAll(hand);
+            hand.clear();
+
+            drawCards(5);
+        }
 
         yourTurn = false;
 
@@ -538,9 +552,17 @@ public abstract class Player {
 
     public void baseDestroyed(Base base) {
         addGameLog("Destroyed base: " + base.getName());
+
         bases.remove(base);
-        discard.add(base);
+
+        if (game.isRushedDefenses()) {
+            game.getTradeRowCardsScrapped().add(base);
+        } else {
+            discard.add(base);
+        }
+
         cardRemovedFromPlay(base);
+
         if (!yourTurn) {
             getOpponent().getCurrentTurnSummary().getOpponentBasesDestroyed().add(base);
         }
@@ -719,7 +741,13 @@ public abstract class Player {
         cardsAcquiredInCurrentDeck.add(card);
         cardsAcquiredByDeck.put(getCurrentDeckNumber(), cardsAcquiredInCurrentDeck);
 
-        if (acquireCardToHand) {
+        if (game.isRecruitingDrive()) {
+            nextShipOrBaseToTopOfDeck = true;
+        }
+
+        if (card.isBase() && game.isRushedDefenses()) {
+            playCard(card);
+        } else if (acquireCardToHand) {
             acquireCardToHand = false;
             addCardToHand(card);
         } else if (acquireCardToTopOfDeck) {
@@ -797,9 +825,9 @@ public abstract class Player {
     }
 
     public void buyCard(Card card) {
-        if (trade >= card.getCost()) {
+        if (trade >= this.getCardCostWithModifiers(card)) {
             addGameLog("Bought card: " + card.getName());
-            trade -= card.getCost();
+            trade -= this.getCardCostWithModifiers(card);
             if (card instanceof Explorer) {
                 cardAcquired(card);
             } else {
@@ -1203,7 +1231,7 @@ public abstract class Player {
 
     public boolean isCardBuyable(Card card) {
         //noinspection SimplifiableIfStatement
-        return yourTurn && card.getCost() <= trade;
+        return yourTurn && this.getCardCostWithModifiers(card) <= trade;
     }
 
     public void addCardToDeck(Card card) {
@@ -1562,5 +1590,29 @@ public abstract class Player {
 
     public String getInfoForGameLogName() {
         return playerName.replaceAll("\\s", "_") + "_score_" + authority;
+    }
+
+    public CardCostModifier getCardCostModifier() {
+        return cardCostModifier;
+    }
+
+    public void setCardCostModifier(CardCostModifier cardCostModifier) {
+        this.cardCostModifier = cardCostModifier;
+    }
+
+    public Faction getEntrenchedLoyaltyFaction() {
+        return entrenchedLoyaltyFaction;
+    }
+
+    public void setEntrenchedLoyaltyFaction(Faction entrenchedLoyaltyFaction) {
+        this.entrenchedLoyaltyFaction = entrenchedLoyaltyFaction;
+    }
+
+    public int getCardCostWithModifiers(Card card) {
+        if (cardCostModifier != null) {
+            return cardCostModifier.getCardCost(card, this);
+        }
+
+        return card.getCost();
     }
 }

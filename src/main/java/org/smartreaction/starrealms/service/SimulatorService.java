@@ -2,7 +2,6 @@ package org.smartreaction.starrealms.service;
 
 import org.smartreaction.starrealms.model.Choice;
 import org.smartreaction.starrealms.model.Game;
-import org.smartreaction.starrealms.model.GameOptions;
 import org.smartreaction.starrealms.model.cards.Card;
 import org.smartreaction.starrealms.model.cards.Faction;
 import org.smartreaction.starrealms.model.cards.actions.ChoiceActionCard;
@@ -874,7 +873,7 @@ public class SimulatorService {
         Collections.shuffle(copiedGameCopy.getDeck());
 
         if (randomizeTradeRow) {
-            copiedGameCopy.addCardsToTradeRow(5);
+            copiedGameCopy.addCardsToTradeRow(copiedGameCopy.getTradeRowSize());
         }
 
         //copiedGameCopy.setCreateGameLog(createGameLog);

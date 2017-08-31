@@ -34,6 +34,8 @@ public class GameOptions {
 
     private boolean includeGambits = false;
 
+    private boolean includeScenarios = false;
+
     private String startingTradeRowCards = "";
 
     private boolean playAgainstComputer;
@@ -146,6 +148,14 @@ public class GameOptions {
         this.includeGambits = includeGambits;
     }
 
+    public boolean isIncludeScenarios() {
+        return includeScenarios;
+    }
+
+    public void setIncludeScenarios(boolean includeScenarios) {
+        this.includeScenarios = includeScenarios;
+    }
+
     public String getStartingTradeRowCards() {
         return startingTradeRowCards;
     }
@@ -182,7 +192,7 @@ public class GameOptions {
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
                 includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedAssault,
-                includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, startingTradeRowCards,
+                includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, includeScenarios, startingTradeRowCards,
                 includeSimulationInfo);
     }
 
@@ -207,6 +217,7 @@ public class GameOptions {
                 && Objects.equals(this.includeUnitedHeroes, other.includeUnitedHeroes)
                 && Objects.equals(this.includeUnitedMissions, other.includeUnitedMissions)
                 && Objects.equals(this.includeGambits, other.includeGambits)
+                && Objects.equals(this.includeScenarios, other.includeScenarios)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards)
                 && !(this.playerOrder.equals("first") && other.playerOrder.equals("first"))
                 && !(this.playerOrder.equals("second") && other.playerOrder.equals("second"));
@@ -262,6 +273,10 @@ public class GameOptions {
 
         if (includeGambits) {
             selected.add("Gambits");
+        }
+
+        if (includeGambits) {
+            selected.add("Scenarios");
         }
 
         if (!"random".equals(playerOrder)) {

@@ -538,6 +538,14 @@ public class Game {
         return  scenario != null;
     }
 
+    public boolean isUsingOncePerTurnScenario() {
+        return isUsingScenario() && scenario instanceof OncePerTurnScenario;
+    }
+
+    public OncePerTurnScenario getOncePerTurnScenario() {
+        return (OncePerTurnScenario) scenario;
+    }
+
     public boolean isReadyReserves() {
         return scenario != null && scenario instanceof ReadyReserves;
     }

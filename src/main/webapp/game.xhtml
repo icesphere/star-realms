@@ -94,6 +94,16 @@
                                         <h:outputText value="#{gameView.game.scenario.text}" styleClass="scenarioText"/>
                                     </h:panelGroup>
 
+                                    <h:panelGroup layout="block" styleClass="scenarioActionSection" rendered="#{gameView.showOncePerTurnScenarioActionSection}">
+                                        <sr:linkWithSpinner linkText="#{gameView.game.oncePerTurnScenario.actionText}"
+                                                            actionMethod="#{gameView.processOncePerTurnScenarioAction()}"
+                                                            styleClass="scenarioActionText"
+                                                            process="@this"
+                                                            update=":gameForm:gamePage"/>
+
+                                        <h:outputLink value="#{gameView.game.oncePerTurnScenario.actionText}" styleClass="scenarioActionText"/>
+                                    </h:panelGroup>
+
                                 </h:panelGroup>
 
                             </h:panelGroup>

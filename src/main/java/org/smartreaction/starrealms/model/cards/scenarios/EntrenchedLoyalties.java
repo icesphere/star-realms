@@ -17,7 +17,7 @@ public class EntrenchedLoyalties extends Scenario implements StartOfGameScenario
         for (Player player : game.getPlayers()) {
             player.setEntrenchedLoyaltyFaction(getRandomFaction());
 
-            addText(player.getPlayerName() + " loyalty faction: " + getFactionName(player.getEntrenchedLoyaltyFaction()));
+            addText(" Loyalty faction for " + player.getPlayerName() + ": " + getFactionName(player.getEntrenchedLoyaltyFaction()) + ".");
 
             player.setCardCostModifier((c, p) -> {
                 if (c.hasFaction(p.getEntrenchedLoyaltyFaction())) {

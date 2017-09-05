@@ -564,6 +564,15 @@
     font-size: 14px;
 }
 
+.scenarioActionSection {
+    clear: both;
+    padding-top: 15px;
+}
+
+.scenarioActionText {
+    font-size: 14px;
+}
+
 /* end of scenario section */
 
 /* player action section */

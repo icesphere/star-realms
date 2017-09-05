@@ -213,7 +213,29 @@
 
                                 <p:outputLabel value="Scenarios: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"
-                                                       value="#{userSession.user.gameOptions.includeScenarios}"/>
+                                                       value="#{userSession.user.gameOptions.includeScenarios}">
+                                    <p:ajax process="gameOptions" update="gameOptions" listener="#{lobbyView.validateGameOptions}"/>
+                                </p:selectBooleanButton>
+
+                                <p:outputLabel value="Scenario: " rendered="#{userSession.user.gameOptions.includeScenarios}"/>
+                                <p:selectOneMenu value="#{userSession.user.gameOptions.scenario}" rendered="#{userSession.user.gameOptions.includeScenarios}">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem itemLabel="Random" itemValue="random"/>
+                                    <f:selectItem itemLabel="Border Skirmish" itemValue="borderskirmish"/>
+                                    <!--<f:selectItem itemLabel="Buyers Market" itemValue="buyersmarket"/>-->
+                                    <!--<f:selectItem itemLabel="Commitment to the Cause" itemValue="commitmenttothecause"/>-->
+                                    <!--<f:selectItem itemLabel="Early Recruitment" itemValue="earlyrecruitment"/>-->
+                                    <f:selectItem itemLabel="Emergency Repairs" itemValue="emergencyrepairs"/>
+                                    <f:selectItem itemLabel="Entrenched Loyalties" itemValue="entrenchedloyalties"/>
+                                    <f:selectItem itemLabel="Flare Mining" itemValue="flaremining"/>
+                                    <f:selectItem itemLabel="Prolonged Conflict" itemValue="prolongeconflict"/>
+                                    <f:selectItem itemLabel="Ready Reserves" itemValue="readyreserves"/>
+                                    <f:selectItem itemLabel="Recruiting Drive" itemValue="recruitingdrive"/>
+                                    <f:selectItem itemLabel="Rushed Defenses" itemValue="rusheddefenses"/>
+                                    <f:selectItem itemLabel="Ruthless Efficiency" itemValue="ruthlessefficiency"/>
+                                    <f:selectItem itemLabel="Total War" itemValue="totalwar"/>
+                                    <f:selectItem itemLabel="Warpgate Nexus" itemValue="warpgatenexus"/>
+                                </p:selectOneMenu>
 
                                 <p:outputLabel value="Play Against Computer: "/>
                                 <p:selectBooleanButton onLabel="Yes" offLabel="No"

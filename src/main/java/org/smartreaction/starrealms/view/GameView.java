@@ -14,6 +14,7 @@ import org.smartreaction.starrealms.model.cards.bases.Base;
 import org.smartreaction.starrealms.model.cards.events.Event;
 import org.smartreaction.starrealms.model.cards.gambits.Gambit;
 import org.smartreaction.starrealms.model.cards.missions.Mission;
+import org.smartreaction.starrealms.model.cards.scenarios.OncePerTurnScenario;
 import org.smartreaction.starrealms.model.cards.ships.Explorer;
 import org.smartreaction.starrealms.model.players.Player;
 import org.smartreaction.starrealms.service.GameService;
@@ -559,6 +560,23 @@ public class GameView implements Serializable {
         boolean hasUnusedCombat = getPlayer().getCombat() > 0 && getOpponent().getSmallestOutpostShield() <= getPlayer().getCombat();
 
         return !gameOver && (hasUnusedTrade || !getPlayer().getHand().isEmpty() || hasUnusedCombat || hasActionableCardInPlayArea || hasActionableBase);
+    }
+
+    public boolean isShowOncePerTurnScenarioActionSection() {
+        return getPlayer().isYourTurn() &&
+                getGame().isUsingOncePerTurnScenario() &&
+                !getGame().getOncePerTurnScenario().isUsed() &&
+                getGame().getOncePerTurnScenario().isActionAvailable(getGame());
+    }
+
+    public void processOncePerTurnScenarioAction() {
+        OncePerTurnScenario oncePerTurnScenario = getGame().getOncePerTurnScenario();
+        oncePerTurnScenario.setUsed(true);
+        oncePerTurnScenario.processAction(getGame());
+
+        refreshGamePageForAll();
+
+        checkForAction();
     }
 
     public String getCardTypeString(Card card) {

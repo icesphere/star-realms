@@ -215,7 +215,14 @@ public class GameService {
         }
 
         if (gameOptions.isIncludeScenarios()) {
-            game.setScenario(getRandomScenario());
+            if (gameOptions.getScenario() != null) {
+                game.setScenario(getScenarioFromName(gameOptions.getScenario()));
+            }
+
+            if (game.getScenario() == null) {
+                game.setScenario(getRandomScenario());
+            }
+
             game.getCardSets().add(CardSet.SCENARIOS);
 
             if (game.getScenario() instanceof StartOfGameScenario) {
@@ -259,15 +266,15 @@ public class GameService {
         //scenarios.add(new BuyersMarket());
         //scenarios.add(new CommitmentToTheCause());
         //scenarios.add(new EarlyRecruitment());
-        //scenarios.add(new EmergencyRepairs());
+        scenarios.add(new EmergencyRepairs());
         scenarios.add(new EntrenchedLoyalties());
-        //scenarios.add(new FlareMining());
+        scenarios.add(new FlareMining());
         scenarios.add(new ProlongedConflict());
         scenarios.add(new ReadyReserves());
         scenarios.add(new RecruitingDrive());
         scenarios.add(new RushedDefenses());
-        //scenarios.add(new RuthlessEfficiency());
-        //scenarios.add(new TotalWar());
+        scenarios.add(new RuthlessEfficiency());
+        scenarios.add(new TotalWar());
         scenarios.add(new WarpgateNexus());
 
         return scenarios;
@@ -624,10 +631,6 @@ public class GameService {
         cards.add(new Predator());
         cards.add(new Predator());
 
-        cards.add(new Swarmer());
-        cards.add(new Swarmer());
-        cards.add(new Swarmer());
-
         cards.add(new Ravager());
         cards.add(new Ravager());
 
@@ -938,6 +941,44 @@ public class GameService {
         }
 
         return bases;
+    }
+
+    public Scenario getScenarioFromName(String name) {
+        name = name.replaceAll("\\s", "").toLowerCase();
+        name = name.replaceAll("'", "");
+
+        switch (name) {
+            case "borderskirmish":
+                return new BorderSkirmish();
+            case "buyersmarket":
+                return new BuyersMarket();
+            case "commitmenttothecause":
+                return new CommitmentToTheCause();
+            case "earlyrecruitment":
+                return new EarlyRecruitment();
+            case "emergencyrepairs":
+                return new EmergencyRepairs();
+            case "entrenchedloyalties":
+                return new EntrenchedLoyalties();
+            case "flaremining":
+                return new FlareMining();
+            case "prolongeconflict":
+                return new ProlongedConflict();
+            case "readyreserves":
+                return new ReadyReserves();
+            case "recruitingdrive":
+                return new RecruitingDrive();
+            case "rusheddefenses":
+                return new RushedDefenses();
+            case "ruthlessefficiency":
+                return new RuthlessEfficiency();
+            case "totalwar":
+                return new TotalWar();
+            case "warpgatenexus":
+                return new WarpgateNexus();
+            default:
+                return null;
+        }
     }
 
     public Card getCardFromName(String cardName) {

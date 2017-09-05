@@ -44,6 +44,8 @@ public class GameOptions {
 
     private String playerOrder = "random";
 
+    private String scenario;
+
     public boolean isCustomGameOptions() {
         return customGameOptions;
     }
@@ -188,12 +190,20 @@ public class GameOptions {
         this.includeSimulationInfo = includeSimulationInfo;
     }
 
+    public String getScenario() {
+        return scenario;
+    }
+
+    public void setScenario(String scenario) {
+        this.scenario = scenario;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(includeBaseSet, includeColonyWars, includeYearOnePromos, includeCrisisBasesAndBattleships,
                 includeCrisisEvents, includeCrisisFleetsAndFortresses, includeCrisisHeroes, includeUnitedAssault,
                 includeUnitedCommand, includeUnitedHeroes, includeUnitedMissions, includeGambits, includeScenarios, startingTradeRowCards,
-                includeSimulationInfo);
+                includeSimulationInfo, scenario);
     }
 
     @Override
@@ -219,6 +229,7 @@ public class GameOptions {
                 && Objects.equals(this.includeGambits, other.includeGambits)
                 && Objects.equals(this.includeScenarios, other.includeScenarios)
                 && Objects.equals(this.startingTradeRowCards, other.startingTradeRowCards)
+                && Objects.equals(this.scenario, other.scenario)
                 && !(this.playerOrder.equals("first") && other.playerOrder.equals("first"))
                 && !(this.playerOrder.equals("second") && other.playerOrder.equals("second"));
     }
@@ -289,6 +300,10 @@ public class GameOptions {
 
         if (!StringUtils.isBlank(startingTradeRowCards)) {
             selected.add("Starting Trade Row Cards: " + startingTradeRowCards);
+        }
+
+        if (scenario != null) {
+            selected.add("Scenario: " + scenario);
         }
 
         return StringUtils.join(selected, "; ");

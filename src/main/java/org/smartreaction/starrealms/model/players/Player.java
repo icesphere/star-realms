@@ -414,7 +414,7 @@ public abstract class Player {
         return cardsDrawn;
     }
 
-    private void shuffleDiscardIntoDeck() {
+    public void shuffleDiscardIntoDeck() {
         deck.addAll(discard);
         discard.clear();
         addGameLog("Shuffling deck");
@@ -517,6 +517,10 @@ public abstract class Player {
         inPlay.clear();
 
         cardsInHandBeforeShuffle.clear();
+
+        if (game.isUsingOncePerTurnScenario()) {
+            game.getOncePerTurnScenario().setUsed(false);
+        }
 
         if (game.isReadyReserves()) {
             drawCards(5 - hand.size());

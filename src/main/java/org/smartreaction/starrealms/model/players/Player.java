@@ -745,11 +745,9 @@ public abstract class Player {
         cardsAcquiredInCurrentDeck.add(card);
         cardsAcquiredByDeck.put(getCurrentDeckNumber(), cardsAcquiredInCurrentDeck);
 
-        if (game.isRecruitingDrive()) {
-            nextShipOrBaseToTopOfDeck = true;
-        }
-
-        if (card.isBase() && game.isRushedDefenses()) {
+        if (card.isShip() && game.isRecruitingDrive()) {
+            nextShipToTopOfDeck = true;
+        } else if (card.isBase() && game.isRushedDefenses()) {
             playCard(card);
         } else if (acquireCardToHand) {
             acquireCardToHand = false;
